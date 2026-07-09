@@ -1,0 +1,13 @@
+{
+  "name": "kb-design-ai",
+  "version": "1.0.0",
+  "description": "Guida HTML — Progettare con l'AI, knowledge base del team di design Lotrek",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "node --watch-path=. build.mjs & npx serve ."
+  },
+  "dependencies": {
+    "marked": "^12.0.2"
+  }
+}
