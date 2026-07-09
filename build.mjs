@@ -21,6 +21,36 @@ function stripTags(html) {
   return html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").trim();
 }
 
+// ---- Smart quotes (standard tipografico, entità canoniche) ----
+// Virgolette dritte -> curve; guillemets -> doppie curve.
+// & = &ldquo;  &rdquo;  &lsquo;  &rsquo;  — saltando codice inline e blocchi ```.
+const QUOTE_OPEN = "[\\s([{\\u2013\\u2014/-]"; // inizio riga o dopo spazio/parentesi/trattino
+function smartQuotesText(s) {
+  return s
+    .replace(/«/g, "&ldquo;").replace(/»/g, "&rdquo;")
+    .replace(new RegExp(`(^|${QUOTE_OPEN})"`, "g"), "$1&ldquo;")
+    .replace(/"/g, "&rdquo;")
+    .replace(new RegExp(`(^|${QUOTE_OPEN})'`, "g"), "$1&lsquo;")
+    .replace(/'/g, "&rsquo;");
+}
+function smartQuotesLine(line) {
+  // preserva gli span di codice inline (`...`)
+  return line
+    .split(/(`[^`]*`)/g)
+    .map((part) => (part.startsWith("`") ? part : smartQuotesText(part)))
+    .join("");
+}
+function smartQuotes(md) {
+  let inFence = false;
+  return md
+    .split("\n")
+    .map((line) => {
+      if (/^\s*(```|~~~)/.test(line)) { inFence = !inFence; return line; }
+      return inFence ? line : smartQuotesLine(line);
+    })
+    .join("\n");
+}
+
 // ---- Pre-processing del markdown ----
 let md = readFileSync(new URL("./content.md", import.meta.url), "utf8");
 const lines = md.split("\n");
@@ -59,22 +89,29 @@ const bodyMd = lines.join("\n");
 
 // ---- Conversione ----
 marked.setOptions({ gfm: true, breaks: false });
-let introHtml = introMd.trim() ? marked.parse(introMd) : "";
-let bodyHtml = marked.parse(bodyMd);
+let introHtml = introMd.trim() ? marked.parse(smartQuotes(introMd)) : "";
+let bodyHtml = marked.parse(smartQuotes(bodyMd));
 
 // ---- Id sulle heading + raccolta per il TOC ----
 const toc = [];
 const usedIds = new Set();
 bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) => {
-  let id = slugify(stripTags(inner)) || "sez";
+  // Badge opzionale: "... {badge:Testo}" a fine heading -> pill nel titolo, TOC pulito + flag.
+  let badge = "";
+  const bm = inner.match(/\s*\{badge:\s*([^}]+?)\s*\}\s*$/);
+  if (bm) { badge = bm[1]; inner = inner.slice(0, bm.index); }
+
+  const cleanText = stripTags(inner);
+  let id = slugify(cleanText) || "sez";
   let base = id, n = 2;
   while (usedIds.has(id)) id = `${base}-${n++}`;
   usedIds.add(id);
   if (level === "2" || level === "3") {
-    toc.push({ level: Number(level), id, text: stripTags(inner) });
+    toc.push({ level: Number(level), id, text: cleanText, flag: !!badge });
   }
   const anchor = `<a class="anchor" href="#${id}" aria-hidden="true">#</a>`;
-  return `<h${level} id="${id}">${anchor}${inner}</h${level}>`;
+  const badgeHtml = badge ? ` <span class="badge">${badge}</span>` : "";
+  return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}</h${level}>`;
 });
 
 // ---- Tabelle scrollabili (wrap) ----
@@ -82,7 +119,7 @@ bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tab
 
 // ---- TOC HTML ----
 const tocHtml = toc
-  .map((t) => `<a class="lvl-${t.level}" href="#${t.id}">${t.text}</a>`)
+  .map((t) => `<a class="lvl-${t.level}${t.flag ? " flag" : ""}" href="#${t.id}">${t.text}</a>`)
   .join("\n");
 
 // ---- Data build (it-IT, senza dipendenze di ICU incerte) ----
@@ -91,11 +128,12 @@ const now = new Date();
 const buildDate = `${now.getDate()} ${MESI[now.getMonth()]} ${now.getFullYear()}`;
 
 // ---- Render template ----
-const heroTitle = pageTitle.split(/\s+[—–-]\s+/)[0].trim();
+const heroTitle = smartQuotesText(pageTitle.split(/\s+[—–-]\s+/)[0].trim());
+const titleSmart = smartQuotesText(pageTitle);
 
 let out = readFileSync(new URL("./template.html", import.meta.url), "utf8");
 out = out
-  .replaceAll("{{TITLE}}", pageTitle)
+  .replaceAll("{{TITLE}}", titleSmart)
   .replaceAll("{{HERO_TITLE}}", heroTitle)
   .replaceAll("{{DESCRIPTION}}", DESCRIPTION)
   .replace("{{INTRO}}", introHtml)

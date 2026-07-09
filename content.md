@@ -6,40 +6,40 @@
 
 **Indice**
 
-1. **Context engineering e prompting**
-   - 1.1 Il cambio di paradigma: dal comando al contesto
-   - 1.2 Context rot: perché le sessioni lunghe degradano
-   - 1.3 I quattro layer del contesto
-   - 1.4 Architettura dei token a tre tier
-   - 1.5 Tecniche di prompting
-   - 1.6 Tre framework di prompt pronti
-   - 1.7 Lo "spec" come ancora
-   - 1.8 Checklist pre-task e segnali
-   - 1.9 Human-in-the-loop
-2. **Workflow Claude / Figma / skill**
-   - 2.1 Il quadro d'insieme
-   - 2.2 Claude Desktop e Claude Code: come dividere il lavoro (in locale)
-   - 2.3 I file di contesto (CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md)
-   - 2.4 Struttura di file e cartelle di un progetto di design
-   - 2.5 Setup e loop con Figma MCP
-   - 2.6 MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto
-   - 2.7 Le skill Figma ufficiali
-   - 2.8 Enforcement del design system
-   - 2.9 Rendere il design system leggibile dall'AI
-   - 2.10 Comandi, slash command e subagent per il design
-   - 2.11 Creare una skill dal proprio design system
-   - 2.12 Deploy del prototipo (locale, Vercel, GitHub Pages)
-3. **Repository di skill di riferimento**
-   - Categorie A–J (collezioni, design system, ponte Figma, qualità UI, a11y, content, asset, componenti, motion, infrastruttura)
-   - Starter pack di skill per product designer (cheatsheet)
-   - Skill UI/UX con comando (roundup)
-4. **Appendice — fonti**
+- **Context engineering e prompting**
+  - Il cambio di paradigma: dal comando al contesto
+  - Context rot: perché le sessioni lunghe degradano
+  - I quattro layer del contesto
+  - Architettura dei token a tre tier
+  - Tecniche di prompting
+  - Tre framework di prompt pronti
+  - Lo "spec" come ancora
+  - Checklist pre-task e segnali
+  - Human-in-the-loop
+- **Workflow Claude / Figma / skill**
+  - Il quadro d'insieme
+  - Claude Desktop e Claude Code: come dividere il lavoro (in locale)
+  - I file di contesto (CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md)
+  - Struttura di file e cartelle di un progetto di design
+  - Setup e loop con Figma MCP
+  - MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto
+  - Le skill Figma ufficiali
+  - Enforcement del design system
+  - Rendere il design system leggibile dall'AI
+  - Comandi, slash command e subagent per il design
+  - Creare una skill dal proprio design system
+  - Deploy del prototipo (locale, Vercel, GitHub Pages)
+- **Repository di skill di riferimento**
+  - Categorie tematiche (collezioni, design system, ponte Figma, qualità UI, a11y, content, asset, componenti, motion, infrastruttura)
+  - Starter pack di skill per product designer
+  - Skill UI/UX con comando
+- **Fonti**
 
 ---
 
-## 1. Context engineering e prompting
+## Context engineering e prompting
 
-### 1.1 Il cambio di paradigma: dal comando al contesto
+### Il cambio di paradigma: dal comando al contesto
 
 Il problema di gran parte del lavoro con l'AI non è il "prompt scritto male": è non aver dato al modello le informazioni per ragionare con chiarezza. Aggiungere dettaglio non equivale ad aggiungere qualità — anzi, oltre una certa soglia l'accuratezza cala. Il *context engineering* è "design thinking applicato all'AI": si struttura il contesto come si progetta un sistema, e l'AI diventa un collaboratore affidabile invece di un generatore di varianti casuali.
 
@@ -50,25 +50,25 @@ La definizione utile da tenere a mente è quella di Anthropic: curare **il più 
 - *Approccio comando*: "Genera 5 layout di checkout." → opzioni generiche dal training generale; poche utili, molto rework.
 - *Approccio contesto*: si forniscono token + esempio del pattern, vincoli di brand espliciti, dati reali sugli utenti e sui punti di abbandono, e infine il task con criteri di successo. → varianti informate, coerenti col sistema, già inquadrate.
 
-### 1.2 Context rot: perché le sessioni lunghe degradano
+### Context rot: perché le sessioni lunghe degradano
 
 Anche partendo da un contesto curato, la qualità si degrada col tempo: falsi avvii, tentativi di debug, divagazioni riempiono la finestra di "rumore" e il modello inizia a riferirsi ai propri output scadenti. Strategie pratiche:
 
 - **Riassumere e ripartire**: chiudere l'istanza, fare un summary, aprirne una nuova col summary come seme.
 - **Confini espliciti**: marcare le sezioni ("tentativi precedenti — solo riferimento" vs "contesto di lavoro attuale").
 - **Checkpoint periodici**: far riassumere stato e decisioni a intervalli regolari.
-- **Non "buttare tutto dentro"**: la gestione intenzionale dell'informazione (cosa includere, cosa escludere, quando rinfrescare) è parte del lavoro. Anche gli strumenti collegati pesano: gli MCP attivi occupano la finestra di contesto (vedi 2.5).
+- **Non "buttare tutto dentro"**: la gestione intenzionale dell'informazione (cosa includere, cosa escludere, quando rinfrescare) è parte del lavoro. Anche gli strumenti collegati pesano: gli MCP attivi occupano la finestra di contesto (vedi «Setup e loop con Figma MCP»).
 
-### 1.3 I quattro layer del contesto
+### I quattro layer del contesto
 
 Un framework per capire cos'è "buon contesto":
 
 1. **Design system (il contenitore)** — il vocabolario e le regole fondamentali. All'AI non serve il file Figma o un PDF: servono token colore come variabili CSS (`--color-primary-500`), una scala di spaziatura con rapporti chiari, componenti d'esempio che mostrano i token in uso, e soprattutto **naming semantico che rivela l'intento**. `--color-text-primary` dice qualcosa che `#1a1a1a` non dice: l'AI può ragionare sull'intento, non su un hex arbitrario.
 2. **Brand guidelines (i vincoli)** — trasformare le linee guida da PDF aspirazionale a vincoli operativi. Bloccare gli elementi critici (logo, colori primari, type core), dichiarare esplicitamente le aree di libertà, definire confini azionabili ("Headline in Inter Bold, 24–48px" non "headline moderne").
 3. **User research (l'ancora)** — il layer più sottovalutato. Tiene le proposte ancorate alla realtà: demografia, requisiti di accessibilità (livelli WCAG, tecnologie assistive), pattern di comportamento reali, edge case e localizzazione. È la differenza tra "generatore di varianti" e "collaboratore informato".
-4. **Workflow (la messa in scena)** — come si strutturano le richieste (vedi 1.5).
+4. **Workflow (la messa in scena)** — come si strutturano le richieste (vedi «Tecniche di prompting»).
 
-### 1.4 Architettura dei token a tre tier
+### Architettura dei token a tre tier
 
 Il design system più "leggibile" dall'AI segue tre livelli:
 
@@ -76,7 +76,7 @@ Il design system più "leggibile" dall'AI segue tre livelli:
 - **Tier 2 — Semantic**: token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui vive l'intento.
 - **Tier 3 — Component**: pattern pre-composti che combinano token semantici (es. una "card" con spaziature, colori, type e ombre corretti).
 
-### 1.5 Tecniche di prompting
+### Tecniche di prompting
 
 - **Chain-of-thought**: invece di chiedere l'output finale, si struttura la richiesta in passi (analizza lo stato → individua i vincoli → genera 3 approcci → valuta ciascuno contro i vincoli e raccomanda). Migliora i risultati e rende il ragionamento trasparente: si intercettano gli errori a metà processo.
 - **Tree-of-thought**: per decisioni strategiche con trade-off, esplora più percorsi di ragionamento; si vede l'albero decisionale, non solo la conclusione.
@@ -85,7 +85,7 @@ Il design system più "leggibile" dall'AI segue tre livelli:
 - **Usare i vincoli come guida**: piattaforma, accessibilità, brand sono strumenti per output realistici e coerenti.
 - **Tradurre lo stile in implementazione**: "rendilo moderno" non significa nulla operativamente; va convertito in regole ("ritmo 8px", "gerarchia primario/secondario chiara", "stati hover/focus/disabled visibili").
 
-### 1.6 Tre framework di prompt pronti
+### Tre framework di prompt pronti
 
 Il contesto va **prima** del task (l'AI processa in sequenza: ciò che vede prima condiziona il resto).
 
@@ -93,11 +93,11 @@ Il contesto va **prima** del task (l'AI processa in sequenza: ciò che vede prim
 - **Reasoning-forward** (decisioni strategiche): `CONTEXT` → `CONSTRAINTS` → `QUESTION` → `PROCESS` (per ogni opzione: approccio, vantaggi dati i vincoli, rischi, raccomandazione motivata).
 - **Iterative refinement** (miglioramento): `CURRENT STATE` → `FEEDBACK` → `NEW CONSTRAINTS` → `TASK` (raffina e spiega cosa è cambiato e perché).
 
-### 1.7 Lo "spec" come ancora
+### Lo "spec" come ancora
 
 Scrivere la soluzione è a sua volta contesto: una volta messo per iscritto lo spec del flusso, diventa l'ancora da cui l'AI genera tutto il resto (prototipo hi-fi, journey map, piano d'implementazione) e che riduce le allucinazioni nei flussi complessi. Pratica utile: tracciare le decisioni per round in una cartella `design/`, così non si ripesca dai thread di commenti Figma il "perché" di una scelta di tre settimane prima.
 
-### 1.8 Checklist pre-task e segnali
+### Checklist pre-task e segnali
 
 **Prima di lanciare un task con l'AI**, verificare di avere: token con gerarchia e naming semantico + componenti d'esempio + edge case documentati; guidelines come vincoli espliciti con elementi bloccati/flessibili; demografia, requisiti a11y e friction point reali; richiesta in fasi, criteri di successo e priorità tra i vincoli definiti.
 
@@ -105,15 +105,15 @@ Scrivere la soluzione è a sua volta contesto: una volta messo per iscritto lo s
 
 **Segnali d'allarme** (di solito = problema di contesto, non di capacità del modello): output da rilavorare molto; varianti generiche o "quasi giuste"; vincoli aggiunti in continuazione a metà processo; qualità che varia molto tra una sessione e l'altra.
 
-### 1.9 Human-in-the-loop
+### Human-in-the-loop
 
 Il lavoro critico va fatto **prima** di coinvolgere l'AI: ricerca, framing, ipotesi. Ogni elemento generato va validato per funzionalità e allineamento al brand. La competenza più importante non è la padronanza di Figma o Claude, ma saper guardare una soluzione generata e chiedersi se è quella giusta, quali assunzioni fa, cosa non stiamo vedendo. E verificare sempre le fonti che l'AI cita: sa di doversi attenere ai dati di progetto, ma può comunque allucinare.
 
 ---
 
-## 2. Workflow Claude / Figma / skill
+## Workflow Claude / Figma / skill
 
-### 2.1 Il quadro d'insieme
+### Il quadro d'insieme
 
 Tre ruoli che si combinano:
 
@@ -121,7 +121,7 @@ Tre ruoli che si combinano:
 - **Figma** come libreria visiva — e, con l'MCP, come superficie leggibile/scrivibile dall'AI.
 - **Le skill** come "briefing permanente": si scrivono una volta, l'AI le carica automaticamente quando il task corrisponde. Zero ri-spiegazioni, zero context drift, zero token sprecati nel setup.
 
-### 2.2 Claude Desktop e Claude Code: come dividere il lavoro (in locale)
+### Claude Desktop e Claude Code: come dividere il lavoro (in locale)
 
 Due ambienti con punti di forza diversi: conviene assegnare a ciascuno la parte per cui è più adatto, invece di forzarne uno solo.
 
@@ -134,11 +134,11 @@ Due ambienti con punti di forza diversi: conviene assegnare a ciascuno la parte 
 2. Sposta il markdown in una cartella locale dedicata (es. `~/Projects/<progetto>/`), anche solo una sottocartella del repo.
 3. Apri quella cartella in VS Code (editor + terminale integrato + preview HTML) e lancia `claude`; da Terminal l'equivalente è `cd ~/Projects/<progetto> && claude`.
 4. *In Claude Code*: invoca le skill locali (es. `/frontend-slides` per un deck, le skill Figma per il canvas), collega solo gli MCP necessari e costruisci.
-5. Sempre in Claude Code: commit atomici e deploy (vedi 2.12).
+5. Sempre in Claude Code: commit atomici e deploy (vedi «Deploy del prototipo»).
 
 Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) sta in Claude Code.** Lo spec o il `DESIGN.md` scritto in chat è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.
 
-### 2.3 I file di contesto: CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md
+### I file di contesto: CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md
 
 Formati con funzioni diverse, spesso complementari:
 
@@ -151,7 +151,7 @@ Formati con funzioni diverse, spesso complementari:
 
 A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored).
 
-### 2.4 Struttura di file e cartelle di un progetto di design
+### Struttura di file e cartelle di un progetto di design
 
 Claude lavora meglio quando ha una **struttura di progetto reale**, non prompt isolati: dargli una fonte di verità *prima* di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:
 
@@ -235,15 +235,15 @@ Destructive button:
 
 Scorciatoia: il comando **`/init`** esplora un codebase esistente e genera una prima bozza di CLAUDE.md, da rifinire.
 
-### 2.5 Setup e loop con Figma MCP
+### Setup e loop con Figma MCP
 
-L'MCP (Model Context Protocol) di Figma consente a Claude di leggere il *design context* (gerarchia, layout, variabili, componenti, token) e, con le skill giuste, di scrivere sul canvas. L'MCP **nativo** di Figma ha due versioni: quella **remota** (endpoint ospitato da Figma, non serve l'app desktop, set di funzioni più ampio, consigliata) e quella **locale desktop** (integrata nell'app: passa in Dev Mode e abilita il server, che gira su `http://127.0.0.1:3845/mcp`). Checklist per una sessione in locale: apri Figma Desktop aggiornato all'ultima versione → apri un file Design (l'MCP non compare in FigJam) → Dev Mode (Shift+D) → *Enable MCP server* → collega il client (VS Code, Cursor, Claude Code) all'indirizzo del server. Verifica rapida: nel client chiedi di elencare i tool MCP, o digita `#get_design_context`. Nota: è in beta e diventerà una funzione a pagamento a consumo; i rate limit dipendono dal piano. (I bridge di terze parti che usano un plugin "Desktop Bridge" con stato "MCP ready" sono un'altra cosa: vedi 2.6.)
+L'MCP (Model Context Protocol) di Figma consente a Claude di leggere il *design context* (gerarchia, layout, variabili, componenti, token) e, con le skill giuste, di scrivere sul canvas. L'MCP **nativo** di Figma ha due versioni: quella **remota** (endpoint ospitato da Figma, non serve l'app desktop, set di funzioni più ampio, consigliata) e quella **locale desktop** (integrata nell'app: passa in Dev Mode e abilita il server, che gira su `http://127.0.0.1:3845/mcp`). Checklist per una sessione in locale: apri Figma Desktop aggiornato all'ultima versione → apri un file Design (l'MCP non compare in FigJam) → Dev Mode (Shift+D) → *Enable MCP server* → collega il client (VS Code, Cursor, Claude Code) all'indirizzo del server. Verifica rapida: nel client chiedi di elencare i tool MCP, o digita `#get_design_context`. Nota: è in beta e diventerà una funzione a pagamento a consumo; i rate limit dipendono dal piano. (I bridge di terze parti che usano un plugin "Desktop Bridge" con stato "MCP ready" sono un'altra cosa: vedi «MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto».)
 
 **Il loop completo**: Design in Figma → Extract con MCP → Build → Deploy → Test → Iterate. Condizione critica lato Figma: **naming e organizzazione corretti** dei componenti (l'AI legge questa struttura) e Auto Layout per la responsività.
 
-**Collega solo gli MCP che ti servono.** Ogni MCP attivo immette dati nella finestra di contesto: il comando **`/context`** mostra l'occupazione e, con molti tool attivi, gli MCP possono arrivare a occupare una fetta enorme del contesto (~45% in casi reali). Disconnetti i tool rumorosi quando non servono — incluso Figma, che inietta molto contesto — quando stai lavorando su documentazione estesa o con più tool di progetto sovrapposti. Regola pratica: **meno rumore nel contesto = output migliore** (si lega al context rot di 1.2).
+**Collega solo gli MCP che ti servono.** Ogni MCP attivo immette dati nella finestra di contesto: il comando **`/context`** mostra l'occupazione e, con molti tool attivi, gli MCP possono arrivare a occupare una fetta enorme del contesto (~45% in casi reali). Disconnetti i tool rumorosi quando non servono — incluso Figma, che inietta molto contesto — quando stai lavorando su documentazione estesa o con più tool di progetto sovrapposti. Regola pratica: **meno rumore nel contesto = output migliore** (si lega al «Context rot»).
 
-**Bridge bidirezionale: Claude "con le mani" sul canvas.** Oltre a leggere Figma, Claude può *agire* sul file aperto se si usa un bridge a due vie. Un esempio è **DesignAgent** (tool di terze parti, distinto dall'MCP nativo di Figma; confronto completo in 2.6): un plugin Figma + un plugin Claude Code che aprono un socket locale ed espongono ~30 tool sul file live — sposta layer, sistema le spaziature, sostituisce un hex con il token corretto, crea frame/testo/forme, ricolora e ri-layouta. Si installa da marketplace (`/plugin marketplace add sherizan/designagent-figma` poi `/plugin install designagent@designagent`) e porta con sé la skill `design-to-code` e l'MCP server `designagent`; gira in locale (nessun token, nessun dato esce dalla macchina) con un *heartbeat* che segnala se la connessione è davvero viva e si riconnette da sola. Due regole rendono affidabili questi flussi: **scope stretto** (un frame o un flusso per volta — l'agente è preciso sul piccolo e va alla deriva se lo punti sull'intero file) e **auto-verifica** (build → screenshot → confronto con `DESIGN.md` → fix).
+**Bridge bidirezionale: Claude "con le mani" sul canvas.** Oltre a leggere Figma, Claude può *agire* sul file aperto se si usa un bridge a due vie. Un esempio è **DesignAgent** (tool di terze parti, distinto dall'MCP nativo di Figma; confronto completo nella sezione dedicata): un plugin Figma + un plugin Claude Code che aprono un socket locale ed espongono ~30 tool sul file live — sposta layer, sistema le spaziature, sostituisce un hex con il token corretto, crea frame/testo/forme, ricolora e ri-layouta. Si installa da marketplace (`/plugin marketplace add sherizan/designagent-figma` poi `/plugin install designagent@designagent`) e porta con sé la skill `design-to-code` e l'MCP server `designagent`; gira in locale (nessun token, nessun dato esce dalla macchina) con un *heartbeat* che segnala se la connessione è davvero viva e si riconnette da sola. Due regole rendono affidabili questi flussi: **scope stretto** (un frame o un flusso per volta — l'agente è preciso sul piccolo e va alla deriva se lo punti sull'intero file) e **auto-verifica** (build → screenshot → confronto con `DESIGN.md` → fix).
 
 > **Prompt pack operativo** (esempio, con bridge bidirezionale e `DESIGN.md` come fonte di verità):
 > - Estrai i token dalla selezione (colori, type, spaziatura, raggio) e scrivili in `DESIGN.md`, con i valori reali, senza arrotondare o inventare.
@@ -253,13 +253,13 @@ L'MCP (Model Context Protocol) di Figma consente a Claude di leggere il *design 
 > - Leggi `voice.md` e scrivi la copy della schermata selezionata con quel tono, applicandola ai nodi di testo; mostrami ogni modifica prima di applicarla.
 > - Crea template di asset social (LinkedIn/Substack) usando il branding in `DESIGN.md`; mantieni ogni valore on-system.
 
-### 2.6 MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto
+### MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto
 
 Tre modi di collegare l'AI a Figma, con obiettivi diversi.
 
 - **MCP nativo di Figma (Dev Mode MCP server).** Prima parte, ufficiale. Due versioni: *remota* (endpoint ospitato da Figma, non serve l'app desktop, funzioni più ampie, consigliata) e *locale desktop* (integrata nell'app, `http://127.0.0.1:3845/mcp`, per casi org/enterprise). *Cosa fa*: legge il design context del layer selezionato, genera codice dal frame selezionato, si aggancia a Code Connect e — con le skill Figma installate — scrive sul canvas e cattura la UI live ("code to canvas"). *Come lo fa*: dati strutturati via protocollo MCP; input per selezione (desktop) o link al nodo (node-id). *Da sapere*: in beta, diventerà a pagamento a consumo, con rate limit per piano; client supportati solo quelli del Figma MCP Catalog (VS Code, Cursor, Claude Code).
 - **Figma Desktop Bridge (`southleft/figma-console-mcp`).** Terze parti, "il tuo design system come API". È un MCP server con un *plugin bridge* che importi tra i plugin di sviluppo di Figma Desktop; comunica via WebSocket (porte 9223–9232) e sblocca il Plugin API **senza piano Enterprise**. *Cosa fa in più del nativo*: lettura/scrittura completa di variabili e descrizioni componenti, creazione/modifica di design, cattura in tempo reale di **console log e network** (debug di plugin e prototipi), export token in ~10 formati (DTCG, CSS, Tailwind, SCSS, Style Dictionary, Tokens Studio…), diff tra versioni, scan di accessibilità WCAG. *Come lo fa*: doppio contesto del plugin (UI con rete, worker con Figma API) più un watchdog che si riconnette da solo; ~107 tool in locale, funziona con Claude Code, Claude Desktop e Cursor insieme, con anche una modalità cloud per i client web. *Da sapere*: il bridge WebSocket locale non è autenticato (problema segnalato) — qualunque processo locale può connettersi e potenzialmente iniettare testo nei log; valutalo su macchine condivise.
-- **DesignAgent (Sherizan, Figma Community).** Terze parti, bridge **bidirezionale** orientato al design-to-code. Un plugin dalla Community di Figma più un plugin Claude Code (install da marketplace); ~30 tool per leggere la selezione e agire sul canvas (crea/edita frame, testo, forme, ricolora, ri-layouta). Gira in locale e gratuito, con heartbeat e la disciplina di scope stretto più auto-verifica contro `DESIGN.md` (vedi 2.5). Rispetto al Desktop Bridge di southleft è più snello e orientato al "costruisci ed edita", meno a debug/console ed export multi-formato; si installa dalla Community (plugin pubblicato) più marketplace, non importando un manifest di sviluppo.
+- **DesignAgent (Sherizan, Figma Community).** Terze parti, bridge **bidirezionale** orientato al design-to-code. Un plugin dalla Community di Figma più un plugin Claude Code (install da marketplace); ~30 tool per leggere la selezione e agire sul canvas (crea/edita frame, testo, forme, ricolora, ri-layouta). Gira in locale e gratuito, con heartbeat e la disciplina di scope stretto più auto-verifica contro `DESIGN.md` (vedi «Setup e loop con Figma MCP»). Rispetto al Desktop Bridge di southleft è più snello e orientato al "costruisci ed edita", meno a debug/console ed export multi-formato; si installa dalla Community (plugin pubblicato) più marketplace, non importando un manifest di sviluppo.
 
 **Come scegliere:**
 
@@ -269,9 +269,9 @@ Tre modi di collegare l'AI a Figma, con obiettivi diversi.
 | variabili/componenti completi senza Enterprise, export token multi-formato, debug console/network | Figma Desktop Bridge (southleft) |
 | loop bidirezionale rapido "costruisci ed edita sul canvas" da Claude Code, locale e gratuito | DesignAgent |
 
-Si possono combinare (es. MCP nativo per il boilerplate, Desktop Bridge per estrarre i valori esatti dei token). Montando più MCP Figma insieme, attenzione all'attribuzione delle risposte e all'occupazione del contesto (vedi 2.5).
+Si possono combinare (es. MCP nativo per il boilerplate, Desktop Bridge per estrarre i valori esatti dei token). Montando più MCP Figma insieme, attenzione all'attribuzione delle risposte e all'occupazione del contesto (vedi «Setup e loop con Figma MCP»).
 
-### 2.7 Le skill Figma ufficiali
+### Le skill Figma ufficiali
 
 Il server MCP di Figma include diverse skill che coprono i workflow comuni. Le otto del set ufficiale:
 
@@ -286,17 +286,17 @@ Il server MCP di Figma include diverse skill che coprono i workflow comuni. Le o
 
 A queste si affiancano due skill Figma orientate al codice, citate nelle altre fonti: **`figma-implement-design`** (traduce un nodo Figma in codice di produzione: `get_design_context` → `get_screenshot` di riferimento → ispezione del DS di progetto → mapping dei valori Figma sui token → generazione del codice → validazione contro lo screenshot) e **`figma-create-design-system-rules`** (analizza il codebase e scrive il file di regole, AGENTS.md o CLAUDE.md, per tradurre i design in codice secondo le convenzioni).
 
-### 2.8 Enforcement del design system
+### Enforcement del design system
 
 L'AI è capace di scrivere Figma e di scrivere React; il divario tra strumento potente e strumento usabile è spesso solo un insieme di regole che nessuno ha scritto. Esempio di "catena di governance" (pattern delle 4 skill di `claude2figma`): il comportamento di default dell'AI è *inventare*; la regola lo cambia in *prima cerca* ("look up before invent"). La skill più essenziale è il **token binding/QA**: ogni proprietà visiva (colore, type, spaziatura, raggio) deve legarsi alla variabile/stile corrispondente — niente valori grezzi — e dopo la scrittura su Figma parte una QA che verifica i binding uno a uno (riporta `#5C6AC4` a `color/brand/primary`).
 
 Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assistente di design" produce output che un umano può riprendere e modificare (DS enforcement attivo); in modalità "prototipo rapido" la velocità ha priorità sull'enforcement e i valori grezzi sono accettati.
 
-### 2.9 Rendere il design system leggibile dall'AI
+### Rendere il design system leggibile dall'AI
 
 Se gli agenti vedono solo valori grezzi e hex (nessun riferimento ai token, nessun significato semantico), costruiscono componenti con valori hardcoded scollegati dalla fonte di verità → debito tecnico, inconsistenza, gap di accessibilità. Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi validare la token accuracy prima/dopo. Espandere di settimana in settimana finché il DS diventa AI-native.
 
-### 2.10 Comandi, slash command e subagent per il design
+### Comandi, slash command e subagent per il design
 
 **Comandi e pratiche utili in Claude Code:**
 
@@ -309,13 +309,13 @@ Se gli agenti vedono solo valori grezzi e hex (nessun riferimento ai token, ness
 
 **Slash command custom per workflow ripetibili.** Ripetere a voce/per iscritto gli stessi prompt porta a drift di qualità e rende impossibile standardizzare le operazioni per il team. Conviene creare comandi dedicati come `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map`, `/design-system-check`: ognuno è un file markdown in `.claude/commands/` (es. `.claude/commands/page-review.md` = "Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con focus sulle best practice UX").
 
-**Subagent specializzati per il design.** Per automatizzare task tenendo pulita la conversazione principale, si creano subagent (file markdown in `.claude/agents/`) che lavorano in autonomia, senza tempestare l'utente di domande. Profili utili in product design: **UX Reviewer**, **Design System Guardian**, **Frontend Implementer**, **Accessibility Reviewer**, **Interaction Designer**, **QA Tester**. Esempio di descrizione (UX Reviewer): *Role* = senior UX reviewer; *Focus* = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; *Do not* = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande nella futura **Sezione 2-ter** sull'architettura ad agenti e sub-agenti.)
+**Subagent specializzati per il design.** Per automatizzare task tenendo pulita la conversazione principale, si creano subagent (file markdown in `.claude/agents/`) che lavorano in autonomia, senza tempestare l'utente di domande. Profili utili in product design: **UX Reviewer**, **Design System Guardian**, **Frontend Implementer**, **Accessibility Reviewer**, **Interaction Designer**, **QA Tester**. Esempio di descrizione (UX Reviewer): *Role* = senior UX reviewer; *Focus* = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; *Do not* = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande in una sezione dedicata all'architettura ad agenti e sub-agenti, in arrivo.)
 
 **Claude Code dentro l'IDE + Plan mode.** Usare Claude Code dentro VS Code (o altro IDE) evita il continuo salto tra ambiente di codice e app: l'integrazione offre inline diff, plan review, file mention e shortcut. Per il lavoro di design, non chiedere di costruire subito: passa in **Plan mode** e segui il flusso *analizza l'esperienza attuale → chiedi un piano UX → rivedi le modifiche proposte → approva → check finale design-system + accessibilità*. Così Claude non si butta sul codice prima di aver capito il problema di prodotto.
 
 **Pattern di affidabilità per task lunghi:** **agente esecutore con contesto fresco** per ogni fase (sessione principale pulita, nessun degrado), **commit atomici** per ogni task (history revertibile, `git bisect` per isolare il task rotto), **agente verificatore** che a fine esecuzione controlla il codebase contro gli obiettivi di fase.
 
-### 2.11 Creare una skill dal proprio design system
+### Creare una skill dal proprio design system
 
 Struttura tipica della cartella:
 
@@ -361,7 +361,7 @@ Trova incoerenze tra implementazione e regole del design system.
 Restituisci una tabella con: Issue, Location, Severity, Fix consigliato.
 ```
 
-### 2.12 Deploy del prototipo (locale, Vercel, GitHub Pages)
+### Deploy del prototipo (locale, Vercel, GitHub Pages)
 
 Il deploy è l'ultimo anello del loop (Design → Build → **Deploy** → Test → Iterate): serve a passare da "gira sulla mia macchina" a un URL condivisibile. Tre livelli, dal più veloce al più pubblico: anteprima in locale, pubblicazione su Vercel, pubblicazione su GitHub Pages.
 
@@ -410,86 +410,86 @@ Se usi React Router, allinea il `basename` del router al `base` di Vite (altrime
 
 ---
 
-## 3. Repository di skill di riferimento
+## Repository di skill di riferimento
 
-Categorizzazione completa dei 79 repository stellati. Le categorie **A–F** sono il cuore della knowledge base (progettazione con AI, skill, Claude/Figma); **G–H** sono fondamenta/asset utili; **I–J** sono toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
+Categorizzazione completa dei 79 repository stellati. Le prime categorie sono il cuore della knowledge base (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
 
-### A · Collezioni di skill multi-disciplina (cuore della KB)
-- `Owl-Listener/designer-skills` — research → sistemi → UI → interazione → delivery
-- `Owl-Listener/ai-design-skills` — 42 skill e 18 comandi in 6 plugin per l'Agentic Experience Design (model interaction, alignment, system behavior, evaluation, agent orchestration, prompt architecture); per Claude Code e Gemini CLI, install da marketplace (`claude plugin marketplace add Owl-Listener/ai-design-skills`). Utile anche per la futura sezione agenti/Opus
-- `cuellarfr/design-skills` — research, critique, accessibilità, journey mapping
-- `jamiemill/layers-skills` — i "sette layer" del product design
-- `designagentlab/skills` — libreria open: Figma, UX research, copywriting, immagini
-- `PatternsDev/skills` — agent skill di patterns.dev
-- `edenspiekermann/Skills` — raccolta skill dello studio Eden Spiekermann
-- `phuryn/pm-skills` — marketplace di 68 skill + 42 workflow in 9 plugin (discovery, strategy, execution, research, analytics, GTM, growth, toolkit, AI-shipping); per Claude Code e Cowork, install da marketplace; include `strategy-red-team` / `/red-team-prd` e `/ship-check` (adiacente, lato PM)
-- `anthropics/skills` — repository ufficiale Anthropic delle Agent Skills (riferimento canonico)
-- `nexu-io/open-design` — alternativa open a Claude Design (259+ skill, 142+ design system)
+### Collezioni di skill multi-disciplina (cuore della KB)
+- [Owl-Listener/designer-skills](https://github.com/Owl-Listener/designer-skills) — research → sistemi → UI → interazione → delivery
+- [Owl-Listener/ai-design-skills](https://github.com/Owl-Listener/ai-design-skills) — 42 skill e 18 comandi in 6 plugin per l'Agentic Experience Design (model interaction, alignment, system behavior, evaluation, agent orchestration, prompt architecture); per Claude Code e Gemini CLI, install da marketplace (`claude plugin marketplace add Owl-Listener/ai-design-skills`). Utile anche per la futura sezione agenti/Opus
+- [cuellarfr/design-skills](https://github.com/cuellarfr/design-skills) — research, critique, accessibilità, journey mapping
+- [jamiemill/layers-skills](https://github.com/jamiemill/layers-skills) — i "sette layer" del product design
+- [designagentlab/skills](https://github.com/designagentlab/skills) — libreria open: Figma, UX research, copywriting, immagini
+- [PatternsDev/skills](https://github.com/PatternsDev/skills) — agent skill di patterns.dev
+- [edenspiekermann/Skills](https://github.com/edenspiekermann/Skills) — raccolta skill dello studio Eden Spiekermann
+- [phuryn/pm-skills](https://github.com/phuryn/pm-skills) — marketplace di 68 skill + 42 workflow in 9 plugin (discovery, strategy, execution, research, analytics, GTM, growth, toolkit, AI-shipping); per Claude Code e Cowork, install da marketplace; include `strategy-red-team` / `/red-team-prd` e `/ship-check` (adiacente, lato PM)
+- [anthropics/skills](https://github.com/anthropics/skills) — repository ufficiale Anthropic delle Agent Skills (riferimento canonico)
+- [nexu-io/open-design](https://github.com/nexu-io/open-design) — alternativa open a Claude Design (259+ skill, 142+ design system)
 
-### B · Design system, token, scale, documentazione
-- `dylantarre/design-system-skills` — skill DS per agentic coding
-- `somerandomdude/design-system-documentation-schema` — DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
-- `NateBaldwinDesign/proportio` — scale proporzionali (tipografia, icone, spaziature)
-- `Manavarya09/design-extract` — estrae il DS di qualsiasi sito (token DTCG, MCP server, export multi-piattaforma)
+### Design system, token, scale, documentazione
+- [dylantarre/design-system-skills](https://github.com/dylantarre/design-system-skills) — skill DS per agentic coding
+- [somerandomdude/design-system-documentation-schema](https://github.com/somerandomdude/design-system-documentation-schema) — DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
+- [NateBaldwinDesign/proportio](https://github.com/NateBaldwinDesign/proportio) — scale proporzionali (tipografia, icone, spaziature)
+- [Manavarya09/design-extract](https://github.com/Manavarya09/design-extract) — estrae il DS di qualsiasi sito (token DTCG, MCP server, export multi-piattaforma)
 
-### C · Ponte Claude ↔ Figma (MCP, enforcement DS)
-- `figma/mcp-server-guide` — guida ufficiale al Figma MCP server
-- `senlindesign/claude2figma` — 4 skill che tengono l'AI "sui binari" del DS (token/componenti vincolati)
-- `renfei-design/Figma_AI_Bridge` — agent + skill per controllare Figma e automatizzare il design
-- `sherizan/designagent-figma` — *DesignAgent*: bridge bidirezionale Claude Code ↔ Figma (legge e modifica il canvas live, ~30 tool); plugin + MCP server, locale e gratuito
+### Ponte Claude ↔ Figma (MCP, enforcement DS)
+- [figma/mcp-server-guide](https://github.com/figma/mcp-server-guide) — guida ufficiale al Figma MCP server
+- [senlindesign/claude2figma](https://github.com/senlindesign/claude2figma) — 4 skill che tengono l'AI "sui binari" del DS (token/componenti vincolati)
+- [renfei-design/Figma_AI_Bridge](https://github.com/renfei-design/Figma_AI_Bridge) — agent + skill per controllare Figma e automatizzare il design
+- [sherizan/designagent-figma](https://github.com/sherizan/designagent-figma) — *DesignAgent*: bridge bidirezionale Claude Code ↔ Figma (legge e modifica il canvas live, ~30 tool); plugin + MCP server, locale e gratuito
 
-### D · Qualità UI, "taste", micro-dettagli, wireframe
-- `leonxlnx/taste-skill` — dà "buon gusto" all'AI, anti-slop
-- `senlindesign/taste-skill` — *Design DNA Extractor*: `/taste <url>` fa reverse-engineering del "gusto" di un sito (token + il *perché* dietro le scelte) con pipeline Playwright; esporta in CLAUDE.md, Cursor, Windsurf, ecc.
-- `pbakaus/impeccable` — design language per rendere l'AI più brava nel design
-- `ibelick/ui-skills` — skill per rifinire le UI generate dagli agenti: `baseline-ui`, `fixing-accessibility`, `fixing-metadata`, `fixing-motion-performance`; install `npx skills add ibelick/ui-skills`, uso `/baseline-ui review src/`
-- `jakubkrehel/make-interfaces-feel-better` — i dettagli che fanno "sentire" meglio un'interfaccia
-- `nextlevelbuilder/ui-ux-pro-max-skill` — design intelligence UI/UX multi-piattaforma
-- `Magdoub/claude-wireframe-skill` — wireframe B&W come HTML interattivo
-- `vorpus/performativeUI` — (descrizione assente; da verificare)
+### Qualità UI, "taste", micro-dettagli, wireframe
+- [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) — dà "buon gusto" all'AI, anti-slop
+- [senlindesign/taste-skill](https://github.com/senlindesign/taste-skill) — *Design DNA Extractor*: `/taste <url>` fa reverse-engineering del "gusto" di un sito (token + il *perché* dietro le scelte) con pipeline Playwright; esporta in CLAUDE.md, Cursor, Windsurf, ecc.
+- [pbakaus/impeccable](https://github.com/pbakaus/impeccable) — design language per rendere l'AI più brava nel design
+- [ibelick/ui-skills](https://github.com/ibelick/ui-skills) — skill per rifinire le UI generate dagli agenti: `baseline-ui`, `fixing-accessibility`, `fixing-metadata`, `fixing-motion-performance`; install `npx skills add ibelick/ui-skills`, uso `/baseline-ui review src/`
+- [jakubkrehel/make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better) — i dettagli che fanno "sentire" meglio un'interfaccia
+- [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) — design intelligence UI/UX multi-piattaforma
+- [Magdoub/claude-wireframe-skill](https://github.com/Magdoub/claude-wireframe-skill) — wireframe B&W come HTML interattivo
+- [vorpus/performativeUI](https://github.com/vorpus/performativeUI) — (descrizione assente; da verificare)
 
-### E · Accessibilità & audit
-- `airowe/claude-a11y-skill` — audit a11y (axe-core + jsx-a11y)
-- `mgifford/accessibility-skills` — skill che rispecchia un ACCESSIBILITY.md
-- `fecarrico/A11Y.md` — sistema di contesto con regole WCAG applicabili
-- `Ashutos1997/claude-design-auditor-skill` — verifica contro 19 regole di design
-- `w3c/wcag` — linee guida WCAG (riferimento normativo)
-- `YellowLabTools/YellowLabTools` — testing qualità/performance front-end
+### Accessibilità & audit
+- [airowe/claude-a11y-skill](https://github.com/airowe/claude-a11y-skill) — audit a11y (axe-core + jsx-a11y)
+- [mgifford/accessibility-skills](https://github.com/mgifford/accessibility-skills) — skill che rispecchia un ACCESSIBILITY.md
+- [fecarrico/A11Y.md](https://github.com/fecarrico/A11Y.md) — sistema di contesto con regole WCAG applicabili
+- [Ashutos1997/claude-design-auditor-skill](https://github.com/Ashutos1997/claude-design-auditor-skill) — verifica contro 19 regole di design
+- [w3c/wcag](https://github.com/w3c/wcag) — linee guida WCAG (riferimento normativo)
+- [YellowLabTools/YellowLabTools](https://github.com/YellowLabTools/YellowLabTools) — testing qualità/performance front-end
 
-### F · UX writing / content
-- `content-designer/ux-writing-skill` — UX writing sistematico su quattro standard (Purposeful, Concise, Conversational, Clear), con pattern per bottoni/errori/empty state/form e checklist di scoring; per Claude, Codex e Cursor, install `npx skills add content-designer/ux-writing-skill`
+### UX writing / content
+- [content-designer/ux-writing-skill](https://github.com/content-designer/ux-writing-skill) — UX writing sistematico su quattro standard (Purposeful, Concise, Conversational, Clear), con pattern per bottoni/errori/empty state/form e checklist di scoring; per Claude, Codex e Cursor, install `npx skills add content-designer/ux-writing-skill`
 
-### G · Fondamenta & asset (icone, colori)
-- `feathericons/feather` — icone open source
-- `google/material-design-icons` — Material Symbols
-- `meodai/color-names` — nomi di colori curati
-- `evilmartians/oklch-picker` — color picker OKLCH/LCH
+### Fondamenta & asset (icone, colori)
+- [feathericons/feather](https://github.com/feathericons/feather) — icone open source
+- [google/material-design-icons](https://github.com/google/material-design-icons) — Material Symbols
+- [meodai/color-names](https://github.com/meodai/color-names) — nomi di colori curati
+- [evilmartians/oklch-picker](https://github.com/evilmartians/oklch-picker) — color picker OKLCH/LCH
 
-### H · Librerie e kit di componenti UI
-- `ibelick/prompt-kit` — componenti per interfacce AI
-- `ibelick/buttons` — collezione bottoni Tailwind
-- `themesberg/flowbite` — libreria componenti su Tailwind
-- `imskyleen/animate-ui` — component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare
+### Librerie e kit di componenti UI
+- [ibelick/prompt-kit](https://github.com/ibelick/prompt-kit) — componenti per interfacce AI
+- [ibelick/buttons](https://github.com/ibelick/buttons) — collezione bottoni Tailwind
+- [themesberg/flowbite](https://github.com/themesberg/flowbite) — libreria componenti su Tailwind
+- [imskyleen/animate-ui](https://github.com/imskyleen/animate-ui) — component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare
 
-### I · Motion, animazioni, transizioni, scroll (toolbox esecuzione)
-- Animazione/scroll: `greensock/GSAP`, `darkroomengineering/lenis`, `locomotivemtl/locomotive-scroll`, `michalsnik/aos`, `dixonandmoe/rellax`
-- `Jakubantalik/transitions.dev` — transizioni essenziali (con "product motion skill")
-- `delphi-ai/animate-skill` — skill animazioni Next.js/React (corso di Emil Kowalski)
-- CSS pronte: `ibelick/animation`, `tilomitra/infinite`, `IanLunn/Hover`
-- `barvian/number-flow` — numeri animati · `0xGF/boneyard` — skeleton loading · `nolimits4web/swiper` — slider/carousel
-- Particelle/physics: `VincentGarreau/particles.js`, `liabru/matter-js`
-- SVG/3D/canvas: `renatoworks/3dsvg`, `meodai/heerich`, `edoardolunardi/infinite-canvas`
+### Motion, animazioni, transizioni, scroll (toolbox esecuzione)
+- Animazione/scroll: [greensock/GSAP](https://github.com/greensock/GSAP), [darkroomengineering/lenis](https://github.com/darkroomengineering/lenis), [locomotivemtl/locomotive-scroll](https://github.com/locomotivemtl/locomotive-scroll), [michalsnik/aos](https://github.com/michalsnik/aos), [dixonandmoe/rellax](https://github.com/dixonandmoe/rellax)
+- [Jakubantalik/transitions.dev](https://github.com/Jakubantalik/transitions.dev) — transizioni essenziali (con "product motion skill")
+- [delphi-ai/animate-skill](https://github.com/delphi-ai/animate-skill) — skill animazioni Next.js/React (corso di Emil Kowalski)
+- CSS pronte: [ibelick/animation](https://github.com/ibelick/animation), [tilomitra/infinite](https://github.com/tilomitra/infinite), [IanLunn/Hover](https://github.com/IanLunn/Hover)
+- [barvian/number-flow](https://github.com/barvian/number-flow) — numeri animati · [0xGF/boneyard](https://github.com/0xGF/boneyard) — skeleton loading · [nolimits4web/swiper](https://github.com/nolimits4web/swiper) — slider/carousel
+- Particelle/physics: [VincentGarreau/particles.js](https://github.com/VincentGarreau/particles.js), [liabru/matter-js](https://github.com/liabru/matter-js)
+- SVG/3D/canvas: [renatoworks/3dsvg](https://github.com/renatoworks/3dsvg), [meodai/heerich](https://github.com/meodai/heerich), [edoardolunardi/infinite-canvas](https://github.com/edoardolunardi/infinite-canvas)
 - `codrops/*` — demo di effetti e transizioni (ImageToGridTransition, StickySections, ScrollBlurTypography, SidebarTransitions, PageTransitions, HoverEffectIdeas, ElasticGridScroll, ImageExpansionTypography, depth-gallery e fork/tutorial relativi)
-- Tutorial Codrops (singoli): `gaspoorf/curve-gallery` — galleria 3D scroll-driven con camera lungo un path Blender (Three.js + GSAP) e focus dinamico sulle immagini; `Ibaliqbal/codrops-motion-path-transition` — thumbnail che fluiscono tra stack e layout con il plugin GSAP MotionPath; `bnpne/page-transitions-with-webgpu-vanilla-js` — page transition interattive con WebGPU e Vanilla JS (Vite)
+- Tutorial Codrops (singoli): [gaspoorf/curve-gallery](https://github.com/gaspoorf/curve-gallery) — galleria 3D scroll-driven con camera lungo un path Blender (Three.js + GSAP) e focus dinamico sulle immagini; [Ibaliqbal/codrops-motion-path-transition](https://github.com/Ibaliqbal/codrops-motion-path-transition) — thumbnail che fluiscono tra stack e layout con il plugin GSAP MotionPath; [bnpne/page-transitions-with-webgpu-vanilla-js](https://github.com/bnpne/page-transitions-with-webgpu-vanilla-js) — page transition interattive con WebGPU e Vanilla JS (Vite)
 
-### J · Agenti, CLI, plugin e infrastruttura
-- `anthropics/claude-code` — Claude Code (riferimento) · `agno-agi/agno` — framework piattaforme di agenti
-- CLI: `google-gemini/gemini-cli`, `jackwener/OpenCLI`
-- Plugin Claude Code: `makenotion/claude-code-notion-plugin`, `vercel/vercel-deploy-claude-code-plugin`
-- NotebookLM: `jacob-bd/notebooklm-mcp-cli`, `PleasePrompto/notebooklm-skill`
-- `ibelick/zola` — chat multi-modello · `withastro/astro` — framework web · `supabase/supabase` — backend
+### Agenti, CLI, plugin e infrastruttura
+- [anthropics/claude-code](https://github.com/anthropics/claude-code) — Claude Code (riferimento) · [agno-agi/agno](https://github.com/agno-agi/agno) — framework piattaforme di agenti
+- CLI: [google-gemini/gemini-cli](https://github.com/google-gemini/gemini-cli), [jackwener/OpenCLI](https://github.com/jackwener/OpenCLI)
+- Plugin Claude Code: [makenotion/claude-code-notion-plugin](https://github.com/makenotion/claude-code-notion-plugin), [vercel/vercel-deploy-claude-code-plugin](https://github.com/vercel/vercel-deploy-claude-code-plugin)
+- NotebookLM: [jacob-bd/notebooklm-mcp-cli](https://github.com/jacob-bd/notebooklm-mcp-cli), [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill)
+- [ibelick/zola](https://github.com/ibelick/zola) — chat multi-modello · [withastro/astro](https://github.com/withastro/astro) — framework web · [supabase/supabase](https://github.com/supabase/supabase) — backend
 
-### ★ Starter pack di skill per product designer (cheatsheet)
+### Starter pack di skill per product designer {badge:Cheatsheet}
 
 Shortlist consigliata con i comandi d'installazione (da verificare al momento dell'installazione, gli handle possono cambiare):
 
@@ -502,7 +502,7 @@ Shortlist consigliata con i comandi d'installazione (da verificare al momento de
 | **ui-animation** | best practice di motion UI (easing, timing, transizioni, framer-motion, reduced-motion) | `npx skills add mblode/agent-skillse@ui-animation` |
 | **web-design-guidelines** | 100+ principi di web design curati da Vercel (layout, type, responsività, a11y) | `npx skills add vercel-labs/agent-skillse@web-design-guidelines` |
 
-### ★ Skill UI/UX con comando (roundup)
+### Skill UI/UX con comando {badge:Roundup}
 
 Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e reference di prodotti reali) senza sostituire il gusto. Comandi riportati come nell'articolo di origine; verificane nome ed esatta invocazione al momento dell'installazione, perché nella fonte alcuni nomi e comandi non combaciano del tutto.
 
@@ -516,7 +516,7 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 
 ---
 
-## 4. Appendice — fonti
+## Fonti
 
 **Context engineering e prompting**
 - library.aidesign.guide (The AI Design Library)
@@ -549,7 +549,3 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 **Deploy**
 - MindStudio — How to Deploy a Claude Code Project to GitHub and Vercel in Under 10 Minutes
 - Vite — Deploying a Static Site (guida ufficiale: GitHub Pages, base path, workflow Actions)
-
----
-
-*Bozza di lavoro. In arrivo: Sezione 2-bis (plugin per Claude Code) e Sezione 2-ter (architettura ad agenti e sub-agenti / workflow Opus), poi conversione in guida HTML per GitHub Pages.*
