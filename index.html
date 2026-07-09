@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Progettare con l'AI — Knowledge base del team di design Lotrek</title>
+  <meta name="description" content="Knowledge base del team di design Lotrek: context engineering, prompting, workflow Claude/Figma/skill e repository di skill di riferimento." />
+  <meta name="author" content="Team di design Lotrek" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Progettare con l'AI — Knowledge base del team di design Lotrek" />
+  <meta property="og:description" content="Knowledge base del team di design Lotrek: context engineering, prompting, workflow Claude/Figma/skill e repository di skill di riferimento." />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23181818'/><circle cx='50' cy='50' r='24' fill='%23d9fb12'/></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #f5f5f5;
+      --surface: #ffffff;
+      --surface-2: #fbfbfb;
+      --ink: #181818;
+      --ink-soft: #44464c;
+      --muted: #707378;
+      --border: #e5e5e6;
+      --border-strong: #d4d4d6;
+      --accent: #d9fb12;
+      --accent-ink: #181818;
+      --accent-wash: #edf5b1;
+      --accent-line: #c3e400;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
+
+      --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+      --font-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+      --sidebar-w: 310px;
+      --content-max: 74ch;
+      --radius: 16px;
+      --radius-sm: 8px;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0c1a1f;
+      --surface: #10242b;
+      --surface-2: #0f2027;
+      --ink: #f3f4f2;
+      --ink-soft: #d4d4d6;
+      --muted: #8b9599;
+      --border: #1e343c;
+      --border-strong: #2a454e;
+      --accent: #d9fb12;
+      --accent-ink: #0c1a1f;
+      --accent-wash: rgba(217,251,18,.12);
+      --accent-line: #d9fb12;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root[data-theme="auto"] {
+        --bg: #0c1a1f;
+        --surface: #10242b;
+        --surface-2: #0f2027;
+        --ink: #f3f4f2;
+        --ink-soft: #d4d4d6;
+        --muted: #8b9599;
+        --border: #1e343c;
+        --border-strong: #2a454e;
+        --accent: #d9fb12;
+        --accent-ink: #0c1a1f;
+        --accent-wash: rgba(217,251,18,.12);
+        --accent-line: #d9fb12;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-serif);
+      font-size: 18px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+
+    /* ---------- Scroll progress ---------- */
+    #progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+      transform: scaleX(0); transform-origin: 0 50%;
+      background: var(--accent); z-index: 100; transition: transform .1s linear;
+    }
+    @media (prefers-reduced-motion: reduce) { #progress { transition: none; } }
+
+    /* ---------- Top bar ---------- */
+    header.topbar {
+      position: sticky; top: 0; z-index: 50;
+      height: 60px; display: flex; align-items: center; gap: 16px;
+      padding: 0 22px;
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-display); font-weight: 600; font-size: 15px;
+      letter-spacing: -.01em; text-decoration: none;
+    }
+    .brand .dot { width: 20px; height: 20px; border-radius: 6px; background: var(--ink); position: relative; flex: none; }
+    .brand .dot::after { content:""; position:absolute; inset:0; margin:auto; width:9px; height:9px; border-radius:50%; background: var(--accent); }
+    .brand .sub { color: var(--muted); font-weight: 500; }
+    .topbar .spacer { flex: 1; }
+
+    .iconbtn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 10px;
+      border: 1px solid var(--border-strong); background: var(--surface);
+      color: var(--ink); cursor: pointer; font-size: 16px; line-height: 1;
+      transition: transform .12s ease, background .2s ease, border-color .2s ease;
+    }
+    .iconbtn:hover { border-color: var(--ink-soft); }
+    .iconbtn:active { transform: translateY(1px); }
+    #menuBtn { display: none; }
+
+    /* ---------- Layout ---------- */
+    .shell { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+
+    /* ---------- Sidebar / TOC ---------- */
+    aside.toc {
+      position: sticky; top: 60px; align-self: start;
+      height: calc(100vh - 60px); overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 26px 18px 60px 26px;
+      font-family: var(--font-display);
+    }
+    aside.toc .toc-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .16em;
+      color: var(--muted); font-weight: 600; margin: 0 0 14px 6px;
+    }
+    aside.toc nav { display: flex; flex-direction: column; }
+    aside.toc a {
+      text-decoration: none; color: var(--ink-soft);
+      border-radius: 8px; padding: 6px 10px; display: block;
+      font-size: 14px; line-height: 1.35; transition: background .15s ease, color .15s ease;
+    }
+    aside.toc a.lvl-2 { font-weight: 600; color: var(--ink); margin-top: 14px; font-size: 14.5px; }
+    aside.toc a.lvl-3 { padding-left: 20px; border-left: 2px solid var(--border); margin-left: 10px; }
+    aside.toc a:hover { background: var(--accent-wash); color: var(--ink); }
+    aside.toc a.active {
+      color: var(--ink); background: var(--accent-wash);
+      border-left-color: var(--accent-line);
+    }
+    aside.toc a.lvl-2.active { background: var(--accent-wash); }
+
+    /* ---------- Main ---------- */
+    main { padding: 0 6vw 120px; min-width: 0; }
+    .prose { max-width: var(--content-max); margin: 0 auto; }
+
+    /* Hero */
+    .hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .hero .eyebrow {
+      font-family: var(--font-display); font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .18em; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
+    }
+    .hero .eyebrow::before { content:""; width: 26px; height: 3px; background: var(--accent); border-radius: 2px; }
+    .hero h1 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(2.1rem, 4.6vw, 3.3rem); line-height: 1.04;
+      letter-spacing: -.025em; margin: 0 0 22px;
+    }
+    .hero .lede { font-size: 1.16rem; color: var(--ink-soft); }
+    .hero .lede :first-child { margin-top: 0; }
+    .hero .lede :last-child { margin-bottom: 0; }
+    .hero .lede strong { color: var(--ink); }
+
+    /* Typographic rhythm */
+    .prose h2 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.12;
+      letter-spacing: -.02em; margin: 3.4em 0 .7em; padding-top: 1.4em;
+      border-top: 1px solid var(--border);
+    }
+    .prose h2:first-of-type { margin-top: 1em; }
+    .prose h3 {
+      font-family: var(--font-display); font-weight: 600;
+      font-size: 1.28rem; letter-spacing: -.015em; line-height: 1.25;
+      margin: 2.4em 0 .5em; scroll-margin-top: 84px;
+    }
+    .prose h2 { scroll-margin-top: 76px; }
+    .prose h4 { font-family: var(--font-display); font-size: 1.05rem; margin: 1.8em 0 .4em; }
+
+    .prose p { margin: 0 0 1.15em; }
+    .prose strong { font-weight: 600; }
+    .prose a[href] {
+      color: var(--ink); text-decoration: underline;
+      text-decoration-color: var(--accent-line); text-decoration-thickness: 2px;
+      text-underline-offset: 2px;
+    }
+    .prose a[href]:hover { background: var(--accent-wash); }
+
+    .prose ul, .prose ol { margin: 0 0 1.15em; padding-left: 1.4em; }
+    .prose li { margin: .35em 0; }
+    .prose li::marker { color: var(--muted); }
+
+    /* Blockquote */
+    .prose blockquote {
+      margin: 1.6em 0; padding: 2px 0 2px 20px;
+      border-left: 1px solid var(--border-strong);
+      color: var(--muted); font-style: italic;
+    }
+    .prose blockquote p:last-child { margin-bottom: 0; }
+
+    /* Inline code + code blocks */
+    .prose :not(pre) > code {
+      font-family: var(--font-mono); font-size: .86em;
+      background: var(--accent-wash); color: var(--ink);
+      padding: .12em .38em; border-radius: 5px;
+      border: 1px solid color-mix(in srgb, var(--accent-line) 30%, transparent);
+    }
+    .prose pre {
+      font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55;
+      background: var(--surface); color: var(--ink);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; overflow-x: auto; margin: 1.5em 0;
+      box-shadow: var(--shadow);
+    }
+    .prose pre code { background: none; border: 0; padding: 0; font-size: inherit; color: inherit; }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; margin: 1.6em 0; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); }
+    .prose table { border-collapse: collapse; width: 100%; font-family: var(--font-display); font-size: 14.5px; background: var(--surface); }
+    .prose th, .prose td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .prose thead th { background: var(--surface-2); font-weight: 600; letter-spacing: -.01em; position: sticky; top: 0; }
+    .prose tbody tr:last-child td { border-bottom: 0; }
+    .prose td code, .prose th code { white-space: nowrap; }
+
+    .prose hr { border: 0; border-top: 1px solid var(--border); margin: 3em 0; }
+    .prose img { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
+
+    /* Section anchor on hover */
+    .prose h2, .prose h3 { position: relative; }
+    .anchor { position: absolute; left: -1.1em; top: 0; opacity: 0; text-decoration: none; color: var(--muted); font-family: var(--font-mono); font-size: .8em; }
+    .prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
+
+    /* Footer */
+    footer.pagefoot {
+      max-width: var(--content-max); margin: 60px auto 0; padding-top: 24px;
+      border-top: 1px solid var(--border); color: var(--muted);
+      font-family: var(--font-display); font-size: 13px;
+      display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between;
+    }
+
+    /* Mobile drawer scrim */
+    #scrim { display: none; position: fixed; inset: 60px 0 0; background: rgba(0,0,0,.4); z-index: 40; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 1024px) {
+      .shell { grid-template-columns: 1fr; }
+      #menuBtn { display: inline-flex; }
+      aside.toc {
+        position: fixed; top: 60px; left: 0; z-index: 45;
+        width: min(88vw, 340px); height: calc(100vh - 60px);
+        background: var(--bg); transform: translateX(-105%);
+        transition: transform .25s ease; border-right: 1px solid var(--border);
+      }
+      aside.toc.open { transform: translateX(0); box-shadow: var(--shadow); }
+      #scrim.show { display: block; }
+      main { padding: 0 24px 100px; }
+    }
+    @media (prefers-reduced-motion: reduce) { aside.toc { transition: none; } }
+    @media (max-width: 560px) {
+      body { font-size: 16.5px; }
+      main { padding: 0 18px 80px; }
+      .hero { padding: 40px 0 32px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress"></div>
+
+  <header class="topbar">
+    <button class="iconbtn" id="menuBtn" aria-label="Apri l'indice" aria-expanded="false">☰</button>
+    <a class="brand" href="#top">
+      <span class="dot" aria-hidden="true"></span>
+      <span>KB Design <span class="sub">· AI</span></span>
+    </a>
+    <span class="spacer"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Cambia tema (chiaro/scuro)" title="Cambia tema">◐</button>
+  </header>
+
+  <div class="shell">
+    <aside class="toc" id="toc" aria-label="Indice della guida">
+      <p class="toc-label">Indice</p>
+      <nav><a class="lvl-2" href="#1-context-engineering-e-prompting">1. Context engineering e prompting</a>
+<a class="lvl-3" href="#1-1-il-cambio-di-paradigma-dal-comando-al-contesto">1.1 Il cambio di paradigma: dal comando al contesto</a>
+<a class="lvl-3" href="#1-2-context-rot-perche-le-sessioni-lunghe-degradano">1.2 Context rot: perché le sessioni lunghe degradano</a>
+<a class="lvl-3" href="#1-3-i-quattro-layer-del-contesto">1.3 I quattro layer del contesto</a>
+<a class="lvl-3" href="#1-4-architettura-dei-token-a-tre-tier">1.4 Architettura dei token a tre tier</a>
+<a class="lvl-3" href="#1-5-tecniche-di-prompting">1.5 Tecniche di prompting</a>
+<a class="lvl-3" href="#1-6-tre-framework-di-prompt-pronti">1.6 Tre framework di prompt pronti</a>
+<a class="lvl-3" href="#1-7-lo-quot-spec-quot-come-ancora">1.7 Lo &quot;spec&quot; come ancora</a>
+<a class="lvl-3" href="#1-8-checklist-pre-task-e-segnali">1.8 Checklist pre-task e segnali</a>
+<a class="lvl-3" href="#1-9-human-in-the-loop">1.9 Human-in-the-loop</a>
+<a class="lvl-2" href="#2-workflow-claude-figma-skill">2. Workflow Claude / Figma / skill</a>
+<a class="lvl-3" href="#2-1-il-quadro-d-39-insieme">2.1 Il quadro d&#39;insieme</a>
+<a class="lvl-3" href="#2-2-claude-desktop-e-claude-code-come-dividere-il-lavoro-in-locale">2.2 Claude Desktop e Claude Code: come dividere il lavoro (in locale)</a>
+<a class="lvl-3" href="#2-3-i-file-di-contesto-claude-md-agents-md-design-md-skill-md-memory-md">2.3 I file di contesto: CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md</a>
+<a class="lvl-3" href="#2-4-struttura-di-file-e-cartelle-di-un-progetto-di-design">2.4 Struttura di file e cartelle di un progetto di design</a>
+<a class="lvl-3" href="#2-5-setup-e-loop-con-figma-mcp">2.5 Setup e loop con Figma MCP</a>
+<a class="lvl-3" href="#2-6-mcp-nativo-di-figma-figma-desktop-bridge-e-designagent-a-confronto">2.6 MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto</a>
+<a class="lvl-3" href="#2-7-le-skill-figma-ufficiali">2.7 Le skill Figma ufficiali</a>
+<a class="lvl-3" href="#2-8-enforcement-del-design-system">2.8 Enforcement del design system</a>
+<a class="lvl-3" href="#2-9-rendere-il-design-system-leggibile-dall-39-ai">2.9 Rendere il design system leggibile dall&#39;AI</a>
+<a class="lvl-3" href="#2-10-comandi-slash-command-e-subagent-per-il-design">2.10 Comandi, slash command e subagent per il design</a>
+<a class="lvl-3" href="#2-11-creare-una-skill-dal-proprio-design-system">2.11 Creare una skill dal proprio design system</a>
+<a class="lvl-3" href="#2-12-deploy-del-prototipo-locale-vercel-github-pages">2.12 Deploy del prototipo (locale, Vercel, GitHub Pages)</a>
+<a class="lvl-2" href="#3-repository-di-skill-di-riferimento">3. Repository di skill di riferimento</a>
+<a class="lvl-3" href="#a-collezioni-di-skill-multi-disciplina-cuore-della-kb">A · Collezioni di skill multi-disciplina (cuore della KB)</a>
+<a class="lvl-3" href="#b-design-system-token-scale-documentazione">B · Design system, token, scale, documentazione</a>
+<a class="lvl-3" href="#c-ponte-claude-figma-mcp-enforcement-ds">C · Ponte Claude ↔ Figma (MCP, enforcement DS)</a>
+<a class="lvl-3" href="#d-qualita-ui-quot-taste-quot-micro-dettagli-wireframe">D · Qualità UI, &quot;taste&quot;, micro-dettagli, wireframe</a>
+<a class="lvl-3" href="#e-accessibilita-audit">E · Accessibilità & audit</a>
+<a class="lvl-3" href="#f-ux-writing-content">F · UX writing / content</a>
+<a class="lvl-3" href="#g-fondamenta-asset-icone-colori">G · Fondamenta & asset (icone, colori)</a>
+<a class="lvl-3" href="#h-librerie-e-kit-di-componenti-ui">H · Librerie e kit di componenti UI</a>
+<a class="lvl-3" href="#i-motion-animazioni-transizioni-scroll-toolbox-esecuzione">I · Motion, animazioni, transizioni, scroll (toolbox esecuzione)</a>
+<a class="lvl-3" href="#j-agenti-cli-plugin-e-infrastruttura">J · Agenti, CLI, plugin e infrastruttura</a>
+<a class="lvl-3" href="#starter-pack-di-skill-per-product-designer-cheatsheet">★ Starter pack di skill per product designer (cheatsheet)</a>
+<a class="lvl-3" href="#skill-ui-ux-con-comando-roundup">★ Skill UI/UX con comando (roundup)</a>
+<a class="lvl-2" href="#4-appendice-fonti">4. Appendice — fonti</a></nav>
+    </aside>
+
+    <main>
+      <div id="scrim"></div>
+      <div class="prose" id="top">
+        <section class="hero">
+          <span class="eyebrow">Knowledge base · Team di design Lotrek</span>
+          <h1>Progettare con l'AI</h1>
+          <div class="lede"><p>Documento di sintesi (bozza di lavoro). Da questo markdown deriveremo la guida HTML pubblicabile su GitHub Pages.
+Obiettivo: dare al team un riferimento pratico su <strong>come impostare un progetto con l&#39;AI</strong> (context engineering + prompting), <strong>come far dialogare Claude, Figma e le skill</strong>, e <strong>quali skill già esistenti</strong> usare come repository di partenza.
+Ambito: non principi astratti di &quot;UX per l&#39;AI&quot;, ma metodo operativo e strumenti.</p>
+</div>
+        </section>
+
+        <h2 id="1-context-engineering-e-prompting"><a class="anchor" href="#1-context-engineering-e-prompting" aria-hidden="true">#</a>1. Context engineering e prompting</h2>
+<h3 id="1-1-il-cambio-di-paradigma-dal-comando-al-contesto"><a class="anchor" href="#1-1-il-cambio-di-paradigma-dal-comando-al-contesto" aria-hidden="true">#</a>1.1 Il cambio di paradigma: dal comando al contesto</h3>
+<p>Il problema di gran parte del lavoro con l&#39;AI non è il &quot;prompt scritto male&quot;: è non aver dato al modello le informazioni per ragionare con chiarezza. Aggiungere dettaglio non equivale ad aggiungere qualità — anzi, oltre una certa soglia l&#39;accuratezza cala. Il <em>context engineering</em> è &quot;design thinking applicato all&#39;AI&quot;: si struttura il contesto come si progetta un sistema, e l&#39;AI diventa un collaboratore affidabile invece di un generatore di varianti casuali.</p>
+<p>La definizione utile da tenere a mente è quella di Anthropic: curare <strong>il più piccolo insieme possibile di token ad alto segnale</strong> che massimizza la probabilità del risultato voluto. È l&#39;opposto dell&#39;istinto comune (&quot;carico tutto: brand PDF + ricerca + design system&quot;). Caricare tutto fa peggiorare l&#39;output, non migliorarlo: il modello si distrae e &quot;dimentica&quot; i vincoli. Vale lo stesso principio della progressive disclosure nell&#39;interfaccia — si rivela l&#39;informazione quando è rilevante.</p>
+<p><strong>Comando vs contesto, in pratica:</strong></p>
+<ul>
+<li><em>Approccio comando</em>: &quot;Genera 5 layout di checkout.&quot; → opzioni generiche dal training generale; poche utili, molto rework.</li>
+<li><em>Approccio contesto</em>: si forniscono token + esempio del pattern, vincoli di brand espliciti, dati reali sugli utenti e sui punti di abbandono, e infine il task con criteri di successo. → varianti informate, coerenti col sistema, già inquadrate.</li>
+</ul>
+<h3 id="1-2-context-rot-perche-le-sessioni-lunghe-degradano"><a class="anchor" href="#1-2-context-rot-perche-le-sessioni-lunghe-degradano" aria-hidden="true">#</a>1.2 Context rot: perché le sessioni lunghe degradano</h3>
+<p>Anche partendo da un contesto curato, la qualità si degrada col tempo: falsi avvii, tentativi di debug, divagazioni riempiono la finestra di &quot;rumore&quot; e il modello inizia a riferirsi ai propri output scadenti. Strategie pratiche:</p>
+<ul>
+<li><strong>Riassumere e ripartire</strong>: chiudere l&#39;istanza, fare un summary, aprirne una nuova col summary come seme.</li>
+<li><strong>Confini espliciti</strong>: marcare le sezioni (&quot;tentativi precedenti — solo riferimento&quot; vs &quot;contesto di lavoro attuale&quot;).</li>
+<li><strong>Checkpoint periodici</strong>: far riassumere stato e decisioni a intervalli regolari.</li>
+<li><strong>Non &quot;buttare tutto dentro&quot;</strong>: la gestione intenzionale dell&#39;informazione (cosa includere, cosa escludere, quando rinfrescare) è parte del lavoro. Anche gli strumenti collegati pesano: gli MCP attivi occupano la finestra di contesto (vedi 2.5).</li>
+</ul>
+<h3 id="1-3-i-quattro-layer-del-contesto"><a class="anchor" href="#1-3-i-quattro-layer-del-contesto" aria-hidden="true">#</a>1.3 I quattro layer del contesto</h3>
+<p>Un framework per capire cos&#39;è &quot;buon contesto&quot;:</p>
+<ol>
+<li><strong>Design system (il contenitore)</strong> — il vocabolario e le regole fondamentali. All&#39;AI non serve il file Figma o un PDF: servono token colore come variabili CSS (<code>--color-primary-500</code>), una scala di spaziatura con rapporti chiari, componenti d&#39;esempio che mostrano i token in uso, e soprattutto <strong>naming semantico che rivela l&#39;intento</strong>. <code>--color-text-primary</code> dice qualcosa che <code>#1a1a1a</code> non dice: l&#39;AI può ragionare sull&#39;intento, non su un hex arbitrario.</li>
+<li><strong>Brand guidelines (i vincoli)</strong> — trasformare le linee guida da PDF aspirazionale a vincoli operativi. Bloccare gli elementi critici (logo, colori primari, type core), dichiarare esplicitamente le aree di libertà, definire confini azionabili (&quot;Headline in Inter Bold, 24–48px&quot; non &quot;headline moderne&quot;).</li>
+<li><strong>User research (l&#39;ancora)</strong> — il layer più sottovalutato. Tiene le proposte ancorate alla realtà: demografia, requisiti di accessibilità (livelli WCAG, tecnologie assistive), pattern di comportamento reali, edge case e localizzazione. È la differenza tra &quot;generatore di varianti&quot; e &quot;collaboratore informato&quot;.</li>
+<li><strong>Workflow (la messa in scena)</strong> — come si strutturano le richieste (vedi 1.5).</li>
+</ol>
+<h3 id="1-4-architettura-dei-token-a-tre-tier"><a class="anchor" href="#1-4-architettura-dei-token-a-tre-tier" aria-hidden="true">#</a>1.4 Architettura dei token a tre tier</h3>
+<p>Il design system più &quot;leggibile&quot; dall&#39;AI segue tre livelli:</p>
+<ul>
+<li><strong>Tier 1 — Primitive</strong>: valori grezzi (colori, unità di spazio, dimensioni type). Raramente referenziati direttamente.</li>
+<li><strong>Tier 2 — Semantic</strong>: token che mappano le primitive a un significato (<code>--color-feedback-error</code>, <code>--spacing-content-gap</code>, <code>--text-heading-large</code>). Qui vive l&#39;intento.</li>
+<li><strong>Tier 3 — Component</strong>: pattern pre-composti che combinano token semantici (es. una &quot;card&quot; con spaziature, colori, type e ombre corretti).</li>
+</ul>
+<h3 id="1-5-tecniche-di-prompting"><a class="anchor" href="#1-5-tecniche-di-prompting" aria-hidden="true">#</a>1.5 Tecniche di prompting</h3>
+<ul>
+<li><strong>Chain-of-thought</strong>: invece di chiedere l&#39;output finale, si struttura la richiesta in passi (analizza lo stato → individua i vincoli → genera 3 approcci → valuta ciascuno contro i vincoli e raccomanda). Migliora i risultati e rende il ragionamento trasparente: si intercettano gli errori a metà processo.</li>
+<li><strong>Tree-of-thought</strong>: per decisioni strategiche con trade-off, esplora più percorsi di ragionamento; si vede l&#39;albero decisionale, non solo la conclusione.</li>
+<li><strong>Scomporre i task complessi</strong> in sotto-task focalizzati su un problema alla volta.</li>
+<li><strong>Ancorare all&#39;intento dell&#39;utente</strong>, non solo al visivo: obiettivi e comportamenti, non solo estetica.</li>
+<li><strong>Usare i vincoli come guida</strong>: piattaforma, accessibilità, brand sono strumenti per output realistici e coerenti.</li>
+<li><strong>Tradurre lo stile in implementazione</strong>: &quot;rendilo moderno&quot; non significa nulla operativamente; va convertito in regole (&quot;ritmo 8px&quot;, &quot;gerarchia primario/secondario chiara&quot;, &quot;stati hover/focus/disabled visibili&quot;).</li>
+</ul>
+<h3 id="1-6-tre-framework-di-prompt-pronti"><a class="anchor" href="#1-6-tre-framework-di-prompt-pronti" aria-hidden="true">#</a>1.6 Tre framework di prompt pronti</h3>
+<p>Il contesto va <strong>prima</strong> del task (l&#39;AI processa in sequenza: ciò che vede prima condiziona il resto).</p>
+<ul>
+<li><strong>Foundation-first</strong> (generazione di design): <code>SYSTEM CONTEXT</code> → <code>BRAND CONSTRAINTS</code> → <code>USER REQUIREMENTS</code> → <code>TASK</code> → <code>SUCCESS CRITERIA</code>.</li>
+<li><strong>Reasoning-forward</strong> (decisioni strategiche): <code>CONTEXT</code> → <code>CONSTRAINTS</code> → <code>QUESTION</code> → <code>PROCESS</code> (per ogni opzione: approccio, vantaggi dati i vincoli, rischi, raccomandazione motivata).</li>
+<li><strong>Iterative refinement</strong> (miglioramento): <code>CURRENT STATE</code> → <code>FEEDBACK</code> → <code>NEW CONSTRAINTS</code> → <code>TASK</code> (raffina e spiega cosa è cambiato e perché).</li>
+</ul>
+<h3 id="1-7-lo-quot-spec-quot-come-ancora"><a class="anchor" href="#1-7-lo-quot-spec-quot-come-ancora" aria-hidden="true">#</a>1.7 Lo &quot;spec&quot; come ancora</h3>
+<p>Scrivere la soluzione è a sua volta contesto: una volta messo per iscritto lo spec del flusso, diventa l&#39;ancora da cui l&#39;AI genera tutto il resto (prototipo hi-fi, journey map, piano d&#39;implementazione) e che riduce le allucinazioni nei flussi complessi. Pratica utile: tracciare le decisioni per round in una cartella <code>design/</code>, così non si ripesca dai thread di commenti Figma il &quot;perché&quot; di una scelta di tre settimane prima.</p>
+<h3 id="1-8-checklist-pre-task-e-segnali"><a class="anchor" href="#1-8-checklist-pre-task-e-segnali" aria-hidden="true">#</a>1.8 Checklist pre-task e segnali</h3>
+<p><strong>Prima di lanciare un task con l&#39;AI</strong>, verificare di avere: token con gerarchia e naming semantico + componenti d&#39;esempio + edge case documentati; guidelines come vincoli espliciti con elementi bloccati/flessibili; demografia, requisiti a11y e friction point reali; richiesta in fasi, criteri di successo e priorità tra i vincoli definiti.</p>
+<p><strong>Buoni segnali</strong>: l&#39;output rispetta il design system senza promemoria; le varianti sono on-brand senza correzioni pesanti; l&#39;accessibilità è inclusa, non aggiunta dopo; si passa più tempo sulla strategia che sul rework.</p>
+<p><strong>Segnali d&#39;allarme</strong> (di solito = problema di contesto, non di capacità del modello): output da rilavorare molto; varianti generiche o &quot;quasi giuste&quot;; vincoli aggiunti in continuazione a metà processo; qualità che varia molto tra una sessione e l&#39;altra.</p>
+<h3 id="1-9-human-in-the-loop"><a class="anchor" href="#1-9-human-in-the-loop" aria-hidden="true">#</a>1.9 Human-in-the-loop</h3>
+<p>Il lavoro critico va fatto <strong>prima</strong> di coinvolgere l&#39;AI: ricerca, framing, ipotesi. Ogni elemento generato va validato per funzionalità e allineamento al brand. La competenza più importante non è la padronanza di Figma o Claude, ma saper guardare una soluzione generata e chiedersi se è quella giusta, quali assunzioni fa, cosa non stiamo vedendo. E verificare sempre le fonti che l&#39;AI cita: sa di doversi attenere ai dati di progetto, ma può comunque allucinare.</p>
+<hr>
+<h2 id="2-workflow-claude-figma-skill"><a class="anchor" href="#2-workflow-claude-figma-skill" aria-hidden="true">#</a>2. Workflow Claude / Figma / skill</h2>
+<h3 id="2-1-il-quadro-d-39-insieme"><a class="anchor" href="#2-1-il-quadro-d-39-insieme" aria-hidden="true">#</a>2.1 Il quadro d&#39;insieme</h3>
+<p>Tre ruoli che si combinano:</p>
+<ul>
+<li><strong>Claude</strong> come collaboratore in conversazione (per affinare il brief, ragionare, generare e iterare).</li>
+<li><strong>Figma</strong> come libreria visiva — e, con l&#39;MCP, come superficie leggibile/scrivibile dall&#39;AI.</li>
+<li><strong>Le skill</strong> come &quot;briefing permanente&quot;: si scrivono una volta, l&#39;AI le carica automaticamente quando il task corrisponde. Zero ri-spiegazioni, zero context drift, zero token sprecati nel setup.</li>
+</ul>
+<h3 id="2-2-claude-desktop-e-claude-code-come-dividere-il-lavoro-in-locale"><a class="anchor" href="#2-2-claude-desktop-e-claude-code-come-dividere-il-lavoro-in-locale" aria-hidden="true">#</a>2.2 Claude Desktop e Claude Code: come dividere il lavoro (in locale)</h3>
+<p>Due ambienti con punti di forza diversi: conviene assegnare a ciascuno la parte per cui è più adatto, invece di forzarne uno solo.</p>
+<ul>
+<li><strong>Claude in chat (web o app desktop)</strong> — ambiente conversazionale, con un set di skill fisso e senza accesso al filesystem locale. È il posto giusto per la parte <em>a monte</em>: ricerca e sintesi delle fonti, ragionamento strategico, stesura di brief, spec e documenti in markdown, esplorazione di opzioni. Ottimo per produrre l&#39;artefatto testuale che poi guiderà la costruzione (un <code>DESIGN.md</code>, un PRD, la sintesi di una knowledge base). Non fa girare skill di coding (es. <code>frontend-slides</code>), non apre un progetto locale, non si collega agli MCP locali.</li>
+<li><strong>Claude Code (Terminal o dentro VS Code)</strong> — vive in una <strong>cartella di progetto locale</strong> e ha accesso a file, git, MCP e alle skill installate sulla tua macchina. È il posto giusto per la parte <em>a valle</em>: costruire l&#39;artefatto (deck HTML, prototipo, componenti), collegare Figma via MCP nativo o via bridge, eseguire workflow e skill locali, fare commit e deploy.</li>
+</ul>
+<p><strong>Pattern operativo</strong> (lo schema che stiamo usando su un progetto reale):</p>
+<ol>
+<li><em>In chat</em>: raccogli e verifica le fonti, ragiona sull&#39;impostazione, produci la sintesi o lo spec in markdown (es. <code>KB-…-sintesi.md</code>, oppure un <code>DESIGN.md</code> con i token).</li>
+<li>Sposta il markdown in una cartella locale dedicata (es. <code>~/Projects/&lt;progetto&gt;/</code>), anche solo una sottocartella del repo.</li>
+<li>Apri quella cartella in VS Code (editor + terminale integrato + preview HTML) e lancia <code>claude</code>; da Terminal l&#39;equivalente è <code>cd ~/Projects/&lt;progetto&gt; &amp;&amp; claude</code>.</li>
+<li><em>In Claude Code</em>: invoca le skill locali (es. <code>/frontend-slides</code> per un deck, le skill Figma per il canvas), collega solo gli MCP necessari e costruisci.</li>
+<li>Sempre in Claude Code: commit atomici e deploy (vedi 2.12).</li>
+</ol>
+<p>Regola pratica: <strong>la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) sta in Claude Code.</strong> Lo spec o il <code>DESIGN.md</code> scritto in chat è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.</p>
+<h3 id="2-3-i-file-di-contesto-claude-md-agents-md-design-md-skill-md-memory-md"><a class="anchor" href="#2-3-i-file-di-contesto-claude-md-agents-md-design-md-skill-md-memory-md" aria-hidden="true">#</a>2.3 I file di contesto: CLAUDE.md, AGENTS.md, DESIGN.md, SKILL.md, MEMORY.md</h3>
+<p>Formati con funzioni diverse, spesso complementari:</p>
+<ul>
+<li><strong>CLAUDE.md</strong> — memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo <strong>snello</strong>. Sezioni utili: panoramica del prodotto (cos&#39;è, per chi, cosa ottimizza, vincoli principali — pochi paragrafi), regole UI/design tradotte in implementazione, guida a contenuti e copy (con esempi), regole di struttura componenti, <em>safe-change rules</em> (cosa non modificare alla leggera), e i comandi reali del progetto (install, dev, build, lint, test).</li>
+<li><strong>CLAUDE.local.md</strong> — le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.</li>
+<li><strong>AGENTS.md</strong> — il <strong>livello di orchestrazione</strong>: non è documentazione del design system, ma dice all&#39;agente <em>dove</em> guardare per ogni cosa (quale file ha i token canonici, dove vive la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno: poche ore di scrittura, consultato di continuo.</li>
+<li><strong>DESIGN.md</strong> — l&#39;identità visiva condensata: front matter YAML con i token + corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do&#39;s &amp; don&#39;ts).</li>
+<li><strong>MEMORY.md</strong> — memoria di progetto a lungo termine: decisioni prese e contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).</li>
+<li><strong>SKILL.md</strong> — conoscenza <strong>procedurale</strong> per workflow specifici. Una skill è una cartella con un <code>SKILL.md</code> in cima più eventuali script/template. Struttura a <em>progressive disclosure</em>: i metadati (<del>100 token) caricano per primi e decidono se la skill è rilevante; il corpo markdown (</del>500–2000 token) dà le istruzioni; i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve.</li>
+</ul>
+<p>A questi si aggiungono i file di configurazione: <strong><code>.mcp.json</code></strong> (connessioni a Figma, Notion, GitHub…) e, dentro <code>.claude/</code>, <strong><code>settings.json</code></strong> (permessi condivisi col team) e <strong><code>settings.local.json</code></strong> (permessi personali, gitignored).</p>
+<h3 id="2-4-struttura-di-file-e-cartelle-di-un-progetto-di-design"><a class="anchor" href="#2-4-struttura-di-file-e-cartelle-di-un-progetto-di-design" aria-hidden="true">#</a>2.4 Struttura di file e cartelle di un progetto di design</h3>
+<p>Claude lavora meglio quando ha una <strong>struttura di progetto reale</strong>, non prompt isolati: dargli una fonte di verità <em>prima</em> di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:</p>
+<pre><code>product-design/
+# CONTEXT — ciò che Claude carica
+├── CLAUDE.md             ← brief di progetto, letto a ogni sessione
+├── CLAUDE.local.md       ← preferenze personali (gitignored)
+├── DESIGN.md             ← identità visiva, regole di design, direzione UI
+├── MEMORY.md             ← memoria a lungo termine, decisioni e contesto
+├── .mcp.json             ← connessioni Figma, Notion, GitHub
+# TEAM TOOLKIT
+├── .claude/
+│   ├── skills/           ← workflow di product design riutilizzabili
+│   ├── agents/           ← reviewer e assistenti di design specializzati
+│   ├── settings.json     ← permessi condivisi
+│   └── settings.local.json  ← permessi personali (gitignored)
+# PRODUCT KNOWLEDGE
+├── docs/
+│   ├── brief.md                 ← obiettivo, audience, scope
+│   ├── product-requirements.md  ← feature, flussi, requisiti funzionali
+│   └── design-decisions.md      ← perché certe scelte di design
+# YOUR PROJECT
+├── src/components/       ← UI reale che Claude legge e modifica
+├── public/images/        ← immagini, loghi, illustrazioni reali
+└── reference/
+    ├── screenshots/      ← schermate attuali del prodotto
+    ├── competitors/      ← esempi dei competitor
+    ├── moodboards/       ← ispirazione visiva
+    ├── flows/            ← user journey e sequenze di schermate
+    └── research/         ← interviste, finding, note di usabilità
+</code></pre>
+<p>Una variante più snella, sufficiente per molti progetti:</p>
+<pre><code>/project
+├── /app
+├── /components
+├── /docs
+│   ├── prd.md
+│   ├── user-flows.md
+│   ├── ux-principles.md
+│   └── design-system.md
+├── /design
+│   ├── tokens.md
+│   ├── components.md
+│   └── interaction-patterns.md
+├── CLAUDE.md
+├── DESIGN.md
+└── .mcp.json
+</code></pre>
+<p><strong>Sezioni consigliate del CLAUDE.md per task di design</strong> (ideazione, prototipazione): <code># Role</code> (es. &quot;sei un senior product designer e frontend engineer&quot;), <code># Product context</code> (questo prodotto aiuta [audience] a [obiettivo]), <code># Design principles</code> (chiarezza prima della decorazione, progressive disclosure, un&#39;azione primaria per schermata…), <code># Design system rules</code> (usa i componenti esistenti prima di crearne, segui i token in <code>/design/tokens.md</code>, non hardcodare gli stili), <code># Workflow</code> (analizza la UX → spiega la modifica → individua i componenti coinvolti → proponi un piano → attendi approvazione), <code># Output format</code> (per i task UX restituisci sempre: ragionamento UX, modifiche proposte, file impattati, rischi/trade-off).</p>
+<p>In alternativa alle sezioni orientate al design, per progetti più tecnici un CLAUDE.md &quot;generico&quot; può includere: <code># Project Overview</code>, <code># Architecture</code>, <code># Tech Stack</code> (es. Next.js, TypeScript, ShadCN UI, Tailwind), <code># Coding Conventions</code> (TypeScript strict, componenti funzionali, niente default export), <code># Folder Structure</code>, <code># Commands</code> (<code>npm run dev</code>, <code>npm run build</code>), <code># Important Rules</code> (requisiti di performance, accessibilità, strategia di test).</p>
+<p><strong>Documentare il design system in markdown.</strong> Claude diventa molto più utile quando &quot;conosce&quot; il DS: conviene descriverlo in file dedicati sotto <code>/design/</code> — <code>tokens.md</code>, <code>components.md</code>, <code>patterns.md</code>, <code>accessibility.md</code>. Esempio di come può apparire una regola in <code>components.md</code>:</p>
+<pre><code># Button rules
+Primary button:
+- Usa una sola volta per schermata.
+- Riservato all&#39;azione principale.
+- Mai per azioni distruttive.
+Secondary button:
+- Per azioni alternative.
+- Può comparire più volte.
+Destructive button:
+- Richiede sempre conferma.
+- Mai come azione di default.
+</code></pre>
+<p><strong>Cinque best practice di organizzazione:</strong></p>
+<ol>
+<li><strong>CLAUDE.md alla root</strong> — letto automaticamente all&#39;avvio; è la guida di onboarding al progetto per l&#39;AI.</li>
+<li><strong>Spezzare i CLAUDE.md grandi</strong> — Claude lo legge a ogni sessione, quindi oltre ~200 righe conviene dividerlo in file importati con la sintassi <code>@path/to/import.md</code> (es. <code>@claude/architecture.md</code>, <code>@claude/coding_conventions.md</code>, <code>@claude/ui_guidelines.md</code>). Più facile da mantenere, contesto più veloce da caricare, riusabile tra progetti.</li>
+<li><strong>Cartella <code>/docs</code></strong> — Claude legge benissimo il markdown; ci metti roadmap, requisiti, API, decisioni, così puoi dirgli &quot;leggi <code>docs/api.md</code> e implementa…&quot;.</li>
+<li><strong>Cartella <code>/workflows</code></strong> — i workflow ripetibili come file dedicati (<code>build-new-component.md</code>, <code>code-refactoring.md</code>, <code>write-auto-tests.md</code>, <code>migrate-db.md</code>). Un workflow può richiamarne un altro (es. dopo aver creato un componente, invoca <code>@workflows/write-auto-tests.md</code>).</li>
+<li><strong>Cartella <code>/tools</code></strong> — gli script di servizio che Claude scrive (<code>migrate-db.py</code>, <code>seed-data.py</code>, <code>export-data.py</code>). Nome <code>/tools</code> (non <code>/scripts</code>) per non confonderli con gli script di front/back-end del progetto.</li>
+</ol>
+<p>Scorciatoia: il comando <strong><code>/init</code></strong> esplora un codebase esistente e genera una prima bozza di CLAUDE.md, da rifinire.</p>
+<h3 id="2-5-setup-e-loop-con-figma-mcp"><a class="anchor" href="#2-5-setup-e-loop-con-figma-mcp" aria-hidden="true">#</a>2.5 Setup e loop con Figma MCP</h3>
+<p>L&#39;MCP (Model Context Protocol) di Figma consente a Claude di leggere il <em>design context</em> (gerarchia, layout, variabili, componenti, token) e, con le skill giuste, di scrivere sul canvas. L&#39;MCP <strong>nativo</strong> di Figma ha due versioni: quella <strong>remota</strong> (endpoint ospitato da Figma, non serve l&#39;app desktop, set di funzioni più ampio, consigliata) e quella <strong>locale desktop</strong> (integrata nell&#39;app: passa in Dev Mode e abilita il server, che gira su <code>http://127.0.0.1:3845/mcp</code>). Checklist per una sessione in locale: apri Figma Desktop aggiornato all&#39;ultima versione → apri un file Design (l&#39;MCP non compare in FigJam) → Dev Mode (Shift+D) → <em>Enable MCP server</em> → collega il client (VS Code, Cursor, Claude Code) all&#39;indirizzo del server. Verifica rapida: nel client chiedi di elencare i tool MCP, o digita <code>#get_design_context</code>. Nota: è in beta e diventerà una funzione a pagamento a consumo; i rate limit dipendono dal piano. (I bridge di terze parti che usano un plugin &quot;Desktop Bridge&quot; con stato &quot;MCP ready&quot; sono un&#39;altra cosa: vedi 2.6.)</p>
+<p><strong>Il loop completo</strong>: Design in Figma → Extract con MCP → Build → Deploy → Test → Iterate. Condizione critica lato Figma: <strong>naming e organizzazione corretti</strong> dei componenti (l&#39;AI legge questa struttura) e Auto Layout per la responsività.</p>
+<p><strong>Collega solo gli MCP che ti servono.</strong> Ogni MCP attivo immette dati nella finestra di contesto: il comando <strong><code>/context</code></strong> mostra l&#39;occupazione e, con molti tool attivi, gli MCP possono arrivare a occupare una fetta enorme del contesto (~45% in casi reali). Disconnetti i tool rumorosi quando non servono — incluso Figma, che inietta molto contesto — quando stai lavorando su documentazione estesa o con più tool di progetto sovrapposti. Regola pratica: <strong>meno rumore nel contesto = output migliore</strong> (si lega al context rot di 1.2).</p>
+<p><strong>Bridge bidirezionale: Claude &quot;con le mani&quot; sul canvas.</strong> Oltre a leggere Figma, Claude può <em>agire</em> sul file aperto se si usa un bridge a due vie. Un esempio è <strong>DesignAgent</strong> (tool di terze parti, distinto dall&#39;MCP nativo di Figma; confronto completo in 2.6): un plugin Figma + un plugin Claude Code che aprono un socket locale ed espongono ~30 tool sul file live — sposta layer, sistema le spaziature, sostituisce un hex con il token corretto, crea frame/testo/forme, ricolora e ri-layouta. Si installa da marketplace (<code>/plugin marketplace add sherizan/designagent-figma</code> poi <code>/plugin install designagent@designagent</code>) e porta con sé la skill <code>design-to-code</code> e l&#39;MCP server <code>designagent</code>; gira in locale (nessun token, nessun dato esce dalla macchina) con un <em>heartbeat</em> che segnala se la connessione è davvero viva e si riconnette da sola. Due regole rendono affidabili questi flussi: <strong>scope stretto</strong> (un frame o un flusso per volta — l&#39;agente è preciso sul piccolo e va alla deriva se lo punti sull&#39;intero file) e <strong>auto-verifica</strong> (build → screenshot → confronto con <code>DESIGN.md</code> → fix).</p>
+<blockquote>
+<p><strong>Prompt pack operativo</strong> (esempio, con bridge bidirezionale e <code>DESIGN.md</code> come fonte di verità):</p>
+<ul>
+<li>Estrai i token dalla selezione (colori, type, spaziatura, raggio) e scrivili in <code>DESIGN.md</code>, con i valori reali, senza arrotondare o inventare.</li>
+<li>Guarda il logo selezionato: crea la foundation del design system e crea/aggiorna <code>DESIGN.md</code>.</li>
+<li>Usando i token in <code>DESIGN.md</code>, costruisci un primo set di componenti su un nuovo frame (bottoni primario/secondario/ghost, slider, toggle, form con label e stato d&#39;errore). Solo on-system.</li>
+<li>Usando i token in <code>DESIGN.md</code>, progetta una landing page marketing.</li>
+<li>Leggi <code>voice.md</code> e scrivi la copy della schermata selezionata con quel tono, applicandola ai nodi di testo; mostrami ogni modifica prima di applicarla.</li>
+<li>Crea template di asset social (LinkedIn/Substack) usando il branding in <code>DESIGN.md</code>; mantieni ogni valore on-system.</li>
+</ul>
+</blockquote>
+<h3 id="2-6-mcp-nativo-di-figma-figma-desktop-bridge-e-designagent-a-confronto"><a class="anchor" href="#2-6-mcp-nativo-di-figma-figma-desktop-bridge-e-designagent-a-confronto" aria-hidden="true">#</a>2.6 MCP nativo di Figma, Figma Desktop Bridge e DesignAgent a confronto</h3>
+<p>Tre modi di collegare l&#39;AI a Figma, con obiettivi diversi.</p>
+<ul>
+<li><strong>MCP nativo di Figma (Dev Mode MCP server).</strong> Prima parte, ufficiale. Due versioni: <em>remota</em> (endpoint ospitato da Figma, non serve l&#39;app desktop, funzioni più ampie, consigliata) e <em>locale desktop</em> (integrata nell&#39;app, <code>http://127.0.0.1:3845/mcp</code>, per casi org/enterprise). <em>Cosa fa</em>: legge il design context del layer selezionato, genera codice dal frame selezionato, si aggancia a Code Connect e — con le skill Figma installate — scrive sul canvas e cattura la UI live (&quot;code to canvas&quot;). <em>Come lo fa</em>: dati strutturati via protocollo MCP; input per selezione (desktop) o link al nodo (node-id). <em>Da sapere</em>: in beta, diventerà a pagamento a consumo, con rate limit per piano; client supportati solo quelli del Figma MCP Catalog (VS Code, Cursor, Claude Code).</li>
+<li><strong>Figma Desktop Bridge (<code>southleft/figma-console-mcp</code>).</strong> Terze parti, &quot;il tuo design system come API&quot;. È un MCP server con un <em>plugin bridge</em> che importi tra i plugin di sviluppo di Figma Desktop; comunica via WebSocket (porte 9223–9232) e sblocca il Plugin API <strong>senza piano Enterprise</strong>. <em>Cosa fa in più del nativo</em>: lettura/scrittura completa di variabili e descrizioni componenti, creazione/modifica di design, cattura in tempo reale di <strong>console log e network</strong> (debug di plugin e prototipi), export token in ~10 formati (DTCG, CSS, Tailwind, SCSS, Style Dictionary, Tokens Studio…), diff tra versioni, scan di accessibilità WCAG. <em>Come lo fa</em>: doppio contesto del plugin (UI con rete, worker con Figma API) più un watchdog che si riconnette da solo; ~107 tool in locale, funziona con Claude Code, Claude Desktop e Cursor insieme, con anche una modalità cloud per i client web. <em>Da sapere</em>: il bridge WebSocket locale non è autenticato (problema segnalato) — qualunque processo locale può connettersi e potenzialmente iniettare testo nei log; valutalo su macchine condivise.</li>
+<li><strong>DesignAgent (Sherizan, Figma Community).</strong> Terze parti, bridge <strong>bidirezionale</strong> orientato al design-to-code. Un plugin dalla Community di Figma più un plugin Claude Code (install da marketplace); ~30 tool per leggere la selezione e agire sul canvas (crea/edita frame, testo, forme, ricolora, ri-layouta). Gira in locale e gratuito, con heartbeat e la disciplina di scope stretto più auto-verifica contro <code>DESIGN.md</code> (vedi 2.5). Rispetto al Desktop Bridge di southleft è più snello e orientato al &quot;costruisci ed edita&quot;, meno a debug/console ed export multi-formato; si installa dalla Community (plugin pubblicato) più marketplace, non importando un manifest di sviluppo.</li>
+</ul>
+<p><strong>Come scegliere:</strong></p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Se ti serve…</th>
+<th>Strumento</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>design→codice ufficiale, Code Connect, code-to-canvas fedele, zero plugin di terze parti</td>
+<td>MCP nativo di Figma</td>
+</tr>
+<tr>
+<td>variabili/componenti completi senza Enterprise, export token multi-formato, debug console/network</td>
+<td>Figma Desktop Bridge (southleft)</td>
+</tr>
+<tr>
+<td>loop bidirezionale rapido &quot;costruisci ed edita sul canvas&quot; da Claude Code, locale e gratuito</td>
+<td>DesignAgent</td>
+</tr>
+</tbody></table></div>
+<p>Si possono combinare (es. MCP nativo per il boilerplate, Desktop Bridge per estrarre i valori esatti dei token). Montando più MCP Figma insieme, attenzione all&#39;attribuzione delle risposte e all&#39;occupazione del contesto (vedi 2.5).</p>
+<h3 id="2-7-le-skill-figma-ufficiali"><a class="anchor" href="#2-7-le-skill-figma-ufficiali" aria-hidden="true">#</a>2.7 Le skill Figma ufficiali</h3>
+<p>Il server MCP di Figma include diverse skill che coprono i workflow comuni. Le otto del set ufficiale:</p>
+<ol>
+<li><strong><code>figma-use</code></strong> — scrive direttamente su un file Figma Design: crea/modifica frame, componenti, variabili, layout.</li>
+<li><strong><code>figma-use-figjam</code></strong> — scrive su una board FigJam: sticky, sezioni, connettori, forme, tabelle.</li>
+<li><strong><code>figma-use-slides</code></strong> — scrive su un deck Figma Slides: slide, sezioni, temi, speaker notes.</li>
+<li><strong><code>figma-code-connect</code></strong> — collega componenti Figma pubblicati ai componenti di codice corrispondenti, così gli sviluppatori passano da design a implementazione.</li>
+<li><strong><code>figma-create-new-file</code></strong> — crea un nuovo file Figma Design o board FigJam vuoti come punto di partenza per altri workflow.</li>
+<li><strong><code>figma-generate-diagram</code></strong> — trasforma una descrizione, un codebase o uno spec in un diagramma FigJam editabile (flowchart, sequence diagram…).</li>
+<li><strong><code>figma-generate-library</code></strong> — costruisce o aggiorna una libreria/design system Figma a partire da un codebase (token, struttura, componenti).</li>
+<li><strong><code>figma-generate-design</code></strong> — genera schermate Figma full-page da design system e contesto di progetto, opzionalmente con reference di layout.</li>
+</ol>
+<p>A queste si affiancano due skill Figma orientate al codice, citate nelle altre fonti: <strong><code>figma-implement-design</code></strong> (traduce un nodo Figma in codice di produzione: <code>get_design_context</code> → <code>get_screenshot</code> di riferimento → ispezione del DS di progetto → mapping dei valori Figma sui token → generazione del codice → validazione contro lo screenshot) e <strong><code>figma-create-design-system-rules</code></strong> (analizza il codebase e scrive il file di regole, AGENTS.md o CLAUDE.md, per tradurre i design in codice secondo le convenzioni).</p>
+<h3 id="2-8-enforcement-del-design-system"><a class="anchor" href="#2-8-enforcement-del-design-system" aria-hidden="true">#</a>2.8 Enforcement del design system</h3>
+<p>L&#39;AI è capace di scrivere Figma e di scrivere React; il divario tra strumento potente e strumento usabile è spesso solo un insieme di regole che nessuno ha scritto. Esempio di &quot;catena di governance&quot; (pattern delle 4 skill di <code>claude2figma</code>): il comportamento di default dell&#39;AI è <em>inventare</em>; la regola lo cambia in <em>prima cerca</em> (&quot;look up before invent&quot;). La skill più essenziale è il <strong>token binding/QA</strong>: ogni proprietà visiva (colore, type, spaziatura, raggio) deve legarsi alla variabile/stile corrispondente — niente valori grezzi — e dopo la scrittura su Figma parte una QA che verifica i binding uno a uno (riporta <code>#5C6AC4</code> a <code>color/brand/primary</code>).</p>
+<p>Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità &quot;assistente di design&quot; produce output che un umano può riprendere e modificare (DS enforcement attivo); in modalità &quot;prototipo rapido&quot; la velocità ha priorità sull&#39;enforcement e i valori grezzi sono accettati.</p>
+<h3 id="2-9-rendere-il-design-system-leggibile-dall-39-ai"><a class="anchor" href="#2-9-rendere-il-design-system-leggibile-dall-39-ai" aria-hidden="true">#</a>2.9 Rendere il design system leggibile dall&#39;AI</h3>
+<p>Se gli agenti vedono solo valori grezzi e hex (nessun riferimento ai token, nessun significato semantico), costruiscono componenti con valori hardcoded scollegati dalla fonte di verità → debito tecnico, inconsistenza, gap di accessibilità. Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi validare la token accuracy prima/dopo. Espandere di settimana in settimana finché il DS diventa AI-native.</p>
+<h3 id="2-10-comandi-slash-command-e-subagent-per-il-design"><a class="anchor" href="#2-10-comandi-slash-command-e-subagent-per-il-design" aria-hidden="true">#</a>2.10 Comandi, slash command e subagent per il design</h3>
+<p><strong>Comandi e pratiche utili in Claude Code:</strong></p>
+<ul>
+<li><strong>Plan mode (Shift+Tab / <code>/plan</code>)</strong> — Claude legge, ragiona e propone un piano senza toccare i file finché non approvi. Particolarmente utile prima di task complessi e prima di un Figma→codice via MCP (spesso migliora il risultato anche senza modifiche al piano).</li>
+<li><strong><code>/init</code></strong> — esplora il codebase e scrive un CLAUDE.md (briefing letto a ogni sessione). Tienilo lean; aggiorna dopo molte modifiche.</li>
+<li><strong><code>/skills</code></strong> — elenca le skill disponibili sul tuo computer (utile quando diventano tante).</li>
+<li><strong><code>/help</code></strong> — cheat sheet dei comandi.</li>
+<li><strong><code>/rewind</code> (o doppio Esc)</strong> — torna a un checkpoint precedente (conversazione, codice o entrambi).</li>
+<li><strong>Ctrl+V</strong> — incolla immagini/screenshot come riferimento (su Mac è Ctrl+V, non Cmd+V).</li>
+</ul>
+<p><strong>Slash command custom per workflow ripetibili.</strong> Ripetere a voce/per iscritto gli stessi prompt porta a drift di qualità e rende impossibile standardizzare le operazioni per il team. Conviene creare comandi dedicati come <code>/page-review</code>, <code>/component-review</code>, <code>/prd-to-ui</code>, <code>/flow-map</code>, <code>/design-system-check</code>: ognuno è un file markdown in <code>.claude/commands/</code> (es. <code>.claude/commands/page-review.md</code> = &quot;Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con focus sulle best practice UX&quot;).</p>
+<p><strong>Subagent specializzati per il design.</strong> Per automatizzare task tenendo pulita la conversazione principale, si creano subagent (file markdown in <code>.claude/agents/</code>) che lavorano in autonomia, senza tempestare l&#39;utente di domande. Profili utili in product design: <strong>UX Reviewer</strong>, <strong>Design System Guardian</strong>, <strong>Frontend Implementer</strong>, <strong>Accessibility Reviewer</strong>, <strong>Interaction Designer</strong>, <strong>QA Tester</strong>. Esempio di descrizione (UX Reviewer): <em>Role</em> = senior UX reviewer; <em>Focus</em> = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; <em>Do not</em> = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande nella futura <strong>Sezione 2-ter</strong> sull&#39;architettura ad agenti e sub-agenti.)</p>
+<p><strong>Claude Code dentro l&#39;IDE + Plan mode.</strong> Usare Claude Code dentro VS Code (o altro IDE) evita il continuo salto tra ambiente di codice e app: l&#39;integrazione offre inline diff, plan review, file mention e shortcut. Per il lavoro di design, non chiedere di costruire subito: passa in <strong>Plan mode</strong> e segui il flusso <em>analizza l&#39;esperienza attuale → chiedi un piano UX → rivedi le modifiche proposte → approva → check finale design-system + accessibilità</em>. Così Claude non si butta sul codice prima di aver capito il problema di prodotto.</p>
+<p><strong>Pattern di affidabilità per task lunghi:</strong> <strong>agente esecutore con contesto fresco</strong> per ogni fase (sessione principale pulita, nessun degrado), <strong>commit atomici</strong> per ogni task (history revertibile, <code>git bisect</code> per isolare il task rotto), <strong>agente verificatore</strong> che a fine esecuzione controlla il codebase contro gli obiettivi di fase.</p>
+<h3 id="2-11-creare-una-skill-dal-proprio-design-system"><a class="anchor" href="#2-11-creare-una-skill-dal-proprio-design-system" aria-hidden="true">#</a>2.11 Creare una skill dal proprio design system</h3>
+<p>Struttura tipica della cartella:</p>
+<pre><code>design-system/
+├── SKILL.md            ← istruzioni principali (metadati + corpo)
+├── references/
+│   ├── color-tokens.md
+│   ├── typography.md
+│   ├── spacing.md
+│   └── components.md
+└── assets/
+    └── design_tokens.json   ← token esportati (formato W3C/DTCG)
+</code></pre>
+<p>Punti chiave:</p>
+<ul>
+<li>La <strong>description</strong> nei metadati decide se la skill viene caricata: dev&#39;essere specifica e ricca delle keyword che useresti naturalmente (token, componenti, design system, Figma, UI, spaziatura, colori). &quot;Aiuta col design&quot; è troppo vago.</li>
+<li>Nel corpo, indicare chiaramente <em>quando</em> usarla (creare componenti Figma, costruire layout UI, generare componenti React/TS, scrivere documentazione).</li>
+<li><strong>Split in più skill</strong> quando il SKILL.md supera ~500 righe o quando team diversi possiedono parti diverse del sistema (es. <code>design-tokens/</code>, <code>component-specs/</code>, <code>accessibility/</code>, <code>figma-workflow/</code>): Claude le combina automaticamente.</li>
+<li>Le skill <strong>non si auto-sincronizzano</strong> con Figma: vanno aggiornate quando il sistema cambia (in Claude Code le modifiche ai file sono colte subito; su Claude.ai va ricaricato lo ZIP).</li>
+<li>Il formato SKILL.md è portabile tra agenti, ma il modello di esecuzione no: lo stesso file è leggibile ovunque, non è detto che &quot;giri&quot; allo stesso modo ovunque.</li>
+</ul>
+<p><strong>Skill di design ricorrenti</strong> da costruire per un team di product design: <em>PRD → User Flow</em>, <em>User Flow → UI Mockup</em>, <em>Design System Audit</em>, <em>UX Copy Review</em>, <em>Accessibility Review</em>, <em>Prototype Polish</em>. Ogni skill è una cartella con <code>SKILL.md</code> più file di supporto (<code>checklist.md</code>, <code>examples.md</code>). Esempio di <code>SKILL.md</code> per <em>design-system-audit</em>:</p>
+<pre><code>---
+name: design-system-audit
+description: Review UI code against the product design system.
+---
+# Goal
+Trova incoerenze tra implementazione e regole del design system.
+# Inputs
+- file UI
+- documentazione del design system
+- regole della libreria componenti
+# Process
+1. Identifica i componenti usati.
+2. Confrontali con le regole del DS.
+3. Segnala gli stili hardcoded.
+4. Proponi le correzioni.
+5. Ordina per gravità.
+# Output
+Restituisci una tabella con: Issue, Location, Severity, Fix consigliato.
+</code></pre>
+<h3 id="2-12-deploy-del-prototipo-locale-vercel-github-pages"><a class="anchor" href="#2-12-deploy-del-prototipo-locale-vercel-github-pages" aria-hidden="true">#</a>2.12 Deploy del prototipo (locale, Vercel, GitHub Pages)</h3>
+<p>Il deploy è l&#39;ultimo anello del loop (Design → Build → <strong>Deploy</strong> → Test → Iterate): serve a passare da &quot;gira sulla mia macchina&quot; a un URL condivisibile. Tre livelli, dal più veloce al più pubblico: anteprima in locale, pubblicazione su Vercel, pubblicazione su GitHub Pages.</p>
+<p><strong>1) Anteprima in locale.</strong> Prima di pubblicare, conviene sempre far girare il progetto in locale: una build che fallisce sul server è più lenta da debuggare di una intercettata subito. Per un progetto Vite tipico:</p>
+<pre><code>npm install
+npm run dev        # anteprima di sviluppo su http://localhost:5173
+npm run build      # genera la build di produzione in /dist
+npm run preview    # serve la build di produzione in locale, per verificarla
+</code></pre>
+<p><strong>2) Preparare il repository Git.</strong> Crea un <code>.gitignore</code> (almeno <code>node_modules/</code>, <code>.env</code>, <code>.env.local</code>, <code>dist/</code>) <em>prima</em> del primo <code>git add</code>; non committare mai file <code>.env</code> in un repo pubblico. Poi inizializza e pubblica su GitHub:</p>
+<pre><code>git init
+git add .
+git commit -m &quot;Initial commit&quot;
+git branch -M main
+git remote add origin https://github.com/&lt;utente&gt;/&lt;repo&gt;.git
+git push -u origin main
+</code></pre>
+<p><strong>3) Pubblicare su Vercel.</strong> Due strade. <em>Dashboard</em> (consigliata la prima volta): <code>vercel.com</code> → Add New → Project → Import del repo GitHub → Vercel rileva il framework (React/Vite/Next.js…) e propone Build Command <code>npm run build</code> e Output Directory <code>dist</code> (per Vite) → Deploy. <em>CLI</em>: <code>npm i -g vercel</code>, poi <code>vercel login</code> e <code>vercel</code>, rispondendo ai prompt. Punti chiave:</p>
+<ul>
+<li><strong>CI/CD automatico</strong>: collegando GitHub, Vercel installa un webhook: ogni push su <code>main</code> diventa un deploy di produzione, e ogni branch/PR ottiene un preview URL da condividere.</li>
+<li><strong>SPA 404 al refresh</strong> (es. React Router): aggiungi un <code>vercel.json</code> con un rewrite di tutte le rotte su <code>/</code>.</li>
+<li><strong>Variabili d&#39;ambiente</strong>: si impostano nel dashboard (Settings → Environment Variables), non nel repo; per Vite devono avere il prefisso <code>VITE_</code>.</li>
+<li><strong>Dominio custom</strong>: Settings → Domains, SSL automatico. Il piano gratuito (Hobby) basta per prototipi.</li>
+<li>In alternativa, si può deployare da dentro Claude Code con il plugin <code>vercel/vercel-deploy-claude-code-plugin</code>.</li>
+</ul>
+<p><strong>4) Pubblicare su GitHub Pages</strong> (hosting statico gratuito, ideale per la guida stessa e per prototipi senza backend). Passo obbligato: impostare il <code>base</code> in <code>vite.config.js</code>, perché le Pages di progetto vivono in un sottopercorso:</p>
+<pre><code>// vite.config.js — project page su &lt;utente&gt;.github.io/&lt;repo&gt;/
+export default defineConfig({ plugins: [react()], base: &#39;/&lt;repo&gt;/&#39; })
+// se pubblichi su &lt;utente&gt;.github.io/ o su dominio custom: base &#39;/&#39;
+</code></pre>
+<p>Poi due approcci:</p>
+<ul>
+<li><strong>GitHub Actions</strong> (via ufficiale Vite): Settings → Pages → Source = <em>GitHub Actions</em>, quindi un workflow <code>.github/workflows/deploy.yml</code> che fa checkout, <code>npm ci</code>, <code>npm run build</code> e pubblica <code>dist/</code> con <code>actions/upload-pages-artifact</code> + <code>actions/deploy-pages</code>. Ogni push su <code>main</code> ripubblica.</li>
+<li><strong>Pacchetto <code>gh-pages</code></strong>: aggiungi <code>&quot;homepage&quot;: &quot;https://&lt;utente&gt;.github.io/&lt;repo&gt;&quot;</code> in <code>package.json</code>, gli script <code>&quot;predeploy&quot;: &quot;npm run build&quot;</code> e <code>&quot;deploy&quot;: &quot;gh-pages -d dist&quot;</code>, lancia <code>npm run deploy</code> e imposta la Source delle Pages sul branch <code>gh-pages</code>.</li>
+</ul>
+<p>Se usi React Router, allinea il <code>basename</code> del router al <code>base</code> di Vite (altrimenti 404 sulle rotte). Dominio custom: file <code>CNAME</code> nella cartella pubblicata.</p>
+<p><strong>Quale scegliere.</strong> <em>GitHub Pages</em>: solo statico (HTML/CSS/JS o SPA buildate), gratis, perfetto per portfolio, landing e per pubblicare questa knowledge base; nessun backend o serverless, e va gestito il base path. <em>Vercel</em>: statico <strong>e</strong> framework con SSR/funzioni serverless (es. API routes di Next.js), preview per ogni PR, variabili d&#39;ambiente gestite, zero-config sulla maggior parte dei framework; è la via più liscia per un prototipo condivisibile in fretta e che potrebbe crescere verso funzioni dinamiche. Entrambe danno HTTPS e ripubblicazione automatica a ogni push.</p>
+<hr>
+<h2 id="3-repository-di-skill-di-riferimento"><a class="anchor" href="#3-repository-di-skill-di-riferimento" aria-hidden="true">#</a>3. Repository di skill di riferimento</h2>
+<p>Categorizzazione completa dei 79 repository stellati. Le categorie <strong>A–F</strong> sono il cuore della knowledge base (progettazione con AI, skill, Claude/Figma); <strong>G–H</strong> sono fondamenta/asset utili; <strong>I–J</strong> sono toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno <strong>starter pack</strong> con i comandi d&#39;installazione.</p>
+<h3 id="a-collezioni-di-skill-multi-disciplina-cuore-della-kb"><a class="anchor" href="#a-collezioni-di-skill-multi-disciplina-cuore-della-kb" aria-hidden="true">#</a>A · Collezioni di skill multi-disciplina (cuore della KB)</h3>
+<ul>
+<li><code>Owl-Listener/designer-skills</code> — research → sistemi → UI → interazione → delivery</li>
+<li><code>Owl-Listener/ai-design-skills</code> — 42 skill e 18 comandi in 6 plugin per l&#39;Agentic Experience Design (model interaction, alignment, system behavior, evaluation, agent orchestration, prompt architecture); per Claude Code e Gemini CLI, install da marketplace (<code>claude plugin marketplace add Owl-Listener/ai-design-skills</code>). Utile anche per la futura sezione agenti/Opus</li>
+<li><code>cuellarfr/design-skills</code> — research, critique, accessibilità, journey mapping</li>
+<li><code>jamiemill/layers-skills</code> — i &quot;sette layer&quot; del product design</li>
+<li><code>designagentlab/skills</code> — libreria open: Figma, UX research, copywriting, immagini</li>
+<li><code>PatternsDev/skills</code> — agent skill di patterns.dev</li>
+<li><code>edenspiekermann/Skills</code> — raccolta skill dello studio Eden Spiekermann</li>
+<li><code>phuryn/pm-skills</code> — marketplace di 68 skill + 42 workflow in 9 plugin (discovery, strategy, execution, research, analytics, GTM, growth, toolkit, AI-shipping); per Claude Code e Cowork, install da marketplace; include <code>strategy-red-team</code> / <code>/red-team-prd</code> e <code>/ship-check</code> (adiacente, lato PM)</li>
+<li><code>anthropics/skills</code> — repository ufficiale Anthropic delle Agent Skills (riferimento canonico)</li>
+<li><code>nexu-io/open-design</code> — alternativa open a Claude Design (259+ skill, 142+ design system)</li>
+</ul>
+<h3 id="b-design-system-token-scale-documentazione"><a class="anchor" href="#b-design-system-token-scale-documentazione" aria-hidden="true">#</a>B · Design system, token, scale, documentazione</h3>
+<ul>
+<li><code>dylantarre/design-system-skills</code> — skill DS per agentic coding</li>
+<li><code>somerandomdude/design-system-documentation-schema</code> — DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI</li>
+<li><code>NateBaldwinDesign/proportio</code> — scale proporzionali (tipografia, icone, spaziature)</li>
+<li><code>Manavarya09/design-extract</code> — estrae il DS di qualsiasi sito (token DTCG, MCP server, export multi-piattaforma)</li>
+</ul>
+<h3 id="c-ponte-claude-figma-mcp-enforcement-ds"><a class="anchor" href="#c-ponte-claude-figma-mcp-enforcement-ds" aria-hidden="true">#</a>C · Ponte Claude ↔ Figma (MCP, enforcement DS)</h3>
+<ul>
+<li><code>figma/mcp-server-guide</code> — guida ufficiale al Figma MCP server</li>
+<li><code>senlindesign/claude2figma</code> — 4 skill che tengono l&#39;AI &quot;sui binari&quot; del DS (token/componenti vincolati)</li>
+<li><code>renfei-design/Figma_AI_Bridge</code> — agent + skill per controllare Figma e automatizzare il design</li>
+<li><code>sherizan/designagent-figma</code> — <em>DesignAgent</em>: bridge bidirezionale Claude Code ↔ Figma (legge e modifica il canvas live, ~30 tool); plugin + MCP server, locale e gratuito</li>
+</ul>
+<h3 id="d-qualita-ui-quot-taste-quot-micro-dettagli-wireframe"><a class="anchor" href="#d-qualita-ui-quot-taste-quot-micro-dettagli-wireframe" aria-hidden="true">#</a>D · Qualità UI, &quot;taste&quot;, micro-dettagli, wireframe</h3>
+<ul>
+<li><code>leonxlnx/taste-skill</code> — dà &quot;buon gusto&quot; all&#39;AI, anti-slop</li>
+<li><code>senlindesign/taste-skill</code> — <em>Design DNA Extractor</em>: <code>/taste &lt;url&gt;</code> fa reverse-engineering del &quot;gusto&quot; di un sito (token + il <em>perché</em> dietro le scelte) con pipeline Playwright; esporta in CLAUDE.md, Cursor, Windsurf, ecc.</li>
+<li><code>pbakaus/impeccable</code> — design language per rendere l&#39;AI più brava nel design</li>
+<li><code>ibelick/ui-skills</code> — skill per rifinire le UI generate dagli agenti: <code>baseline-ui</code>, <code>fixing-accessibility</code>, <code>fixing-metadata</code>, <code>fixing-motion-performance</code>; install <code>npx skills add ibelick/ui-skills</code>, uso <code>/baseline-ui review src/</code></li>
+<li><code>jakubkrehel/make-interfaces-feel-better</code> — i dettagli che fanno &quot;sentire&quot; meglio un&#39;interfaccia</li>
+<li><code>nextlevelbuilder/ui-ux-pro-max-skill</code> — design intelligence UI/UX multi-piattaforma</li>
+<li><code>Magdoub/claude-wireframe-skill</code> — wireframe B&amp;W come HTML interattivo</li>
+<li><code>vorpus/performativeUI</code> — (descrizione assente; da verificare)</li>
+</ul>
+<h3 id="e-accessibilita-audit"><a class="anchor" href="#e-accessibilita-audit" aria-hidden="true">#</a>E · Accessibilità &amp; audit</h3>
+<ul>
+<li><code>airowe/claude-a11y-skill</code> — audit a11y (axe-core + jsx-a11y)</li>
+<li><code>mgifford/accessibility-skills</code> — skill che rispecchia un ACCESSIBILITY.md</li>
+<li><code>fecarrico/A11Y.md</code> — sistema di contesto con regole WCAG applicabili</li>
+<li><code>Ashutos1997/claude-design-auditor-skill</code> — verifica contro 19 regole di design</li>
+<li><code>w3c/wcag</code> — linee guida WCAG (riferimento normativo)</li>
+<li><code>YellowLabTools/YellowLabTools</code> — testing qualità/performance front-end</li>
+</ul>
+<h3 id="f-ux-writing-content"><a class="anchor" href="#f-ux-writing-content" aria-hidden="true">#</a>F · UX writing / content</h3>
+<ul>
+<li><code>content-designer/ux-writing-skill</code> — UX writing sistematico su quattro standard (Purposeful, Concise, Conversational, Clear), con pattern per bottoni/errori/empty state/form e checklist di scoring; per Claude, Codex e Cursor, install <code>npx skills add content-designer/ux-writing-skill</code></li>
+</ul>
+<h3 id="g-fondamenta-asset-icone-colori"><a class="anchor" href="#g-fondamenta-asset-icone-colori" aria-hidden="true">#</a>G · Fondamenta &amp; asset (icone, colori)</h3>
+<ul>
+<li><code>feathericons/feather</code> — icone open source</li>
+<li><code>google/material-design-icons</code> — Material Symbols</li>
+<li><code>meodai/color-names</code> — nomi di colori curati</li>
+<li><code>evilmartians/oklch-picker</code> — color picker OKLCH/LCH</li>
+</ul>
+<h3 id="h-librerie-e-kit-di-componenti-ui"><a class="anchor" href="#h-librerie-e-kit-di-componenti-ui" aria-hidden="true">#</a>H · Librerie e kit di componenti UI</h3>
+<ul>
+<li><code>ibelick/prompt-kit</code> — componenti per interfacce AI</li>
+<li><code>ibelick/buttons</code> — collezione bottoni Tailwind</li>
+<li><code>themesberg/flowbite</code> — libreria componenti su Tailwind</li>
+<li><code>imskyleen/animate-ui</code> — component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare</li>
+</ul>
+<h3 id="i-motion-animazioni-transizioni-scroll-toolbox-esecuzione"><a class="anchor" href="#i-motion-animazioni-transizioni-scroll-toolbox-esecuzione" aria-hidden="true">#</a>I · Motion, animazioni, transizioni, scroll (toolbox esecuzione)</h3>
+<ul>
+<li>Animazione/scroll: <code>greensock/GSAP</code>, <code>darkroomengineering/lenis</code>, <code>locomotivemtl/locomotive-scroll</code>, <code>michalsnik/aos</code>, <code>dixonandmoe/rellax</code></li>
+<li><code>Jakubantalik/transitions.dev</code> — transizioni essenziali (con &quot;product motion skill&quot;)</li>
+<li><code>delphi-ai/animate-skill</code> — skill animazioni Next.js/React (corso di Emil Kowalski)</li>
+<li>CSS pronte: <code>ibelick/animation</code>, <code>tilomitra/infinite</code>, <code>IanLunn/Hover</code></li>
+<li><code>barvian/number-flow</code> — numeri animati · <code>0xGF/boneyard</code> — skeleton loading · <code>nolimits4web/swiper</code> — slider/carousel</li>
+<li>Particelle/physics: <code>VincentGarreau/particles.js</code>, <code>liabru/matter-js</code></li>
+<li>SVG/3D/canvas: <code>renatoworks/3dsvg</code>, <code>meodai/heerich</code>, <code>edoardolunardi/infinite-canvas</code></li>
+<li><code>codrops/*</code> — demo di effetti e transizioni (ImageToGridTransition, StickySections, ScrollBlurTypography, SidebarTransitions, PageTransitions, HoverEffectIdeas, ElasticGridScroll, ImageExpansionTypography, depth-gallery e fork/tutorial relativi)</li>
+<li>Tutorial Codrops (singoli): <code>gaspoorf/curve-gallery</code> — galleria 3D scroll-driven con camera lungo un path Blender (Three.js + GSAP) e focus dinamico sulle immagini; <code>Ibaliqbal/codrops-motion-path-transition</code> — thumbnail che fluiscono tra stack e layout con il plugin GSAP MotionPath; <code>bnpne/page-transitions-with-webgpu-vanilla-js</code> — page transition interattive con WebGPU e Vanilla JS (Vite)</li>
+</ul>
+<h3 id="j-agenti-cli-plugin-e-infrastruttura"><a class="anchor" href="#j-agenti-cli-plugin-e-infrastruttura" aria-hidden="true">#</a>J · Agenti, CLI, plugin e infrastruttura</h3>
+<ul>
+<li><code>anthropics/claude-code</code> — Claude Code (riferimento) · <code>agno-agi/agno</code> — framework piattaforme di agenti</li>
+<li>CLI: <code>google-gemini/gemini-cli</code>, <code>jackwener/OpenCLI</code></li>
+<li>Plugin Claude Code: <code>makenotion/claude-code-notion-plugin</code>, <code>vercel/vercel-deploy-claude-code-plugin</code></li>
+<li>NotebookLM: <code>jacob-bd/notebooklm-mcp-cli</code>, <code>PleasePrompto/notebooklm-skill</code></li>
+<li><code>ibelick/zola</code> — chat multi-modello · <code>withastro/astro</code> — framework web · <code>supabase/supabase</code> — backend</li>
+</ul>
+<h3 id="starter-pack-di-skill-per-product-designer-cheatsheet"><a class="anchor" href="#starter-pack-di-skill-per-product-designer-cheatsheet" aria-hidden="true">#</a>★ Starter pack di skill per product designer (cheatsheet)</h3>
+<p>Shortlist consigliata con i comandi d&#39;installazione (da verificare al momento dell&#39;installazione, gli handle possono cambiare):</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>A cosa serve</th>
+<th>Install</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ui-ux-pro-max-skill</strong></td>
+<td>trasforma Claude in UX strategist: analizza requisiti e genera un design system su misura</td>
+<td><code>npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max</code></td>
+</tr>
+<tr>
+<td><strong>frontend-design</strong></td>
+<td>layout curati e non generici, gerarchia visiva e spaziature forti; si auto-attiva sui task front-end</td>
+<td><code>npx skills add frontend-design</code></td>
+</tr>
+<tr>
+<td><strong>taste-skill</strong></td>
+<td>spinge l&#39;AI verso UI premium (spaziatura, type, colori, refinement); anti-&quot;vibe generico&quot;</td>
+<td><code>npx skills add https://github.com/leonxiinx/taste-skill</code></td>
+</tr>
+<tr>
+<td><strong>shadcn-ui</strong></td>
+<td>conoscenza profonda di shadcn/ui: sceglie i componenti giusti, UI accessibili con Tailwind</td>
+<td><code>npx skills add giuseppe-trisciglio/developer-kite@shadcn-ui</code></td>
+</tr>
+<tr>
+<td><strong>ui-animation</strong></td>
+<td>best practice di motion UI (easing, timing, transizioni, framer-motion, reduced-motion)</td>
+<td><code>npx skills add mblode/agent-skillse@ui-animation</code></td>
+</tr>
+<tr>
+<td><strong>web-design-guidelines</strong></td>
+<td>100+ principi di web design curati da Vercel (layout, type, responsività, a11y)</td>
+<td><code>npx skills add vercel-labs/agent-skillse@web-design-guidelines</code></td>
+</tr>
+</tbody></table></div>
+<h3 id="skill-ui-ux-con-comando-roundup"><a class="anchor" href="#skill-ui-ux-con-comando-roundup" aria-hidden="true">#</a>★ Skill UI/UX con comando (roundup)</h3>
+<p>Cinque skill che danno a Claude &quot;memoria di design&quot; (pattern, sistemi e reference di prodotti reali) senza sostituire il gusto. Comandi riportati come nell&#39;articolo di origine; verificane nome ed esatta invocazione al momento dell&#39;installazione, perché nella fonte alcuni nomi e comandi non combaciano del tutto.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>A cosa serve</th>
+<th>Comando (esempio)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Awesome Design MD</strong></td>
+<td>design DNA di 55 prodotti reali (Stripe, Vercel, Figma, Spotify…): token, logica di layout e comportamento dei componenti reali, non un&#39;imitazione vaga</td>
+<td><code>/awesome-design-md &quot;build a pricing page like Stripe&quot;</code></td>
+</tr>
+<tr>
+<td><strong>Mobile App UI Design</strong></td>
+<td>pattern mobile di app come Airbnb, Duolingo, Spotify, Revolut: pattern per settore, griglie di spaziatura, principi di emotional design (utile dove conta la fiducia: finance, health, booking, education)</td>
+<td><code>/mobile-app-ui-design &quot;fintech app dark theme&quot;</code></td>
+</tr>
+<tr>
+<td><strong>UX UI Mastery</strong></td>
+<td>&quot;senior designer in a box&quot;: ragionamento UX senior, check di accessibilità, decisioni frontend-aware (guarda oltre l&#39;estetica: accessibilità, flusso, implementazione)</td>
+<td><code>/design-mastery &quot;build a SaaS onboarding flow&quot;</code></td>
+</tr>
+<tr>
+<td><strong>LibreUIUX</strong></td>
+<td>bundle molto ampio (74 skill, 152 agent, 76 slash command): applica in automatico psicologia cognitiva, regole di accessibilità e componenti platform-native</td>
+<td><code>/ux-ui-mastery &quot;design a checkout flow&quot;</code></td>
+</tr>
+<tr>
+<td><strong>Design System Extractor</strong></td>
+<td>estrae un design system da uno screenshot UI (colori, scala tipografica, regole di spaziatura, token riutilizzabili); i risultati vanno verificati perché uno screenshot può ingannare</td>
+<td><code>/design-system-extractor &quot;extract tokens from this Notion screenshot&quot;</code></td>
+</tr>
+</tbody></table></div>
+<hr>
+<h2 id="4-appendice-fonti"><a class="anchor" href="#4-appendice-fonti" aria-hidden="true">#</a>4. Appendice — fonti</h2>
+<p><strong>Context engineering e prompting</strong></p>
+<ul>
+<li>library.aidesign.guide (The AI Design Library)</li>
+<li>Addy Osmani — Context Engineering: Bringing Engineering Discipline to Prompts</li>
+<li>Design with AI — Five insights from workflows to think, test, build, ship with AI</li>
+<li>NN/g — AI prototyping; Testing AI methodology; Vague prototyping</li>
+<li>(memoria di progetto) Context engineering; How I use AI to partner on design problems; Context is the new component library for AI agents; Design with AI (IAAD)</li>
+</ul>
+<p><strong>Claude e Figma</strong></p>
+<ul>
+<li>Claude Code for Designers: A Practical Guide</li>
+<li>arps18.github.io — Beyond the Prompt: Claude Code</li>
+<li>How to Connect Figma to Claude (MCP Setup Guide 2026)</li>
+<li>Design Systems in 2026: Turn Your System into a Claude Skill</li>
+<li>Design with AI — My Top 14 Claude Code Commands</li>
+<li>Product Compass — PM Skills 2.0: Red-Team &amp; Ship</li>
+<li>Figma Learn — Workflow lab: Code to canvas</li>
+<li>Figma Developer Docs / Figma Learn — Guide to the Figma MCP server (Dev Mode MCP: server remoto e locale, code-to-canvas, Code Connect)</li>
+<li><code>southleft/figma-console-mcp</code> — Figma Console MCP + plugin Figma Desktop Bridge (README, DeepWiki)</li>
+<li>DesignAgent — plugin Figma Community (figma.com/community/plugin/1604428052675393154)</li>
+<li>Sherizan (Design AI Stack) — How to give Claude Code hands and eyes inside Figma (DesignAgent, bridge bidirezionale)</li>
+<li>Nick Babich — Claude Code Project Structure Best Practices (UX Planet, archive.is/…5a9c3c97f121)</li>
+<li>Nick Babich — Ultimate Claude Code Setup for Product Designers (UX Planet, archive.is/…f8b2fff4ac69)</li>
+<li>Nick Babich — cheatsheet &quot;Claude Skills&quot;, &quot;Figma Skills&quot; e &quot;File structure for design project in Claude Code&quot;</li>
+<li>(memoria di progetto) Your design system is fragmenting into agent files; My framework to make design systems AI-readable; How to make Claude Code follow your design system in Figma; CLAUDE.md best practices; How to write a DESIGN.md file Claude can actually use; Claude Code + Figma Design System; Turn Your System into a Claude Skill</li>
+</ul>
+<p><strong>Repository di skill</strong></p>
+<ul>
+<li>Lista completa degli starred di <code>mattialaurella-lotrek</code> (79 repo) + i 10 segnalati manualmente.</li>
+<li>Jack Henry (Medium) — 5 New Claude skills for UI/UX designers</li>
+</ul>
+<p><strong>Deploy</strong></p>
+<ul>
+<li>MindStudio — How to Deploy a Claude Code Project to GitHub and Vercel in Under 10 Minutes</li>
+<li>Vite — Deploying a Static Site (guida ufficiale: GitHub Pages, base path, workflow Actions)</li>
+</ul>
+<hr>
+<p><em>Bozza di lavoro. In arrivo: Sezione 2-bis (plugin per Claude Code) e Sezione 2-ter (architettura ad agenti e sub-agenti / workflow Opus), poi conversione in guida HTML per GitHub Pages.</em></p>
+
+
+        <footer class="pagefoot">
+          <span>Aggiornato il 9 luglio 2026</span>
+          <span>Generato da <code>content.md</code> · repass.io design DNA</span>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // ---- Theme toggle (auto -> light -> dark -> auto) ----
+      var root = document.documentElement;
+      var saved = localStorage.getItem("kb-theme");
+      if (saved) root.setAttribute("data-theme", saved);
+      var btn = document.getElementById("themeBtn");
+      var order = ["auto", "light", "dark"];
+      var glyph = { auto: "◐", light: "☀", dark: "☾" };
+      function render() { btn.textContent = glyph[root.getAttribute("data-theme")] || "◐"; }
+      render();
+      btn.addEventListener("click", function () {
+        var cur = root.getAttribute("data-theme") || "auto";
+        var next = order[(order.indexOf(cur) + 1) % order.length];
+        root.setAttribute("data-theme", next);
+        localStorage.setItem("kb-theme", next);
+        render();
+      });
+
+      // ---- Mobile drawer ----
+      var toc = document.getElementById("toc");
+      var scrim = document.getElementById("scrim");
+      var menu = document.getElementById("menuBtn");
+      function closeDrawer() { toc.classList.remove("open"); scrim.classList.remove("show"); menu.setAttribute("aria-expanded", "false"); }
+      menu.addEventListener("click", function () {
+        var open = toc.classList.toggle("open");
+        scrim.classList.toggle("show", open);
+        menu.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      scrim.addEventListener("click", closeDrawer);
+      toc.addEventListener("click", function (e) { if (e.target.tagName === "A") closeDrawer(); });
+
+      // ---- Scroll progress ----
+      var bar = document.getElementById("progress");
+      function onScroll() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+      }
+      document.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+
+      // ---- Scrollspy ----
+      var links = Array.prototype.slice.call(document.querySelectorAll("aside.toc a"));
+      var map = {};
+      links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
+      var heads = Array.prototype.slice.call(document.querySelectorAll(".prose h2[id], .prose h3[id]"));
+      var current = null;
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) {
+            var a = map[en.target.id];
+            if (a && a !== current) {
+              if (current) current.classList.remove("active");
+              a.classList.add("active");
+              current = a;
+              a.scrollIntoView({ block: "nearest" });
+            }
+          }
+        });
+      }, { rootMargin: "-70px 0px -70% 0px", threshold: 0 });
+      heads.forEach(function (h) { obs.observe(h); });
+    })();
+  </script>
+</body>
+</html>
