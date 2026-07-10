@@ -452,7 +452,7 @@ Se usi React Router, allinea il `basename` del router al `base` di Vite (altrime
 
 ## Repository di skill di riferimento
 
-Categorizzazione completa dei 79 repository stellati. Le categorie **A–F** sono il cuore della knowledge base (progettazione con AI, skill, Claude/Figma); **G–H** sono fondamenta/asset utili; **I–J** sono toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
+Categorizzazione completa dei 79 repository stellati. Le prime categorie sono il cuore della knowledge base (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
 
 **Dove girano queste skill.** Quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor): si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte: arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma ufficiali»). Regola pratica: strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Claude Desktop e Claude Code»).
 
