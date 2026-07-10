@@ -27,6 +27,9 @@ function stripTags(html) {
 const QUOTE_OPEN = "[\\s([{\\u2013\\u2014/-]"; // inizio riga o dopo spazio/parentesi/trattino
 function smartQuotesText(s) {
   return s
+    // tilde singola (es. "~100 token") non è strikethrough: neutralizzata a entità.
+    // "~~" (strikethrough intenzionale) preservato: entrambe le tilde sono adiacenti.
+    .replace(/(?<!~)~(?!~)/g, "&#126;")
     .replace(/«/g, "&ldquo;").replace(/»/g, "&rdquo;")
     .replace(new RegExp(`(^|${QUOTE_OPEN})"`, "g"), "$1&ldquo;")
     .replace(/"/g, "&rdquo;")
