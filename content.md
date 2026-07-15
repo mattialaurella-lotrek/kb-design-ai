@@ -152,6 +152,19 @@ Formati con funzioni diverse, spesso complementari:
 
 A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored).
 
+**Estensioni facoltative del contesto di progetto.** Su progetti più strutturati può aiutare un set esteso di markdown. Sono estensioni possibili, non file obbligatori: adottali solo se ti servono. Si scrivono in un ordine preciso, perché alcuni leggono i precedenti:
+
+- **PLAN.md**: cosa stai costruendo, per chi, i flussi principali, cosa è in scope e i non-goal, i vincoli. Va scritto per primo, perché i plugin che generano brand e voice lo leggono per farti domande sul prodotto reale invece che sul nome della cartella.
+- **BRAND.md**: chi sei (audience, personalità, promessa, carattere). È la radice da cui parole e design attingono, così restano coerenti tra loro.
+- **VOICE.md**: come parli (personalità, parole bandite, punteggiatura, con esempi). È l'equivalente a livello di progetto di uno standard editoriale come il nostro `/not-ai`: definisce le regole, e un passo di *proofread* le applica lasciando intatti codice, id, comandi e versioni.
+- **BACKLOG.md**: la coda ordinata di cosa fare (Now / Next / Later / Done). Tiene la priorità in un file che l'agente legge, non nella tua testa. Prompt tipico: "costruisci l'item a priorità più alta in @BACKLOG.md". Quando la coda supera lo schermo o serve a più persone, spostala su GitHub Issues e punta CLAUDE.md al repo.
+- **SESSIONS.md**: dove eri rimasto (cosa aspetti, i fatti che ti tocca rispiegare, un log datato con l'ultimo in cima). Da leggere per primo a ogni ripresa. Prompt tipico a fine sessione: "riassumi in @SESSIONS.md cosa abbiamo fatto". Va distinto da MEMORY.md: MEMORY.md tiene le decisioni di lungo periodo, SESSIONS.md l'handoff tra una sessione e la successiva.
+- **CONTRACT.md** (avanzato): serve solo quando il progetto ha più repo. Vive in un piccolo repo condiviso e lista ciò su cui i repo devono concordare (formati dei link, impostazioni condivise, versioni che si muovono insieme, chi possiede cosa); ogni CLAUDE.md lo importa. Regola: cambi prima il contratto, poi il codice.
+
+Questi markdown specifici, con i comandi che li generano e li applicano, funzionano con il plugin **DesignAgent** ([designagent.dev](https://designagent.dev/)): install da marketplace con `/plugin marketplace add sherizan/designagent` e `/plugin install brand@designagent` (e `voice@designagent`); poi `/brand` intervista te e scrive BRAND.md più un logo SVG, seminando VOICE.md e DESIGN.md, mentre `/voice` scrive VOICE.md e `/proofread` applica le regole di voce a una copy.
+
+**CLAUDE.md come indice, non contenitore.** Con molti file di contesto la tentazione è fare `@import` di tutti in CLAUDE.md, così l'agente ha sempre tutto. Funziona ma spreca: ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**: CLAUDE.md dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Conviene caricare sempre solo due file: **SESSIONS.md** (dove eri rimasto è sempre rilevante) e **PLAN.md** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (VOICE.md quando scrivi copy, DESIGN.md quando tocchi l'interfaccia, CONTRACT.md sul secondo repo). Test pratico: se CLAUDE.md è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
+
 ### Struttura di file e cartelle di un progetto di design
 
 Claude lavora meglio quando ha una **struttura di progetto reale**, non prompt isolati: dargli una fonte di verità *prima* di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:
