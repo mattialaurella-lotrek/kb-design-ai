@@ -152,24 +152,44 @@
       font-size: 11px; text-transform: uppercase; letter-spacing: .16em;
       color: var(--muted); font-weight: 600; margin: 0 0 14px 6px;
     }
-    aside.toc nav { display: flex; flex-direction: column; }
-    aside.toc a {
-      text-decoration: none; color: var(--ink-soft);
-      border-radius: 8px; padding: 6px 10px; display: block;
-      font-size: 14px; line-height: 1.35; transition: background .15s ease, color .15s ease;
+    aside.toc nav { display: flex; flex-direction: column; gap: 2px; }
+
+    /* Accordion group: macro-voce (H2) + sotto-lista (H3) collassabile */
+    .toc-group + .toc-group { margin-top: 4px; }
+    .toc-macro {
+      display: flex; align-items: center; gap: 8px;
+      text-decoration: none; color: var(--ink);
+      font-weight: 600; font-size: 14.5px; line-height: 1.3;
+      border-radius: 8px; padding: 8px 10px; cursor: pointer;
+      transition: background .15s ease, color .15s ease;
     }
-    aside.toc a.lvl-2 { font-weight: 600; color: var(--ink); margin-top: 14px; font-size: 14.5px; }
-    aside.toc a.lvl-3 { padding-left: 20px; margin-left: 10px; }
+    .toc-macro:hover { background: var(--accent-wash); }
+    .toc-macro .toc-macro-text { flex: 1; min-width: 0; }
+    .toc-macro.active { background: var(--accent-wash); }
+    .toc-chev { flex: none; color: var(--muted); transition: transform .22s ease; }
+    .toc-group.open > .toc-macro .toc-chev { transform: rotate(90deg); }
+    .toc-group.open > .toc-macro { color: var(--ink); }
+    @media (prefers-reduced-motion: reduce) { .toc-chev { transition: none; } }
+
+    /* Sotto-lista: animazione altezza via grid-template-rows (0fr -> 1fr) */
+    .toc-sub { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .28s ease; }
+    .toc-group.open > .toc-sub { grid-template-rows: 1fr; }
+    @media (prefers-reduced-motion: reduce) { .toc-sub { transition: none; } }
+    .toc-sub-inner { overflow: hidden; min-height: 0; }
+
+    aside.toc a.lvl-3 {
+      text-decoration: none; color: var(--ink-soft);
+      border-radius: 8px; padding: 6px 10px 6px 20px; margin-left: 12px;
+      display: block; font-size: 14px; line-height: 1.35;
+      transition: background .15s ease, color .15s ease;
+    }
+    aside.toc a.lvl-3:hover { background: var(--accent-wash); color: var(--ink); }
+    aside.toc a.lvl-3.active { color: var(--ink); background: var(--accent-wash); }
     aside.toc a.flag::before {
       content: ""; display: inline-block; vertical-align: middle;
       width: 6px; height: 6px; margin-right: 8px; border-radius: 50%;
       background: var(--accent-line);
     }
-    aside.toc a:hover { background: var(--accent-wash); color: var(--ink); }
-    aside.toc a.active {
-      color: var(--ink); background: var(--accent-wash);
-    }
-    aside.toc a.lvl-2.active { background: var(--accent-wash); }
 
     /* ---------- Main ---------- */
     main { padding: 0 6vw 120px; min-width: 0; }
@@ -200,6 +220,18 @@
       letter-spacing: -.02em; margin: 3em 0 .7em;
     }
     .prose h2:first-of-type { margin-top: 1em; }
+    /* Occhiello "Capitolo N" sopra l'attacco di sezione */
+    .prose .chapter-kicker {
+      display: flex; align-items: center; gap: 9px;
+      font-family: var(--font-display); font-size: 12px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .15em; color: var(--muted);
+      margin: 3em 0 0;
+    }
+    .prose .chapter-kicker::before {
+      content: ""; width: 22px; height: 3px; border-radius: 2px; background: var(--accent);
+    }
+    .prose .chapter-kicker + h2.has-kicker { margin-top: .34em; }
+    .prose h2.has-kicker { scroll-margin-top: 108px; }
     .prose h3 {
       font-family: var(--font-display); font-weight: 600;
       font-size: 1.28rem; letter-spacing: -.015em; line-height: 1.25;
@@ -370,7 +402,56 @@
         menu.setAttribute("aria-expanded", open ? "true" : "false");
       });
       scrim.addEventListener("click", closeDrawer);
-      toc.addEventListener("click", function (e) { if (e.target.tagName === "A") closeDrawer(); });
+
+      // ---- TOC accordion (single-open) ----
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var nav = toc.querySelector("nav");
+      var groups = Array.prototype.slice.call(nav.querySelectorAll(".toc-group"));
+      var suppressUntil = 0; // finestra in cui lo scrollspy non tocca accordion/scroll (dopo un click)
+
+      function openGroup(group) {
+        groups.forEach(function (g) {
+          var on = (g === group);
+          g.classList.toggle("open", on);
+          var m = g.querySelector(".toc-macro");
+          if (m && m.hasAttribute("aria-expanded")) m.setAttribute("aria-expanded", on ? "true" : "false");
+        });
+      }
+      if (groups.length) openGroup(groups[0]); // prima macro-voce aperta di default
+
+      // Scorre SOLO la spalla per tenere visibile il link attivo (non tocca mai la finestra:
+      // così non interrompe lo smooth-scroll della pagina — il bug "si blocca prima" su Chrome).
+      function keepLinkVisible(a) {
+        var cr = toc.getBoundingClientRect();
+        var ar = a.getBoundingClientRect();
+        if (ar.top < cr.top + 10) toc.scrollTop -= (cr.top + 10 - ar.top);
+        else if (ar.bottom > cr.bottom - 10) toc.scrollTop += (ar.bottom - (cr.bottom - 10));
+      }
+
+      function goTo(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        suppressUntil = Date.now() + 700;
+        el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        if (history.replaceState) history.replaceState(null, "", "#" + id);
+      }
+
+      nav.addEventListener("click", function (e) {
+        var a = e.target.closest("a");
+        if (!a) return;
+        e.preventDefault();
+        var id = a.getAttribute("href").slice(1);
+        if (a.classList.contains("toc-macro")) {
+          openGroup(a.closest(".toc-group")); // apre questa, chiude le altre
+          goTo(id);
+          if (a.classList.contains("toc-macro--leaf")) closeDrawer(); // Glossario/Fonti: nessuna sotto-voce
+        } else {
+          var pg = a.closest(".toc-group");
+          if (pg) openGroup(pg);
+          goTo(id);
+          closeDrawer(); // su mobile, scelta una sotto-voce si chiude il drawer
+        }
+      });
 
       // ---- Scroll progress ----
       var bar = document.getElementById("progress");
@@ -383,7 +464,7 @@
       onScroll();
 
       // ---- Scrollspy ----
-      var links = Array.prototype.slice.call(document.querySelectorAll("aside.toc a"));
+      var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
       var map = {};
       links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
       var heads = Array.prototype.slice.call(document.querySelectorAll(".prose h2[id], .prose h3[id]"));
@@ -396,7 +477,11 @@
               if (current) current.classList.remove("active");
               a.classList.add("active");
               current = a;
-              a.scrollIntoView({ block: "nearest" });
+              if (Date.now() >= suppressUntil) {
+                var g = a.closest(".toc-group"); // l'accordion segue la parte in lettura
+                if (g && !g.classList.contains("open")) openGroup(g);
+                keepLinkVisible(a);
+              }
             }
           }
         });

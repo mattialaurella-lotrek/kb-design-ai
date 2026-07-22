@@ -117,13 +117,52 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
   return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}</h${level}>`;
 });
 
+// ---- Occhielli sull'attacco delle macro-voci ----
+// H2 con sotto-sezioni -> "Capitolo N" (numerato); H2 senza figli (chiusura) -> etichetta non numerata.
+const BACKMATTER_KICKER = { glossario: "Appendice", fonti: "Riferimenti" };
+let chap = 0;
+for (let a = 0; a < toc.length; a++) {
+  if (toc[a].level !== 2) continue;
+  const hasSubs = toc[a + 1] && toc[a + 1].level === 3;
+  const label = hasSubs ? `Capitolo ${++chap}` : (BACKMATTER_KICKER[toc[a].id] || "Appendice");
+  const kicker = `<span class="chapter-kicker">${label}</span>`;
+  const h2open = `<h2 id="${toc[a].id}">`;
+  bodyHtml = bodyHtml.replace(h2open, `${kicker}<h2 id="${toc[a].id}" class="has-kicker">`);
+}
+
 // ---- Tabelle scrollabili (wrap) ----
 bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="table-wrap">${t}</div>`);
 
-// ---- TOC HTML ----
-const tocHtml = toc
-  .map((t) => `<a class="lvl-${t.level}${t.flag ? " flag" : ""}" href="#${t.id}">${t.text}</a>`)
-  .join("\n");
+// ---- TOC HTML (accordion: ogni H2 = macro-voce collassabile con le sue H3) ----
+const CHEVRON =
+  '<svg class="toc-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg>';
+
+let tocHtml = "";
+for (let k = 0; k < toc.length; ) {
+  const t = toc[k];
+  if (t.level === 2) {
+    const subs = [];
+    let j = k + 1;
+    while (j < toc.length && toc[j].level === 3) { subs.push(toc[j]); j++; }
+    const hasSubs = subs.length > 0;
+    const macro =
+      `<a class="toc-macro${hasSubs ? "" : " toc-macro--leaf"}" href="#${t.id}"${hasSubs ? ' aria-expanded="false"' : ""}>` +
+      `<span class="toc-macro-text">${t.text}</span>` +
+      (hasSubs ? CHEVRON : "") +
+      `</a>`;
+    const sub = hasSubs
+      ? `<div class="toc-sub"><div class="toc-sub-inner">` +
+        subs.map((s) => `<a class="lvl-3${s.flag ? " flag" : ""}" href="#${s.id}">${s.text}</a>`).join("\n") +
+        `</div></div>`
+      : "";
+    tocHtml += `<div class="toc-group">${macro}${sub}</div>\n`;
+    k = j;
+  } else {
+    // H3 orfana (non dovrebbe capitare): la rendo come link semplice
+    tocHtml += `<a class="lvl-3${t.flag ? " flag" : ""}" href="#${t.id}">${t.text}</a>\n`;
+    k++;
+  }
+}
 
 // ---- Data build (it-IT, senza dipendenze di ICU incerte) ----
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
