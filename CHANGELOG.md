@@ -3,6 +3,12 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-07-27]
+
+### Aggiunto
+- Tre nuovi repository al catalogo di riferimento (ora **82**): `kreako/fig2json` in «Ponte tra Claude e Figma», `alvarotrigo/fullpage.js` in «Motion, animazioni e scroll».
+- Nuova categoria **«Suono e feedback audio»** con `romainsimon/uisfx`.
+
 ## [2026-07-22]
 
 ### Aggiunto

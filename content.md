@@ -503,7 +503,7 @@ Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Crear
 
 ### Catalogo di skill di riferimento
 
-Categorizzazione completa dei 79 repository stellati. Le prime categorie sono le più centrali per il lavoro di design (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
+Categorizzazione completa degli 82 repository stellati. Le prime categorie sono le più centrali per il lavoro di design (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
 
 **Dove girano queste skill.** Quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor): si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte: arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma ufficiali»). Regola pratica: strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
@@ -532,6 +532,7 @@ Categorizzazione completa dei 79 repository stellati. Le prime categorie sono le
 - [`senlindesign/claude2figma`](https://github.com/senlindesign/claude2figma): 4 skill che tengono l'AI "sui binari" del DS (token/componenti vincolati)
 - [`renfei-design/Figma_AI_Bridge`](https://github.com/renfei-design/Figma_AI_Bridge): agent + skill per controllare Figma e automatizzare il design
 - [`sherizan/designagent-figma`](https://github.com/sherizan/designagent-figma): *DesignAgent*: bridge bidirezionale tra Claude Code e Figma (legge e modifica il canvas live, ~30 tool); plugin + MCP server, locale e gratuito
+- [`kreako/fig2json`](https://github.com/kreako/fig2json): CLI in Rust che converte i file `.fig` salvati in locale in JSON pulito e ottimizzato (rimuove metadati e valori di default), pensato per far leggere e implementare il design all'AI (HTML/CSS)
 
 ### Qualità UI, taste e wireframe
 - [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill): dà "buon gusto" all'AI, anti-slop
@@ -567,6 +568,7 @@ Categorizzazione completa dei 79 repository stellati. Le prime categorie sono le
 
 ### Motion, animazioni e scroll
 - Animazione/scroll: [`greensock/GSAP`](https://github.com/greensock/GSAP), [`darkroomengineering/lenis`](https://github.com/darkroomengineering/lenis), [`locomotivemtl/locomotive-scroll`](https://github.com/locomotivemtl/locomotive-scroll), [`michalsnik/aos`](https://github.com/michalsnik/aos), [`dixonandmoe/rellax`](https://github.com/dixonandmoe/rellax)
+- [`alvarotrigo/fullpage.js`](https://github.com/alvarotrigo/fullpage.js): siti a scorrimento full-screen, con sezioni verticali a tutta pagina e slide orizzontali; vanilla JS (jQuery opzionale) con wrapper Vue/React/Angular, per one-page, portfolio e showcase
 - [`Jakubantalik/transitions.dev`](https://github.com/Jakubantalik/transitions.dev): transizioni essenziali (con "product motion skill")
 - [`delphi-ai/animate-skill`](https://github.com/delphi-ai/animate-skill): skill animazioni Next.js/React (corso di Emil Kowalski)
 - CSS pronte: [`ibelick/animation`](https://github.com/ibelick/animation), [`tilomitra/infinite`](https://github.com/tilomitra/infinite), [`IanLunn/Hover`](https://github.com/IanLunn/Hover)
@@ -575,6 +577,9 @@ Categorizzazione completa dei 79 repository stellati. Le prime categorie sono le
 - SVG/3D/canvas: [`renatoworks/3dsvg`](https://github.com/renatoworks/3dsvg), [`meodai/heerich`](https://github.com/meodai/heerich), [`edoardolunardi/infinite-canvas`](https://github.com/edoardolunardi/infinite-canvas)
 - [`codrops/*`](https://github.com/codrops): demo di effetti e transizioni (ImageToGridTransition, StickySections, ScrollBlurTypography, SidebarTransitions, PageTransitions, HoverEffectIdeas, ElasticGridScroll, ImageExpansionTypography, depth-gallery e fork/tutorial relativi)
 - Tutorial Codrops (singoli): [`gaspoorf/curve-gallery`](https://github.com/gaspoorf/curve-gallery): galleria 3D scroll-driven con camera lungo un path Blender (Three.js + GSAP) e focus dinamico sulle immagini; [`Ibaliqbal/codrops-motion-path-transition`](https://github.com/Ibaliqbal/codrops-motion-path-transition): thumbnail che fluiscono tra stack e layout con il plugin GSAP MotionPath; [`bnpne/page-transitions-with-webgpu-vanilla-js`](https://github.com/bnpne/page-transitions-with-webgpu-vanilla-js): page transition interattive con WebGPU e Vanilla JS (Vite)
+
+### Suono e feedback audio
+- [`romainsimon/uisfx`](https://github.com/romainsimon/uisfx): *UI SFX*, sistema sonoro semantico per interfacce: 78 effetti in 12 "personalità" audio richiamati per nome (`success`, `drop`…) invece che gestendo i singoli file; TypeScript su Web Audio API, ~12KB e zero dipendenze, per web app, mobile, SaaS e giochi
 
 ### Agenti, CLI, plugin e infrastruttura
 - [`anthropics/claude-code`](https://github.com/anthropics/claude-code): Claude Code (riferimento) · [`agno-agi/agno`](https://github.com/agno-agi/agno): framework piattaforme di agenti
