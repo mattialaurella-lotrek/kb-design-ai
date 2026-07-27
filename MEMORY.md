@@ -30,6 +30,9 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 - **Scrollspy deterministico**: l'attivo è l'ultimo titolo il cui bordo superiore ha oltrepassato la linea di lettura (`READ_LINE`, ~90px, coerente con `scroll-padding-top`), calcolato su `scroll` throttlato via `requestAnimationFrame`. Sostituisce il vecchio `IntersectionObserver` enter-only, che sfarfallava aprendo/chiudendo gli accordion ai confini di sezione. La spalla scorre da sé (`keepLinkVisible`) senza toccare la finestra; i click hanno una finestra `suppressUntil` (700ms) in cui lo scrollspy non interviene.
 - **Occhielli di capitolo**: «Capitolo N» sulle H2 con sotto-sezioni (numerazione automatica), etichette non numerate su Glossario/Fonti via la mappa `BACKMATTER_KICKER` in `build.mjs`.
 
+## Fonti esterne integrate
+- **UX-context design** (NN/g, Tony Alicea, 24 luglio 2026): integrato il 2026-07-27 come sezione propria dopo «I file di contesto», più la voce `UX.md` nell'elenco dei file, il glossario, le fonti e gli schemi di struttura. `UX.md` è dichiarato come proposta, non come formato con spec: se NN/g o altri lo consolidano, la sezione va rivista.
+
 ## In sospeso / da valutare
 - **Variante indice «macro-voce solo espande»** (senza scroll del contenuto al click): valutata ma non adottata; l'utente ci ripenserà.
 - **Differenziazione visiva degli occhielli di chiusura** (Appendice/Riferimenti) dai capitoli: possibile, non fatta.

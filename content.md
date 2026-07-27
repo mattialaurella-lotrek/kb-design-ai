@@ -19,6 +19,7 @@ Come leggerla: la prima parte copre context engineering e prompting, la seconda 
   - Il quadro d'insieme
   - Dividere il lavoro tra Claude Desktop e Claude Code
   - I file di contesto
+  - UX-context design
   - Struttura di file e cartelle
   - Setup e loop con Figma MCP
   - Tre modi di collegare Figma a confronto
@@ -139,6 +140,7 @@ Formati con funzioni diverse, spesso complementari:
 - **CLAUDE.local.md**: le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.
 - **AGENTS.md**: il **livello di orchestrazione**: non è documentazione del design system, ma dice all'agente *dove* guardare per ogni cosa (quale file ha i token canonici, dove vive la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno: poche ore di scrittura, consultato di continuo.
 - **DESIGN.md**: l'identità visiva condensata: front matter YAML con i token + corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts).
+- **UX.md**: quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se DESIGN.md dice come deve apparire il prodotto, UX.md dice per chi è e come deve comportarsi: i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista e nessuno strumento lo carica in automatico: è una proposta di NN/g del luglio 2026. Copre però un vuoto che gli altri file lasciano aperto (vedi «UX-context design»).
 - **MEMORY.md**: memoria di progetto a lungo termine: decisioni prese e contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
 - **SKILL.md**: conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. Struttura a *progressive disclosure*: i metadati (~100 token) caricano per primi e decidono se la skill è rilevante; il corpo markdown (~500–2000 token) dà le istruzioni; i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve.
 
@@ -157,6 +159,26 @@ Questi markdown specifici, con i comandi che li generano e li applicano, funzion
 
 **CLAUDE.md come indice, non contenitore.** Con molti file di contesto la tentazione è fare `@import` di tutti in CLAUDE.md, così l'agente ha sempre tutto. Funziona ma spreca: ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**: CLAUDE.md dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Conviene caricare sempre solo due file: **SESSIONS.md** (dove eri rimasto è sempre rilevante) e **PLAN.md** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (VOICE.md quando scrivi copy, DESIGN.md quando tocchi l'interfaccia, CONTRACT.md sul secondo repo). Test pratico: se CLAUDE.md è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
 
+### UX-context design
+
+I file di contesto visti finora descrivono il prodotto: token, componenti, comandi, decisioni tecniche. Nessuno dice per chi è fatto. Così l'AI progetta per un utente medio, perché è l'unico che conosce: schermate corrette e generiche, che nessuna ricerca ha mai toccato. NN/g usa l'immagine della casa progettata senza sapere chi ci abiterà.
+
+**UX-context design** è il nome che NN/g dà alla pratica di raccogliere e curare quello che un'organizzazione sa e vuole dentro il contesto che guida ciò che i suoi strumenti AI generano (Tony Alicea, luglio 2026). Il ragionamento sta in una frase: se l'AI fa una fetta crescente del lavoro di costruzione, il primo lettore dei deliverable di ricerca diventa il modello. Un report di usabilità in PDF non entra mai nella finestra di contesto di una sessione; le stesse tre righe in un markdown dentro il repo ci entrano ogni volta, e riemergono in posti che non avevi previsto, ovunque qualcuno del team stia usando l'AI.
+
+**Cosa ci va dentro.** Cinque famiglie di contenuto, che l'articolo raggruppa sotto il nome di lavoro `UX.md`:
+
+- **Sintesi di ricerca**: i finding principali scritti come vincoli su cui l'agente può ragionare. «Gli utenti abbandonano il setup se devono cercare dati che non hanno sottomano» è usabile; «il 62% dei partecipanti ha mostrato frustrazione nella fase 2» non lo è.
+- **Standard di interazione**: come si comporta il prodotto. Quando chiedere conferma e quando invece offrire un undo, come sono formulati gli errori, cosa è reversibile e cosa no.
+- **Glossario**: le parole che il prodotto e i suoi esperti di dominio usano, con le definizioni. Serve a impedire all'AI di inventare sinonimi: se in azienda si dice «pratica» e non «richiesta», l'interfaccia deve dire pratica.
+- **Modello dell'utente**: cosa la ricerca ha stabilito sulle persone che lo usano, dalle competenze agli obiettivi ai punti di attrito ricorrenti.
+- **Modello del mondo**: le condizioni in cui lavorano. Interruzioni continue, un turno di notte, uno schermo condiviso con un collega, un vincolo normativo che non si può aggirare.
+
+Le ultime due sono quelle che cambiano di più l'output, e anche le più difficili da recuperare a posteriori: vivono nella testa di chi ha condotto le interviste.
+
+**Come tenerlo.** Su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «CLAUDE.md come indice, non contenitore»: l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza del «Context rot»: un UX.md che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Ci va la sintesi, non i verbatim. E va curato di continuo: ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
+
+**Da dove partire.** NN/g presenta `UX.md` come ipotesi, non come formato con una spec al modo di DESIGN.md, e lascia aperte le domande che contano: quali artefatti di ricerca migliorano davvero l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte: prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
+
 ### Struttura di file e cartelle
 
 Claude lavora meglio quando ha una **struttura di progetto reale**, non prompt isolati: dargli una fonte di verità *prima* di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:
@@ -167,6 +189,7 @@ product-design/
 ├── CLAUDE.md             ← brief di progetto, letto a ogni sessione
 ├── CLAUDE.local.md       ← preferenze personali (gitignored)
 ├── DESIGN.md             ← identità visiva, regole di design, direzione UI
+├── UX.md                 ← utenti, contesto d'uso, standard di interazione
 ├── MEMORY.md             ← memoria a lungo termine, decisioni e contesto
 ├── .mcp.json             ← connessioni Figma, Notion, GitHub
 # TEAM TOOLKIT
@@ -180,6 +203,12 @@ product-design/
 │   ├── brief.md                 ← obiettivo, audience, scope
 │   ├── product-requirements.md  ← feature, flussi, requisiti funzionali
 │   └── design-decisions.md      ← perché certe scelte di design
+├── ux/                          ← se UX.md cresce: un file per famiglia
+│   ├── research-synthesis.md    ← finding scritti come vincoli
+│   ├── interaction-standards.md ← conferme, undo, errori
+│   ├── glossary.md              ← le parole del dominio
+│   ├── user-models.md           ← competenze, obiettivi, attriti
+│   └── world-models.md          ← condizioni d'uso e vincoli
 # YOUR PROJECT
 ├── src/components/       ← UI reale che Claude legge e modifica
 ├── public/images/        ← immagini, loghi, illustrazioni reali
@@ -208,6 +237,7 @@ Una variante più snella, sufficiente per molti progetti:
 │   └── interaction-patterns.md
 ├── CLAUDE.md
 ├── DESIGN.md
+├── UX.md
 └── .mcp.json
 ```
 
@@ -619,6 +649,7 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 
 - **MCP (Model Context Protocol)**: standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
 - **Design context**: l'insieme strutturato di dati di un layer che l'MCP di Figma espone (gerarchia, layout, variabili, componenti, token), diverso da uno screenshot.
+- **UX-context design**: pratica di raccogliere e curare in file leggibili dall'AI ciò che l'organizzazione sa sugli utenti e vuole dal prodotto, così da guidare tutto quello che i suoi strumenti AI generano (NN/g, 2026). Vedi «UX-context design».
 - **Context rot**: degrado della qualità delle risposte quando la finestra di contesto si riempie di materiale accessorio (falsi avvii, debug, divagazioni). Vedi «Context rot».
 - **Auto Layout**: sistema di Figma che rende i frame reattivi, con spaziature, allineamenti e ridimensionamento automatici; un file in Auto Layout è più leggibile dall'AI.
 - **Code Connect**: mappatura ufficiale di Figma che lega un componente Figma al componente di codice reale, così l'agente usa quello vero invece di ricostruirne uno simile. Vedi «Tre modi di collegare Figma a confronto» e «Le skill Figma ufficiali».
@@ -637,6 +668,7 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 - Addy Osmani, Context Engineering: Bringing Engineering Discipline to Prompts
 - Design with AI, Five insights from workflows to think, test, build, ship with AI
 - NN/g, AI prototyping; Testing AI methodology; Vague prototyping
+- NN/g, Tony Alicea, UX-Context Design (luglio 2026): la ricerca UX come contesto che guida l'output dell'AI, e l'ipotesi di un file UX.md
 - (memoria di progetto) Context engineering; How I use AI to partner on design problems; Context is the new component library for AI agents; Design with AI (IAAD)
 
 **Claude e Figma**

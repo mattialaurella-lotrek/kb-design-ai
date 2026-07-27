@@ -6,6 +6,9 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 ## [2026-07-27]
 
 ### Aggiunto
+- Nuova sezione **«UX-context design»** nel capitolo «Flusso ottimale tra Claude e Figma», subito dopo «I file di contesto»: la tesi NN/g (Tony Alicea, luglio 2026) sulla ricerca UX come contesto per l'AI, le cinque famiglie di contenuto di `UX.md`, come tenerlo e da dove partire.
+- Voce **UX.md** nell'elenco dei file di contesto, voce «UX-context design» nel Glossario e l'articolo NN/g tra le Fonti.
+- Gli schemi di struttura del progetto includono ora `UX.md` (entrambe le varianti) e la cartella `ux/` con un file per famiglia.
 - Tre nuovi repository al catalogo di riferimento (ora **82**): `kreako/fig2json` in «Ponte tra Claude e Figma», `alvarotrigo/fullpage.js` in «Motion, animazioni e scroll».
 - Nuova categoria **«Suono e feedback audio»** con `romainsimon/uisfx`.
 
