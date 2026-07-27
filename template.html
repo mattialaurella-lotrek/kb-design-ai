@@ -464,29 +464,44 @@
       onScroll();
 
       // ---- Scrollspy ----
+      // Attivo = ultimo titolo il cui bordo superiore ha oltrepassato la linea di lettura.
+      // Deterministico e monotòno con lo scroll (un solo punto di crossing), così l'accordion
+      // si apre/chiude una volta sola per confine: niente flip-flop dei gruppi ai confini di
+      // sezione, che col vecchio IntersectionObserver enter-only rendeva l'effetto scattoso.
       var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
       var map = {};
       links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
       var heads = Array.prototype.slice.call(document.querySelectorAll(".prose h2[id], .prose h3[id]"));
       var current = null;
-      var obs = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (en.isIntersecting) {
-            var a = map[en.target.id];
-            if (a && a !== current) {
-              if (current) current.classList.remove("active");
-              a.classList.add("active");
-              current = a;
-              if (Date.now() >= suppressUntil) {
-                var g = a.closest(".toc-group"); // l'accordion segue la parte in lettura
-                if (g && !g.classList.contains("open")) openGroup(g);
-                keepLinkVisible(a);
-              }
-            }
-          }
-        });
-      }, { rootMargin: "-70px 0px -70% 0px", threshold: 0 });
-      heads.forEach(function (h) { obs.observe(h); });
+      var spyTicking = false;
+      var READ_LINE = 90; // coerente con scroll-padding-top
+
+      function setActive(a) {
+        if (!a || a === current) return;
+        if (current) current.classList.remove("active");
+        a.classList.add("active");
+        current = a;
+        if (Date.now() >= suppressUntil) {
+          var g = a.closest(".toc-group"); // l'accordion segue la parte in lettura
+          if (g && !g.classList.contains("open")) openGroup(g);
+          keepLinkVisible(a);
+        }
+      }
+
+      function updateSpy() {
+        spyTicking = false;
+        var active = heads[0];
+        for (var i = 0; i < heads.length; i++) {
+          if (heads[i].getBoundingClientRect().top - READ_LINE <= 1) active = heads[i];
+          else break; // heads è in ordine di documento: oltre il primo non ancora passato, stop
+        }
+        if (active) setActive(map[active.id]);
+      }
+
+      document.addEventListener("scroll", function () {
+        if (!spyTicking) { spyTicking = true; requestAnimationFrame(updateSpy); }
+      }, { passive: true });
+      if (heads.length) updateSpy(); // stato iniziale (anche se si arriva con un #ancora)
     })();
   </script>
 </body>

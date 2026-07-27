@@ -9,6 +9,9 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - Tre nuovi repository al catalogo di riferimento (ora **82**): `kreako/fig2json` in «Ponte tra Claude e Figma», `alvarotrigo/fullpage.js` in «Motion, animazioni e scroll».
 - Nuova categoria **«Suono e feedback audio»** con `romainsimon/uisfx`.
 
+### Corretto
+- **Scrollspy dell'indice laterale**: sostituito l'`IntersectionObserver` enter-only con un rilevamento deterministico (ultimo titolo oltre la linea di lettura, throttlato via `requestAnimationFrame`). Elimina il flip-flop apri/chiudi degli accordion ai confini di sezione durante lo scroll.
+
 ## [2026-07-22]
 
 ### Aggiunto

@@ -27,6 +27,7 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 
 ## Interfaccia
 - **Indice laterale ad accordion** single-open: le macro-voci (H2) collassano le sotto-voci (H3), prima aperta di default, chevron, e l'accordion segue la parte in lettura. Markup generato in `build.mjs` (`.toc-group`/`.toc-macro`/`.toc-sub`), stile e logica in `template.html`.
+- **Scrollspy deterministico**: l'attivo è l'ultimo titolo il cui bordo superiore ha oltrepassato la linea di lettura (`READ_LINE`, ~90px, coerente con `scroll-padding-top`), calcolato su `scroll` throttlato via `requestAnimationFrame`. Sostituisce il vecchio `IntersectionObserver` enter-only, che sfarfallava aprendo/chiudendo gli accordion ai confini di sezione. La spalla scorre da sé (`keepLinkVisible`) senza toccare la finestra; i click hanno una finestra `suppressUntil` (700ms) in cui lo scrollspy non interviene.
 - **Occhielli di capitolo**: «Capitolo N» sulle H2 con sotto-sezioni (numerazione automatica), etichette non numerate su Glossario/Fonti via la mappa `BACKMATTER_KICKER` in `build.mjs`.
 
 ## In sospeso / da valutare
