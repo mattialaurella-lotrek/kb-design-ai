@@ -1,4 +1,4 @@
-# Progettare con l'AI: knowledge base del team di design Lotrek
+# Progettare con l'AI, una guida per non perdere la rotta (e il senno)
 
 Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI nel team di design. Ti serve per tre cose: impostare un progetto con context engineering e prompting, far lavorare insieme Claude e Figma, e scegliere le skill già pronte da cui partire. Il taglio è operativo: metodi, comandi e strumenti concreti.
 
@@ -9,7 +9,7 @@ Come leggerla: la prima parte copre context engineering e prompting, la seconda 
 - **Context engineering e prompting**
   - Dal comando al contesto
   - Context rot
-  - I quattro layer del contesto
+  - I quattro livelli del contesto
   - Tecniche di prompting
   - Framework di prompting
   - Checklist pre-task e segnali
@@ -43,7 +43,7 @@ Come leggerla: la prima parte copre context engineering e prompting, la seconda 
 
 ### Dal comando al contesto
 
-Il problema di gran parte del lavoro con l'AI non è il "prompt scritto male": è non aver dato al modello le informazioni per ragionare con chiarezza. Aggiungere dettaglio non equivale ad aggiungere qualità. Anzi, oltre una certa soglia l'accuratezza cala. Il *context engineering* è "design thinking applicato all'AI": si struttura il contesto come si progetta un sistema, e l'AI diventa un collaboratore affidabile invece di un generatore di varianti casuali.
+Quasi tutti i risultati deludenti con l'AI hanno la stessa causa: al modello mancavano le informazioni per ragionare. Riscrivere il prompt non gliele aggiunge. E nemmeno allungarlo: oltre una certa soglia il dettaglio in più fa calare l'accuratezza. Il *context engineering* è la disciplina che tratta il contesto come un sistema da progettare, decidendo cosa entra, in che ordine e con quali vincoli.
 
 La definizione utile da tenere a mente è quella di Anthropic: curare **il più piccolo insieme possibile di token ad alto segnale** che massimizza la probabilità del risultato voluto. È l'opposto dell'istinto comune ("carico tutto: brand PDF + ricerca + design system"). Caricare tutto fa peggiorare l'output, non migliorarlo: il modello si distrae e "dimentica" i vincoli. Vale lo stesso principio della progressive disclosure nell'interfaccia: si rivela l'informazione quando è rilevante.
 
@@ -59,24 +59,24 @@ Anche partendo da un contesto curato, la qualità si degrada col tempo: falsi av
 - **Riassumere e ripartire**: chiudere l'istanza, fare un summary, aprirne una nuova col summary come seme.
 - **Confini espliciti**: marcare le sezioni ("tentativi precedenti, solo riferimento" vs "contesto di lavoro attuale").
 - **Checkpoint periodici**: far riassumere stato e decisioni a intervalli regolari.
-- **Non "buttare tutto dentro"**: la gestione intenzionale dell'informazione (cosa includere, cosa escludere, quando rinfrescare) è parte del lavoro. Anche gli strumenti collegati pesano: gli MCP attivi occupano la finestra di contesto (vedi «Setup e loop con Figma MCP»).
+- **Non "buttare tutto dentro"**: decidere cosa includere, cosa escludere e quando rinfrescare pesa quanto scrivere la richiesta. Anche gli strumenti collegati occupano spazio: ogni MCP attivo si mangia una fetta della finestra (vedi «Setup e loop con Figma MCP»).
 
-### I quattro layer del contesto
+### I quattro livelli del contesto
 
 Un framework per capire cos'è "buon contesto":
 
 1. **Design system**: il vocabolario e le regole fondamentali. All'AI non serve il file Figma o un PDF: servono token colore come variabili CSS (`--color-primary-500`), una scala di spaziatura con rapporti chiari, componenti d'esempio che mostrano i token in uso, e soprattutto **naming semantico che rivela l'intento**. `--color-text-primary` dice qualcosa che `#1a1a1a` non dice: l'AI può ragionare sull'intento, non su un hex arbitrario.
 2. **Brand guidelines**: trasformare le linee guida da PDF aspirazionale a vincoli operativi. Bloccare gli elementi critici (logo, colori primari, type core), dichiarare esplicitamente le aree di libertà, definire confini concreti ("Headline in Inter Bold, 24–48px" non "headline moderne").
-3. **User research**: il layer più sottovalutato. Tiene le proposte ancorate alla realtà: demografia, requisiti di accessibilità (livelli WCAG, tecnologie assistive), pattern di comportamento reali, edge case e localizzazione. È la differenza tra "generatore di varianti" e "collaboratore informato".
+3. **User research**: il livello più sottovalutato. Tiene le proposte ancorate alla realtà: demografia, requisiti di accessibilità (livelli WCAG, tecnologie assistive), pattern di comportamento reali, edge case e localizzazione. Senza, l'AI progetta per l'utente medio, l'unico che conosce.
 4. **Workflow**: come si strutturano le richieste (vedi «Tecniche di prompting»).
 
 ### Tecniche di prompting
 
 - **Chain-of-thought**: invece di chiedere l'output finale, si struttura la richiesta in passi (analizza lo stato → individua i vincoli → genera 3 approcci → valuta ciascuno contro i vincoli e raccomanda). Migliora i risultati e rende il ragionamento trasparente: si intercettano gli errori a metà processo.
 - **Tree-of-thought**: per decisioni strategiche con trade-off, esplora più percorsi di ragionamento; si vede l'albero decisionale, non solo la conclusione.
-- **Scomporre i task complessi** in sotto-task focalizzati su un problema alla volta.
-- **Ancorare all'intento dell'utente**, non solo al visivo: obiettivi e comportamenti, non solo estetica.
-- **Usare i vincoli come guida**: piattaforma, accessibilità, brand sono strumenti per output realistici e coerenti.
+- **Spezzare i task lunghi**: un problema per richiesta. Un task che tocca insieme layout, copy e stati torna sbagliato in tutti e tre.
+- **Partire dall'obiettivo dell'utente**: cosa deve riuscire a fare, e in quanti passi. La forma visiva discende da lì.
+- **Dichiarare i vincoli prima del task**: piattaforma, soglie di accessibilità, regole di brand. Un vincolo scritto restringe lo spazio delle risposte, uno sottinteso viene ignorato.
 - **Tradurre lo stile in implementazione**: "rendilo moderno" non significa nulla operativamente; va convertito in regole ("ritmo 8px", "gerarchia primario/secondario chiara", "stati hover/focus/disabled visibili").
 
 ### Framework di prompting
@@ -97,9 +97,7 @@ Il contesto va **prima** del task (l'AI processa in sequenza: ciò che vede prim
 
 ### Human-in-the-loop
 
-Il lavoro critico va fatto **prima** di coinvolgere l'AI: ricerca, framing, ipotesi. Ogni elemento generato va validato per funzionalità e allineamento al brand. La competenza più importante non è la padronanza di Figma o Claude, ma saper guardare una soluzione generata e chiedersi se è quella giusta, quali assunzioni fa, cosa non stiamo vedendo. E verificare sempre le fonti che l'AI cita: sa di doversi attenere ai dati di progetto, ma può comunque allucinare.
-
----
+Il lavoro critico va fatto **prima** di coinvolgere l'AI: ricerca, framing, ipotesi. Ogni cosa generata va poi provata su due domande: funziona, e sta dentro il brand? La competenza che conta è saper guardare una soluzione già pronta e chiedersi se è quella giusta, quali assunzioni fa, cosa non stiamo vedendo. Pesa più della padronanza di Figma o di Claude. E le fonti che l'AI cita vanno sempre verificate: sa di doversi attenere ai dati di progetto, e può comunque allucinare.
 
 ## Flusso ottimale tra Claude e Figma
 
@@ -109,11 +107,11 @@ Tre ruoli che si combinano:
 
 - **Claude** come collaboratore in conversazione (per affinare il brief, ragionare, generare e iterare).
 - **Figma** come libreria visiva e, con l'MCP, superficie leggibile/scrivibile dall'AI.
-- **Le skill** come "briefing permanente": si scrivono una volta, l'AI le carica automaticamente quando il task corrisponde. Zero ri-spiegazioni, zero context drift, zero token sprecati nel setup.
+- **Le skill** come "briefing permanente": si scrivono una volta e l'AI le carica quando il task corrisponde. Il costo del setup si paga una volta sola invece che a ogni sessione.
 
 ### Dividere il lavoro tra Claude Desktop e Claude Code
 
-Due ambienti con punti di forza diversi: conviene assegnare a ciascuno la parte per cui è più adatto, invece di forzarne uno solo.
+Due ambienti con vincoli diversi: uno vede i tuoi file, l'altro no. È quella differenza a decidere cosa conviene fare dove.
 
 - **Claude in chat (web o app desktop)**: ambiente conversazionale, con un set di skill fisso e senza accesso al filesystem locale. È il posto giusto per la parte *a monte*: ricerca e sintesi delle fonti, ragionamento strategico, stesura di brief, spec e documenti in markdown, esplorazione di opzioni. Ottimo per produrre l'artefatto testuale che poi guiderà la costruzione (un `DESIGN.md`, un PRD, la sintesi di una knowledge base). Non fa girare skill di coding (es. `frontend-slides`), non apre un progetto locale, non si collega agli MCP locali.
 - **Claude Code (Terminal o dentro VS Code)**: vive in una **cartella di progetto locale** e ha accesso a file, git, MCP e alle skill installate sulla tua macchina. È il posto giusto per la parte *a valle*: costruire l'artefatto (deck HTML, prototipo, componenti), collegare Figma via MCP nativo o via bridge, eseguire workflow e skill locali, fare commit e deploy.
@@ -146,7 +144,7 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 **Estensioni facoltative del contesto di progetto.** Su progetti più strutturati può aiutare un set esteso di markdown. Sono estensioni possibili, non file obbligatori: adottali solo se ti servono. Si scrivono in un ordine preciso, perché alcuni leggono i precedenti:
 
-- **PLAN.md**: cosa stai costruendo, per chi, i flussi principali, cosa è in scope e i non-goal, i vincoli. Va scritto per primo, perché i plugin che generano brand e voice lo leggono per farti domande sul prodotto reale invece che sul nome della cartella. La lista dei non-goal, il «questo no, e non adesso», è la parte che si tende a saltare ed è l'unico freno che tiene davvero: gli agenti allargano lo scope di continuo, e lo fanno con le migliori intenzioni.
+- **PLAN.md**: cosa stai costruendo, per chi, i flussi principali, cosa è in scope e i non-goal, i vincoli. Va scritto per primo, perché i plugin che generano brand e voice lo leggono per farti domande sul prodotto reale invece che sul nome della cartella. La lista dei non-goal, il «questo no, e non adesso», è la parte che si tende a saltare ed è l'unico freno che regge: gli agenti allargano lo scope di continuo, e lo fanno con le migliori intenzioni.
 - **BRAND.md**: chi sei (audience, personalità, promessa, carattere). È la radice da cui parole e design attingono, così restano coerenti tra loro.
 - **VOICE.md**: come parli (personalità, parole bandite, punteggiatura, con esempi). È l'equivalente a livello di progetto di uno standard editoriale: definisce le regole, e un passo di *proofread* le applica lasciando intatti codice, id, comandi e versioni.
 - **BACKLOG.md**: la coda ordinata di cosa fare (Now / Next / Later / Done). Tiene la priorità in un file che l'agente legge, non nella tua testa. Prompt tipico: "costruisci l'item a priorità più alta in @BACKLOG.md". Quando la coda supera lo schermo o serve a più persone, spostala su GitHub Issues e punta CLAUDE.md al repo.
@@ -236,11 +234,11 @@ Le ultime due sono quelle che cambiano di più l'output, e anche le più diffici
 
 **Come tenerlo.** Su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «CLAUDE.md come indice, non contenitore»: l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza del «Context rot»: un UX.md che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Ci va la sintesi, non i verbatim. E va curato di continuo: ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
 
-**Da dove partire.** NN/g presenta `UX.md` come ipotesi, non come formato con una spec al modo di DESIGN.md, e lascia aperte le domande che contano: quali artefatti di ricerca migliorano davvero l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte: prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
+**Da dove partire.** NN/g presenta `UX.md` come ipotesi, non come formato con una spec al modo di DESIGN.md, e lascia aperte le domande che contano: quali artefatti di ricerca spostano l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte: prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
 
 ### Struttura di file e cartelle
 
-Claude lavora meglio quando ha una **struttura di progetto reale**, non prompt isolati: dargli una fonte di verità *prima* di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:
+Claude lavora meglio dentro una **cartella di progetto** che dentro un prompt: gli dai la fonte di verità *prima* di chiedergli di generare qualcosa. Una struttura completa e orientata al design (modello Nick Babich) raggruppa i file per funzione:
 
 ```
 product-design/
@@ -387,7 +385,7 @@ A queste si affiancano due skill Figma orientate al codice, citate nelle altre f
 
 ### Enforcement del design system
 
-L'AI è capace di scrivere Figma e di scrivere React; il divario tra strumento potente e strumento usabile è spesso solo un insieme di regole che nessuno ha scritto. Esempio di "catena di governance" (pattern delle 4 skill di `claude2figma`): il comportamento di default dell'AI è *inventare*; la regola lo cambia in *prima cerca* ("look up before invent"). La skill più essenziale è il **token binding/QA**: ogni proprietà visiva (colore, type, spaziatura, raggio) deve legarsi alla variabile/stile corrispondente (niente valori grezzi), e dopo la scrittura su Figma parte una QA che verifica i binding uno a uno (riporta `#5C6AC4` a `color/brand/primary`).
+L'AI sa scrivere su Figma e sa scrivere React. A separare uno strumento potente da uno di cui ti puoi fidare è quasi sempre un insieme di regole che nessuno ha messo per iscritto. Esempio di "catena di governance" (pattern delle 4 skill di `claude2figma`): il comportamento di default dell'AI è *inventare*; la regola lo cambia in *prima cerca* ("look up before invent"). La skill più essenziale è il **token binding/QA**: ogni proprietà visiva (colore, type, spaziatura, raggio) deve legarsi alla variabile/stile corrispondente (niente valori grezzi), e dopo la scrittura su Figma parte una QA che verifica i binding uno a uno (riporta `#5C6AC4` a `color/brand/primary`).
 
 Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assistente di design" produce output che un umano può riprendere e modificare (DS enforcement attivo); in modalità "prototipo rapido" la velocità ha priorità sull'enforcement e i valori grezzi sono accettati.
 
@@ -395,7 +393,7 @@ Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assis
 
 ### Rendere il design system leggibile dall'AI
 
-Se gli agenti vedono solo valori grezzi e hex (nessun riferimento ai token, nessun significato semantico), costruiscono componenti con valori hardcoded scollegati dalla fonte di verità → debito tecnico, inconsistenza, gap di accessibilità.
+Un agente che vede solo hex e valori grezzi, senza riferimenti ai token né significato semantico, scrive componenti con gli stili incollati dentro. Quei componenti smettono di essere agganciati alla fonte di verità: al primo cambio di palette restano indietro, e i contrasti che qualcuno aveva verificato si perdono per strada.
 
 Il design system più leggibile dall'AI segue tre livelli di token:
 
@@ -407,7 +405,7 @@ Il design system più leggibile dall'AI segue tre livelli di token:
 
 **Documenta anche gli stati.** Il difetto più comune delle spec di componente è descrivere il default e fermarsi lì. All'agente servono anche *hover*, *active*, *disabled*, *loading* e *focus*: sono esattamente i punti in cui, senza indicazioni, inventa.
 
-Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi validare la token accuracy prima/dopo. Espandere di settimana in settimana finché il DS diventa AI-native.
+Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi misurare quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
 
 ### Comandi e subagent per il design
 
@@ -556,8 +554,6 @@ Se usi React Router, allinea il `basename` del router al `base` di Vite (altrime
 
 **Quale scegliere.** *GitHub Pages*: solo statico (HTML/CSS/JS o SPA buildate), gratis, perfetto per portfolio, landing e per pubblicare questa knowledge base; nessun backend o serverless, e va gestito il base path. *Vercel*: statico **e** framework con SSR/funzioni serverless (es. API routes di Next.js), preview per ogni PR, variabili d'ambiente gestite, zero-config sulla maggior parte dei framework; è la via più liscia per un prototipo condivisibile in fretta e che potrebbe crescere verso funzioni dinamiche. Entrambe danno HTTPS e ripubblicazione automatica a ogni push.
 
----
-
 ## Lavorare con le skill
 
 Questa parte prima spiega cosa sono le skill e come si costruiscono, poi raccoglie il catalogo dei repository di riferimento da cui partire.
@@ -570,7 +566,7 @@ Il paragone più vicino è la GPT personalizzata: entrambe seguono una procedura
 
 **Come si attiva.** Una volta creata e caricata, la skill parte da sola quando il prompt corrisponde alla sua `description`: scrivi «voglio creare una skill» e Claude carica la skill che ha quel caso tra i trigger, poi legge le istruzioni e le esegue. È lo stesso principio di progressive disclosure delle skill Figma: a differenza di CLAUDE.md, che l'AI rilegge a ogni sessione, la skill si carica solo quando serve e consuma meno token. L'auto-attivazione non è sempre affidabile: se la `description` è scritta male, conviene dire esplicitamente «usa la skill xxx». Per le skill che usi spesso, crea uno slash command e le richiami con «/».
 
-**Quando conviene costruirne una.** Quando ti accorgi di ripetere le stesse istruzioni. Le skill si aggiornano con facilità e migliorano nel tempo: dopo aver messo a punto un workflow, aggiorni la skill perché la volta dopo Claude faccia meglio («aggiorna la skill xxx di conseguenza»). L'altro caso utile è passare al team un metodo che hai già trovato: come una ricetta, chi la segue arriva a un risultato simile senza ricostruire ogni dettaglio.
+**Quando conviene costruirne una.** Quando ti accorgi di ripetere le stesse istruzioni. Una skill si aggiorna in un minuto: messo a punto un workflow, lo riversi dentro perché la volta dopo Claude parta da lì («aggiorna la skill xxx di conseguenza»). L'altro caso utile è passare al team un metodo che hai già trovato, così chi lo segue arriva a un risultato simile senza ricostruire ogni dettaglio.
 
 **Com'è fatta.** Una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può stare a due livelli: **globale** (nella cartella root di Claude sul computer, si attiva in qualsiasi progetto: comodo per le skill che usi ovunque) o **di progetto** (dentro la cartella del progetto, si attiva solo lì: utile per il team, perché in un repo GitHub condiviso la skill diventa disponibile a tutti). Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti: il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice: è testo in linguaggio naturale. Lo scheletro minimo:
 
@@ -591,14 +587,14 @@ Descrivi come dev'essere l'output finale.
 **Come crearne o caricarne una.** Tre strade:
 
 - **Fartela scrivere da Claude.** Descrivi il compito: «Generami una skill Claude a partire da questa esigenza: [descrizione del task]».
-- **Partire da una skill già fatta.** Anthropic ne pubblica alcune «ufficiali» ([`anthropics/skills`](https://github.com/anthropics/skills)), ampie e generiche: conviene leggerne la `description` prima di adottarle. `frontend-design`, la più usata, dà istruzioni precise (evita i font generici Arial e Inter, layout attesi, elementi che rompono la griglia, indicazioni di motion): capire cosa fa davvero una skill prima di usarla conta più che installarla e basta. Lo stesso vale per le skill di terze parti da marketplace: leggi la `description`, perché spesso contengono più di quanto ti serve e consumano token, o script che è meglio verificare prima di eseguire. Per cercarle puoi chiedere a Claude o usare una skill come `find-skill` (team Vercel), che interroga il marketplace al posto tuo. Si caricano da claude.ai (in `claude.ai/customize/skills` carichi il file dal computer) o da Claude Code.
+- **Partire da una skill già fatta.** Anthropic ne pubblica alcune «ufficiali» ([`anthropics/skills`](https://github.com/anthropics/skills)), ampie e generiche: conviene leggerne la `description` prima di adottarle. `frontend-design`, la più usata, dà istruzioni precise (evita i font generici Arial e Inter, layout attesi, elementi che rompono la griglia, indicazioni di motion): leggere cosa fa una skill prima di adottarla conta più che installarne tante. Lo stesso vale per le skill di terze parti da marketplace: leggi la `description`, perché spesso contengono più di quanto ti serve e consumano token, o script che è meglio verificare prima di eseguire. Per cercarle puoi chiedere a Claude o usare una skill come `find-skill` (team Vercel), che interroga il marketplace al posto tuo. Si caricano da claude.ai (in `claude.ai/customize/skills` carichi il file dal computer) o da Claude Code.
 - **Usare `skill-creator`.** È la skill ufficiale di Anthropic per creare skill, con un loop di verifica integrato.
 
 Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Creare una skill dal proprio design system». Il catalogo qui sotto raccoglie skill e repository di riferimento, ordinati per area.
 
 ### Catalogo di skill di riferimento
 
-Categorizzazione completa degli 82 repository stellati. Le prime categorie sono le più centrali per il lavoro di design (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
+Gli 82 repository stellati, ordinati per area. Le prime categorie sono le più centrali per il lavoro di design (progettazione con AI, skill, Claude/Figma); seguono le fondamenta e gli asset utili; infine i toolbox di esecuzione e infrastruttura, da tenere come appendice/risorse. In chiusura, uno **starter pack** con i comandi d'installazione.
 
 **Dove girano queste skill.** Quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor): si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte: arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma ufficiali»). Regola pratica: strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
@@ -708,8 +704,6 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 | **LibreUIUX** | bundle molto ampio (74 skill, 152 agent, 76 slash command): applica in automatico psicologia cognitiva, regole di accessibilità e componenti platform-native | `/ux-ui-mastery "design a checkout flow"` |
 | **Design System Extractor** | estrae un design system da uno screenshot UI (colori, scala tipografica, regole di spaziatura, token riutilizzabili); i risultati vanno verificati perché uno screenshot può ingannare | `/design-system-extractor "extract tokens from this Notion screenshot"` |
 
----
-
 ## Glossario
 
 - **MCP (Model Context Protocol)**: standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
@@ -725,45 +719,63 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 - **SSR / serverless**: rendering lato server e funzioni eseguite on-demand senza gestire un server dedicato; distinguono un sito statico da un'app con logica dinamica. Vedi «Deploy del prototipo».
 - **Personal Access Token (PAT)**: chiave personale (in Figma inizia con `figd_`) che autentica un client verso un servizio; va trattata come una password e tenuta fuori dal repo.
 
----
-
 ## Fonti
 
-**Context engineering e prompting**
-- library.aidesign.guide (The AI Design Library)
-- Addy Osmani, Context Engineering: Bringing Engineering Discipline to Prompts
-- Design with AI, Five insights from workflows to think, test, build, ship with AI
+**Contesto e pratica di design con l'AI**
+- Addy Osmani, [Context Engineering: Bringing Engineering Discipline to Prompts](https://addyo.substack.com/p/context-engineering-bringing-engineering) (agosto 2025)
+- Vadym Grin, [Context engineering: A repeatable AI workflow for product designers](https://uxdesign.cc/context-engineering-a-repeatable-ai-workflow-for-product-designers-8d7b55b83b2b) (marzo 2026)
+- Suleiman Shakir, [How I use AI to partner on design problems](https://uxdesign.cc/how-i-use-ai-to-think-through-design-problems-4a484080484b) (maggio 2026)
+- Tony Alicea, [UX-Context Design: Using UX Knowledge to Inform AI-Generated Design](https://www.nngroup.com/articles/ux-context-design/), NN/g (luglio 2026)
+- [The AI Design Library](https://library.aidesign.guide/)
 - NN/g, AI prototyping; Testing AI methodology; Vague prototyping
-- NN/g, Tony Alicea, UX-Context Design (luglio 2026): la ricerca UX come contesto che guida l'output dell'AI, e l'ipotesi di un file UX.md
-- (memoria di progetto) Context engineering; How I use AI to partner on design problems; Context is the new component library for AI agents; Design with AI (IAAD)
+- Design with AI, Five insights from workflows to think, test, build, ship with AI
 
-**Claude e Figma**
-- Claude Code for Designers: A Practical Guide
-- arps18.github.io, Beyond the Prompt: Claude Code
-- How to Connect Figma to Claude (MCP Setup Guide 2026)
-- Design Systems in 2026: Turn Your System into a Claude Skill
-- Design with AI, My Top 14 Claude Code Commands
-- Product Compass, PM Skills 2.0: Red-Team & Ship
-- Figma Learn, Workflow lab: Code to canvas
-- Figma Developer Docs / Figma Learn, Guide to the Figma MCP server (Dev Mode MCP: server remoto e locale, code-to-canvas, Code Connect)
-- `southleft/figma-console-mcp`: Figma Console MCP + plugin Figma Desktop Bridge (README, DeepWiki)
-- DesignAgent, plugin Figma Community (figma.com/community/plugin/1604428052675393154)
-- Sherizan (Design AI Stack), How to give Claude Code hands and eyes inside Figma (DesignAgent, bridge bidirezionale)
-- Nick Babich, Claude Code Project Structure Best Practices (UX Planet, archive.is/…5a9c3c97f121)
-- Nick Babich, Ultimate Claude Code Setup for Product Designers (UX Planet, archive.is/…f8b2fff4ac69)
-- Nick Babich, cheatsheet "Claude Skills", "Figma Skills" e "File structure for design project in Claude Code"
-- Nick Babich (UX Planet), What is DESIGN.md and How To Use It (maggio 2026): origine del formato in Google Stitch, front matter più corpo, il file come artefatto vivo
-- Nick Babich (UX Planet), DESIGN.md Best Practices (giugno 2026): i token come decisioni e non variabili, nomi per ruolo, componenti documentati in tutti gli stati
-- Lisa Demchenko (UX Collective), How to write a DESIGN.md file Claude can actually use (maggio 2026): descrizione contro vincolo, la sequenza di scrittura, l'esperimento in cui Claude estrae i token esatti e inventa il livello di ragionamento
-- Lisa Demchenko (UX Collective), What your AI co-designer can't infer from your hex values (agosto 2026): i file di contesto raggruppati per frequenza di lettura, FLOWS/DECISIONS/REVIEW/COMPONENTS, il collegamento al design system vivo, il metodo delle tre varianti per far emergere i vincoli mancanti
-- Patrick Neeman (UX Collective), Design.md: the one standard file carries your visual identity, for humans and agents (agosto 2026): apertura della spec da Google Labs, token normativi e riferimenti, validazione delle sezioni, CLI di lint/diff/export, controllo a due vie file↔sito
-- (memoria di progetto) Your design system is fragmenting into agent files; My framework to make design systems AI-readable; How to make Claude Code follow your design system in Figma; CLAUDE.md best practices; Claude Code + Figma Design System; Turn Your System into a Claude Skill
+**File di contesto e formati `.md`**
+- Nick Babich, [CLAUDE.md Best Practices](https://uxplanet.org/claude-md-best-practices-1ef4f861ce7c) (marzo 2026)
+- Nick Babich, [Claude Code Project Structure Best Practices](https://uxplanet.org/claude-code-project-structure-best-practices-5a9c3c97f121) (marzo 2026)
+- Nick Babich, [What is DESIGN.md and How To Use It](https://uxplanet.org/what-is-design-md-and-how-to-use-it-70532359b311) (maggio 2026)
+- Lisa Demchenko, [How to write a DESIGN.md file Claude can actually use](https://uxdesign.cc/how-to-write-a-design-md-file-claude-can-actually-use-2d89d183f823) (maggio 2026)
+- Murphy Trueman, [Your design system is fragmenting into agent files](https://www.designsystemscollective.com/your-design-system-is-fragmenting-into-agent-files-26a9b19a2fad) (maggio 2026)
+- Nick Babich, [DESIGN.md Best Practices](https://uxplanet.org/design-md-best-practices-c00325e8b23a) (giugno 2026)
+- Nick Babich, [CLAUDE.md vs DESIGN.md: What to Put in Each for Claude Code](https://uxplanet.org/claude-md-vs-design-md-what-to-put-in-each-for-claude-code-53647d015bfd) (luglio 2026)
+- Patrick Neeman, [Design.md: the one standard file carries your visual identity, for humans and agents](https://uxdesign.cc/design-md-the-one-standard-file-carries-your-visual-identity-for-humans-and-agents-9058d5b39d9b) (agosto 2026)
+- Lisa Demchenko, [What your AI co-designer can't infer from your hex values](https://uxdesign.cc/what-your-ai-co-designer-cant-infer-from-your-hex-values-d2023364e80e) (agosto 2026)
 
-**Skill: cosa sono e catalogo**
-- Xinran Ma (Design with AI), The Claude Skills Playbook (cosa sono le skill, come si attivano, anatomia di SKILL.md, come crearle/caricarle)
-- Lista completa degli starred di `mattialaurella-lotrek` (79 repo) + i 10 segnalati manualmente.
-- Jack Henry (Medium), 5 New Claude skills for UI/UX designers
+**Design system leggibili dall'AI**
+- Kir Romanovsky, [Key Principles of Scalable Design System Architecture](https://medium.com/design-bootcamp/understanding-design-system-architecture-key-insights-0b7bb7b415c5) (aprile 2024)
+- Dean Harrison, [Design systems: simplifying documentation writing](https://uxdesign.cc/design-systems-simplifying-documentation-writing-5ec240c484fe) (ottobre 2024)
+- Nurkhon, [Your Figma library is invisible to AI agents](https://nurxmedov.medium.com/your-figma-library-is-invisible-to-ai-agents-31ff99d0ff9c) (aprile 2026)
+- Nick Babich, [AI and Design System](https://uxplanet.org/ai-and-design-system-3dab36a5cc50) (aprile 2026)
+- Nurkhon, [Context is the new component library (and your agents can't work without it)](https://nurxmedov.medium.com/context-is-the-new-component-library-and-your-agents-cant-work-without-it-91632d4175f2) (maggio 2026)
+- The Maker's Lab, [My 4-step framework to make design systems AI-readable](https://medium.muz.li/my-4-step-framework-to-make-design-systems-ai-readable-74ba07145312) (maggio 2026)
+- Nick Babich, [Creating AI-Ready Design System: Checklist](https://uxplanet.org/creating-ai-ready-design-system-checklist-547a0256ad87) (giugno 2026)
+- Christine Vallaure, [You design it. Then what? A clear map of the Figma-to-code AI mess](https://uxdesign.cc/you-design-it-then-what-a-clear-map-of-the-figma-to-code-ai-mess-954a4084175f) (luglio 2026)
+- Christine Vallaure, [Design system contracts: the component lives in neither Figma nor code](https://uxdesign.cc/design-system-contracts-the-component-lives-in-neither-figma-nor-code-3032d94ca067) (luglio 2026)
+
+**Claude Code e Figma: setup e workflow**
+- Tommaso Nervegna, [Claude Code for Designers: A Practical Guide](https://nervegna.substack.com/p/claude-code-for-designers-a-practical) (gennaio 2026)
+- Nick Babich, [Claude Code + Figma Design System](https://uxplanet.org/claude-code-figma-design-system-498573c5d357) (marzo 2026)
+- Nick Babich, [Figma Skills for Claude Code](https://uxplanet.org/figma-skills-for-claude-code-bb05a21984fd) (aprile 2026)
+- Garima Agarwal, [How to Connect Figma to Claude (MCP Setup Guide 2026)](https://medium.com/@garimaagarwal1200/claude-desktop-figma-console-mcp-complete-setup-guide-2026-babba46b12a0) (aprile 2026)
+- Sen Lin, [How to make Claude Code follow your design system in Figma](https://uxdesign.cc/how-to-make-claude-code-follow-your-design-system-in-figma-559618cffaa9) (maggio 2026)
+- Nick Babich, [Ultimate Claude Code Setup for Product Designers](https://uxplanet.org/ultimate-claude-code-setup-for-product-designers-f8b2fff4ac69) (giugno 2026)
+- Nick Babich, [Figma skills for Claude Code: Complete Guide](https://uxplanet.org/figma-skills-for-claude-code-complete-guide-c8db2b581a76) (giugno 2026)
+- Xinran Ma, [My Top 14 Claude Code Commands](https://designwithai.substack.com/p/my-top-14-claude-code-commands) (giugno 2026)
+- Nick Babich, [Claude Code Cheatsheets for Product Designer](https://uxplanet.org/claude-code-cheatsheets-for-product-designer-e1d9c16d577a) (giugno 2026)
+- Arpan Patel, [Beyond the Prompt: Claude Code](https://arps18.github.io/posts/claude-code-mastery/) (giugno 2026)
+- Figma, [Guide to the Figma MCP server](https://developers.figma.com/docs/figma-mcp-server/)
+- Figma, [Workflow lab: Code to canvas](https://help.figma.com/hc/en-us/articles/40219873508247-Workflow-lab-Code-to-canvas)
+- southleft, [Figma Console MCP e plugin Figma Desktop Bridge](https://github.com/southleft/figma-console-mcp)
+- Sherizan, [DesignAgent, plugin Claude Code per designer](https://designagent.dev/) e il [plugin Figma Community](https://www.figma.com/community/plugin/1604428052675393154/designagent-claude-bridge)
+- @friendlyunit, Figma console MCP to Claude: Setup Guide for Designers
+
+**Claude Skills**
+- Anthropic, [A complete guide to building skills for Claude](https://claude.com/blog/complete-guide-to-building-skills-for-claude) e la sua versione [PDF](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf) (gennaio 2026)
+- Garima Agarwal, [Design Systems in 2026: Turn Your System into a Claude Skill](https://www.designsystemscollective.com/design-systems-in-2026-turn-your-system-into-a-claude-skill-3dd4d8bf5feb) (maggio 2026)
+- Jack Henry, [5 New claude skills for UI/UX designers](https://medium.com/@jackhenrys/5-new-claude-skills-for-ui-ux-designers-c23446dfb2e6) (giugno 2026)
+- Paweł Huryn, [PM Skills 2.0: Red-Team Your Roadmap, Then Check the Code Before You Ship](https://www.productcompass.pm/p/pm-skills-2-red-team-ship) (giugno 2026)
+- Xinran Ma, [The Claude Skills Playbook](https://designwithai.substack.com/p/the-claude-skills-playbook)
 
 **Deploy**
-- MindStudio, How to Deploy a Claude Code Project to GitHub and Vercel in Under 10 Minutes
-- Vite, Deploying a Static Site (guida ufficiale: GitHub Pages, base path, workflow Actions)
+- MindStudio, [How to Deploy a Claude Code Project to GitHub and Vercel in Under 10 Minutes](https://www.mindstudio.ai/blog/deploy-claude-code-project-github-vercel)
+- Vite, [Deploying a Static Site](https://vite.dev/guide/static-deploy)

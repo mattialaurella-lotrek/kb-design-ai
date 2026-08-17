@@ -172,9 +172,10 @@ Nota: è un deck di slide senza URL sorgente stampato. L'autore è identificabil
 
 ## Skill: cosa sono e come si creano
 
-**29. The Complete Guide to Building Skills for Claude**
+**29. A complete guide to building skills for Claude**
 Anthropic, 29 gennaio 2026
-https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
+https://claude.com/blog/complete-guide-to-building-skills-for-claude
+Versione PDF (quella in cartella, intitolata *The Complete Guide to Building Skills for Claude*): https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
 File: `The Complete Guide to Building Skills for Claude.pdf`
 Nota: è la guida ufficiale di Anthropic, 32 pagine. Unica fonte primaria del corpus: tutte le altre sono articoli di terzi.
 
