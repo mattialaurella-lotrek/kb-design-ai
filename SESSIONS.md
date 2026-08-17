@@ -20,10 +20,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 
 ## Dove siamo
 
-- 11.714 parole di prosa, 5 capitoli, 37 sezioni, 41 voci nell'indice laterale
-- 44 fonti citate con autore, titolo linkato e data
+- 11.693 parole di prosa, 5 capitoli, 37 sezioni, 41 voci nell'indice laterale
+- 47 fonti citate con autore, titolo linkato e data
 - `index.html` pesa 172 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultimo commit `d37d1e6`. **Il lavoro di oggi non è ancora committato né pubblicato.**
+- Ultimo commit `e68b88d`, pubblicato su entrambi i canali il 17 agosto 2026. Niente di sospeso in locale.
 
 ## Le regole che vincolano il lavoro
 
@@ -76,6 +76,8 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 **Due PDF citati ma assenti** da `sources/`: `Figma skills for Claude Code 1.pdf` (quello di aprile) e `Design with AI IAAD.pdf`.
 
 **Da provare a mano**: i pulsanti copia sui titoli non sono stati testati con un click vero, perché il browser headless non dà accesso agli appunti. Serve anche una verifica del tema chiaro nel browser reale.
+
+**Nota**: questo file sta in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
 
 ## Come riprendere
 
