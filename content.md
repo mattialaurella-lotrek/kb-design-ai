@@ -11,14 +11,14 @@ Come leggerla: la prima parte copre context engineering e prompting, la seconda 
   - Context rot
   - I quattro layer del contesto
   - Tecniche di prompting
-  - Tre framework di prompt pronti
-  - Lo "spec" come ancora
+  - Framework di prompting
   - Checklist pre-task e segnali
   - Human-in-the-loop
 - **Flusso ottimale tra Claude e Figma**
   - Il quadro d'insieme
   - Dividere il lavoro tra Claude Desktop e Claude Code
   - I file di contesto
+  - Il contesto visivo
   - Il contesto di UX
   - Struttura di file e cartelle
   - Setup e loop con Figma MCP
@@ -79,17 +79,13 @@ Un framework per capire cos'è "buon contesto":
 - **Usare i vincoli come guida**: piattaforma, accessibilità, brand sono strumenti per output realistici e coerenti.
 - **Tradurre lo stile in implementazione**: "rendilo moderno" non significa nulla operativamente; va convertito in regole ("ritmo 8px", "gerarchia primario/secondario chiara", "stati hover/focus/disabled visibili").
 
-### Tre framework di prompt pronti
+### Framework di prompting
 
 Il contesto va **prima** del task (l'AI processa in sequenza: ciò che vede prima condiziona il resto).
 
 - **Foundation-first** (generazione di design): `SYSTEM CONTEXT` → `BRAND CONSTRAINTS` → `USER REQUIREMENTS` → `TASK` → `SUCCESS CRITERIA`.
 - **Reasoning-forward** (decisioni strategiche): `CONTEXT` → `CONSTRAINTS` → `QUESTION` → `PROCESS` (per ogni opzione: approccio, vantaggi dati i vincoli, rischi, raccomandazione motivata).
 - **Iterative refinement** (miglioramento): `CURRENT STATE` → `FEEDBACK` → `NEW CONSTRAINTS` → `TASK` (raffina e spiega cosa è cambiato e perché).
-
-### Lo "spec" come ancora
-
-Scrivere la soluzione è a sua volta contesto: una volta messo per iscritto lo spec del flusso, diventa l'ancora da cui l'AI genera tutto il resto (prototipo hi-fi, journey map, piano d'implementazione) e che riduce le allucinazioni nei flussi complessi. Pratica utile: tracciare le decisioni per round in una cartella `design/`, così non si ripesca dai thread di commenti Figma il "perché" di una scelta di tre settimane prima.
 
 ### Checklist pre-task e segnali
 
@@ -132,6 +128,8 @@ Due ambienti con punti di forza diversi: conviene assegnare a ciascuno la parte 
 
 Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) sta in Claude Code.** Lo spec o il `DESIGN.md` scritto in chat è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.
 
+Scrivere la soluzione è a sua volta contesto. Messo per iscritto, lo spec di un flusso diventa l'ancora da cui l'AI ricava output diversi: prototipo hi-fi, journey map, piano d'implementazione. Sui flussi complessi tiene anche a bada le allucinazioni, perché i passaggi l'agente li ha davanti invece di ricostruirseli a ogni richiesta.
+
 ### I file di contesto
 
 Formati con funzioni diverse, spesso complementari:
@@ -139,7 +137,7 @@ Formati con funzioni diverse, spesso complementari:
 - **CLAUDE.md**: memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo **snello**. Sezioni utili: panoramica del prodotto (cos'è, per chi, cosa ottimizza, vincoli principali, pochi paragrafi), regole UI/design tradotte in implementazione, guida a contenuti e copy (con esempi), regole di struttura componenti, *safe-change rules* (cosa non modificare alla leggera), e i comandi reali del progetto (install, dev, build, lint, test).
 - **CLAUDE.local.md**: le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.
 - **AGENTS.md**: il **livello di orchestrazione**: non è documentazione del design system, ma dice all'agente *dove* guardare per ogni cosa (quale file ha i token canonici, dove vive la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno: poche ore di scrittura, consultato di continuo.
-- **DESIGN.md**: l'identità visiva condensata: front matter YAML con i token + corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts).
+- **DESIGN.md**: l'identità visiva condensata: front matter YAML con i token + corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts). Aperta da Google Labs nell'aprile 2026, è la più matura della lista. Estrarre i token però è il passo che costa meno: quello che sposta l'output sono l'intento e i confini scritti attorno (vedi «Il contesto visivo»).
 - **UX.md**: quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se DESIGN.md dice come deve apparire il prodotto, UX.md dice per chi è e come deve comportarsi: i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista e nessuno strumento lo carica in automatico: è una proposta di NN/g del luglio 2026. Copre però un vuoto che gli altri file lasciano aperto (vedi «Il contesto di UX»).
 - **MEMORY.md**: memoria di progetto a lungo termine: decisioni prese e contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
 - **SKILL.md**: conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. Struttura a *progressive disclosure*: i metadati (~100 token) caricano per primi e decidono se la skill è rilevante; il corpo markdown (~500–2000 token) dà le istruzioni; i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve.
@@ -148,7 +146,7 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 **Estensioni facoltative del contesto di progetto.** Su progetti più strutturati può aiutare un set esteso di markdown. Sono estensioni possibili, non file obbligatori: adottali solo se ti servono. Si scrivono in un ordine preciso, perché alcuni leggono i precedenti:
 
-- **PLAN.md**: cosa stai costruendo, per chi, i flussi principali, cosa è in scope e i non-goal, i vincoli. Va scritto per primo, perché i plugin che generano brand e voice lo leggono per farti domande sul prodotto reale invece che sul nome della cartella.
+- **PLAN.md**: cosa stai costruendo, per chi, i flussi principali, cosa è in scope e i non-goal, i vincoli. Va scritto per primo, perché i plugin che generano brand e voice lo leggono per farti domande sul prodotto reale invece che sul nome della cartella. La lista dei non-goal, il «questo no, e non adesso», è la parte che si tende a saltare ed è l'unico freno che tiene davvero: gli agenti allargano lo scope di continuo, e lo fanno con le migliori intenzioni.
 - **BRAND.md**: chi sei (audience, personalità, promessa, carattere). È la radice da cui parole e design attingono, così restano coerenti tra loro.
 - **VOICE.md**: come parli (personalità, parole bandite, punteggiatura, con esempi). È l'equivalente a livello di progetto di uno standard editoriale: definisce le regole, e un passo di *proofread* le applica lasciando intatti codice, id, comandi e versioni.
 - **BACKLOG.md**: la coda ordinata di cosa fare (Now / Next / Later / Done). Tiene la priorità in un file che l'agente legge, non nella tua testa. Prompt tipico: "costruisci l'item a priorità più alta in @BACKLOG.md". Quando la coda supera lo schermo o serve a più persone, spostala su GitHub Issues e punta CLAUDE.md al repo.
@@ -157,7 +155,68 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 Questi markdown specifici, con i comandi che li generano e li applicano, funzionano con il plugin **DesignAgent** ([designagent.dev](https://designagent.dev/)): install da marketplace con `/plugin marketplace add sherizan/designagent` e `/plugin install brand@designagent` (e `voice@designagent`); poi `/brand` intervista te e scrive BRAND.md più un logo SVG, seminando VOICE.md e DESIGN.md, mentre `/voice` scrive VOICE.md e `/proofread` applica le regole di voce a una copy.
 
+**Raggrupparli per quanto spesso vengono letti.** All'elenco per formato se ne può affiancare un secondo, per frequenza di lettura, ed è quello che decide quanto ogni file può essere lungo (Lisa Demchenko, agosto 2026, su un set di nove markdown tenuto per ogni progetto cliente).
+
+- **Sempre attivi**, caricati a ogni sessione: CLAUDE.md, DESIGN.md, VOICE.md. Ogni riga costa contesto per sempre, e un file gonfio annacqua i vincoli che contano. Vanno tenuti corti di proposito.
+- **Per feature**, scritti quando parte un lavoro e archiviati quando esce: il PRD, i flussi, la sintesi di ricerca. Uno di questi lasciato lì dopo il rilascio è peggio di nessun file, perché l'agente non ha modo di accorgersi che è scaduto e legge lo scope del mese scorso come il piano di questa settimana.
+- **Di riferimento**, aperti su richiesta: qui la lunghezza smette di essere un problema.
+
+Su *quali* file stiano sempre attivi le fonti non concordano: qui sono CLAUDE.md, DESIGN.md e VOICE.md, mentre il set esteso visto sopra tiene sempre caricati SESSIONS.md e PLAN.md. Quello che regge in entrambi i casi è la dimensione del gruppo: tre file, non otto.
+
+**Quattro file che nessuno dei due elenchi copre.**
+
+- **FLOWS.md**: tutti gli stati in cui una feature può trovarsi (default, caricamento, vuoto, salvataggio, errore, bloccato) e cosa porta dall'uno all'altro. Gli agenti costruiscono l'*happy path* perché di solito è l'unico percorso che qualcuno ha descritto. Lo stato vuoto che nessuno si ricorda mai di progettare non sparisce, se è scritto qui.
+- **DECISIONS.md**: registro in sola aggiunta (*append-only*) delle scelte fatte e soprattutto di quelle scartate, sul modello degli *architecture decision record*. Il vincolo di non riscrivere il log è la parte che conta: se correggi la storia, cancelli la prova che quell'alternativa l'avevi già pesata e messa via, e un mese dopo la stessa proposta torna con un vestito diverso. Si sovrappone in parte a MEMORY.md; la differenza sta nella sola aggiunta e nel registrare anche gli scarti.
+- **REVIEW.md**: la checklist che l'agente esegue prima di potersi dichiarare a posto, ogni voce una domanda con risposta sì o no. Cresce da sé: quando lo stesso tipo di errore ricompare due volte, si aggiunge una riga.
+- **COMPONENTS.md**: la risposta canonica a «questo esiste già?». Lasciato a sé, un agente costruisce un componente nuovo invece di trovare quello che hai, ed è la causa più frequente di deriva del design system. Funziona solo se è onesto: un file che ammette dove Figma e codice si sono allontanati regge il peso, uno pulito e sbagliato insegna all'agente a sbagliare con sicurezza.
+
+**Una regola che l'agente possa applicare.** Viene naturale immaginare questi markdown come documentazione, il testo che scriveresti per chi entra in squadra il trimestre prossimo. È la ragione per cui i primi tentativi di solito non servono a niente. Una persona vuole la storia e il ragionamento, e vuole capire perché una regola esiste prima di fidarsene. All'agente serve la regola e basta, in una forma contro cui misurare il proprio output prima di generare qualsiasi cosa.
+
+**Il collegamento al sistema vivo.** Conviene che i file su design e componenti puntino al sistema vero, via MCP, invece di descriverlo a parole: così l'agente legge i token, le variabili e i componenti reali. È quello che dà mordente a tutto il resto. Sulla scala di spaziatura l'agente smette di indovinare e si mette a leggere.
+
+**Non scriverli tutti insieme.** Nove documenti ipotetici buttati giù in una sera insegnano poco, e metà non sopravvive al contatto col lavoro vero. Si parte da due, il file root e quello di design, e gli altri arrivano quando la loro assenza comincia a costare qualcosa. Si scrivono al sessanta per cento e il resto lo mostra l'agente: chiedigli tre varianti della schermata più complessa che hai, ignora se sono belle e guarda dove si allontanano dal tuo sistema. **Dove tutte e tre si allontanano nello stesso modo c'è un vincolo che il file non dice ancora.** Aggiungi la frase, rilancia. Di solito bastano due o tre giri.
+
 **CLAUDE.md come indice, non contenitore.** Con molti file di contesto la tentazione è fare `@import` di tutti in CLAUDE.md, così l'agente ha sempre tutto. Funziona ma spreca: ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**: CLAUDE.md dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Conviene caricare sempre solo due file: **SESSIONS.md** (dove eri rimasto è sempre rilevante) e **PLAN.md** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (VOICE.md quando scrivi copy, DESIGN.md quando tocchi l'interfaccia, CONTRACT.md sul secondo repo). Test pratico: se CLAUDE.md è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
+
+### Il contesto visivo
+
+`DESIGN.md` è il file che il resto di questo capitolo dà per scontato: i prompt del bridge bidirezionale ci scrivono dentro i token estratti dal canvas, il loop di auto-verifica confronta lo screenshot con quello che c'è scritto, il passaggio dalla chat a Claude Code lo usa come ponte. Qui si vede come si scrive. La sintassi è la parte facile: un file che lascia l'output dov'era è quasi sempre un file scritto nell'ordine sbagliato e senza confini.
+
+Il formato nasce dentro Google Stitch, dove è il primo artefatto che l'AI produce quando le chiedi una schermata, e Google Labs lo apre come specifica nell'aprile 2026. È una spec **alpha**: dark mode, motion e breakpoint responsive sono tra le questioni aperte, e quanto attecchirà dipende da quanti strumenti decideranno di leggerlo e scriverlo. Porta con sé un CLI che fa *lint* (controlla i riferimenti ai token e segnala le coppie di colori sotto le soglie WCAG), *diff* tra due versioni ed export verso una configurazione Tailwind o il formato DTCG. Le otto sezioni del corpo, in ordine fisso, sono elencate in «I file di contesto».
+
+**Due meccaniche fanno da contratto.** La prima: i token sono **normativi**. Se il corpo in prosa e il front matter si contraddicono, vince il front matter; alla prosa restano l'intento e i confini. La seconda: i valori si referenziano invece di ripetersi. L'aspetto di un componente diventa una serie di puntatori, e un rebrand si risolve in una riga invece che in una caccia su quaranta file.
+
+```
+## Components
+Bottone primario: sfondo {colors.primary}, testo {colors.on-primary},
+raggio {rounded.lg}, padding {spacing.md}.
+```
+
+La validazione è severa in un punto solo: un'intestazione di sezione sconosciuta viene conservata, un token sconosciuto viene accettato se il valore è valido, ma **un'intestazione duplicata fa fallire l'intero file**. Ordine e unicità delle sezioni sono strutturali.
+
+**Descrizione contro vincolo.** È qui che quasi tutti i `DESIGN.md` si perdono. Un file che inizia dalla palette offre *descrizione*: ecco com'è fatto il sistema. Al modello serve *vincolo*: cosa il sistema permette, cosa vieta, cosa fare quando arriva a un caso limite. Sono due compiti di scrittura diversi. La forma buona di un token è **valore, poi intento, poi confine**, e il confine è quello che salta quasi sempre:
+
+```
+primary: #1B4DFF — solo per CTA e stati attivi. Mai come sfondo,
+mai decorativo. Una sola azione primaria per schermata: se ne
+servono due, ripensa il layout.
+```
+
+**La sequenza conta più della completezza.** L'ordine in cui scrivi le sezioni decide quanto vale il file:
+
+1. **Brief di prodotto**, due o tre frasi, prima di qualsiasi token: cosa fa il prodotto, chi lo usa, cosa l'interfaccia deve permettergli di ottenere. La spec lo prevede già, è la sezione *Overview*, ma quasi tutti la scrivono sottile e decorativa. È l'errore che si paga a valle, perché quel brief orienta ogni decisione successiva.
+2. **Token** scritti come vincoli, nella forma vista sopra.
+3. **Tipografia**: non solo la scala, ma quando usare ogni livello e quando lasciarlo stare.
+4. **Logica di componente**: quando si usa una card invece di una riga di lista, più che com'è fatta una card. È il livello che manca nei file che sembrano completi e continuano a produrre interfacce incoerenti.
+5. **Do's and don'ts**: niente gradienti, i colori di stato sono riservati, un errore si comunica con testo più colore e mai col colore da solo.
+
+Otto regole ben scelte prevengono più output sbagliato che raddoppiare la sezione dei token. Scriverle costa fatica, perché richiede di sapere cosa il sistema non farebbe mai, e quasi nessuno se l'è mai dovuto chiedere.
+
+**Il livello che l'AI si inventa.** Il caso più istruttivo è un esperimento raccontato su UX Collective. L'autrice dà a Claude i file Figma di un prodotto reale, UI e libreria di token, più una skill costruita apposta, e gli chiede di scrivere il `DESIGN.md`. Claude estrae tutto con precisione: palette con hex e varianti di opacità, scala tipografica completa coi valori di tracking, spaziature, raggi, ombre, anatomia dei componenti. Poi lei gli chiede se ha usato la skill. Risposta: l'ha usata come guida di formattazione e ha saltato l'intervista iniziale, cioè quello che rende il file buono. **I token erano accurati, il livello di ragionamento era inventato**: principi di design scritti senza che nessuno glieli avesse detti, vincoli dedotti dai pattern visivi osservati. È la stessa asimmetria di «Human-in-the-loop»: il *cosa* l'AI lo estrae da un file Figma meglio di te, il *perché* no. E un livello lasciato vuoto non resta vuoto, si riempie di inferenza plausibile.
+
+**Come resta onesto.** Il file vive alla root del repo accanto a `README.md`, così ogni modifica al design ha un autore e un diff e passa da una revisione come qualunque altro cambiamento. Poi c'è l'abitudine che non richiede tooling: punta un assistente al `DESIGN.md` e al sito live e chiedigli dove non coincidono. A volte è sbagliato il sito, a volte il file è vecchio. Una fonte di verità che nessuno riconcilia diventa la documentazione di un prodotto che non esiste più.
+
+**Da dove partire.** Non serve un repo: si apre una chat, si passa un `DESIGN.md` di esempio e si chiede all'assistente di intervistarti sul brand (i colori centrali e cosa deve segnalare ciascuno, due o tre livelli di tipo, il raggio che ti sembra giusto), poi di scrivere il tuo nello stesso formato. Quello è già un draft. Da lì cresce per diagnosi, col metodo delle tre varianti visto in «I file di contesto»: il punto in cui l'agente tira a indovinare è il prossimo token da definire.
 
 ### Il contesto di UX {badge:In lavorazione}
 
@@ -332,6 +391,8 @@ L'AI è capace di scrivere Figma e di scrivere React; il divario tra strumento p
 
 Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assistente di design" produce output che un umano può riprendere e modificare (DS enforcement attivo); in modalità "prototipo rapido" la velocità ha priorità sull'enforcement e i valori grezzi sono accettati.
 
+**Il controllo a due vie.** L'enforcement guarda in avanti, dal file verso quello che viene generato. Serve anche il controllo opposto, dal prodotto verso il file: il confronto periodico tra `DESIGN.md` e il sito live dice chi dei due è rimasto indietro, e il divario che emerge è il lavoro da fare (vedi «Il contesto visivo»). Dove il formato ha un CLI, una parte si automatizza: *lint* dei riferimenti ai token, contrasti WCAG, *diff* tra versioni.
+
 ### Rendere il design system leggibile dall'AI
 
 Se gli agenti vedono solo valori grezzi e hex (nessun riferimento ai token, nessun significato semantico), costruiscono componenti con valori hardcoded scollegati dalla fonte di verità → debito tecnico, inconsistenza, gap di accessibilità.
@@ -341,6 +402,10 @@ Il design system più leggibile dall'AI segue tre livelli di token:
 - **Tier 1: Primitive**: valori grezzi (colori, unità di spazio, dimensioni type). Raramente referenziati direttamente.
 - **Tier 2: Semantic**: token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui vive l'intento, ed è il livello su cui l'AI ragiona.
 - **Tier 3: Component**: pattern pre-composti che combinano token semantici (es. una "card" con spaziature, colori, type e ombre corretti).
+
+**Nomina per ruolo, non per aspetto.** È la regola che rende utile il Tier 2. Un nome come `blue` o `gray-1` dice che aspetto ha un colore, non che lavoro fa: `bigRedButton` si rompe al primo rebrand, `button.primary` sopravvive a qualunque cambio visivo perché il ruolo dura più del colore. Valgono nomi come `primary`, `surface-dim`, `border-subtle`, `text-muted`, `radius-card`. Lo stesso per i componenti: conviene prendere in prestito il vocabolario che ogni strumento già conosce (*button*, *input*, *card*, *badge*, *tabs*) invece di inventare un dizionario privato che l'agente deve indovinare. Effetto collaterale utile: costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
+
+**Documenta anche gli stati.** Il difetto più comune delle spec di componente è descrivere il default e fermarsi lì. All'agente servono anche *hover*, *active*, *disabled*, *loading* e *focus*: sono esattamente i punti in cui, senza indicazioni, inventa.
 
 Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi validare la token accuracy prima/dopo. Espandere di settimana in settimana finché il DS diventa AI-native.
 
@@ -649,6 +714,7 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 
 - **MCP (Model Context Protocol)**: standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
 - **Design context**: l'insieme strutturato di dati di un layer che l'MCP di Figma espone (gerarchia, layout, variabili, componenti, token), diverso da uno screenshot.
+- **DESIGN.md**: file di testo che dichiara l'identità visiva di un prodotto in due modi insieme: front matter YAML coi token leggibili dalla macchina, corpo markdown con l'intento e i confini leggibili da una persona. Formato nato in Google Stitch e aperto da Google Labs nell'aprile 2026, ancora in spec alpha. I token sono normativi: se la prosa li contraddice, vincono i token. Vedi «Il contesto visivo».
 - **UX-context design**: pratica di raccogliere e curare in file leggibili dall'AI ciò che l'organizzazione sa sugli utenti e vuole dal prodotto, così da guidare tutto quello che i suoi strumenti AI generano (NN/g, 2026). Vedi «Il contesto di UX».
 - **Context rot**: degrado della qualità delle risposte quando la finestra di contesto si riempie di materiale accessorio (falsi avvii, debug, divagazioni). Vedi «Context rot».
 - **Auto Layout**: sistema di Figma che rende i frame reattivi, con spaziature, allineamenti e ridimensionamento automatici; un file in Auto Layout è più leggibile dall'AI.
@@ -686,7 +752,12 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 - Nick Babich, Claude Code Project Structure Best Practices (UX Planet, archive.is/…5a9c3c97f121)
 - Nick Babich, Ultimate Claude Code Setup for Product Designers (UX Planet, archive.is/…f8b2fff4ac69)
 - Nick Babich, cheatsheet "Claude Skills", "Figma Skills" e "File structure for design project in Claude Code"
-- (memoria di progetto) Your design system is fragmenting into agent files; My framework to make design systems AI-readable; How to make Claude Code follow your design system in Figma; CLAUDE.md best practices; How to write a DESIGN.md file Claude can actually use; Claude Code + Figma Design System; Turn Your System into a Claude Skill
+- Nick Babich (UX Planet), What is DESIGN.md and How To Use It (maggio 2026): origine del formato in Google Stitch, front matter più corpo, il file come artefatto vivo
+- Nick Babich (UX Planet), DESIGN.md Best Practices (giugno 2026): i token come decisioni e non variabili, nomi per ruolo, componenti documentati in tutti gli stati
+- Lisa Demchenko (UX Collective), How to write a DESIGN.md file Claude can actually use (maggio 2026): descrizione contro vincolo, la sequenza di scrittura, l'esperimento in cui Claude estrae i token esatti e inventa il livello di ragionamento
+- Lisa Demchenko (UX Collective), What your AI co-designer can't infer from your hex values (agosto 2026): i file di contesto raggruppati per frequenza di lettura, FLOWS/DECISIONS/REVIEW/COMPONENTS, il collegamento al design system vivo, il metodo delle tre varianti per far emergere i vincoli mancanti
+- Patrick Neeman (UX Collective), Design.md: the one standard file carries your visual identity, for humans and agents (agosto 2026): apertura della spec da Google Labs, token normativi e riferimenti, validazione delle sezioni, CLI di lint/diff/export, controllo a due vie file↔sito
+- (memoria di progetto) Your design system is fragmenting into agent files; My framework to make design systems AI-readable; How to make Claude Code follow your design system in Figma; CLAUDE.md best practices; Claude Code + Figma Design System; Turn Your System into a Claude Skill
 
 **Skill: cosa sono e catalogo**
 - Xinran Ma (Design with AI), The Claude Skills Playbook (cosa sono le skill, come si attivano, anatomia di SKILL.md, come crearle/caricarle)
