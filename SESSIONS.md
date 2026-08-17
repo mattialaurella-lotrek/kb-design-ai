@@ -23,7 +23,7 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 - 11.693 parole di prosa, 5 capitoli, 37 sezioni, 41 voci nell'indice laterale
 - 47 fonti citate con autore, titolo linkato e data
 - `index.html` pesa 172 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultimo commit `e68b88d`, pubblicato su entrambi i canali il 17 agosto 2026. Niente di sospeso in locale.
+- Ultimo commit pubblicato su entrambi i canali il 17 agosto 2026. Niente di sospeso in locale.
 
 ## Le regole che vincolano il lavoro
 
@@ -59,7 +59,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Fonti.** Creato `FONTI.md`, bibliografia dei 34 documenti del corpus in cinque gruppi. Riscritta la sezione «Fonti» della guida nel formato autore + titolo linkato + data. Corretta un'attribuzione sbagliata: due articoli sono di **Lisa Demchenko**, non di «Lisa Wade».
 
-**Interfaccia.** Comandi copia-sezione e copia-link sui titoli, in hover. Voce «Introduzione» nell'indice. Riparata l'apertura, dove il lede dell'hero era sempre stato vuoto per una convenzione mai usata nel sorgente.
+**Interfaccia.** Comandi copia-sezione e copia-link sui titoli, in hover. Voce «Introduzione» nell'indice. Riparata l'apertura, dove il lede dell'hero era sempre stato vuoto per una convenzione mai usata nel sorgente. Link del testo in Medium con sottolineatura lime animata, e link esterni in scheda nuova.
 
 **Bug collaterali sistemati.** Il workflow GitHub Pages copiava in `dist/` solo `index.html` e non `assets/`: logo e favicon erano rotti da tempo. L'indice manuale in testa a `content.md` era fuori sincrono.
 
