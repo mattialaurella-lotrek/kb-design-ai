@@ -311,12 +311,33 @@
 
     .prose p { margin: 0 0 1.25rem; }
     .prose strong { font-weight: var(--w-bold); }
+    /* Link: sottolineatura come gradiente, non come text-decoration, perché solo
+       così si anima. Il gesto è quello di termecomano.com: a riposo il filetto è
+       ancorato a sinistra e pieno; all'hover l'ancora salta a destra (il salto è
+       istantaneo, la transizione corre solo su background-size) e la larghezza va
+       a zero, quindi si ritira verso destra. All'uscita l'ancora torna a sinistra
+       e ricresce da lì. `box-decoration-break: clone` fa sì che un link andato a
+       capo abbia il filetto su ogni riga. Il testo è già Medium a riposo, così il
+       peso non cambia all'hover e il testo attorno non si sposta. */
     .prose a[href] {
-      color: var(--ink); text-decoration: underline;
-      text-decoration-color: var(--accent-line); text-decoration-thickness: 2px;
-      text-underline-offset: 2px;
+      color: var(--ink); text-decoration: none;
+      font-weight: var(--w-medium);
+      padding-bottom: 4px;
+      background-image: linear-gradient(var(--accent-line), var(--accent-line));
+      background-size: 100% 2px;
+      background-position: 0 100%;
+      background-repeat: no-repeat;
+      -webkit-box-decoration-break: clone; box-decoration-break: clone;
+      transition: background-size .36s cubic-bezier(.4, 0, .2, 1);
     }
-    .prose a[href]:hover { background: var(--accent-wash); }
+    .prose a[href]:hover,
+    .prose a[href]:focus-visible {
+      background-size: 0 2px;
+      background-position: 100% 100%;
+    }
+    @media (prefers-reduced-motion: reduce) { .prose a[href] { transition: none; } }
+    /* In alto contrasto i background spariscono: serve la sottolineatura vera. */
+    @media (forced-colors: active) { .prose a[href] { text-decoration: underline; } }
 
     .prose ul { margin: 0 0 1.15em; padding-left: 1.4em; }
     .prose li { margin: .35em 0; }

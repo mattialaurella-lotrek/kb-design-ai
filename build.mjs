@@ -154,6 +154,15 @@ bodyHtml = bodyHtml.replace(
   (_, n, rest) => `<p class="has-step"><span class="step">${n}</span><strong>${rest}</strong>`
 );
 
+// ---- Link esterni in scheda nuova ----
+// Solo http(s): le ancore interne (#id) e i mailto restano nella stessa scheda.
+// `rel` obbligatorio con target="_blank": senza `noopener` la pagina aperta può
+// raggiungere questa via window.opener.
+bodyHtml = bodyHtml.replace(
+  /<a href="(https?:\/\/[^"]+)"/g,
+  '<a href="$1" target="_blank" rel="noopener noreferrer"'
+);
+
 // ---- Tabelle scrollabili (wrap) ----
 bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="table-wrap">${t}</div>`);
 
