@@ -4,3 +4,7 @@ index.html
 .DS_Store
 CLAUDE.local.md
 *.log
+
+# Materiale di riferimento per le integrazioni: articoli di terzi, non nostri
+# e non ridistribuibili. Il repo è pubblico, quindi resta in locale.
+sources/

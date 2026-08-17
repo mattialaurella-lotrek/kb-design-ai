@@ -12,10 +12,14 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 - `content.md` (fonte markdown) → `build.mjs` (marked) inietta nel `template.html` bespoke → `index.html`.
 - `index.html` è **gitignored**: è un artefatto di build, non si versiona.
 - Accento lime `#d9fb12`; token di design in `repass.io.md`.
-- Tipografia: **Instrument Sans** (display + corpo) e **IBM Plex Mono** (codice).
+- Tipografia: **Ronzino** (display + corpo, self-hostato in `assets/fonts/`, SIL OFL 1.1) e **IBM Plex Mono** (codice, da Google Fonts).
+- **Ronzino ha 400 / 500 / 700, niente 600**: usare i token `--w-medium` e `--w-bold`, mai `font-weight: 600` (il browser lo risolverebbe in Bold ovunque, indice compreso).
+- **Scala tipografica**: 18 (corpo) · 20 (h4) · 24 (h3) · 33.6 (h2) · 52.8 (h1) px, a rapporti crescenti 1.11 · 1.20 · 1.40 · 1.57. Non è una scala modulare a ratio unico: con 4 livelli più un hero display un ratio fisso rimpicciolirebbe l'H1.
+- `sources/` — materiale di riferimento per le prossime integrazioni (articoli di terzi in PDF). **Gitignored**: il repo è pubblico e non sono contenuti nostri. I PDF non si versionano.
+- [`FONTI.md`](./FONTI.md) alla root — bibliografia completa dei 34 documenti del corpus (titolo, autore, testata, data di pubblicazione, link per esteso, nome del PDF), versionata così da poter ricostruire `sources/` da zero. È cosa diversa dalla sezione «Fonti» di `content.md`, che è l'elenco compatto pubblicato nella guida: aggiungendo una fonte vanno aggiornati entrambi.
 
 ## Pubblicazione — due canali
-- **GitHub Pages**: si rigenera da sé nel workflow Actions a ogni push su `main` (ricostruisce `index.html`).
+- **GitHub Pages**: si rigenera da sé nel workflow Actions a ogni push su `main` (ricostruisce `index.html` e copia `assets/`).
 - **Vercel**: riceve l'HTML buildato in locale da `./deploy.sh` (build + copia `assets/` + `vercel deploy --prod --scope lotrek`).
 - ⚠️ **Un push su `main` NON aggiorna Vercel**: per allineare entrambi i canali serve push *e* `./deploy.sh`.
 
@@ -34,10 +38,18 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 ## Fonti esterne integrate
 - **UX-context design** (NN/g, Tony Alicea, 24 luglio 2026): integrato il 2026-07-27 nella sezione **«Il contesto di UX»** dopo «I file di contesto» (titolo in italiano per coerenza con gli altri; «UX-context design» resta come termine nel corpo e nel glossario), più la voce `UX.md` nell'elenco dei file, il glossario, le fonti e gli schemi di struttura. `UX.md` è dichiarato come proposta, non come formato con spec: se NN/g o altri lo consolidano, la sezione va rivista.
 
+- **Lisa Demchenko** (Process to Pixels) è l'autrice di due fonti del capitolo 2: «How to write a DESIGN.md file Claude can actually use» (16 maggio 2026) e «What your AI co-designer can't infer from your hex values» (4 agosto 2026). Verificato sulle pagine originali il 2026-08-17, dopo che il credit di un'infografica mi aveva fatto scrivere «Lisa Wade»: non è quello il nome.
+- **Le date in testa ai PDF archiviati sono date di snapshot, non di pubblicazione**, e sbagliano anche di settimane (es. «DESIGN.md Best Practices»: snapshot 20 giugno, uscita 17 giugno; «What is DESIGN.md»: snapshot 30 maggio, uscita 7 maggio). Citare sempre la data reale, ricavabile aprendo l'URL stampato nella prima pagina.
+- **DESIGN.md** (4 PDF in `sources/DESIGN.md/`): integrato il 2026-08-17 nella nuova sezione **«Il contesto visivo»**, che fa coppia con «Il contesto di UX» (visivo = come deve apparire, UX = per chi è e come si comporta). La spec è **alpha** e ha questioni aperte dichiarate (dark mode, motion, breakpoint): se Google Labs la consolida, la sezione va rivista. Le due fonti UX Planet non riportano l'autore nel PDF archiviato: citate senza attribuzione, non assegnarle a Nick Babich senza verifica.
+
+- **«Lo "spec" come ancora» è stata rimossa** il 2026-08-17 e fusa in «Dividere il lavoro tra Claude Desktop e Claude Code»: non riproporla come sezione. La fonte resta valida («How I use AI to partner on design problems»), era il peso a non giustificare più una voce d'indice.
+- **`content.md` ha due indici**: quello manuale in testa al file (righe 7–40 circa) e quello generato da `build.mjs` per la spalla. Aggiungendo o togliendo una sezione vanno aggiornati entrambi, il primo a mano.
+- Le righe `## Steps`, `### Output` e `## Components` che compaiono in un `grep '^## '` stanno **dentro blocchi di codice**: non sono titoli e `build.mjs` fa bene a ignorarle.
+
 ## In sospeso / da valutare
 - **Variante indice «macro-voce solo espande»** (senza scroll del contenuto al click): valutata ma non adottata; l'utente ci ripenserà.
 - **Differenziazione visiva degli occhielli di chiusura** (Appendice/Riferimenti) dai capitoli: possibile, non fatta.
-- **Sezioni «2-bis» e «2-ter»** — da scrivere da zero, quando l'utente vorrà: 2-bis = plugin per Claude Code; 2-ter = architettura ad agenti/sub-agenti e workflow. Non esistono in nessun sorgente: non riproporle come lavoro imminente.
+- **Sezioni «2-bis» e «2-ter»** — da scrivere da zero, quando l'utente vorrà: 2-bis = plugin per Claude Code; 2-ter = architettura ad agenti/sub-agenti e workflow. Non esistono in nessun sorgente: non riproporle come lavoro imminente. Per la 2-bis c'è però materiale pronto in `sources/Claude Code for designers.pdf`: il workflow *spec-driven* del plugin GSD (cartella `.planning/` con PROJECT/REQUIREMENTS/ROADMAP/STATE, la sezione «Out of Scope» e la fase *Discuss*).
 
 ## Convenzione di manutenzione
 A ogni sessione di lavoro, aggiornare `CHANGELOG.md` (cosa è cambiato) e questo `MEMORY.md` (decisioni/contesto).
