@@ -8,6 +8,12 @@ const TITLE = "Progettare con l'AI";
 const DESCRIPTION =
   "Knowledge base del team di design Lotrek: context engineering, prompting, workflow Claude/Figma/skill e repository di skill di riferimento.";
 
+// ---- Icone Lucide (lucide.dev, ISC): sprite <symbol> definito una volta in
+// template.html, qui solo i riferimenti. Inline ripetuto pesava ~78 KB. ----
+const ICON_COPY = `<svg class="ico" aria-hidden="true"><use href="#ico-copy"/></svg>`;
+const ICON_LINK = `<svg class="ico" aria-hidden="true"><use href="#ico-link"/></svg>`;
+const ICON_CHECK = `<svg class="ico ico-ok" aria-hidden="true"><use href="#ico-check"/></svg>`;
+
 // ---- slugify (accent-safe, id stabili per gli anchor) ----
 function slugify(text) {
   return text
@@ -66,18 +72,22 @@ if (h1i !== -1) {
   lines.splice(h1i, 1);
 }
 
-// 2) Intro: blocco blockquote iniziale (> ...) -> hero lede, tolto dal corpo
+// 2) Intro: i paragrafi fra l'H1 e l'indice manuale -> hero lede, tolti dal corpo.
+//    Prima qui si cercava un blockquote, che il sorgente non ha mai usato: il lede
+//    restava vuoto e il bordo inferiore dell'hero finiva fra titolo e primo paragrafo.
 let introMd = "";
 let i = 0;
 while (i < lines.length && lines[i].trim() === "") i++;
-if (i < lines.length && lines[i].startsWith(">")) {
-  const start = i;
-  while (i < lines.length && (lines[i].startsWith(">") || lines[i].trim() === "")) {
-    if (lines[i].startsWith(">")) introMd += lines[i].replace(/^>\s?/, "") + "\n";
-    i++;
-    if (i < lines.length && lines[i].trim() === "" && !lines[i + 1]?.startsWith(">")) break;
-  }
-  lines.splice(start, i - start);
+const introStart = i;
+while (
+  i < lines.length &&
+  !/^\*\*Indice\*\*/.test(lines[i].trim()) &&
+  !/^#{1,6}\s/.test(lines[i]) &&
+  lines[i].trim() !== "---"
+) i++;
+if (i > introStart) {
+  introMd = lines.slice(introStart, i).join("\n").replace(/^>\s?/gm, "").trim();
+  lines.splice(introStart, i - introStart);
 }
 
 // 3) Indice manuale ("**Indice**" ... fino al primo "---") -> rimosso (usiamo il TOC generato)
@@ -114,7 +124,15 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
   }
   const anchor = `<a class="anchor" href="#${id}" aria-hidden="true">#</a>`;
   const badgeHtml = badge ? ` <span class="badge">${badge}</span>` : "";
-  return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}</h${level}>`;
+  // Comandi copia/condividi sui titoli H2 e H3 (icone Lucide, stile e logica in template.html)
+  const tools =
+    level === "2" || level === "3"
+      ? `<span class="head-tools" contenteditable="false">` +
+        `<button type="button" class="head-tool" data-tool="copy" title="Copia la sezione in markdown" aria-label="Copia la sezione in markdown">${ICON_COPY}${ICON_CHECK}</button>` +
+        `<button type="button" class="head-tool" data-tool="link" title="Copia il link alla sezione" aria-label="Copia il link alla sezione">${ICON_LINK}${ICON_CHECK}</button>` +
+        `</span>`
+      : "";
+  return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}${tools}</h${level}>`;
 });
 
 // ---- Occhielli sull'attacco delle macro-voci ----
@@ -130,6 +148,12 @@ for (let a = 0; a < toc.length; a++) {
   bodyHtml = bodyHtml.replace(h2open, `${kicker}<h2 id="${toc[a].id}" class="has-kicker">`);
 }
 
+// ---- Passi numerati: "**1) Titolo.**" a inizio paragrafo -> pallino col numero ----
+bodyHtml = bodyHtml.replace(
+  /<p><strong>(\d{1,2})\)\s*([\s\S]*?)<\/strong>/g,
+  (_, n, rest) => `<p class="has-step"><span class="step">${n}</span><strong>${rest}</strong>`
+);
+
 // ---- Tabelle scrollabili (wrap) ----
 bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="table-wrap">${t}</div>`);
 
@@ -137,7 +161,10 @@ bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tab
 const CHEVRON =
   '<svg class="toc-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg>';
 
-let tocHtml = "";
+// Voce d'apertura: punta all'hero, così la spalla ha un "torna a casa".
+let tocHtml =
+  `<div class="toc-group"><a class="toc-macro toc-macro--leaf" href="#top">` +
+  `<span class="toc-macro-text">Introduzione</span></a></div>\n`;
 for (let k = 0; k < toc.length; ) {
   const t = toc[k];
   if (t.level === 2) {

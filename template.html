@@ -52,7 +52,8 @@
     }
 
     :root {
-      --bg: #f5f5f5;
+      --bg: #f5f5f5;          /* colonna di lettura */
+      --bg-chrome: #eeeeef;   /* topbar e spalla: un gradino sotto */
       --surface: #ffffff;
       --surface-2: #fbfbfb;
       --ink: #181818;
@@ -83,6 +84,7 @@
 
     :root[data-theme="dark"] {
       --bg: #0c1a1f;
+      --bg-chrome: #08151a;
       --surface: #10242b;
       --surface-2: #0f2027;
       --ink: #f3f4f2;
@@ -100,6 +102,7 @@
     @media (prefers-color-scheme: dark) {
       :root[data-theme="auto"] {
         --bg: #0c1a1f;
+        --bg-chrome: #08151a;
         --surface: #10242b;
         --surface-2: #0f2027;
         --ink: #f3f4f2;
@@ -145,7 +148,7 @@
       position: sticky; top: 0; z-index: 50;
       height: 60px; display: flex; align-items: center; gap: 16px;
       padding: 0 22px;
-      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      background: color-mix(in srgb, var(--bg-chrome) 84%, transparent);
       backdrop-filter: saturate(180%) blur(12px);
       -webkit-backdrop-filter: saturate(180%) blur(12px);
       border-bottom: 1px solid var(--border);
@@ -168,6 +171,7 @@
       color: var(--ink); cursor: pointer; font-size: 16px; line-height: 1;
       transition: transform .12s ease, background .2s ease, border-color .2s ease;
     }
+    .iconbtn .ico { width: 18px; height: 18px; display: block; }
     .iconbtn:hover { border-color: var(--ink-soft); }
     .iconbtn:active { transform: translateY(1px); }
     #menuBtn { display: none; }
@@ -180,6 +184,7 @@
       position: sticky; top: 60px; align-self: start;
       height: calc(100vh - 60px); overflow-y: auto;
       border-right: 1px solid var(--border);
+      background: var(--bg-chrome);
       padding: 26px 18px 60px 26px;
       font-family: var(--font-display);
     }
@@ -231,17 +236,16 @@
     .prose { max-width: var(--content-max); margin: 0 auto; }
 
     /* Hero */
-    .hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+    .hero { padding: 64px 0 40px; margin-bottom: 40px; }
     .hero .eyebrow {
       font-family: var(--font-display); font-size: 12px; font-weight: var(--w-bold);
       text-transform: uppercase; letter-spacing: .18em; color: var(--muted);
       display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
     }
-    .hero .eyebrow::before { content:""; width: 26px; height: 3px; background: var(--accent); border-radius: 2px; }
     .hero h1 {
       font-family: var(--font-display); font-weight: var(--w-bold);
       font-size: clamp(2.1rem, 4.6vw, 3.3rem); line-height: 1.04;
-      letter-spacing: -.025em; margin: 0 0 22px;
+      letter-spacing: -.025em; margin: 0 0 2rem;
     }
     .hero .lede { font-size: 1.16rem; color: var(--ink-soft); }
     .hero .lede :first-child { margin-top: 0; }
@@ -249,23 +253,39 @@
     .hero .lede strong { color: var(--ink); }
 
     /* Typographic rhythm */
+    /* ---------- Ritmo verticale ----------
+       Due regole, entrambe su multipli di 8px e in rem, così lo spazio non
+       dipende dal corpo del titolo (il vecchio margine in em sull'occhiello
+       valeva 3 × 12px = 36px, e dava a un capitolo meno aria di una sezione).
+
+       1. Lo spazio SOPRA un titolo cresce col livello:
+          capitolo 128px · sezione 56px · sotto-sezione 32px
+          (il capitolo stacca il doppio: fra i capitoli non c'è più un filetto)
+       2. Lo spazio SOTTO è sempre molto minore, circa metà del corpo del
+          titolo, così questo appartiene al testo che introduce:
+          h1 32px · h2 16px · h3 12px · h4 8px
+          (l'h1 ne vuole di più: line-height 1.04 gli toglie spazio ottico)
+       Paragrafo 20px, filetto di chiusura capitolo 48px.                    */
+    :root {
+      --gap-cap: 8rem;    /* 128px — sopra un capitolo  */
+      --gap-sez: 3.5rem;  /* 56px — sopra una sezione   */
+      --gap-sub: 2rem;    /* 32px — sopra un h4         */
+    }
     .prose h2 {
       font-family: var(--font-display); font-weight: var(--w-bold);
       font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.12;
-      letter-spacing: -.02em; margin: 3em 0 .7em;
+      letter-spacing: -.02em; margin: var(--gap-cap) 0 1.5rem;
+      padding-bottom: 1rem; border-bottom: 1.5px solid var(--ink);
     }
-    .prose h2:first-of-type { margin-top: 1em; }
     /* Occhiello "Capitolo N" sopra l'attacco di sezione */
     .prose .chapter-kicker {
       display: flex; align-items: center; gap: 9px;
       font-family: var(--font-display); font-size: 12px; font-weight: var(--w-bold);
       text-transform: uppercase; letter-spacing: .15em; color: var(--muted);
-      margin: 3em 0 0;
+      margin: var(--gap-cap) 0 0;
     }
-    .prose .chapter-kicker::before {
-      content: ""; width: 22px; height: 3px; border-radius: 2px; background: var(--accent);
-    }
-    .prose .chapter-kicker + h2.has-kicker { margin-top: .34em; }
+    .prose .chapter-kicker + h2.has-kicker { margin-top: .5rem; }
+    .prose .hero + .chapter-kicker { margin-top: var(--gap-sez); }
     .prose h2.has-kicker { scroll-margin-top: 108px; }
     /* Scala: 18 (corpo) · 20 (h4) · 24 (h3) · 33.6 (h2) · 52.8 (h1) — rapporti
        crescenti 1.11 / 1.20 / 1.40 / 1.57. L'h4 stava sotto al corpo e l'h3 a
@@ -273,12 +293,12 @@
     .prose h3 {
       font-family: var(--font-display); font-weight: var(--w-bold);
       font-size: 1.5rem; letter-spacing: -.015em; line-height: 1.25;
-      margin: 2.4em 0 .5em; scroll-margin-top: 84px;
+      margin: var(--gap-sez) 0 .75rem; scroll-margin-top: 84px;
     }
     .prose h2 { scroll-margin-top: 76px; }
     .prose h4 {
       font-family: var(--font-display); font-weight: var(--w-bold);
-      font-size: 1.25rem; line-height: 1.35; margin: 1.8em 0 .4em;
+      font-size: 1.25rem; line-height: 1.35; margin: var(--gap-sub) 0 .5rem;
     }
     .prose h3 .badge {
       display: inline-block; vertical-align: middle; transform: translateY(-.1em);
@@ -289,7 +309,7 @@
       padding: .35em .62em; border-radius: 999px;
     }
 
-    .prose p { margin: 0 0 1.15em; }
+    .prose p { margin: 0 0 1.25rem; }
     .prose strong { font-weight: var(--w-bold); }
     .prose a[href] {
       color: var(--ink); text-decoration: underline;
@@ -298,9 +318,29 @@
     }
     .prose a[href]:hover { background: var(--accent-wash); }
 
-    .prose ul, .prose ol { margin: 0 0 1.15em; padding-left: 1.4em; }
+    .prose ul { margin: 0 0 1.15em; padding-left: 1.4em; }
     .prose li { margin: .35em 0; }
-    .prose li::marker { color: var(--muted); }
+    .prose ul li::marker { color: var(--muted); }
+
+    /* Numerazione: pallino pieno col numero dentro. Inchiostro e non lime,
+       perché il lime è l'accento raro del brand e qui i numeri sono decine. */
+    .prose ol {
+      margin: 0 0 1.15em; padding-left: 0;
+      list-style: none; counter-reset: step;
+    }
+    .prose ol > li { counter-increment: step; position: relative; padding-left: 2em; }
+    .prose ol > li::before { content: counter(step); }
+    .prose .step { position: absolute; left: 0; top: .1em; }
+    .prose ol > li::before, .prose .step {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.7em; height: 1.7em; border-radius: 50%; flex: none;
+      background: var(--ink); color: var(--bg);
+      font-family: var(--font-display); font-size: .78em; font-weight: var(--w-bold);
+      line-height: 1; letter-spacing: 0; font-variant-numeric: tabular-nums;
+    }
+    .prose ol > li::before { position: absolute; left: 0; top: .18em; }
+    .prose p.has-step { position: relative; padding-left: 2em; }
+    .prose p.has-step + pre, .prose p.has-step + .table-wrap { margin-left: 2em; }
 
     /* Blockquote */
     .prose blockquote {
@@ -334,7 +374,7 @@
     .prose tbody tr:last-child td { border-bottom: 0; }
     .prose td code, .prose th code { white-space: nowrap; }
 
-    .prose hr { border: 0; border-top: 1px solid var(--border); margin: 3em 0; }
+    .prose hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
     .prose img { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
 
     /* Section anchor on hover */
@@ -342,9 +382,32 @@
     .anchor { position: absolute; left: -1.1em; top: 0; opacity: 0; text-decoration: none; color: var(--muted); font-family: var(--font-mono); font-size: .8em; }
     .prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
 
+    /* Comandi sul titolo: copia la sezione in markdown, copia il link.
+       Compaiono in hover come l'ancora, così a riposo la pagina resta pulita. */
+    .head-tools {
+      display: inline-flex; gap: 2px; margin-left: 10px;
+      vertical-align: middle; opacity: 0; transition: opacity .15s ease;
+    }
+    .prose h2:hover .head-tools, .prose h3:hover .head-tools,
+    .head-tools:focus-within { opacity: 1; }
+    @media (hover: none) { .head-tools { opacity: .5; } }
+    @media (prefers-reduced-motion: reduce) { .head-tools { transition: none; } }
+    .head-tool {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; padding: 0;
+      border: 0; border-radius: 8px; background: none; cursor: pointer;
+      color: var(--muted); transition: background .15s ease, color .15s ease;
+    }
+    .head-tool:hover { background: var(--accent-wash); color: var(--ink); }
+    .head-tool:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+    .head-tool .ico { width: 16px; height: 16px; display: block; }
+    .head-tool .ico-ok { display: none; color: var(--accent-line); }
+    .head-tool.ok .ico:not(.ico-ok) { display: none; }
+    .head-tool.ok .ico-ok { display: block; }
+
     /* Footer */
     footer.pagefoot {
-      max-width: var(--content-max); margin: 60px auto 0; padding-top: 24px;
+      margin: 60px 0 0; padding-top: 24px;
       border-top: 1px solid var(--border); color: var(--muted);
       font-family: var(--font-display); font-size: 13px;
       display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between;
@@ -378,14 +441,41 @@
 <body>
   <div id="progress"></div>
 
+  <!-- Sprite icone Lucide (lucide.dev, ISC): copy, link, check -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+    </symbol>
+    <symbol id="ico-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    </symbol>
+    <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6 9 17l-5-5"/>
+    </symbol>
+    <symbol id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/>
+      <path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/>
+      <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    </symbol>
+    <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </symbol>
+    <symbol id="ico-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>
+    </symbol>
+    <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>
+    </symbol>
+  </svg>
+
   <header class="topbar">
-    <button class="iconbtn" id="menuBtn" aria-label="Apri l'indice" aria-expanded="false">☰</button>
+    <button class="iconbtn" id="menuBtn" aria-label="Apri l'indice" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#ico-menu"/></svg></button>
     <a class="brand" href="#top" aria-label="Lotrek · KB Design AI">
       <img class="brand-logo brand-logo--light" src="assets/lotrek-logo-positive.svg" alt="Lotrek" width="108" height="32" />
       <img class="brand-logo brand-logo--dark" src="assets/lotrek-logo-negative.svg" alt="Lotrek" width="108" height="32" />
     </a>
     <span class="spacer"></span>
-    <button class="iconbtn" id="themeBtn" aria-label="Cambia tema (chiaro/scuro)" title="Cambia tema">◐</button>
+    <button class="iconbtn" id="themeBtn" aria-label="Cambia tema" title="Tema: automatico"><svg class="ico" aria-hidden="true"><use href="#ico-monitor"/></svg></button>
   </header>
 
   <div class="shell">
@@ -398,16 +488,19 @@
       <div id="scrim"></div>
       <div class="prose" id="top">
         <section class="hero">
-          <span class="eyebrow">Knowledge base · Team di design Lotrek</span>
+          <span class="eyebrow">Knowledge base per il team di design</span>
           <h1>{{HERO_TITLE}}</h1>
           <div class="lede">{{INTRO}}</div>
         </section>
 
         {{CONTENT}}
 
+        <!-- Dentro .prose e senza max-width propria: `--content-max` è in `ch`,
+             che si calcola sul corpo dell'elemento, e a 13px darebbe una colonna
+             molto più stretta del testo. Ereditando, il filetto resta allineato. -->
         <footer class="pagefoot">
           <span>Aggiornato il {{BUILD_DATE}}</span>
-          <span>Generato da <code>content.md</code> · repass.io design DNA</span>
+          <span>Per domande o considerazioni, scrivi a <a href="mailto:design@lotrek.it">design@lotrek.it</a></span>
         </footer>
       </div>
     </main>
@@ -421,8 +514,13 @@
       if (saved) root.setAttribute("data-theme", saved);
       var btn = document.getElementById("themeBtn");
       var order = ["auto", "light", "dark"];
-      var glyph = { auto: "◐", light: "☀", dark: "☾" };
-      function render() { btn.textContent = glyph[root.getAttribute("data-theme")] || "◐"; }
+      var icon = { auto: "#ico-monitor", light: "#ico-sun", dark: "#ico-moon" };
+      var label = { auto: "automatico", light: "chiaro", dark: "scuro" };
+      function render() {
+        var mode = root.getAttribute("data-theme") || "auto";
+        btn.innerHTML = '<svg class="ico" aria-hidden="true"><use href="' + (icon[mode] || icon.auto) + '"/></svg>';
+        btn.title = "Tema: " + (label[mode] || label.auto);
+      }
       render();
       btn.addEventListener("click", function () {
         var cur = root.getAttribute("data-theme") || "auto";
@@ -458,7 +556,8 @@
           if (m && m.hasAttribute("aria-expanded")) m.setAttribute("aria-expanded", on ? "true" : "false");
         });
       }
-      if (groups.length) openGroup(groups[0]); // prima macro-voce aperta di default
+      var firstWithSubs = groups.filter(function (g) { return g.querySelector(".toc-sub"); })[0];
+      if (firstWithSubs) openGroup(firstWithSubs); // primo capitolo aperto di default
 
       // Scorre SOLO la spalla per tenere visibile il link attivo (non tocca mai la finestra:
       // così non interrompe lo smooth-scroll della pagina — il bug "si blocca prima" su Chrome).
@@ -483,7 +582,7 @@
         e.preventDefault();
         var id = a.getAttribute("href").slice(1);
         if (a.classList.contains("toc-macro")) {
-          openGroup(a.closest(".toc-group")); // apre questa, chiude le altre
+          if (id !== "top") openGroup(a.closest(".toc-group")); // apre questa, chiude le altre
           goTo(id);
           if (a.classList.contains("toc-macro--leaf")) closeDrawer(); // Glossario/Fonti: nessuna sotto-voce
         } else {
@@ -523,26 +622,102 @@
         a.classList.add("active");
         current = a;
         if (Date.now() >= suppressUntil) {
-          var g = a.closest(".toc-group"); // l'accordion segue la parte in lettura
-          if (g && !g.classList.contains("open")) openGroup(g);
+          var g = a.getAttribute("href") === "#top" ? null : a.closest(".toc-group");
+          if (g && !g.classList.contains("open")) openGroup(g); // l'accordion segue la lettura
           keepLinkVisible(a);
         }
       }
 
       function updateSpy() {
         spyTicking = false;
-        var active = heads[0];
+        var active = null;
         for (var i = 0; i < heads.length; i++) {
           if (heads[i].getBoundingClientRect().top - READ_LINE <= 1) active = heads[i];
           else break; // heads è in ordine di documento: oltre il primo non ancora passato, stop
         }
-        if (active) setActive(map[active.id]);
+        // sopra il primo titolo si sta leggendo l'apertura
+        setActive(active ? map[active.id] : map["top"]);
       }
 
       document.addEventListener("scroll", function () {
         if (!spyTicking) { spyTicking = true; requestAnimationFrame(updateSpy); }
       }, { passive: true });
       if (heads.length) updateSpy(); // stato iniziale (anche se si arriva con un #ancora)
+
+      // ---- Comandi copia/condividi sui titoli ----
+      // Ricostruisce il markdown della sezione leggendo il DOM, così build.mjs
+      // non deve duplicare il sorgente dentro la pagina.
+      function inline(node) {
+        if (node.nodeType === 3) return node.nodeValue;
+        if (node.nodeType !== 1) return "";
+        // ancora "#" e comandi del titolo non fanno parte del testo
+        if (node.classList && (node.classList.contains("anchor") || node.classList.contains("head-tools"))) return "";
+        var kids = Array.prototype.map.call(node.childNodes, inline).join("");
+        var tag = node.tagName;
+        if (tag === "STRONG" || tag === "B") return "**" + kids + "**";
+        if (tag === "EM" || tag === "I") return "*" + kids + "*";
+        if (tag === "CODE") return "`" + kids + "`";
+        if (tag === "A") return "[" + kids + "](" + node.getAttribute("href") + ")";
+        if (tag === "BR") return "\n";
+        return kids;
+      }
+      function block(el) {
+        var tag = el.tagName;
+        if (/^H[2-6]$/.test(tag)) return "#".repeat(+tag[1]) + " " + inline(el).trim();
+        if (tag === "P") return inline(el).trim();
+        if (tag === "UL" || tag === "OL") {
+          return Array.prototype.map.call(el.children, function (li, i) {
+            return (tag === "OL" ? i + 1 + ". " : "- ") + inline(li).trim();
+          }).join("\n");
+        }
+        if (tag === "PRE") return "```\n" + el.textContent.replace(/\n+$/, "") + "\n```";
+        if (tag === "BLOCKQUOTE") return inline(el).trim().split("\n").map(function (l) { return "> " + l; }).join("\n");
+        if (tag === "HR") return "---";
+        var table = tag === "TABLE" ? el : el.querySelector && el.querySelector("table");
+        if (table) {
+          return Array.prototype.map.call(table.rows, function (r, i) {
+            var cells = Array.prototype.map.call(r.cells, function (c) { return inline(c).trim(); });
+            var row = "| " + cells.join(" | ") + " |";
+            return i === 0 ? row + "\n|" + cells.map(function () { return "---"; }).join("|") + "|" : row;
+          }).join("\n");
+        }
+        return inline(el).trim();
+      }
+      function sectionMarkdown(h) {
+        var lvl = +h.tagName[1], parts = [block(h)], el = h.nextElementSibling;
+        while (el) {
+          if (/^H[1-6]$/.test(el.tagName) && +el.tagName[1] <= lvl) break;
+          if (el.classList && el.classList.contains("chapter-kicker")) break;
+          if (el.tagName === "FOOTER") break;
+          var b = block(el);
+          if (b) parts.push(b);
+          el = el.nextElementSibling;
+        }
+        return parts.join("\n\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+      }
+      function feedback(btn) {
+        btn.classList.add("ok");
+        setTimeout(function () { btn.classList.remove("ok"); }, 1600);
+      }
+      document.addEventListener("click", function (e) {
+        var btn = e.target.closest && e.target.closest(".head-tool");
+        if (!btn) return;
+        e.preventDefault();
+        var h = btn.closest("h2, h3");
+        if (!h) return;
+        var text = btn.getAttribute("data-tool") === "link"
+          ? location.origin + location.pathname + "#" + h.id
+          : sectionMarkdown(h);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function () { feedback(btn); });
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); feedback(btn); } catch (err) {}
+          document.body.removeChild(ta);
+        }
+      });
     })();
   </script>
 </body>
