@@ -112,7 +112,7 @@ File: `Design system contracts.pdf`
 
 ---
 
-## Claude Code e Figma: setup e workflow
+## Flusso tra Claude Code e Figma
 
 **19. Claude Code for Designers: A Practical Guide**
 Tommaso Nervegna — Substack personale, 26 gennaio 2026

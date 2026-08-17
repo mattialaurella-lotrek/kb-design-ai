@@ -752,7 +752,7 @@ Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e referenc
 - Christine Vallaure, [You design it. Then what? A clear map of the Figma-to-code AI mess](https://uxdesign.cc/you-design-it-then-what-a-clear-map-of-the-figma-to-code-ai-mess-954a4084175f) (luglio 2026)
 - Christine Vallaure, [Design system contracts: the component lives in neither Figma nor code](https://uxdesign.cc/design-system-contracts-the-component-lives-in-neither-figma-nor-code-3032d94ca067) (luglio 2026)
 
-**Claude Code e Figma: setup e workflow**
+**Flusso tra Claude Code e Figma**
 - Tommaso Nervegna, [Claude Code for Designers: A Practical Guide](https://nervegna.substack.com/p/claude-code-for-designers-a-practical) (gennaio 2026)
 - Nick Babich, [Claude Code + Figma Design System](https://uxplanet.org/claude-code-figma-design-system-498573c5d357) (marzo 2026)
 - Nick Babich, [Figma Skills for Claude Code](https://uxplanet.org/figma-skills-for-claude-code-bb05a21984fd) (aprile 2026)
