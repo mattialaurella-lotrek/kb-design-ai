@@ -1,8 +1,8 @@
 # Progettare con l'AI, una guida per non perdere la rotta (e il senno)
 
-Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI nel team di design. Ti serve per quattro cose: progettare il contesto che l'AI si trova davanti, far lavorare insieme Claude e Figma, scegliere le skill già pronte da cui partire e trovare le librerie con cui costruire il prototipo. Il taglio è operativo: metodi, comandi e strumenti concreti.
+Questa guida raccoglie il metodo e gli strumenti per progettare al meglio con l'AI. Ti servirà per **progettare il contesto** che l'AI analizzerà, per far lavorare insieme **Claude e Figma**, utilizzare delle **skill** per attività ricorrenti e per selezionare delle **librerie** con cui costruire i prototipi. Il taglio è operativo: metodi, comandi e strumenti concreti.
 
-Come leggerla: la prima parte copre prompting, context engineering e context architecture, la seconda il flusso tra Claude e Figma, la terza è dedicata alle skill (cosa sono, come si creano e un catalogo di riferimento) e la quarta raccoglie le librerie da cui pescare per costruire il prototipo, poi un glossario dei termini e le fonti. Trovi tutti i sotto-capitoli nell'indice qui sotto: leggila in ordine per costruirti il quadro, oppure salta al punto che ti serve quando hai un problema specifico davanti.
+Come leggerla: la prima parte copre i temi del **prompting**, del **context engineering** e della **context architecture**, la seconda il flusso tra Claude e Figma, la terza è dedicata alle skill (cosa sono, come si creano e un catalogo di riferimento) e la quarta raccoglie le librerie per la prototipazione, quindi un glossario dei termini e le fonti. Utilizza l'**indice laterale** per selezionare capitoli e sezioni, oppure procedi in ordine per costruire un quadro completo. Buona lettura 📚
 
 **Indice**
 
