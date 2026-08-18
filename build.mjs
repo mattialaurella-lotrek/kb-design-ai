@@ -163,6 +163,12 @@ bodyHtml = bodyHtml.replace(
   '<a href="$1" target="_blank" rel="noopener noreferrer"'
 );
 
+// ---- Punteggiatura attaccata al codice inline ----
+// Il chip di `code` ha padding a destra, quindi un due punti che lo segue sembra
+// staccato da uno spazio: "`CLAUDE.md` :". Lo si recupera con un margine negativo.
+// Escluso `</code></pre>`, dove non c'è nessun chip.
+bodyHtml = bodyHtml.replace(/<\/code>(?!<\/pre>)([:;,.])/g, '</code><span class="tight-punct">$1</span>');
+
 // ---- Tabelle scrollabili (wrap) ----
 bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="table-wrap">${t}</div>`);
 

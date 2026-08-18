@@ -378,6 +378,9 @@
       padding: .12em .38em; border-radius: 5px;
       border: 1px solid color-mix(in srgb, var(--accent-line) 30%, transparent);
     }
+    /* Il chip di code ha .38em di padding a destra: senza correzione un due punti
+       che lo segue si legge come "`file.md` :". Generato in build.mjs. */
+    .prose .tight-punct { margin-left: -.16em; }
     .prose pre {
       font-family: var(--font-mono); font-size: 13.5px; line-height: 1.55;
       background: var(--surface); color: var(--ink);

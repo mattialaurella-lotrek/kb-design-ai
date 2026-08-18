@@ -1,13 +1,13 @@
 # Handoff: stato del progetto
 
 Sintesi da incollare in una chat per allineare un assistente che non ha accesso al repo.
-Aggiornato al **17 agosto 2026**. Le decisioni di lungo periodo stanno in `MEMORY.md`, la cronologia in `CHANGELOG.md`, la bibliografia in `FONTI.md`.
+Aggiornato al **18 agosto 2026**. Le decisioni di lungo periodo stanno in `MEMORY.md`, la cronologia in `CHANGELOG.md`, la bibliografia in `FONTI.md`.
 
 ---
 
 ## Cos'è
 
-Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il senno)»**, knowledge base del team di design Lotrek. Copre context engineering e prompting, il flusso fra Claude e Figma, le Claude Skills, più glossario e fonti.
+Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il senno)»**, knowledge base del team di design Lotrek. Quattro capitoli: progettare il contesto, il flusso fra Claude e Figma, le Claude Skills, le librerie per prototipare. Più glossario e fonti.
 
 - Repo pubblico: `mattialaurella-lotrek/kb-design-ai`
 - Online su [kb-design-ai.vercel.app](https://kb-design-ai.vercel.app) e su [GitHub Pages](https://mattialaurella-lotrek.github.io/kb-design-ai/)
@@ -20,10 +20,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 
 ## Dove siamo
 
-- 11.693 parole di prosa, 5 capitoli, 37 sezioni, 41 voci nell'indice laterale
-- 47 fonti citate con autore, titolo linkato e data
-- `index.html` pesa 172 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultimo commit pubblicato su entrambi i canali il 17 agosto 2026. Niente di sospeso in locale.
+- 14.022 parole di prosa, 4 capitoli, 39 sezioni, 45 voci nell'indice laterale
+- 51 fonti citate, 108 repository nel catalogo (59 skill, 47 librerie, alcuni condivisi)
+- `index.html` pesa 206 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Pubblicato su entrambi i canali il 18 agosto 2026. Niente di sospeso in locale.
 
 ## Le regole che vincolano il lavoro
 
@@ -49,33 +49,45 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Materiale di riferimento.** I PDF degli articoli stanno in `sources/`, che è **gitignored**: sono contenuti di terzi, non ridistribuibili. `FONTI.md` è versionato e basta a ricostruire il corpus.
 
+**Forma del testo, tre regole introdotte il 18 agosto.** Mai il corsivo, in nessun caso: dove serviva si usa il tondo, o il grassetto se il segno faceva da etichetta. I titoletti in grassetto chiudono coi due punti dentro il grassetto, poi spazio e minuscola (`**Titolo:** testo`), mai col punto. Ogni file `.md` citato va in codice inline, tranne nei titoli degli articoli in Fonti. E dopo i due punti di un titoletto la frase non ne apre un secondo: si rifrasa.
+
+**Anteprima.** `./deploy.sh preview` pubblica su Vercel e assegna l'alias fisso [kb-design-ai-preview.vercel.app](https://kb-design-ai-preview.vercel.app), che punta sempre all'ultima. Manda quello, mai l'URL del singolo deployment: cambia a ogni giro e chi riapre il vecchio guarda una versione superata credendola aggiornata.
+
 **Pubblicazione, due canali.** GitHub Pages si rigenera da sé a ogni push su `main`. Vercel riceve la build locale da `./deploy.sh`. **Un push non aggiorna Vercel**: per allineare entrambi servono push *e* `./deploy.sh`.
 
 ## Fatto in questa sessione
 
-**Tipografia e layout.** Sostituito Instrument Sans con Ronzino. Allargata la scala dei titoli: l'h4 stava sotto al corpo e l'h3 lo superava solo dell'1,14×, mentre l'h2 saltava del 1,64×. Riscritto il ritmo verticale, che dava a un capitolo meno respiro di una sezione. Aggiunta la separazione di fondo fra chrome e colonna di lettura. Numerazione a pallini pieni. Icone Lucide al posto dei glifi.
+**Struttura.** Nuovo capitolo «Librerie per prototipare», che raccoglie i quattro blocchi del catalogo che skill non erano (fondamenta e asset, componenti UI, motion, suono) più la nuova categoria «Effetti e transizioni». Il criterio della divisione: nel capitolo delle skill sta ciò che istruisce l'agente, in quello delle librerie ciò che finisce dentro il prototipo. Capitolo 1 rifatto e rinominato «Progettare il contesto», capitolo 2 rinominato «Flusso tra Claude e Figma». Il blocco sul design system rimesso in ordine cronologico: rendere leggibile, impacchettare in una skill, imporre.
 
-**Contenuti.** Nuova sezione «Il contesto visivo» su DESIGN.md, che fa coppia con «Il contesto di UX»: chiude l'asimmetria per cui `UX.md`, dichiarato una proposta, aveva una sezione e `DESIGN.md`, che una spec ce l'ha, una riga sola. Ampliata «I file di contesto» col raggruppamento per frequenza di lettura e quattro file che mancavano (`FLOWS.md`, `DECISIONS.md`, `REVIEW.md`, `COMPONENTS.md`). Rimossa «Lo "spec" come ancora», diventata ridondante, con la parte che valeva confluita nel capitolo 2. Passaggio anti-AI-ism su tutti i testi.
+**Contenuti nuovi.** Il capitolo 1 passa da 908 a 1.906 parole con tre sezioni: «Il contesto è una risorsa finita» (attention budget e meccanismo del context rot), «Dare struttura al contesto» (i quattro pilastri di context architecture di Paz Perez) e «Tenere sano il contesto nel tempo» (compaction, note esterne, sub-agenti, recupero just-in-time). «Le skill ufficiali di Figma» passa da 10 a 16 voci, raggruppate per direzione del lavoro, con un blocco su requisiti e limiti che prima mancava.
 
-**Fonti.** Creato `FONTI.md`, bibliografia dei 34 documenti del corpus in cinque gruppi. Riscritta la sezione «Fonti» della guida nel formato autore + titolo linkato + data. Corretta un'attribuzione sbagliata: due articoli sono di **Lisa Demchenko**, non di «Lisa Wade».
+**Catalogo.** 23 repository nuovi dalle stelle GitHub non ancora catalogate, quattro link rotti riparati, il conteggio in apertura ricalcolato (diceva 82, sono 106 fra i due capitoli).
 
-**Interfaccia.** Comandi copia-sezione e copia-link sui titoli, in hover. Voce «Introduzione» nell'indice. Riparata l'apertura, dove il lede dell'hero era sempre stato vuoto per una convenzione mai usata nel sorgente. Link del testo in Medium con sottolineatura lime animata, e link esterni in scheda nuova.
+**Forma.** 78 corsivi eliminati, 156 titoletti uniformati ai due punti, 65 file `.md` passati in monospace, 67 paragrafi riscritti per togliere i doppi due punti. Corretto un difetto tipografico che ne è uscito: la punteggiatura dopo un chip di codice restava staccata, ora la recupera uno span con margine negativo generato in `build.mjs`.
 
-**Bug collaterali sistemati.** Il workflow GitHub Pages copiava in `dist/` solo `index.html` e non `assets/`: logo e favicon erano rotti da tempo. L'indice manuale in testa a `content.md` era fuori sincrono.
+**Infrastruttura.** `./deploy.sh preview` con alias fisso come canale standard di revisione.
 
 ## Aperto
 
-**Il capitolo 2 è il 62% della guida** (7.297 parole, 14 sezioni), contro l'8% del capitolo 1 e il 18,5% del 3. È lo squilibrio strutturale principale. Proposta discussa e non ancora eseguita: spezzarlo in due lungo la cucitura naturale, «come si imposta il contesto» (ambienti, file di contesto, contesto visivo, contesto di UX, struttura di cartelle) e «come si lavora con Figma e si arriva in produzione» (MCP, bridge, skill Figma, enforcement, design system, comandi, deploy). Verrebbero due capitoli da circa 3.500 parole.
+**Prossima sessione, già concordato.** Integrazioni sui temi `DESIGN.md` e `CLAUDE.md`, per cui c'è materiale non sfruttato in `sources/`. E una sezione nuova sulle **skill per l'agente AI di Figma**, che sono cosa diversa dalle skill dell'MCP già coperte: quelle servono a un agente esterno che scrive su Figma, queste riguardano l'agente che vive dentro Figma.
 
-**Navigazione a capitolo singolo**: valutata e scartata. Nascondere i capitoli uccide Cmd+F, che è il modo con cui una knowledge base si consulta davvero. L'ibrido con `hidden="until-found"` preserverebbe la ricerca, ma Safari lo ha solo in Technology Preview e il pubblico è un team di design su Mac. Da riconsiderare semmai dopo aver riequilibrato i capitoli.
+**Il capitolo 2 è il 57% della guida** (7.800 parole, 14 sezioni), contro il 14% del capitolo 1 e il 16% del 3. Resta lo squilibrio strutturale principale, anche se il rifacimento del capitolo 1 lo ha ridotto di cinque punti. Proposta discussa e non eseguita: spezzarlo lungo la cucitura naturale, «come si imposta il contesto» e «come si lavora con Figma e si arriva in produzione».
 
-**Sezioni 2-bis e 2-ter**, da scrivere quando servirà: plugin per Claude Code, e architettura ad agenti e sub-agenti. Per la 2-bis c'è materiale pronto in `sources/Claude Code for designers.pdf`, che documenta il workflow spec-driven del plugin GSD.
+**Le categorie del catalogo sono H3 come le sezioni che si leggono**, quindi nella spalla un contenitore di link pesa quanto un capitolo di prosa. Si vede dal disallineamento fra i due indici. Da sciogliere portandole a H4.
 
-**Tre fonti senza link**: le tre schede NN/g raggruppate su una riga, «Design with AI, Five insights from workflows» e il carosello di @friendlyunit, che non ha una pagina sorgente. Da spacchettare e verificare, o da togliere.
+**33 paragrafi senza titoletto hanno ancora i doppi due punti.** I 67 col titoletto sono stati riscritti, questi no: la regola non ci si aggancia in modo ovvio, perché i due segni stanno in frasi diverse dello stesso paragrafo.
 
-**Due PDF citati ma assenti** da `sources/`: `Figma skills for Claude Code 1.pdf` (quello di aprile) e `Design with AI IAAD.pdf`.
+**Due repository da portare nel testo** invece che nel solo catalogo: `sherizan/designagent-design`, che impianta `DESIGN.md` e ci fa il lint del codice, per «Il contesto visivo»; e `southleft/ds-contracts-poc`, che genera libreria React e libreria Figma da un'unica fonte con un differ a tre vie, per «Enforcement del design system».
 
-**Da provare a mano**: i pulsanti copia sui titoli non sono stati testati con un click vero, perché il browser headless non dà accesso agli appunti. Serve anche una verifica del tema chiaro nel browser reale.
+**Navigazione a capitolo singolo**: valutata e scartata. Nascondere i capitoli uccide Cmd+F, che è il modo con cui una knowledge base si consulta davvero. Da riconsiderare semmai dopo aver riequilibrato i capitoli.
+
+**Sezioni 2-bis e 2-ter**, da scrivere quando servirà: plugin per Claude Code, e architettura ad agenti e sub-agenti. Per la 2-bis c'è materiale pronto in `sources/Claude Code for designers.pdf`.
+
+**Tre fonti senza link**: le tre schede NN/g raggruppate su una riga, «Design with AI, Five insights from workflows» e il carosello di @friendlyunit, che non ha una pagina sorgente.
+
+**Due PDF citati ma assenti** da `sources/`: `Figma skills for Claude Code 1.pdf` e `Design with AI IAAD.pdf`.
+
+**Da provare a mano**: i pulsanti copia sui titoli non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti. Serve anche una verifica del tema chiaro nel browser reale.
 
 **Nota**: questo file sta in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
 
@@ -85,6 +97,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 cd ~/Projects/kb-design-ai
 npm run build                 # rigenera index.html
 python3 -m http.server 8899   # anteprima su http://localhost:8899
+./deploy.sh preview           # anteprima su kb-design-ai-preview.vercel.app
 ./deploy.sh                   # build + deploy Vercel in produzione
 ```
 
