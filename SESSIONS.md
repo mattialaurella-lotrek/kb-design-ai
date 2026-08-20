@@ -1,7 +1,7 @@
 # Handoff: stato del progetto
 
 Sintesi da incollare in una chat per allineare un assistente che non ha accesso al repo.
-Aggiornato al **18 agosto 2026**. Le decisioni di lungo periodo stanno in `MEMORY.md`, la cronologia in `CHANGELOG.md`, la bibliografia in `FONTI.md`.
+Aggiornato al **20 agosto 2026**. Le decisioni di lungo periodo stanno in `MEMORY.md`, la cronologia in `CHANGELOG.md`, la bibliografia in `FONTI.md`.
 
 ---
 
@@ -20,10 +20,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 
 ## Dove siamo
 
-- 14.022 parole di prosa, 4 capitoli, 39 sezioni, 45 voci nell'indice laterale
-- 51 fonti citate, 108 repository nel catalogo (59 skill, 47 librerie, alcuni condivisi)
-- `index.html` pesa 206 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Pubblicato su entrambi i canali il 18 agosto 2026. Niente di sospeso in locale.
+- 14.886 parole di prosa, 4 capitoli, 39 sezioni, 45 voci nell'indice laterale
+- 52 fonti citate in guida e 35 documenti in `FONTI.md`, 108 repository nel catalogo (59 skill, 47 librerie, alcuni condivisi)
+- `index.html` pesa 215 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Pubblicato su entrambi i canali il 20 agosto 2026. Niente di sospeso in locale.
 
 ## Le regole che vincolano il lavoro
 
@@ -31,9 +31,9 @@ Sono le cose che un assistente nuovo romperebbe per primo.
 
 **Sorgente e indici.** `content.md` ha due indici da tenere allineati: quello manuale in testa al file e quello che `build.mjs` genera per la spalla. Aggiungendo o togliendo una sezione vanno aggiornati entrambi, il primo a mano.
 
-**Convenzioni editoriali.** Niente numeri di sezione nei titoli. I rimandi interni si scrivono col titolo fra guillemet: `«Il contesto visivo»`. Corsivi sui termini tecnici e stranieri. Smart quotes e neutralizzazione delle tilde sono automatiche in `build.mjs`, non si gestiscono a mano.
+**Convenzioni editoriali.** Niente numeri di sezione nei titoli. I rimandi interni si scrivono col titolo fra guillemet: `«Il contesto visivo»`. Per la forma del testo vedi le quattro regole più sotto. Smart quotes e neutralizzazione delle tilde sono automatiche in `build.mjs`, non si gestiscono a mano.
 
-**Scrittura.** Ogni testo passa da un audit anti-AI-ism: zero em dash (la casa sta a 0,2 ogni 1000 parole), niente costrutti «X, non Y» se non portano una distinzione reale, niente frasi di calibrazione tipo «vale la pena notare», niente nomi astratti al posto di conseguenze concrete. La prosa attuale è stata ripulita così: mantenerla lì.
+**Scrittura.** Ogni testo nuovo si scrive passando per la skill **`/not-ai`**, caricata prima di scrivere e non dopo, insieme al modulo `references/lexicon-it.md`. Poi si rilegge la bozza col secondo passaggio della skill prima di inserirla in `content.md`. In pratica: zero em dash (la casa sta a 0,2 ogni 1.000 parole), niente costrutti «X, non Y» se non portano una distinzione reale, niente frasi di calibrazione tipo «vale la pena notare», niente nomi astratti al posto di conseguenze concrete. La prosa attuale è stata ripulita così: mantenerla lì.
 
 **Tipografia.** Ronzino (Collletttivo, SIL OFL 1.1), self-hostato in `assets/fonts/`. **La famiglia ha 400 / 500 / 700 e non ha il 600**: usare i token `--w-medium` e `--w-bold`, mai `font-weight: 600`, che il browser risolverebbe in Bold ovunque.
 
@@ -45,11 +45,13 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Icone.** Tutte da [Lucide](https://lucide.dev/icons/), inline in uno sprite `<symbol>` in cima al `<body>`. In uso: `copy`, `link`, `check`, `sun`, `moon`, `monitor`, `menu`. Niente glifi Unicode nell'interfaccia.
 
-**Fonti.** Le date sono di **pubblicazione**, non di snapshot: i PDF archiviati con `archive.is` portano in testa la data di archiviazione, che sbaglia anche di tre settimane. La bibliografia completa sta in `FONTI.md`, l'elenco compatto nella sezione «Fonti» di `content.md`: aggiungendo una fonte vanno aggiornati entrambi.
+**Schemi nei blocchi di codice.** I caratteri box-drawing non stanno in IBM Plex Mono e il fallback li rende più larghi del 5% (8,70px contro 8,27px). La regola non è vietarli: è che **il numero di glifi Unicode resti quasi uguale su ogni riga del blocco**, perché lo scarto è di 0,43px a carattere. Un albero di cartelle sfasa di un carattere fra un livello e l'altro e non si vede; la riga di bordo di un riquadro ne ha decine in più della riga di contenuto e sfasa di 8px, quindi i riquadri sono da evitare. Lettere accentate, caporali e apostrofo tipografico sono a larghezza giusta. Larghezza utile fino a ~88 colonne, gli schemi in uso stanno fra 68 e 74.
+
+**Fonti.** **Ogni articolo integrato entra nelle fonti, sempre**, sia in `FONTI.md` (bibliografia completa) sia nella sezione «Fonti» di `content.md` (elenco compatto pubblicato). Vale anche quando il PDF non si riesce ad archiviare in `sources/`, e in quel caso il campo `File:` dichiara perché manca. Le date sono di **pubblicazione**, non di snapshot: i PDF archiviati con `archive.is` portano in testa la data di archiviazione, che sbaglia anche di tre settimane. Le voci di `FONTI.md` sono numerate in sequenza continua fra le sezioni, quindi inserirne una a metà vuol dire rinumerare quelle dopo e aggiornare i conteggi in testa al file.
 
 **Materiale di riferimento.** I PDF degli articoli stanno in `sources/`, che è **gitignored**: sono contenuti di terzi, non ridistribuibili. `FONTI.md` è versionato e basta a ricostruire il corpus.
 
-**Forma del testo, tre regole introdotte il 18 agosto.** Mai il corsivo, in nessun caso: dove serviva si usa il tondo, o il grassetto se il segno faceva da etichetta. I titoletti in grassetto chiudono coi due punti dentro il grassetto, poi spazio e minuscola (`**Titolo:** testo`), mai col punto. Ogni file `.md` citato va in codice inline, tranne nei titoli degli articoli in Fonti. E dopo i due punti di un titoletto la frase non ne apre un secondo: si rifrasa.
+**Forma del testo, quattro regole.** **Mai il corsivo**, in nessun caso, nemmeno sui termini tecnici e stranieri: dove serviva si usa il tondo, o il grassetto se il segno faceva da etichetta. Un `<em>` nell'HTML generato è un errore. I titoletti in grassetto chiudono coi due punti dentro il grassetto, poi spazio e minuscola (`**Titolo:** testo`), mai col punto. Ogni file `.md` citato va in codice inline, tranne nei titoli degli articoli in Fonti. E dopo i due punti di un titoletto la frase non ne apre un secondo: si rifrasa.
 
 **Anteprima.** `./deploy.sh preview` pubblica su Vercel e assegna l'alias fisso [kb-design-ai-preview.vercel.app](https://kb-design-ai-preview.vercel.app), che punta sempre all'ultima. Manda quello, mai l'URL del singolo deployment: cambia a ogni giro e chi riapre il vecchio guarda una versione superata credendola aggiornata.
 
@@ -57,19 +59,23 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 ## Fatto in questa sessione
 
-**Struttura.** Nuovo capitolo «Librerie per prototipare», che raccoglie i quattro blocchi del catalogo che skill non erano (fondamenta e asset, componenti UI, motion, suono) più la nuova categoria «Effetti e transizioni». Il criterio della divisione: nel capitolo delle skill sta ciò che istruisce l'agente, in quello delle librerie ciò che finisce dentro il prototipo. Capitolo 1 rifatto e rinominato «Progettare il contesto», capitolo 2 rinominato «Flusso tra Claude e Figma». Il blocco sul design system rimesso in ordine cronologico: rendere leggibile, impacchettare in una skill, imporre.
+**Il design system agent-ready.** «Rendere il design system leggibile dall'AI» diventa la sezione portante del capitolo 2, da 349 a 1.207 parole, integrando [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) di Eva Nudea Hörner (Design Bootcamp, 13 agosto 2026). Prima la sezione si fermava ai token, cioè allo strato dell'aspetto. Ora segue il percorso completo **authoring → specification → delivery**: la diagnosi del «quasi giusto» (codice funzionante in pochi minuti che semplicemente non è il tuo sistema), i token che coprono lo stile e si fermano lì, lo strato delle specifiche che alla guida mancava del tutto, la delivery come pull request con revisione umana, e la domanda su chi tiene aggiornate le spec, che la fonte stessa lascia irrisolta.
 
-**Contenuti nuovi.** Il capitolo 1 passa da 908 a 1.906 parole con tre sezioni: «Il contesto è una risorsa finita» (attention budget e meccanismo del context rot), «Dare struttura al contesto» (i quattro pilastri di context architecture di Paz Perez) e «Tenere sano il contesto nel tempo» (compaction, note esterne, sub-agenti, recupero just-in-time). «Le skill ufficiali di Figma» passa da 10 a 16 voci, raggruppate per direzione del lavoro, con un blocco su requisiti e limiti che prima mancava.
+**Lo strato delle specifiche** è il materiale nuovo: i registri `components.md`, `patterns.md` e `templates.md` fanno da mappa, e le regole vere stanno in un file per oggetto, con l'estensione che ne dichiara la famiglia (`button.component.md`, `dialog.pattern.md`, `wizard.template.md`). C'è l'esempio completo di `wizard.template.md` con le cinque intestazioni che valgono da modello per qualunque spec: Purpose, Dependencies, Behaviour, Actions, Accessibility. Il motivo per cui le spec stanno su più file invece che in un `DESIGN.md` enorme si aggancia a «Il contesto è una risorsa finita».
 
-**Catalogo.** 23 repository nuovi dalle stelle GitHub non ancora catalogate, quattro link rotti riparati, il conteggio in apertura ricalcolato (diceva 82, sono 106 fra i due capitoli).
+**Due schemi, alla seconda passata.** Il primo tentativo era un blocco solo con tre riquadri impilati, scartato dopo averlo misurato: 47% dell'inchiostro era cornice, 59% delle celle vuote, e il glifo `|` faceva due mestieri diversi (44 volte parete, 7 volte connettore). Un blocco stava facendo due lavori. Adesso sono due: **i tre strati in tre colonne**, con le frecce sulla riga delle intestazioni dove il flusso sta davvero, e **l'albero di `design-system/`** nell'idioma già usato in «Struttura di file e cartelle», che si copia nel repo così com'è.
 
-**Forma.** 78 corsivi eliminati, 156 titoletti uniformati ai due punti, 65 file `.md` passati in monospace, 67 paragrafi riscritti per togliere i doppi due punti. Corretto un difetto tipografico che ne è uscito: la punteggiatura dopo un chip di codice restava staccata, ora la recupera uno span con margine negativo generato in `build.mjs`.
+**Due regole permanenti, dichiarate dall'utente.** Ogni testo nuovo passa per la skill `/not-ai` senza doverlo chiedere ogni volta, e ogni articolo integrato entra nelle fonti in entrambi i file. Sono in `MEMORY.md` e qui sopra.
 
-**Infrastruttura.** `./deploy.sh preview` con alias fisso come canale standard di revisione.
+**Fonti.** `FONTI.md` passa da 34 a 35 documenti, con le voci da 19 a 34 slittate di uno. La voce 19 è senza PDF: Medium risponde 403 via Cloudflare sia a curl sia a Chrome headless, anche in `--print-to-pdf`, quindi il testo è stato recuperato via reader e **il PDF resta da salvare a mano dal browser**.
 
 ## Aperto
 
 **Prossima sessione, già concordato.** Integrazioni sui temi `DESIGN.md` e `CLAUDE.md`, per cui c'è materiale non sfruttato in `sources/`. E una sezione nuova sulle **skill per l'agente AI di Figma**, che sono cosa diversa dalle skill dell'MCP già coperte: quelle servono a un agente esterno che scrive su Figma, queste riguardano l'agente che vive dentro Figma.
+
+**Il PDF della voce 19 di `FONTI.md` va salvato a mano** in `sources/`, con nome `How to make your design system agent-ready.pdf`. Cloudflare blocca ogni via automatica.
+
+**Chi mantiene le specifiche** allineate a Figma è dichiarato irrisolto dalla fonte che sta dietro la sezione nuova. Se qualcuno pubblica una risposta seria, la sezione va rivista.
 
 **Il capitolo 2 è il 57% della guida** (7.800 parole, 14 sezioni), contro il 14% del capitolo 1 e il 16% del 3. Resta lo squilibrio strutturale principale, anche se il rifacimento del capitolo 1 lo ha ridotto di cinque punti. Proposta discussa e non eseguita: spezzarlo lungo la cucitura naturale, «come si imposta il contesto» e «come si lavora con Figma e si arriva in produzione».
 

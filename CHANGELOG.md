@@ -3,6 +3,27 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-20]
+
+### Aggiunto
+- **«Rendere il design system leggibile dall'AI» diventa la sezione portante del capitolo 2**, da 349 a 1.207 parole, integrando [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) di Eva Nudea Hörner (Design Bootcamp, 13 agosto 2026). Prima la sezione si fermava ai token, cioè allo strato dell'aspetto; ora copre il percorso completo **authoring → specification → delivery**, che è il vero argomento del capitolo.
+- **Due schemi invece di uno.** Il primo mette i tre strati in **tre colonne** (nome, fonte di verità, cosa contiene, cosa risolve) con le frecce fra le intestazioni, dove sta davvero il flusso. Il secondo è **l'albero della cartella `design-system/`**, nell'idioma già usato in «Struttura di file e cartelle», e mostra dove vivono `tokens.json`, `DESIGN.md`, i tre registri e le spec per oggetto.
+- Prima era un blocco solo con tre riquadri impilati, scartato dopo averlo misurato: **47% dell'inchiostro era cornice**, il 59% delle celle era vuoto, e il glifo `|` faceva due mestieri diversi (44 volte parete, 7 volte connettore di flusso). Un blocco stava facendo due lavori, il flusso degli strati e la gerarchia dei file, e li faceva peggio entrambi.
+- **Lo strato delle specifiche**, che alla guida mancava del tutto: i registri `components.md`, `patterns.md` e `templates.md` fanno da mappa, e le regole vere stanno in un file per oggetto con l'estensione che ne dichiara la famiglia (`button.component.md`, `dialog.pattern.md`, `wizard.template.md`). Un template referenzia i suoi pezzi invece di ridefinirli.
+- **Esempio completo di `wizard.template.md`** con le cinque intestazioni che valgono da modello per qualunque spec, cioè Purpose, Dependencies, Behaviour, Actions e Accessibility, più il paragrafo che spiega cosa va in ognuna.
+- **La diagnosi del «quasi giusto»** in apertura, che è il secondo modo di sbagliare e il più difficile da vedere: hover sbagliato, colore usato per un significato che non è il suo, spaziature fuori regola, gerarchia primaria/secondaria a intermittenza. Codice funzionante in pochi minuti che semplicemente non è il tuo sistema.
+- **Il motivo per cui le spec stanno su più file invece che in un `DESIGN.md` enorme**, agganciato a «Il contesto è una risorsa finita»: con i registri l'agente recupera solo il ramo che gli serve, invece di caricare l'intero design system a ogni richiesta.
+- **Lo strato di delivery** con il movimento dal prodotto verso il file, cioè l'agente che trova gli scostamenti dal sistema e li propone come pull request, con revisione e merge in mano a una persona. Rimanda al controllo a due vie di «Enforcement del design system».
+- **La domanda aperta su chi mantiene le specifiche**, dichiarata come irrisolta anche dalla fonte, con il vincolo che ne deriva: le spec vanno trattate come codice, quindi versionate, revisionate e sincronizzate da qualcuno che se ne assume la proprietà.
+- Fonte nuova in `content.md` e voce **19** in `FONTI.md`, che passa da 34 a 35 documenti (le voci da 19 a 34 slittano di uno).
+
+### Modificato
+- **I token passano da «tre livelli» a «tre tier»**, così il numero tre resta libero per gli strati authoring/specification/delivery. Le tre voci dell'elenco perdono il doppio due punti che avevano (`**Tier 1: Primitive:**` → `**Tier 1, primitive:**`).
+- **`FONTI.md` dichiara la regola nuova** in testa alla sezione «Manutenzione»: ogni articolo integrato nella guida entra sia lì sia nella sezione «Fonti» di `content.md`, anche quando il PDF non si riesce ad archiviare. In quel caso il campo `File:` dichiara perché manca.
+
+### Da sapere
+- **I caratteri box-drawing non stanno in IBM Plex Mono.** Il fallback li disegna a 8,70px contro gli 8,27px della cella mono: `┌ ─ ┐ ┬ ┼ ▼ →` e anche il `·` sono più larghi del 5%. La regola che ne esce non è «vietati», è che **il numero di glifi Unicode deve restare quasi uguale su ogni riga del blocco**, perché lo scarto è di 0,43px a carattere. Un albero di cartelle sfasa di 1 carattere fra un livello e l'altro e non si vede; la riga di bordo di un riquadro ne ha decine in più della riga di contenuto e sfasa di ~8px. Lettere accentate, caporali e apostrofo tipografico sono a larghezza giusta.
+
 ## [2026-08-18]
 
 ### Aggiunto

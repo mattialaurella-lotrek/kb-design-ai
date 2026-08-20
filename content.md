@@ -450,17 +450,104 @@ Il catalogo pubblico ne conta una ventina contando le varianti. Figma ne documen
 
 Un agente che vede solo hex e valori grezzi, senza riferimenti ai token né significato semantico, scrive componenti con gli stili incollati dentro. Quei componenti smettono di essere agganciati alla fonte di verità: al primo cambio di palette restano indietro, e i contrasti che qualcuno aveva verificato si perdono per strada.
 
-Il design system più leggibile dall'AI segue tre livelli di token:
+C'è un secondo modo di sbagliare, più insidioso perché il risultato sembra a posto. Eva Nudea Hörner, che guida il design di più prodotti enterprise su un sistema condiviso, ha generato frontend dai file Figma con l'MCP e in pochi minuti aveva codice funzionante. Poi l'ha guardato da vicino. Una card con lo stato hover sbagliato. Un colore usato per un significato che non era il suo. Spaziature fuori dalle regole, e la gerarchia fra azione primaria e secondaria applicata a intermittenza. Niente di brutto, semplicemente non era il loro sistema. Generare l'interfaccia era la parte facile; quella che mancava era il contesto per costruirla come la costruiscono loro.
 
-- **Tier 1: Primitive:** valori grezzi (colori, unità di spazio, dimensioni type). Raramente referenziati direttamente.
-- **Tier 2: Semantic:** token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui vive l'intento, ed è il livello su cui l'AI ragiona.
-- **Tier 3: Component:** pattern pre-composti che combinano token semantici (es. una "card" con spaziature, colori, type e ombre corretti).
+**I token risolvono lo stile e si fermano lì:** un `tokens.json` consegna colori, tipografia, spaziature e raggi, quindi copre l'aspetto. Resta fuori tutto il resto. Non dice che il wizard è fatto di top bar, stepper, header, area di contenuto e barra di azioni in fondo, non dice quali azioni stanno dove, e nemmeno quando un utente può passare allo step successivo. Quella parte del sistema oggi vive nelle librerie Figma e nelle pagine di documentazione, cioè in posti costruiti perché una persona li cerchi e li interpreti.
+
+**I tre strati, dal disegno al prodotto:** Hörner separa il sistema in authoring, specification e delivery. Il primo strato è dove il sistema si disegna, il secondo è la stessa conoscenza scritta in una forma che un agente può leggere, il terzo è ciò che finisce nel prodotto. È la struttura che tiene insieme il resto di questa sezione.
+
+```
+AUTHORING         →    SPECIFICATION      →    DELIVERY
+Figma                  repo di progetto        prodotto e codice
+
+foundations            tokens.json             pacchetti versionati
+components             DESIGN.md               token, icone, font
+patterns               i tre registri          componenti e pattern
+templates              una spec per oggetto    pull request
+
+come appare            cosa fare               cosa si spedisce
+e com'è composto       e come si comporta      e chi lo approva
+```
+
+**Authoring, il file Figma:** resta il posto dove il sistema visivo si disegna e si mantiene, organizzato in quattro famiglie che salgono per grado di composizione. Le **foundations** sono colori, tipografia, spazi e raggi; i **components** sono i mattoni singoli; i **patterns** dicono come i componenti lavorano insieme; i **templates** danno la struttura di partenza per pagine e flussi ricorrenti. Un wizard, per esempio, è un template, e in Figma se ne definiscono layout, pattern, componenti e stati visivi. Quello che Figma non sa dire bene sono le regole di struttura e di comportamento, ed è esattamente ciò che serve a un agente.
+
+**Specification, lo strato dei token:** i token sono il primo pezzo di sistema da mettere per iscritto, e conviene organizzarli su tre tier.
+
+- **Tier 1, primitive:** valori grezzi (colori, unità di spazio, dimensioni type). Raramente referenziati direttamente.
+- **Tier 2, semantic:** token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui vive l'intento, ed è il livello su cui l'AI ragiona.
+- **Tier 3, component:** pattern pre-composti che combinano token semantici, come una card con spaziature, colori, type e ombre già corretti.
 
 **Nomina per ruolo, non per aspetto:** è la regola che rende utile il Tier 2. Un nome come `blue` o `gray-1` dice che aspetto ha un colore, non che lavoro fa. `bigRedButton` si rompe al primo rebrand, `button.primary` sopravvive a qualunque cambio visivo perché il ruolo dura più del colore. Valgono nomi come `primary`, `surface-dim`, `border-subtle`, `text-muted`, `radius-card`. Lo stesso vale per i componenti, dove conviene prendere in prestito il vocabolario che ogni strumento già conosce (button, input, card, badge, tabs) invece di inventare un dizionario privato che l'agente deve indovinare. C'è anche un effetto collaterale utile, perché costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
 
+**Specification, i registri e le spec:** sopra i token stanno i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto in «Il contesto visivo». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Le specifiche vere stanno in un file per oggetto, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
+
+```
+design-system/
+├── tokens.json                 ← le fondamenta visive
+├── DESIGN.md                   ← regole globali e convenzioni
+│
+├── components.md               ← i registri: cosa esiste
+├── patterns.md                    e dove trovarne la spec
+├── templates.md
+│
+├── components/
+│   ├── button.component.md
+│   └── stepper.component.md
+├── patterns/
+│   ├── bottom-action-bar.pattern.md
+│   └── dialog.pattern.md
+└── templates/
+    └── wizard.template.md      ← referenzia i pezzi che usa,
+                                   non li ridefinisce
+```
+
+Ecco come può apparire `wizard.template.md`.
+
+```
+# Wizard
+## Purpose
+Guida l'utente in un compito complesso spezzandolo in una sequenza
+di step gestibili.
+## Dependencies
+### Patterns
+- [Top Bar](../patterns/top-bar.pattern.md)
+- [Header](../patterns/header.pattern.md)
+- [Bottom Action Bar](../patterns/bottom-action-bar.pattern.md)
+- [Dialog](../patterns/dialog.pattern.md)
+### Components
+- [Stepper](../components/stepper.component.md)
+- [Status label](../components/status-label.component.md)
+- [Button](../components/button.component.md)
+## Behaviour
+- L'utente avanza fra gli step in sequenza.
+- Può tornare su uno step completato.
+- Non può saltare su uno step futuro non completato.
+- I dati inseriti si conservano passando da uno step all'altro.
+- Lo Stepper segnala lo step corrente e quelli completati.
+## Actions
+- Exit usa Button / Tertiary e sta nella Top Bar.
+- Back usa Button / Secondary e sta nella Bottom Action Bar.
+- Next usa Button / Primary e sta nella Bottom Action Bar.
+- Back torna allo step precedente.
+- Next valida lo step corrente prima di proseguire.
+- Exit chiede conferma con un dialog.
+## Accessibility
+- Lo step corrente è comunicato in modo programmatico.
+- Gli errori di validazione sono associati al campo che li genera.
+- Tutte le azioni sono raggiungibili da tastiera.
+```
+
+Le cinque intestazioni di quel file sono un buon modello di partenza per qualunque spec. **Purpose** dice a cosa serve l'oggetto e quando sceglierlo, **Dependencies** elenca i pezzi che usa con il link alla loro specifica, **Behaviour** descrive come si comporta nel tempo, **Actions** assegna a ogni azione il suo componente e la sua posizione, **Accessibility** fissa i requisiti che non si negoziano.
+
 **Documenta anche gli stati:** il difetto più comune delle spec di componente è descrivere il default e fermarsi lì. All'agente servono anche hover, active, disabled, loading e focus, che sono esattamente i punti in cui, senza indicazioni, inventa.
 
-Framework di adozione incrementale: partire da 3–5 componenti, generare spec AI-readable (markdown strutturato con gerarchia componenti + riferimenti ai token, es. via tool come FigSpecs), integrarle nel flusso (es. ticket), poi misurare quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
+**Perché tanti file invece di uno solo:** la tentazione è mettere tutto dentro un `DESIGN.md` enorme, e sarebbe la scelta sbagliata per due motivi. Il primo riguarda la manutenzione, perché un file per oggetto si aggiorna da sé e si assegna a chi possiede quell'oggetto. Il secondo è il costo in contesto. Con i registri l'agente recupera solo il ramo che gli serve per il task invece di caricare l'intero design system a ogni richiesta, ed è la stessa economia descritta in «Il contesto è una risorsa finita». Il risultato è un grafo di regole con un punto d'ingresso e rimandi espliciti da seguire quando servono, al posto di un manuale da leggere in blocco.
+
+**Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Hörner mette un paletto su come quel lavoro deve arrivare, cioè sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del controllo a due vie descritto in «Enforcement del design system».
+
+**Da dove partire:** si comincia da 3–5 componenti. Per ognuno si genera una spec leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come FigSpecs; la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
+
+Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Hörner lo dichiara come problema irrisolto, e per ora vale come vincolo da mettere in conto, quindi le spec vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno possiede.
 
 ### Creare una skill dal proprio design system
 
@@ -856,6 +943,7 @@ Tutorial e fork pubblicati dai singoli autori:
 - Nick Babich, [Creating AI-Ready Design System: Checklist](https://uxplanet.org/creating-ai-ready-design-system-checklist-547a0256ad87) (giugno 2026)
 - Christine Vallaure, [You design it. Then what? A clear map of the Figma-to-code AI mess](https://uxdesign.cc/you-design-it-then-what-a-clear-map-of-the-figma-to-code-ai-mess-954a4084175f) (luglio 2026)
 - Christine Vallaure, [Design system contracts: the component lives in neither Figma nor code](https://uxdesign.cc/design-system-contracts-the-component-lives-in-neither-figma-nor-code-3032d94ca067) (luglio 2026)
+- Eva Nudea Hörner, [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) (agosto 2026)
 
 **Flusso tra Claude Code e Figma**
 - Tommaso Nervegna, [Claude Code for Designers: A Practical Guide](https://nervegna.substack.com/p/claude-code-for-designers-a-practical) (gennaio 2026)
