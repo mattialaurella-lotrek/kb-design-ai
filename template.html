@@ -570,7 +570,7 @@
       var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var nav = toc.querySelector("nav");
       var groups = Array.prototype.slice.call(nav.querySelectorAll(".toc-group"));
-      var suppressUntil = 0; // finestra in cui lo scrollspy non tocca accordion/scroll (dopo un click)
+      var pinned = null;     // link cliccato: comanda lui finché lo scroll non è atterrato
 
       function openGroup(group) {
         groups.forEach(function (g) {
@@ -595,7 +595,7 @@
       function goTo(id) {
         var el = document.getElementById(id);
         if (!el) return;
-        suppressUntil = Date.now() + 700;
+        pin(map[id]); // prima di muovere la pagina, così lo scrollspy non parte per la tangente
         el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
         if (history.replaceState) history.replaceState(null, "", "#" + id);
       }
@@ -628,40 +628,73 @@
       onScroll();
 
       // ---- Scrollspy ----
-      // Attivo = ultimo titolo il cui bordo superiore ha oltrepassato la linea di lettura.
-      // Deterministico e monotòno con lo scroll (un solo punto di crossing), così l'accordion
-      // si apre/chiude una volta sola per confine: niente flip-flop dei gruppi ai confini di
-      // sezione, che col vecchio IntersectionObserver enter-only rendeva l'effetto scattoso.
+      // Attivo = ultimo titolo il cui bordo superiore ha oltrepassato la propria linea di
+      // aggancio. La linea NON è una costante: è il punto esatto in cui il browser parcheggia
+      // quel titolo dopo un salto d'ancora, cioè lo scroll-padding-top dell'html più lo
+      // scroll-margin-top del titolo (76px per gli h2, 108px con kicker, 84px per gli h3).
+      // Con una costante sola il titolo atterrava sempre sotto la linea e la spalla illuminava
+      // la sezione precedente a ogni click.
       var links = Array.prototype.slice.call(nav.querySelectorAll("a"));
       var map = {};
       links.forEach(function (a) { map[a.getAttribute("href").slice(1)] = a; });
       var heads = Array.prototype.slice.call(document.querySelectorAll(".prose h2[id], .prose h3[id]"));
       var current = null;
       var spyTicking = false;
-      var READ_LINE = 90; // coerente con scroll-padding-top
 
-      function setActive(a) {
-        if (!a || a === current) return;
-        if (current) current.classList.remove("active");
-        a.classList.add("active");
-        current = a;
-        if (Date.now() >= suppressUntil) {
-          var g = a.getAttribute("href") === "#top" ? null : a.closest(".toc-group");
-          if (g && !g.classList.contains("open")) openGroup(g); // l'accordion segue la lettura
-          keepLinkVisible(a);
+      function readLine(h) {
+        var pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+        return pad + (parseFloat(getComputedStyle(h).scrollMarginTop) || 0);
+      }
+      var lines = heads.map(readLine);
+      addEventListener("resize", function () { lines = heads.map(readLine); }, { passive: true });
+
+      function setActive(a, force) {
+        if (!a) return;
+        if (a !== current) {
+          if (current) current.classList.remove("active");
+          a.classList.add("active");
+          current = a;
         }
+        if (!force && pinned) return; // durante un salto l'accordion non insegue la lettura
+        var g = a.getAttribute("href") === "#top" ? null : a.closest(".toc-group");
+        if (g && !g.classList.contains("open")) openGroup(g);
+        keepLinkVisible(a);
       }
 
       function updateSpy() {
         spyTicking = false;
+        if (pinned) return; // lo scroll è in volo verso un bersaglio noto: nessuno lo tocchi
         var active = null;
         for (var i = 0; i < heads.length; i++) {
-          if (heads[i].getBoundingClientRect().top - READ_LINE <= 1) active = heads[i];
+          if (heads[i].getBoundingClientRect().top - lines[i] <= 1) active = heads[i];
           else break; // heads è in ordine di documento: oltre il primo non ancora passato, stop
         }
         // sopra il primo titolo si sta leggendo l'apertura
         setActive(active ? map[active.id] : map["top"]);
       }
+
+      // Un click aggancia la voce cliccata e la tiene finché la pagina non è atterrata. La
+      // durata di uno smooth scroll dipende dalla distanza (misurata fino a 1,6s su questa
+      // pagina), quindi si aspetta l'evento di fine scroll invece di indovinare un timeout.
+      var pinTimer = null;
+      function releasePin() {
+        if (!pinned) return;
+        pinned = null;
+        if (pinTimer) { clearTimeout(pinTimer); pinTimer = null; }
+        updateSpy(); // riallinea con dove siamo davvero finiti
+      }
+      function pin(a) {
+        if (!a) return;
+        pinned = a;
+        setActive(a, true);
+        if (pinTimer) clearTimeout(pinTimer);
+        pinTimer = setTimeout(releasePin, 3000); // rete di sicurezza se scrollend non arriva
+      }
+      document.addEventListener("scrollend", releasePin);
+      // se nel frattempo l'utente scorre a mano, comanda lui
+      ["wheel", "touchstart", "keydown"].forEach(function (ev) {
+        document.addEventListener(ev, releasePin, { passive: true });
+      });
 
       document.addEventListener("scroll", function () {
         if (!spyTicking) { spyTicking = true; requestAnimationFrame(updateSpy); }
