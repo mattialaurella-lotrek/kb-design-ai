@@ -43,10 +43,11 @@ function smartQuotesText(s) {
     .replace(/'/g, "&rsquo;");
 }
 function smartQuotesLine(line) {
-  // preserva gli span di codice inline (`...`)
+  // preserva gli span di codice inline (`...`) e i tag HTML grezzi: dentro un tag le
+  // virgolette dritte delimitano gli attributi, e curvarle rompe il markup.
   return line
-    .split(/(`[^`]*`)/g)
-    .map((part) => (part.startsWith("`") ? part : smartQuotesText(part)))
+    .split(/(`[^`]*`|<\/?[a-zA-Z][^<>]*>)/g)
+    .map((part) => (part.startsWith("`") || part.startsWith("<") ? part : smartQuotesText(part)))
     .join("");
 }
 function smartQuotes(md) {
@@ -134,6 +135,42 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
       : "";
   return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}${tools}</h${level}>`;
 });
+
+// ---- Rimandi interni: «Titolo di sezione» -> link all'ancora ----
+// I rimandi si scrivono in guillemets nel markdown e diventano link qui, così il
+// sorgente resta leggibile e un rimando a una sezione che non esiste più viene
+// segnalato dalla build invece di restare un vicolo cieco per chi legge.
+{
+  const byTitle = new Map(toc.map((t) => [t.text, t.id]));
+  const headingRanges = [];
+  bodyHtml.replace(/<h[234][\s\S]*?<\/h[234]>/g, (m, off) => { headingRanges.push([off, off + m.length]); return m; });
+  const inHeading = (i) => headingRanges.some(([a2, b2]) => i >= a2 && i < b2);
+  const irrisolti = new Set();
+  bodyHtml = bodyHtml.replace(/&ldquo;((?:(?!&ldquo;|&rdquo;)[\s\S]){3,90})&rdquo;/g, (m, inner, off) => {
+    if (inHeading(off)) return m;
+    const key = stripTags(inner).trim();
+    const id = byTitle.get(key);
+    if (!id) {
+      // Segnala solo i quasi-titoli: una stringa che somiglia molto a una sezione esistente
+      // è quasi sempre un rimando rotto da una rinomina. Le citazioni normali restano mute.
+      const norm = (x) => x.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[^a-z0-9 ]/g, "").split(/\s+/).filter(Boolean);
+      const kw = norm(key);
+      if (kw.length >= 2) {
+        for (const t of byTitle.keys()) {
+          const tw = norm(t);
+          const comuni = kw.filter((w) => tw.includes(w)).length;
+          if (comuni / Math.max(kw.length, tw.length) >= 0.6) { irrisolti.add(`${key}  ->  forse ${t}`); break; }
+        }
+      }
+      return m;
+    }
+    return `<a class="xref" href="#${id}">${inner}</a>`;
+  });
+  if (irrisolti.size) {
+    console.warn("Rimandi che somigliano a una sezione ma non la centrano:");
+    for (const k of irrisolti) console.warn("  \u00ab" + k + "\u00bb");
+  }
+}
 
 // ---- Occhielli sull'attacco delle macro-voci ----
 // H2 con sotto-sezioni -> "Capitolo N" (numerato); H2 senza figli (chiusura) -> etichetta non numerata.

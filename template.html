@@ -248,6 +248,8 @@
       letter-spacing: -.025em; margin: 0 0 2rem;
     }
     .hero .lede { font-size: 1.16rem; color: var(--ink-soft); }
+    .hero .lede ul { margin: .9em 0; padding-left: 20px; }
+    .hero .lede li { margin-bottom: .3em; }
     .hero .lede :first-child { margin-top: 0; }
     .hero .lede :last-child { margin-bottom: 0; }
     .hero .lede strong { color: var(--ink); }
@@ -363,11 +365,39 @@
     .prose p.has-step { position: relative; padding-left: 2em; }
     .prose p.has-step + pre, .prose p.has-step + .table-wrap { margin-left: 2em; }
 
+    /* Schema a tre passaggi: authoring -> specification -> delivery */
+    .flow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 1.8em 0; }
+    .flow3 > div {
+      position: relative; padding: 18px 20px;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface-2);
+    }
+    .flow3 > div + div::before {
+      content: "\2192"; position: absolute; left: -26px; width: 26px;
+      top: 50%; transform: translateY(-50%);
+      text-align: center; color: var(--muted); line-height: 1;
+    }
+    .flow3 .flow3-step {
+      margin: 0 0 2px; font-size: .74rem; letter-spacing: .09em; text-transform: uppercase;
+      color: var(--accent-ink); font-weight: var(--w-medium);
+    }
+    .flow3 .flow3-where { margin: 0 0 12px; font-weight: var(--w-medium); }
+    .flow3 ul { margin: 0 0 12px; padding-left: 18px; }
+    .flow3 li { margin: 0 0 3px; }
+    .flow3 .flow3-note {
+      margin: 0; padding-top: 11px; border-top: 1px solid var(--border);
+      font-size: .92rem; color: var(--muted);
+    }
+    @media (max-width: 700px) {
+      .flow3 { grid-template-columns: 1fr; gap: 28px; }
+      .flow3 > div + div::before { content: "\2193"; left: 0; right: 0; width: 100%; top: -14px; }
+    }
+
     /* Blockquote */
     .prose blockquote {
       margin: 1.6em 0; padding: 2px 0 2px 20px;
       border-left: 1px solid var(--border-strong);
-      color: var(--muted); font-style: italic;
+      color: var(--muted);
     }
     .prose blockquote p:last-child { margin-bottom: 0; }
 
@@ -730,6 +760,15 @@
         if (tag === "PRE") return "```\n" + el.textContent.replace(/\n+$/, "") + "\n```";
         if (tag === "BLOCKQUOTE") return inline(el).trim().split("\n").map(function (l) { return "> " + l; }).join("\n");
         if (tag === "HR") return "---";
+        if (el.classList && el.classList.contains("flow3")) {
+          return Array.prototype.map.call(el.children, function (c) {
+            var q = function (sel) { var n = c.querySelector(sel); return n ? n.textContent.trim() : ""; };
+            var voci = Array.prototype.map.call(c.querySelectorAll("li"), function (li) {
+              return "  - " + li.textContent.trim();
+            }).join("\n");
+            return "**" + q(".flow3-step") + "** (" + q(".flow3-where") + ")\n" + voci + "\n  " + q(".flow3-note");
+          }).join("\n\n");
+        }
         var table = tag === "TABLE" ? el : el.querySelector && el.querySelector("table");
         if (table) {
           return Array.prototype.map.call(table.rows, function (r, i) {

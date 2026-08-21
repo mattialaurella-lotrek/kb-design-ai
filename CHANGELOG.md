@@ -3,6 +3,43 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-21]
+
+### Aggiunto
+- **Struttura a sei capitoli.** Il vecchio capitolo 2 valeva il 58% della guida e teneva insieme due cose che non si parlavano: i file di contesto e il lavoro con Figma. Adesso sono capitoli distinti, e i temi del design system e della prototipazione hanno un capitolo loro. L'ordine è «Progettare il contesto», «Scrivere il contesto», «Collegare Claude e Figma», «Il design system per l'AI», «Costruire e pubblicare un prototipo», «Lavorare con le Claude Skills». L'equilibrio passa da 12/58/16/5 a **10/26/16/10/10/15**.
+- **Sezione «CLAUDE.md»**, che mancava del tutto: progetto contro globale con l'errore di mescolarli, `/init` più i due passaggi che rendono utile la bozza, il peso delle prime trenta righe, quali sezioni mettere, regole ferme e anti-pattern separati, il limite delle duecento righe, i file annidati e la regola dei conflitti, `/insights` per misurare se funziona, e la potatura con cinque domande.
+- **Sezione «Dal codice al canvas e ritorno»**, sul giro completo fra Claude e Figma introdotto da Code to Canvas a febbraio 2026, con i quattro passaggi e l'avvertenza che quello che arriva su Figma non è mai perfetto al primo colpo.
+- **Rimandi interni cliccabili.** Nel sorgente restano scritti in guillemets e `build.mjs` li trasforma in link all'ancora, togliendo le virgolette. Sono 53. La build stampa un avviso quando un rimando somiglia a una sezione ma non la centra, quindi una rinomina non lascia più vicoli ciechi.
+- **Introduzione riscritta** come panoramica completa: sette voci fra strumenti e temi, con GitHub e Vercel che prima non comparivano prima del capitolo finale.
+- **Un esercizio** in coda a «Requisiti minimi di partenza», l'unico della guida: prendi un compito che daresti all'AI, scrivi cosa hai da darle sui quattro punti, e quello che non riesci a riempire è il motivo per cui l'output tornerà generico.
+- **Cappelli su tutti e sei i capitoli.** Due non ne avevano affatto.
+- Quattro fonti nuove, da 42 a 46 documenti: l'annuncio Figma di Code to Canvas, l'analisi Muz.li, il tutorial in quattro passi di Nick Babich e la misura sul consumo di token di Adam Jacob.
+
+### Modificato
+- **Glossario da 12 a 43 voci, in ordine alfabetico.** I termini tecnici usati nel corpo e spiegati da nessuna parte erano 29, ora sono zero. Sono entrate le parole che fermano chi comincia: repo, commit, build, canvas, frame, plugin, marketplace, front matter, YAML, lint, CLI, Dev Mode, agente, subagent, deploy, edge case, happy path, scope.
+- **Confronto prima del setup**: «Tre modi di collegare Figma a confronto» viene ora prima di «Setup e loop con Figma MCP», così si sceglie lo strumento e poi lo si configura.
+- **Le cinque sezioni sulle librerie diventano una**, «Librerie per asset ed effetti», con le famiglie come sottotitoli.
+- **Capitolo 1 da 2.105 a 1.896 parole.** «Dare struttura al contesto» scende da 406 a 168 (via i quattro pilastri e l'esempio dell'assistenza clienti), «Tenere sano il contesto nel tempo» da 314 a 178 (restano le due mosse che dipendono da te, il resto lo fa lo strumento), «Checklist pre-task» diventa una checklist vera invece di tre paragrafi con i punti e virgola. «Tecniche di prompting» e «Framework di prompting» si fondono in «Scrivere una richiesta».
+- **Sezioni rinominate:** «Il contesto visivo» → «DESIGN.md», «Il contesto di UX» → «UX.md», «Le skill ufficiali di Figma» → «Le skill Figma per Claude Code», «I quattro livelli del contesto» → «Requisiti minimi di partenza», «Struttura di file e cartelle» → «Organizzare il progetto».
+- **Riferimenti agli autori tolti dal corpo**, undici su dodici. Restano solo dove identificano uno strumento, non una tesi. Gli autori sono comunque tracciabili nelle fonti.
+- **Il prompt pack non è più un blockquote.** Era l'unico della guida e il CSS lo rendeva come citazione, grigio e in corsivo, contro la convenzione che vieta il corsivo. Ora è testo normale.
+- **Lo schema dei tre strati è in HTML**, tre card responsive, al posto dell'arte ASCII in un blocco di codice: 67 caratteri di larghezza che su mobile scorrevano in orizzontale, con il confronto a tre che spariva.
+
+### Rimosso
+- **Tre duplicazioni.** La regola sui nomi dei token era insegnata per esteso tre volte con tre esempi diversi, ora sta una volta sola in «DESIGN.md». Stessa cosa per il limite delle duecento righe e per gli stati dei componenti. Delle sette ripetizioni misurate, quattro erano falsi positivi, cioè la stessa parola per cose diverse.
+- **Le sezioni consigliate del `CLAUDE.md`** stavano in due posti e mancavano dalla sezione che insegna a scrivere il file. Spostate lì, con rimando dagli altri due.
+- Il paragrafo su UX-context design, il paragrafo su DesignAgent nell'elenco dei formati (già coperto dal catalogo), «Il collegamento al sistema vivo», la sotto-sezione sulla frequenza di lettura dei file e la voce di glossario «UX-context design», rimasta orfana.
+
+### Corretto
+- **La voce attiva della spalla laterale illuminava sempre la sezione precedente a quella cliccata.** Lo scrollspy confrontava i titoli con una costante di 90px presa dallo `scroll-padding-top`, ignorando lo `scroll-margin-top` di ogni titolo (76, 84 o 108px), che si somma: dopo un salto d'ancora il titolo si ferma a 174px e per lo scrollspy non ha ancora passato la linea. Misurato su quattro bersagli, quattro su quattro sbagliati. La linea si calcola ora per titolo dai valori reali della CSS.
+- **I capitoli si aprivano e chiudevano durante un salto.** Dopo un click lo scrollspy veniva zittito per 700ms fissi, mentre uno smooth scroll lungo su questa pagina dura fino a 1.635ms. Ora il click aggancia la voce e la rilascia su `scrollend`.
+- **`smartQuotes` distruggeva gli attributi HTML**, trasformando `class="flow3"` in `class=&rdquo;flow3&rdquo;`. Saltava già il codice inline, ora salta anche i tag.
+- **Doppia sottolineatura sui rimandi interni**: allo stile di casa, fatto con un gradiente che si ritrae all'hover, ne era stato aggiunto sopra un `border-bottom` che restava fisso. Lo stile in più è stato tolto.
+
+### Da sapere
+- **I riferimenti interni si scrivono in guillemets e diventano link in fase di build.** Il testo dentro deve corrispondere esattamente al titolo della sezione, backtick esclusi. Se non corrisponde a nessuna sezione resta testo, e la build lo segnala solo quando somiglia molto a un titolo esistente, così le citazioni normali non fanno rumore.
+- **Il lede dell'hero ha la stessa dimensione del corpo del testo**, 18,56px. Rimpicciolire una lista lì dentro per far stare l'hero sopra la piega non serve: fra il corpo più piccolo e quello giusto ballano 70px, e il primo capitolo resta sotto la piega comunque.
+
 ## [2026-08-20]
 
 ### Aggiunto

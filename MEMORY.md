@@ -8,6 +8,20 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 - **Repo**: `mattialaurella-lotrek/kb-design-ai` (pubblico).
 - **Live**: [kb-design-ai.vercel.app](https://kb-design-ai.vercel.app) (Vercel, scope `lotrek`) e [GitHub Pages](https://mattialaurella-lotrek.github.io/kb-design-ai/).
 
+## Struttura, dal 21 agosto 2026
+Sei capitoli in sequenza, ognuno dà per acquisito il precedente. Prima erano tre più due e il secondo valeva il 58% della guida.
+
+1. **Progettare il contesto** — i concetti (10%)
+2. **Scrivere il contesto** — i file che l'agente legge: `CLAUDE.md`, `DESIGN.md`, `UX.md`, l'elenco dei formati, l'organizzazione del progetto (26%)
+3. **Collegare Claude e Figma** — i tre ponti a confronto, il setup MCP, le skill native di Figma, i comandi per il design (16%)
+4. **Il design system per l'AI** — renderlo leggibile, impacchettarlo in una skill, farne rispettare le regole (10%)
+5. **Costruire e pubblicare un prototipo** — il giro codice-canvas-codice, le librerie, il deploy (10%)
+6. **Lavorare con le Claude Skills** — cosa sono, come si scrivono, il catalogo (15%)
+
+- **Il criterio del taglio** è che ogni capitolo risponda a una domanda sola. «Scrivere il contesto» non parla di Figma, «Collegare Claude e Figma» non parla di design system, e il deploy non sta col capitolo Figma perché GitHub e Vercel con Figma non c'entrano.
+- **Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere: «skill» compare 45 volte prima di arrivarci. L'attenuazione è la definizione nel bullet `SKILL.md` del capitolo 2, con rimando al capitolo finale. Non riaprire la questione senza un motivo nuovo.
+- **L'introduzione è la panoramica completa** e assorbe il vecchio «Il quadro d'insieme»: sette voci fra strumenti e temi, GitHub e Vercel compresi.
+
 ## Architettura
 - `content.md` (fonte markdown) → `build.mjs` (marked) inietta nel `template.html` bespoke → `index.html`.
 - `index.html` è **gitignored**: è un artefatto di build, non si versiona.
@@ -26,6 +40,12 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 - `sources/` — materiale di riferimento per le prossime integrazioni (articoli di terzi in PDF). **Gitignored**: il repo è pubblico e non sono contenuti nostri. I PDF non si versionano.
 - ⚠️ **La documentazione ufficiale non entra in `FONTI.md`.** Le pagine di Figma (help center, developers.figma.com) e i cataloghi come mcpservers.org stanno solo nella sezione «Fonti» di `content.md`: `FONTI.md` cataloga i PDF archiviati in `sources/`, che sono articoli di terzi. La regola «aggiungendo una fonte aggiorna entrambi» vale per quelli.
 - [`FONTI.md`](./FONTI.md) alla root — bibliografia completa dei 34 documenti del corpus (titolo, autore, testata, data di pubblicazione, link per esteso, nome del PDF), versionata così da poter ricostruire `sources/` da zero. È cosa diversa dalla sezione «Fonti» di `content.md`, che è l'elenco compatto pubblicato nella guida: aggiungendo una fonte vanno aggiornati entrambi.
+
+- **I rimandi interni si scrivono in guillemets e `build.mjs` li trasforma in link** all'ancora della sezione, togliendo le virgolette. Il testo dentro deve corrispondere esattamente al titolo, backtick esclusi. Se non corrisponde resta testo, e la build avvisa solo quando somiglia molto a un titolo esistente, così le citazioni normali non fanno rumore. Sono 53 e vanno tenuti tutti risolti.
+- ⚠️ **`smartQuotes` salta i tag HTML oltre al codice inline.** Senza quel salto un `class="flow3"` diventava `class=&rdquo;flow3&rdquo;` e ogni blocco HTML grezzo nel markdown arrivava in pagina senza stile.
+- **L'HTML grezzo in `content.md` funziona** (marked lo lascia passare) e serve per gli schemi che una tabella non regge: le tre card di authoring/specification/delivery sono `<div class="flow3">`. Il pulsante «copia sezione» le sa leggere, quindi aggiungendone altri va esteso anche `block()` in `template.html`.
+- ⚠️ **Non aggiungere stili di link.** Lo stile di casa usa un gradiente di sfondo che si ritrae all'hover; qualunque `border-bottom` o `text-decoration` in più produce due sottolineature, e all'hover ne resta una fissa. È successo con i rimandi interni.
+- ⚠️ **Lo scrollspy calcola la linea di aggancio per titolo**, sommando lo `scroll-padding-top` dell'html allo `scroll-margin-top` del titolo (76 h2, 108 h2 con kicker, 84 h3). Con una costante sola ogni click illuminava la sezione precedente. E il rilascio dopo un click avviene su `scrollend`, non a timer: uno smooth scroll lungo su questa pagina dura fino a 1.635ms.
 
 ## Pubblicazione — due canali
 - **GitHub Pages**: si rigenera da sé nel workflow Actions a ogni push su `main` (ricostruisce `index.html` e copia `assets/`).
@@ -56,17 +76,17 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 - **Occhielli di capitolo**: «Capitolo N» sulle H2 con sotto-sezioni (numerazione automatica), etichette non numerate su Glossario/Fonti via la mappa `BACKMATTER_KICKER` in `build.mjs`.
 
 ## Catalogo di repository
-- **Il catalogo è diviso in due capitoli dal 2026-08-18**, e il criterio è questo: nel capitolo «Lavorare con le skill» sta ciò che **istruisce l'agente**, nel capitolo «Librerie per prototipare» ciò che **finisce dentro il prototipo** (icone, componenti, motion, effetti, suono). Prima stavano insieme e il capitolo delle skill conteneva quattro categorie che skill non erano.
+- **Il catalogo è diviso in due capitoli dal 2026-08-18**, e il criterio è questo: nel capitolo «Lavorare con le Claude Skills» sta ciò che **istruisce l'agente**, nel capitolo «Librerie per prototipare» ciò che **finisce dentro il prototipo** (icone, componenti, motion, effetti, suono). Prima stavano insieme e il capitolo delle skill conteneva quattro categorie che skill non erano.
 - **Il conteggio dei repository si ricalcola, non si aggiorna a mano.** Il numero che stava scritto in apertura di catalogo («82») era fuori misura: contando le URL vere sono 59 nel capitolo skill e 47 in quello delle librerie. Il conto si fa con un `grep` delle URL `github.com/owner/repo` sulle due porzioni di `content.md`.
 - **Le stelle GitHub si leggono senza autenticazione** dall'API pubblica: `https://api.github.com/users/mattialaurella-lotrek/starred?per_page=100&page=N`. Non serve nessun token, e `gh` sulla macchina ha il token scaduto. Utile per il diff fra le stelle e ciò che la guida cita già.
 - **Un repository che sparisce dalle stelle non va tolto dalla guida** se esiste ancora e la citazione regge: è successo con `sherizan/designagent-figma` e `southleft/figma-console-mcp`, che restano perché sono il predecessore e un termine di paragone nel confronto fra i tre modi di collegare Figma.
 
 ## Fonti esterne integrate
-- **UX-context design** (NN/g, Tony Alicea, 24 luglio 2026): integrato il 2026-07-27 nella sezione **«Il contesto di UX»** dopo «I file di contesto» (titolo in italiano per coerenza con gli altri; «UX-context design» resta come termine nel corpo e nel glossario), più la voce `UX.md` nell'elenco dei file, il glossario, le fonti e gli schemi di struttura. `UX.md` è dichiarato come proposta, non come formato con spec: se NN/g o altri lo consolidano, la sezione va rivista.
+- **UX-context design** (NN/g, Tony Alicea, 24 luglio 2026): integrato il 2026-07-27 nella sezione **«UX.md»** dopo «I file di contesto» (titolo in italiano per coerenza con gli altri; «UX-context design» resta come termine nel corpo e nel glossario), più la voce `UX.md` nell'elenco dei file, il glossario, le fonti e gli schemi di struttura. `UX.md` è dichiarato come proposta, non come formato con spec: se NN/g o altri lo consolidano, la sezione va rivista.
 
 - **Lisa Demchenko** (Process to Pixels) è l'autrice di due fonti del capitolo 2: «How to write a DESIGN.md file Claude can actually use» (16 maggio 2026) e «What your AI co-designer can't infer from your hex values» (4 agosto 2026). Verificato sulle pagine originali il 2026-08-17, dopo che il credit di un'infografica mi aveva fatto scrivere «Lisa Wade»: non è quello il nome.
 - **Le date in testa ai PDF archiviati sono date di snapshot, non di pubblicazione**, e sbagliano anche di settimane (es. «DESIGN.md Best Practices»: snapshot 20 giugno, uscita 17 giugno; «What is DESIGN.md»: snapshot 30 maggio, uscita 7 maggio). Citare sempre la data reale, ricavabile aprendo l'URL stampato nella prima pagina.
-- **DESIGN.md** (4 PDF in `sources/DESIGN.md/`): integrato il 2026-08-17 nella nuova sezione **«Il contesto visivo»**, che fa coppia con «Il contesto di UX» (visivo = come deve apparire, UX = per chi è e come si comporta). La spec è **alpha** e ha questioni aperte dichiarate (dark mode, motion, breakpoint): se Google Labs la consolida, la sezione va rivista. Le due fonti UX Planet non riportano l'autore nel PDF archiviato: citate senza attribuzione, non assegnarle a Nick Babich senza verifica.
+- **DESIGN.md** (4 PDF, ora alla radice di `sources/`): integrato il 2026-08-17 nella sezione **«DESIGN.md»**, che fa coppia con «Il contesto di UX» (visivo = come deve apparire, UX = per chi è e come si comporta). La spec è **alpha** e ha questioni aperte dichiarate (dark mode, motion, breakpoint): se Google Labs la consolida, la sezione va rivista. Le due fonti UX Planet non riportano l'autore nel PDF archiviato: citate senza attribuzione, non assegnarle a Nick Babich senza verifica.
 
 - **«Lo "spec" come ancora» è stata rimossa** il 2026-08-17 e fusa in «Dividere il lavoro tra Claude Desktop e Claude Code»: non riproporla come sezione. La fonte resta valida («How I use AI to partner on design problems»), era il peso a non giustificare più una voce d'indice.
 - **`content.md` ha due indici**: quello manuale in testa al file (righe 7–40 circa) e quello generato da `build.mjs` per la spalla. Aggiungendo o togliendo una sezione vanno aggiornati entrambi, il primo a mano.
@@ -74,17 +94,20 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 
 - **Context architecture** (18 agosto 2026): il capitolo 1 si chiama ora «Progettare il contesto» e regge sulla progressione prompt engineering → context engineering → context architecture, presa da Paz Perez per NN/g (12 giugno 2026). La sezione «Context rot» non esiste più come titolo: è diventata «Il contesto è una risorsa finita», e i due rimandi che la citavano per titolo sono stati aggiornati. Il termine context rot resta nel corpo e nel glossario. Non rimettere «Context rot» come titolo di sezione senza risistemare quei rimandi.
 - **Design system agent-ready** (20 agosto 2026): «Rendere il design system leggibile dall'AI» è ora la sezione portante del capitolo 2 (349 → 1.207 parole) e regge sui tre strati di Eva Nudea Hörner, **authoring → specification → delivery**. La fonte è [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) (Design Bootcamp, 13 agosto 2026), voce 19 di `FONTI.md`, **senza PDF in `sources/`** perché Cloudflare blocca. Due cose da non confondere: i **tre tier** sono i token (primitive/semantic/component), i **tre strati** sono authoring/specification/delivery. Lo strato delle specifiche (registri `components.md`/`patterns.md`/`templates.md` più un file per oggetto tipo `wizard.template.md`) è materiale nuovo per la guida e si aggancia a «Il contesto è una risorsa finita» per l'economia di contesto e a «Enforcement del design system» per il movimento dal prodotto verso il file. La fonte dichiara irrisolto **chi mantiene le specifiche allineate a Figma**: se qualcuno pubblica una risposta seria, la sezione va rivista.
-- **Skill Figma** (18 agosto 2026): la sezione «Le skill ufficiali di Figma» sta su due fonti, l'help center di Figma (nove skill documentate con requisiti e limiti) e il catalogo mcpservers.org (una ventina di voci contando le varianti). Nessuna delle due pagina porta una data, quindi nelle Fonti sono citate senza. Due cose sono dichiarate instabili e vanno ricontrollate: la funzione è **gratuita solo durante la beta** e passerà a pagamento a consumo, e i requisiti di seat e piano cambiano da skill a skill. Se Figma chiude la beta, il blocco «Requisiti e limiti» va riscritto.
+- **Skill Figma** (18 agosto 2026): la sezione «Le skill Figma per Claude Code» sta su due fonti, l'help center di Figma (nove skill documentate con requisiti e limiti) e il catalogo mcpservers.org (una ventina di voci contando le varianti). Nessuna delle due pagina porta una data, quindi nelle Fonti sono citate senza. Due cose sono dichiarate instabili e vanno ricontrollate: la funzione è **gratuita solo durante la beta** e passerà a pagamento a consumo, e i requisiti di seat e piano cambiano da skill a skill. Se Figma chiude la beta, il blocco «Requisiti e limiti» va riscritto.
 
-## Prossima sessione, deciso il 18 agosto 2026
-- **Integrazioni su `DESIGN.md` e `CLAUDE.md`**: i due formati hanno una sezione a testa nel capitolo 2 («Il contesto visivo» e la voce in «I file di contesto») e c'è materiale non ancora sfruttato in `sources/` (quattro PDF in `sources/DESIGN.md/`, più `CLAUDE.md best practices.pdf` e `CLAUDE.md vs DESIGN.md for Claude Code.pdf`). Da vedere insieme, perché la divisione dei compiti fra i due file è il punto su cui le fonti divergono.
-- **Nuova sezione sulle skill per l'agente AI di Figma**, che sono **cosa diversa dalle skill dell'MCP** già coperte in «Le skill ufficiali di Figma». Quelle documentate finora servono a un agente esterno (Claude Code, Cursor) che scrive su Figma; queste riguardano l'agente che vive dentro Figma. Non confondere i due insiemi quando si scrive la sezione.
+## Prossima sessione, deciso il 21 agosto 2026
+- **Le Figma Agent Skills**, cioè le skill dell'agente che vive **dentro Figma**, sono cosa diversa dalle skill del plugin già coperte in «Le skill Figma per Claude Code». Rinviate dall'utente il 21 agosto 2026. Due decisioni già prese e da non riaprire: restano due sezioni distinte, e ogni titolo deve dire chi esegue la skill e dove (nome proposto per la nuova, «Le skill dell'agente di Figma»). Mancano le fonti, che fornisce l'utente, e la scelta fra capitolo «Lavorare con le Claude Skills» e coda di «Collegare Claude e Figma».
+
 
 ## In sospeso / da valutare
-- **Le categorie del catalogo sono H3 come le sezioni che si leggono**, quindi nella spalla un contenitore di link pesa quanto un capitolo di prosa. Si vede dal disallineamento fra i due indici: quello manuale in testa a `content.md` elenca 4 voci sotto «Lavorare con le skill», la spalla ne mostra 11. Da sciogliere nella revisione di architettura, probabilmente portando le categorie a H4.
-- **Variante indice «macro-voce solo espande»** (senza scroll del contenuto al click): valutata ma non adottata; l'utente ci ripenserà.
+- **Le categorie del catalogo delle skill sono H3** come le sezioni che si leggono, quindi nella spalla un contenitore di link pesa quanto un capitolo di prosa. Per le librerie il problema è risolto (le cinque sezioni sono diventate sottotitoli dentro «Librerie per asset ed effetti»); per il catalogo delle skill no.
+- **Variante indice «macro-voce solo espande»** (senza scroll del contenuto al click): valutata e non adottata, l'utente ci ripenserà.
 - **Differenziazione visiva degli occhielli di chiusura** (Appendice/Riferimenti) dai capitoli: possibile, non fatta.
-- **Sezioni «2-bis» e «2-ter»** — da scrivere da zero, quando l'utente vorrà: 2-bis = plugin per Claude Code; 2-ter = architettura ad agenti/sub-agenti e workflow. Non esistono in nessun sorgente: non riproporle come lavoro imminente. Per la 2-bis c'è però materiale pronto in `sources/Claude Code for designers.pdf`: il workflow *spec-driven* del plugin GSD (cartella `.planning/` con PROJECT/REQUIREMENTS/ROADMAP/STATE, la sezione «Out of Scope» e la fase *Discuss*).
+- **Sezioni da scrivere da zero, quando l'utente vorrà**: plugin per Claude Code, e architettura ad agenti e sub-agenti. Materiale pronto in `sources/Claude Code for designers.pdf`.
+- **Tre fonti senza PDF** (voci 28, 29 e 43), perché sono pagine pubbliche stabili che non serve archiviare. Dichiarato in testa a `FONTI.md`.
+- **L'hero su mobile è alto 1.255px** contro 844 di viewport, per via della lista dei sette strumenti. Su mobile si scrolla comunque, quindi non è stato considerato un difetto.
+
 
 ## Convenzione di manutenzione
 A ogni sessione di lavoro, aggiornare `CHANGELOG.md` (cosa è cambiato) e questo `MEMORY.md` (decisioni/contesto).

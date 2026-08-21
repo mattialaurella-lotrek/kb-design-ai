@@ -20,10 +20,11 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 
 ## Dove siamo
 
-- 14.886 parole di prosa, 4 capitoli, 39 sezioni, 45 voci nell'indice laterale
-- 52 fonti citate in guida e 35 documenti in `FONTI.md`, 108 repository nel catalogo (59 skill, 47 librerie, alcuni condivisi)
-- `index.html` pesa 215 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Pubblicato su entrambi i canali il 20 agosto 2026. Niente di sospeso in locale.
+- 19.160 parole di prosa, 6 capitoli, 35 sezioni, 44 voci nell'indice laterale
+- 60 fonti citate in guida e 46 documenti in `FONTI.md`, 108 repository nel catalogo
+- 53 rimandi interni, tutti risolti in link dalla build
+- `index.html` pesa 239 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Pubblicato su entrambi i canali il 21 agosto 2026
 
 ## Le regole che vincolano il lavoro
 
@@ -59,41 +60,35 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 ## Fatto in questa sessione
 
-**Il design system agent-ready.** «Rendere il design system leggibile dall'AI» diventa la sezione portante del capitolo 2, da 349 a 1.207 parole, integrando [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) di Eva Nudea Hörner (Design Bootcamp, 13 agosto 2026). Prima la sezione si fermava ai token, cioè allo strato dell'aspetto. Ora segue il percorso completo **authoring → specification → delivery**: la diagnosi del «quasi giusto» (codice funzionante in pochi minuti che semplicemente non è il tuo sistema), i token che coprono lo stile e si fermano lì, lo strato delle specifiche che alla guida mancava del tutto, la delivery come pull request con revisione umana, e la domanda su chi tiene aggiornate le spec, che la fonte stessa lascia irrisolta.
+**Riassetto strutturale, da tre capitoli a sei.** Il vecchio capitolo 2 valeva il 58% della guida e teneva insieme i file di contesto e il lavoro con Figma, che non si parlano. Ora sono sei capitoli in sequenza (10/26/16/10/10/15%): Progettare il contesto, Scrivere il contesto, Collegare Claude e Figma, Il design system per l'AI, Costruire e pubblicare un prototipo, Lavorare con le Claude Skills. Il criterio è che ogni capitolo risponda a una domanda sola.
 
-**Lo strato delle specifiche** è il materiale nuovo: i registri `components.md`, `patterns.md` e `templates.md` fanno da mappa, e le regole vere stanno in un file per oggetto, con l'estensione che ne dichiara la famiglia (`button.component.md`, `dialog.pattern.md`, `wizard.template.md`). C'è l'esempio completo di `wizard.template.md` con le cinque intestazioni che valgono da modello per qualunque spec: Purpose, Dependencies, Behaviour, Actions, Accessibility. Il motivo per cui le spec stanno su più file invece che in un `DESIGN.md` enorme si aggancia a «Il contesto è una risorsa finita».
+**Sezione «CLAUDE.md» nuova**, che mancava del tutto, e «Dal codice al canvas e ritorno» sul giro completo fra Claude e Figma introdotto da Code to Canvas.
 
-**Due schemi, alla seconda passata.** Il primo tentativo era un blocco solo con tre riquadri impilati, scartato dopo averlo misurato: 47% dell'inchiostro era cornice, 59% delle celle vuote, e il glifo `|` faceva due mestieri diversi (44 volte parete, 7 volte connettore). Un blocco stava facendo due lavori. Adesso sono due: **i tre strati in tre colonne**, con le frecce sulla riga delle intestazioni dove il flusso sta davvero, e **l'albero di `design-system/`** nell'idioma già usato in «Struttura di file e cartelle», che si copia nel repo così com'è.
+**Glossario da 12 a 43 voci.** I termini tecnici usati nel corpo e mai spiegati erano 29, ora zero. Sono entrate le parole che fermano chi comincia, da `repo` a `front matter`.
 
-**Due regole permanenti, dichiarate dall'utente.** Ogni testo nuovo passa per la skill `/not-ai` senza doverlo chiedere ogni volta, e ogni articolo integrato entra nelle fonti in entrambi i file. Sono in `MEMORY.md` e qui sopra.
+**53 rimandi interni sono diventati link**, generati da `build.mjs` a partire dai guillemets nel sorgente, con avviso in build quando un rimando non centra più il bersaglio.
 
-**Fonti.** `FONTI.md` passa da 34 a 35 documenti, con le voci da 19 a 34 slittate di uno. La voce 19 è senza PDF: Medium risponde 403 via Cloudflare sia a curl sia a Chrome headless, anche in `--print-to-pdf`, quindi il testo è stato recuperato via reader e **il PDF resta da salvare a mano dal browser**.
+**Tre duplicazioni sciolte** (nomi dei token, limite delle duecento righe, stati dei componenti) e le sezioni consigliate del `CLAUDE.md` spostate dove servono. Delle sette ripetizioni misurate, quattro erano falsi positivi.
+
+**Capitolo 1 da 2.105 a 1.896 parole**, con la checklist riscritta come checklist vera e un esercizio in coda a «Requisiti minimi di partenza».
+
+**Due bug corretti.** La voce attiva della spalla illuminava sempre la sezione precedente a quella cliccata, perché lo scrollspy ignorava lo `scroll-margin-top` dei titoli; e i capitoli si aprivano e chiudevano durante un salto, perché la finestra di silenzio era un timer fisso da 700ms contro uno scroll che dura fino a 1.635ms.
+
+**Fonti da 42 a 46.**
 
 ## Aperto
 
-**Prossima sessione, già concordato.** Integrazioni sui temi `DESIGN.md` e `CLAUDE.md`, per cui c'è materiale non sfruttato in `sources/`. E una sezione nuova sulle **skill per l'agente AI di Figma**, che sono cosa diversa dalle skill dell'MCP già coperte: quelle servono a un agente esterno che scrive su Figma, queste riguardano l'agente che vive dentro Figma.
+**Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `MEMORY.md`.
 
-**Il PDF della voce 19 di `FONTI.md` va salvato a mano** in `sources/`, con nome `How to make your design system agent-ready.pdf`. Cloudflare blocca ogni via automatica.
+**Il capitolo «Scrivere il contesto» è il più grosso, al 26%.** È coerente, perché i file di contesto sono il cuore della guida, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
 
-**Chi mantiene le specifiche** allineate a Figma è dichiarato irrisolto dalla fonte che sta dietro la sezione nuova. Se qualcuno pubblica una risposta seria, la sezione va rivista.
+**Le categorie del catalogo delle skill sono ancora H3**, quindi nella spalla pesano quanto un capitolo. Per le librerie è risolto, per le skill no.
 
-**Il capitolo 2 è il 57% della guida** (7.800 parole, 14 sezioni), contro il 14% del capitolo 1 e il 16% del 3. Resta lo squilibrio strutturale principale, anche se il rifacimento del capitolo 1 lo ha ridotto di cinque punti. Proposta discussa e non eseguita: spezzarlo lungo la cucitura naturale, «come si imposta il contesto» e «come si lavora con Figma e si arriva in produzione».
+**Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere: «skill» compare 45 volte prima. Non riaprire senza un motivo nuovo.
 
-**Le categorie del catalogo sono H3 come le sezioni che si leggono**, quindi nella spalla un contenitore di link pesa quanto un capitolo di prosa. Si vede dal disallineamento fra i due indici. Da sciogliere portandole a H4.
+**33 paragrafi senza titoletto hanno ancora i doppi due punti.**
 
-**33 paragrafi senza titoletto hanno ancora i doppi due punti.** I 67 col titoletto sono stati riscritti, questi no: la regola non ci si aggancia in modo ovvio, perché i due segni stanno in frasi diverse dello stesso paragrafo.
-
-**Due repository da portare nel testo** invece che nel solo catalogo: `sherizan/designagent-design`, che impianta `DESIGN.md` e ci fa il lint del codice, per «Il contesto visivo»; e `southleft/ds-contracts-poc`, che genera libreria React e libreria Figma da un'unica fonte con un differ a tre vie, per «Enforcement del design system».
-
-**Navigazione a capitolo singolo**: valutata e scartata. Nascondere i capitoli uccide Cmd+F, che è il modo con cui una knowledge base si consulta davvero. Da riconsiderare semmai dopo aver riequilibrato i capitoli.
-
-**Sezioni 2-bis e 2-ter**, da scrivere quando servirà: plugin per Claude Code, e architettura ad agenti e sub-agenti. Per la 2-bis c'è materiale pronto in `sources/Claude Code for designers.pdf`.
-
-**Tre fonti senza link**: le tre schede NN/g raggruppate su una riga, «Design with AI, Five insights from workflows» e il carosello di @friendlyunit, che non ha una pagina sorgente.
-
-**Due PDF citati ma assenti** da `sources/`: `Figma skills for Claude Code 1.pdf` e `Design with AI IAAD.pdf`.
-
-**Da provare a mano**: i pulsanti copia sui titoli non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti. Serve anche una verifica del tema chiaro nel browser reale.
+**Da provare a mano**: i pulsanti di copia sui titoli non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
 
 **Nota**: questo file sta in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
 
