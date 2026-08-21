@@ -86,7 +86,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere: «skill» compare 45 volte prima. Non riaprire senza un motivo nuovo.
 
-**33 paragrafi senza titoletto hanno ancora i doppi due punti.**
+**I doppi due punti sono sette, non trentatré.** Il vecchio conteggio contava anche i due segni in frasi diverse dello stesso paragrafo, che non è un difetto. Misurando frase per frase i casi sono sette, e solo due o tre valgono una correzione: «**Quale scegliere:** **GitHub Pages:** …» in «Deploy del prototipo», che è il peggiore; il «Passo obbligato: … vivono in un sottopercorso:» sempre lì; e forse la frase sulle due versioni dell'MCP nativo, dove il secondo paio sta dentro una parentesi. Gli altri quattro sono citazioni o voci in forma «nome: descrizione» che introducono un elenco, quindi uso corretto.
 
 **Da provare a mano**: i pulsanti di copia sui titoli non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
 
