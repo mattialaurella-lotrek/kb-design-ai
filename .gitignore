@@ -1,6 +1,7 @@
 node_modules/
 dist/
 index.html
+progettare-con-lai.pdf
 .DS_Store
 CLAUDE.local.md
 *.log

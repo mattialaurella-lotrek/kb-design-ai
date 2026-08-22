@@ -25,10 +25,14 @@ jobs:
       - run: npm ci
       - name: Build HTML da content.md
         run: npm run build
+      - name: Genera il PDF della guida
+        # Chrome e' preinstallato sull'immagine ubuntu-latest.
+        run: node make-pdf.mjs index.html progettare-con-lai.pdf
       - name: Prepara la cartella di pubblicazione
         run: |
           mkdir -p dist
           cp index.html dist/
+          cp progettare-con-lai.pdf dist/
           cp -R assets dist/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

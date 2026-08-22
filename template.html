@@ -1,7 +1,21 @@
 <!DOCTYPE html>
-<html lang="it" data-theme="auto">
+<html lang="it">
 <head>
   <meta charset="utf-8" />
+  <script>
+    /* Chiaro o scuro, niente terzo stato: la preferenza di sistema decide solo
+       la prima visita, poi comanda la scelta salvata. Sta nel <head> perche'
+       il CSS non gestisce piu' il caso "auto" e girare in fondo al body
+       farebbe lampeggiare la pagina chiara a chi ha il sistema in scuro. */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("kb-theme"); } catch (e) {}
+      if (t !== "light" && t !== "dark") {
+        t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.setAttribute("data-theme", t);
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{{TITLE}}</title>
   <meta name="description" content="{{DESCRIPTION}}" />
@@ -52,19 +66,33 @@
     }
 
     :root {
-      --bg: #f5f5f5;          /* colonna di lettura */
-      --bg-chrome: #eeeeef;   /* topbar e spalla: un gradino sotto */
+      /* Palette Lotrek, estratta dal CSS di produzione di lotrek.it.
+         I numeri fra parentesi sono i token .color-N del sito. */
+      --bg: #f3f8f7;          /* Nebula/50 — colonna di lettura */
+      --bg-chrome: #f3f8f7;   /* uguale al fondo: la pagina e' una superficie sola
+                                come sul sito, e a separare topbar e spalla e' il filetto */
       --surface: #ffffff;
-      --surface-2: #fbfbfb;
-      --ink: #181818;
-      --ink-soft: #44464c;
-      --muted: #707378;
-      --border: #e5e5e6;
-      --border-strong: #d4d4d6;
-      --accent: #d9fb12;
-      --accent-ink: #181818;
-      --accent-wash: #edf5b1;
-      --accent-line: #c3e400;
+      --surface-2: #f7f8f7;   /* Edward/50 */
+      --ink: #232323;         /* Shark/950 — 14,65:1 sul fondo */
+      --ink-soft: #3d3d3d;    /* Shark/900 — 10,13:1 */
+      --muted: #546061;       /* Edward/800 — 6,08:1 sul fondo, 5,42:1 sulla spalla.
+                                 Il #888 del sito si ferma a 3,31:1 e non passa AA */
+      --border: #cce0df;      /* Nebula/200 */
+      --border-strong: #9ec3c1; /* Nebula/300 */
+      --accent: #cbfb0e;      /* Electric Lime/400 */
+      --accent-ink: #232323;
+      /* Il lime pieno segna lo stato attivo, il grigio l'hover, la velatura
+         chiara fa da fondo al codice inline. Prima un token solo faceva i tre
+         mestieri e sopra L* 95 il lime perde identita' e legge giallo. */
+      --tint-hover: #dfedec;  /* Nebula/100 */
+      /* icon/arrow-right della sezione Icons, come maschera perche' un ::before
+         non puo' puntare a un <symbol> dello sprite. */
+      --ico-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23000' stroke-width='1.5' stroke-miterlimit='10'%3E%3Cpath d='M11.798 21.5L21.305 12L11.798 2.5'/%3E%3Cpath d='M21.305 12H2.695'/%3E%3C/svg%3E");
+      --code-tint: #dfedec;   /* Nebula/100 — il codice inline sta nella famiglia
+                                del fondo, cosi' il lime resta il segno di una cosa sola */
+      --code-line: #cce0df;   /* Nebula/200 */
+      --accent-line: #b1e201; /* Electric Lime/500. Il 400 puro sul fondo chiaro fa
+                                 1,13:1 e il filetto dei link sparisce; questo sta a 1,42:1 */
       --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
 
       --font-display: "Ronzino", ui-sans-serif, system-ui, sans-serif;
@@ -73,50 +101,42 @@
 
       /* Ronzino non ha il 600: i pesi "semibold" del vecchio Instrument Sans
          sono riassegnati esplicitamente a Medium (UI) e Bold (titoli/enfasi). */
+      --w-regular: 400;
       --w-medium: 500;
       --w-bold: 700;
 
       --sidebar-w: 310px;
       --content-max: 74ch;
-      --radius: 16px;
-      --radius-sm: 8px;
+      /* Lotrek usa due raggi soli, 0 e 100px. Qui lo 0 vale per frame,
+         tabelle, blocchi di codice e immagini; le pillole e i pulsanti
+         tondi tengono il loro raggio scritto a mano. */
+      --radius: 0;
+      --radius-sm: 0;
     }
 
+    /* Lotrek non ha un tema scuro sul sito: il fondo qui e' la color-1 del brand,
+       con le superfici a gradini sopra. Il lime puro ci sta a 12,98:1. */
     :root[data-theme="dark"] {
-      --bg: #0c1a1f;
-      --bg-chrome: #08151a;
-      --surface: #10242b;
-      --surface-2: #0f2027;
-      --ink: #f3f4f2;
-      --ink-soft: #d4d4d6;
-      --muted: #8b9599;
-      --border: #1e343c;
-      --border-strong: #2a454e;
-      --accent: #d9fb12;
-      --accent-ink: #0c1a1f;
-      --accent-wash: rgba(217,251,18,.12);
-      --accent-line: #d9fb12;
+      --bg: #232323;          /* Shark/950 */
+      /* La scala Shark finisce a 950, quindi sotto il fondo non c'e' nessun gradino:
+         questi tre valori sono interpolati e restano gli unici fuori dal sistema. */
+      --bg-chrome: #232323;   /* come sopra */
+      --surface: #2c2c2c;
+      --surface-2: #282828;
+      --ink: #f3f8f7;         /* Nebula/50 — 14,65:1 */
+      --ink-soft: #dfedec;    /* Nebula/100 — 13,07:1 */
+      --muted: #9baaaa;       /* Edward/500 — 6,53:1 */
+      --border: #454545;      /* Shark/800 */
+      --border-strong: #4f4f4f; /* Shark/700 */
+      --accent: #cbfb0e;      /* Electric Lime/400 */
+      --accent-ink: #232323;
+      --tint-hover: #3d3d3d;  /* Shark/900 */
+      --code-tint: #2c2c2c;
+      --code-line: #3d3d3d;   /* Shark/900 */
+      --accent-line: #cbfb0e; /* sullo scuro il lime puro regge: 12,98:1 */
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
     }
 
-    @media (prefers-color-scheme: dark) {
-      :root[data-theme="auto"] {
-        --bg: #0c1a1f;
-        --bg-chrome: #08151a;
-        --surface: #10242b;
-        --surface-2: #0f2027;
-        --ink: #f3f4f2;
-        --ink-soft: #d4d4d6;
-        --muted: #8b9599;
-        --border: #1e343c;
-        --border-strong: #2a454e;
-        --accent: #d9fb12;
-        --accent-ink: #0c1a1f;
-        --accent-wash: rgba(217,251,18,.12);
-        --accent-line: #d9fb12;
-        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.35);
-      }
-    }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 90px; }
@@ -145,7 +165,7 @@
 
     /* ---------- Top bar ---------- */
     header.topbar {
-      position: sticky; top: 0; z-index: 50;
+      position: sticky; top: 0; z-index: 1000;
       height: 60px; display: flex; align-items: center; gap: 16px;
       padding: 0 22px;
       background: color-mix(in srgb, var(--bg-chrome) 84%, transparent);
@@ -158,23 +178,115 @@
     .brand-logo--dark { display: none; }
     :root[data-theme="dark"] .brand-logo--light { display: none; }
     :root[data-theme="dark"] .brand-logo--dark { display: block; }
-    @media (prefers-color-scheme: dark) {
-      :root[data-theme="auto"] .brand-logo--light { display: none; }
-      :root[data-theme="auto"] .brand-logo--dark { display: block; }
-    }
     .topbar .spacer { flex: 1; }
 
     .iconbtn {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px; border-radius: 10px;
-      border: 1px solid var(--border-strong); background: var(--surface);
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 0; background: none;
       color: var(--ink); cursor: pointer; font-size: 16px; line-height: 1;
       transition: transform .12s ease, background .2s ease, border-color .2s ease;
     }
     .iconbtn .ico { width: 18px; height: 18px; display: block; }
-    .iconbtn:hover { border-color: var(--ink-soft); }
+    .iconbtn:hover { background: var(--tint-hover); }
     .iconbtn:active { transform: translateY(1px); }
-    #menuBtn { display: none; }
+
+    /* Link esterno della topbar: stessa lingua del pulsante del tema, cioe'
+       nessuna cornice a riposo e tinta neutra all'hover. */
+    .toplink {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 12px; border-radius: 4px;
+      font-family: var(--font-display); font-size: 15px; font-weight: var(--w-medium);
+      letter-spacing: -.0075em; line-height: 1; white-space: nowrap;
+      color: var(--ink); text-decoration: none;
+      transition: background .15s ease;
+    }
+    .toplink .ico { width: 18px; height: 18px; display: block; flex: none; }
+    .toplink:hover { background: var(--tint-hover); }
+    .toplink:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+    /* Nel pannello a pieno schermo il link sta sotto la CTA, non nella topbar. */
+    .toplink--panel { display: none; margin: 18px 0 0 -12px; }
+
+    /* ---------- Tooltip ---------- */
+    /* Il title nativo tarda quasi un secondo e non si puo' vestire, quindi i
+       pulsanti che hanno un data-tip lo perdono: averli entrambi ne mostrerebbe
+       due sovrapposti. L'etichetta per gli screen reader resta in aria-label. */
+    [data-tip] { position: relative; }
+    [data-tip]::after {
+      content: attr(data-tip);
+      position: absolute; top: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%) translateY(-3px);
+      padding: 8px 12px; border-radius: 4px;
+      background: var(--ink-soft); color: var(--bg);
+      font-family: var(--font-display); font-size: 13px; font-weight: var(--w-medium);
+      letter-spacing: -.005em; line-height: 1; white-space: nowrap;
+      opacity: 0; pointer-events: none; z-index: 200;
+      transition: opacity .14s ease, transform .14s ease;
+    }
+    /* Il pulsante del menu sta a filo del bordo sinistro: li' il tooltip centrato uscirebbe. */
+    [data-tip][data-tip-align="start"]::after { left: 0; transform: translateY(-3px); }
+    [data-tip]:hover::after, [data-tip]:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+    [data-tip][data-tip-align="start"]:hover::after,
+    [data-tip][data-tip-align="start"]:focus-visible::after { transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) { [data-tip]::after { transition: none; } }
+    /* Su touch non c'e' hover: il tooltip resta solo come conferma dopo il tocco. */
+    @media (hover: none) { [data-tip]:hover::after { opacity: 0; } }
+    [data-tip].ok::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ---------- CTA ---------- */
+    /* Ricalca .btn__primary del sito: pillola 100px, spaziatura 12/20 (con 48 a
+       destra quando ne ha una), e l'hover che fa ruotare l'etichetta invece di
+       cambiare colore. I tre span servono a quello: il primo tiene la larghezza,
+       il secondo e' quello che si vede, il terzo aspetta sotto il bordo del <p>,
+       che li ritaglia. Sotto i 1024px la rotazione non c'e', come sul sito. */
+    .btn-cta {
+      position: relative; display: flex; align-items: center;
+      width: fit-content; padding: 12px 20px; border-radius: 100px;
+      border: 0; background: var(--ink); color: var(--bg);
+      font-family: var(--font-display); font-size: 15px; font-weight: var(--w-medium);
+      letter-spacing: -.01em; line-height: 1; white-space: nowrap;
+      cursor: pointer; user-select: none; text-decoration: none;
+    }
+    .btn-cta p { position: relative; overflow: hidden; width: fit-content; height: fit-content; margin: 0; line-height: 1.45; }
+    .btn-cta:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+    @media (min-width: 1025px) {
+      .btn-cta span:first-child { opacity: 0; pointer-events: none; }
+      .btn-cta span:nth-child(2) {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+        transition: transform .2s ease-in-out;
+      }
+      .btn-cta span:last-child {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%,50%);
+        transition: transform .2s ease-in-out;
+      }
+      /* Il sito usa -150%, che porta il bordo basso dello span esattamente sul
+         bordo alto del ritaglio: le code di "g" e "p" rientrano di un paio di px.
+         -170% le fa uscire del tutto e in movimento non si distingue. */
+      .btn-cta:hover span:nth-child(2) { transform: translate(-50%,-170%); }
+      .btn-cta:hover span:last-child { transform: translate(-50%,-50%); }
+    }
+    @media (max-width: 1024px) {
+      .btn-cta span:nth-child(2), .btn-cta span:last-child { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .btn-cta span { transition: none; } }
+
+    /* Pulsante Menu: sul sito e' una pillola che si stringe a cerchio con la X
+       quando il pannello e' aperto. Su desktop non esiste, c'e' la spalla. */
+    .btn-menu { display: none; }
+    @media (max-width: 1024px) {
+      .btn-menu {
+        display: flex; justify-content: center; height: 38px;
+        transition: width .15s ease-in-out, padding .15s ease-in-out, border-radius .15s ease-in-out;
+      }
+      .btn-menu p { transition: opacity .15s ease-in-out; }
+      .btn-menu-close {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+        width: 20px; height: 20px; opacity: 0; transition: opacity .15s ease-in-out;
+      }
+      .btn-menu.active { width: 38px; padding: 0; border-radius: 50%; }
+      .btn-menu.active p { opacity: 0; }
+      .btn-menu.active .btn-menu-close { opacity: 1; }
+    }
 
     /* ---------- Layout ---------- */
     .shell { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
@@ -189,10 +301,14 @@
       font-family: var(--font-display);
     }
     aside.toc .toc-label {
-      font-size: 11px; text-transform: uppercase; letter-spacing: .16em;
-      color: var(--muted); font-weight: var(--w-bold); margin: 0 0 14px 6px;
+      font-size: 15px; letter-spacing: -.0075em;
+      color: var(--ink); font-weight: var(--w-regular); margin: 0 0 14px 6px;
     }
     aside.toc nav { display: flex; flex-direction: column; gap: 2px; }
+    /* La CTA scorre col resto dell'indice invece di stare fissa in basso: sotto
+       i 900px di viewport una barra ancorata mangerebbe una voce su sei. */
+    .toc-cta { margin-top: 32px; }
+    .toc-cta .btn-cta { font-size: 14px; }
 
     /* Accordion group: macro-voce (H2) + sotto-lista (H3) collassabile */
     .toc-group + .toc-group { margin-top: 4px; }
@@ -200,14 +316,16 @@
       display: flex; align-items: center; gap: 8px;
       text-decoration: none; color: var(--ink);
       font-weight: var(--w-medium); font-size: 14.5px; line-height: 1.3;
-      border-radius: 8px; padding: 8px 10px; cursor: pointer;
+      border-radius: 4px; padding: 8px 10px; cursor: pointer;
       transition: background .15s ease, color .15s ease;
     }
-    .toc-macro:hover { background: var(--accent-wash); }
+    .toc-macro:hover { background: var(--tint-hover); }
     .toc-macro .toc-macro-text { flex: 1; min-width: 0; }
-    .toc-macro.active { background: var(--accent-wash); }
+    
     .toc-chev { flex: none; color: var(--muted); transition: transform .22s ease; }
-    .toc-group.open > .toc-macro .toc-chev { transform: rotate(90deg); }
+    /* Chiuso mostra il chevron in giu', aperto in su: mezzo giro della stessa forma,
+       cosi' la geometria e' identica alle due icone e non serve un secondo simbolo. */
+    .toc-group.open > .toc-macro .toc-chev { transform: rotate(180deg); }
     .toc-group.open > .toc-macro { color: var(--ink); }
     @media (prefers-reduced-motion: reduce) { .toc-chev { transition: none; } }
 
@@ -218,13 +336,19 @@
     .toc-sub-inner { overflow: hidden; min-height: 0; }
 
     aside.toc a.lvl-3 {
-      text-decoration: none; color: var(--ink-soft);
-      border-radius: 8px; padding: 6px 10px 6px 20px; margin-left: 12px;
+      text-decoration: none; color: var(--ink);
+      border-radius: 4px; padding: 6px 10px 6px 20px; margin-left: 12px;
       display: block; font-size: 14px; line-height: 1.35;
       transition: background .15s ease, color .15s ease;
     }
-    aside.toc a.lvl-3:hover { background: var(--accent-wash); color: var(--ink); }
-    aside.toc a.lvl-3.active { color: var(--ink); background: var(--accent-wash); }
+    aside.toc a.lvl-3:hover { background: var(--tint-hover); }
+    /* Lo stato attivo prende il lime pieno, con l'inchiostro sopra a 12,98:1.
+       Specificita' alta apposta: deve battere .toc-group.open > .toc-macro,
+       che viene dopo e riporterebbe il colore a --ink. */
+    aside.toc a.lvl-3.active,
+    aside.toc .toc-macro.active { background: var(--accent); color: var(--accent-ink); }
+    aside.toc .toc-macro.active .toc-chev { color: var(--accent-ink); }
+    aside.toc a.flag.active::before { background: var(--accent-ink); }
     aside.toc a.flag::before {
       content: ""; display: inline-block; vertical-align: middle;
       width: 6px; height: 6px; margin-right: 8px; border-radius: 50%;
@@ -238,8 +362,8 @@
     /* Hero */
     .hero { padding: 64px 0 40px; margin-bottom: 40px; }
     .hero .eyebrow {
-      font-family: var(--font-display); font-size: 12px; font-weight: var(--w-bold);
-      text-transform: uppercase; letter-spacing: .18em; color: var(--muted);
+      font-family: var(--font-display); font-size: 16px; font-weight: var(--w-regular);
+      letter-spacing: -.0075em; color: var(--ink);
       display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
     }
     .hero h1 {
@@ -247,6 +371,7 @@
       font-size: clamp(2.1rem, 4.6vw, 3.3rem); line-height: 1.04;
       letter-spacing: -.025em; margin: 0 0 2rem;
     }
+    .hero-img { display: block; width: 100%; height: auto; margin: 0 0 2rem; }
     .hero .lede { font-size: 1.16rem; color: var(--ink-soft); }
     .hero .lede ul { margin: .9em 0; padding-left: 20px; }
     .hero .lede li { margin-bottom: .3em; }
@@ -282,8 +407,8 @@
     /* Occhiello "Capitolo N" sopra l'attacco di sezione */
     .prose .chapter-kicker {
       display: flex; align-items: center; gap: 9px;
-      font-family: var(--font-display); font-size: 12px; font-weight: var(--w-bold);
-      text-transform: uppercase; letter-spacing: .15em; color: var(--muted);
+      font-family: var(--font-display); font-size: 16px; font-weight: var(--w-regular);
+      letter-spacing: -.0075em; color: var(--ink);
       margin: var(--gap-cap) 0 0;
     }
     .prose .chapter-kicker + h2.has-kicker { margin-top: .5rem; }
@@ -305,10 +430,10 @@
     .prose h3 .badge {
       display: inline-block; vertical-align: middle; transform: translateY(-.1em);
       margin-left: .55em; font-family: var(--font-display);
-      font-size: .58em; font-weight: var(--w-bold); line-height: 1;
-      text-transform: uppercase; letter-spacing: .07em;
+      font-size: .62em; font-weight: var(--w-medium); line-height: 1;
+      letter-spacing: -.005em;
       color: var(--accent-ink); background: var(--accent);
-      padding: .35em .62em; border-radius: 999px;
+      padding: .38em .72em; border-radius: 100px;
     }
 
     .prose p { margin: 0 0 1.25rem; }
@@ -373,13 +498,15 @@
       background: var(--surface-2);
     }
     .flow3 > div + div::before {
-      content: "\2192"; position: absolute; left: -26px; width: 26px;
+      content: ""; position: absolute; left: -25px; width: 24px; height: 24px;
       top: 50%; transform: translateY(-50%);
-      text-align: center; color: var(--muted); line-height: 1;
+      background: var(--muted);
+      -webkit-mask: var(--ico-arrow-right) center / 24px 24px no-repeat;
+              mask: var(--ico-arrow-right) center / 24px 24px no-repeat;
     }
     .flow3 .flow3-step {
-      margin: 0 0 2px; font-size: .74rem; letter-spacing: .09em; text-transform: uppercase;
-      color: var(--accent-ink); font-weight: var(--w-medium);
+      margin: 0 0 2px; font-size: .82rem; letter-spacing: -.005em;
+      color: var(--ink); font-weight: var(--w-regular);
     }
     .flow3 .flow3-where { margin: 0 0 12px; font-weight: var(--w-medium); }
     .flow3 ul { margin: 0 0 12px; padding-left: 18px; }
@@ -404,9 +531,9 @@
     /* Inline code + code blocks */
     .prose :not(pre) > code {
       font-family: var(--font-mono); font-size: .86em;
-      background: var(--accent-wash); color: var(--ink);
-      padding: .12em .38em; border-radius: 5px;
-      border: 1px solid color-mix(in srgb, var(--accent-line) 30%, transparent);
+      background: var(--code-tint); color: var(--ink);
+      padding: .12em .38em; border-radius: 4px;
+      border: 1px solid var(--code-line);
     }
     /* Il chip di code ha .38em di padding a destra: senza correzione un due punti
        che lo segue si legge come "`file.md` :". Generato in build.mjs. */
@@ -431,10 +558,10 @@
     .prose hr { border: 0; border-top: 1px solid var(--border); margin: 3rem 0; }
     .prose img { max-width: 100%; height: auto; border-radius: var(--radius-sm); }
 
-    /* Section anchor on hover */
+    /* Il cancelletto sul titolo e' stato tolto: copiare il link e' gia' il
+       mestiere del pulsante accanto, e due comandi per la stessa cosa
+       affollavano il margine. Il position: relative serve ancora ai comandi. */
     .prose h2, .prose h3 { position: relative; }
-    .anchor { position: absolute; left: -1.1em; top: 0; opacity: 0; text-decoration: none; color: var(--muted); font-family: var(--font-mono); font-size: .8em; }
-    .prose h2:hover .anchor, .prose h3:hover .anchor { opacity: 1; }
 
     /* Comandi sul titolo: copia la sezione in markdown, copia il link.
        Compaiono in hover come l'ancora, così a riposo la pagina resta pulita. */
@@ -448,13 +575,13 @@
     @media (prefers-reduced-motion: reduce) { .head-tools { transition: none; } }
     .head-tool {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 28px; height: 28px; padding: 0;
-      border: 0; border-radius: 8px; background: none; cursor: pointer;
+      width: 32px; height: 32px; padding: 0;
+      border: 0; border-radius: 50%; background: none; cursor: pointer;
       color: var(--muted); transition: background .15s ease, color .15s ease;
     }
-    .head-tool:hover { background: var(--accent-wash); color: var(--ink); }
+    .head-tool:hover { background: var(--tint-hover); color: var(--ink); }
     .head-tool:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
-    .head-tool .ico { width: 16px; height: 16px; display: block; }
+    .head-tool .ico { width: 20px; height: 20px; display: block; }
     .head-tool .ico-ok { display: none; color: var(--accent-line); }
     .head-tool.ok .ico:not(.ico-ok) { display: none; }
     .head-tool.ok .ico-ok { display: block; }
@@ -473,18 +600,60 @@
     /* ---------- Responsive ---------- */
     @media (max-width: 1024px) {
       .shell { grid-template-columns: 1fr; }
-      #menuBtn { display: inline-flex; }
+      .topbar .toplink { display: none; }
+      .toplink--panel { display: inline-flex; }
+      /* Come sul sito: il pannello copre lo schermo ed entra da destra, con la
+         topbar che gli resta sopra perche' li' c'e' il pulsante per chiuderlo. */
       aside.toc {
-        position: fixed; top: 60px; left: 0; z-index: 45;
-        width: min(88vw, 340px); height: calc(100vh - 60px);
-        background: var(--bg); transform: translateX(-105%);
-        transition: transform .25s ease; border-right: 1px solid var(--border);
+        position: fixed; inset: 0; z-index: 900;
+        width: 100%; height: 100dvh;
+        padding: 84px 24px 60px; border-right: 0;
+        background: var(--bg); transform: translateX(110vw);
+        transition: transform .5s ease-in-out;
       }
-      aside.toc.open { transform: translateX(0); box-shadow: var(--shadow); }
-      #scrim.show { display: block; }
+      aside.toc.open { transform: translateX(0); }
+      /* Il pannello e' pieno e copre tutto: non c'e' nessun fuori da oscurare. */
+      #scrim.show { display: none; }
       main { padding: 0 24px 100px; }
     }
     @media (prefers-reduced-motion: reduce) { aside.toc { transition: none; } }
+
+    /* ---------- Stampa e PDF ---------- */
+    /* Vale sia per il Ctrl+P del lettore sia per il PDF generato in fase di
+       deploy con Chrome headless, che passa di qui. */
+    @media print {
+      /* Su carta si stampa chiaro comunque, anche se lo schermo sta in scuro.
+         Il fondo diventa bianco pieno: la velatura verde del brand su una
+         stampante a getto diventa una campitura sporca su settanta pagine. */
+      :root, :root[data-theme="dark"] {
+        --bg: #ffffff; --bg-chrome: #ffffff; --surface: #ffffff; --surface-2: #f7f8f7;
+        --ink: #232323; --ink-soft: #3d3d3d; --muted: #546061;
+        --border: #cce0df; --border-strong: #9ec3c1;
+        --accent: #cbfb0e; --accent-ink: #232323;
+        --accent-line: #b1e201; --tint-hover: #dfedec;
+        --code-tint: #dfedec; --code-line: #cce0df;
+        --shadow: none;
+      }
+      @page { margin: 18mm 16mm; }
+      html { scroll-padding-top: 0; }
+      body { background: #fff; }
+      /* Comandi dell'interfaccia: sulla pagina stampata non hanno senso. */
+      header.topbar, aside.toc, #progress, #scrim, .head-tools, .toc-cta, .toplink { display: none !important; }
+      .shell { display: block; }
+      main { padding: 0; }
+      .prose { max-width: none; margin: 0; }
+      /* Un titolo non resta in fondo alla pagina separato dal testo che introduce. */
+      .prose h1, .prose h2, .prose h3, .prose h4,
+      .prose .chapter-kicker { break-after: avoid; break-inside: avoid; }
+      /* Ogni capitolo apre una pagina nuova. L'occhiello si porta dietro il titolo. */
+      .prose .chapter-kicker { break-before: page; margin-top: 0; }
+      .prose pre, .prose blockquote, .prose figure,
+      .table-wrap, .prose li { break-inside: avoid; }
+      .prose p { orphans: 3; widows: 3; }
+      /* Chrome conserva i link come annotazioni del PDF, quindi l'indirizzo
+         per esteso dopo ogni link non serve e su questo testo sarebbe rumore. */
+      .prose a { color: var(--ink); }
+    }
     @media (max-width: 560px) {
       body { font-size: 16.5px; }
       main { padding: 0 18px 80px; }
@@ -495,47 +664,83 @@
 <body>
   <div id="progress"></div>
 
-  <!-- Sprite icone Lucide (lucide.dev, ISC): copy, link, check -->
+  <!-- Sprite icone: sezione "Icons" del design system Lotrek (Figma 29FQjdxBn7fesbU3NJkDxM,
+       nodo 1:427), 24x24 a tratto 1,5. Sostituiscono le Lucide, che erano a tratto 2. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <symbol id="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+    <symbol id="ico-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-404,-140)">
+<path d="M420.372 147.628H408.125V159.875H420.372V147.628Z"/>
+      <path d="M411.627 147.628V144.125H423.875V156.372H420.372"/>
+      </g>
     </symbol>
-    <symbol id="ico-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+    <symbol id="ico-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-536,-140)">
+<path d="M549.642 155.66L546.462 158.84C545 160.303 542.622 160.303 541.16 158.84C539.697 157.378 539.697 155 541.16 153.538L544.34 150.358"/>
+      <path d="M546.357 148.34L549.537 145.16C551 143.697 553.377 143.697 554.84 145.16C556.302 146.622 556.302 149 554.84 150.462L551.66 153.642"/>
+      <path d="M544.82 155.18L551.18 148.82"/>
+      </g>
     </symbol>
-    <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M20 6 9 17l-5-5"/>
+    <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-228,-140)">
+<path d="M232.501 151.634L237.749 156.875L247.499 147.125"/>
+      </g>
     </symbol>
-    <symbol id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/>
-      <path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/>
-      <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+    <symbol id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-668,-140)">
+      <path d="M680 161C684.971 161 689 156.971 689 152C689 147.029 684.971 143 680 143C675.029 143 671 147.029 671 152C671 156.971 675.029 161 680 161Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+      <g>
+      <path d="M680 143C684.968 143 689 147.032 689 152C689 156.968 684.968 161 680 161" fill="currentColor"/>
+      <path d="M680 143C684.968 143 689 147.032 689 152C689 156.968 684.968 161 680 161" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+      </g>
+      </g>
     </symbol>
-    <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-624,-140)">
+      <path d="M636 161C631.029 161 627 156.971 627 152C627 147.029 631.029 143 636 143C640.971 143 645 147.029 645 152C645 156.971 640.971 161 636 161Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+      <g>
+      <path d="M636 143C631.032 143 627 147.032 627 152C627 156.968 631.032 161 636 161" fill="currentColor"/>
+      <path d="M636 143C631.032 143 627 147.032 627 152C627 156.968 631.032 161 636 161" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
+      </g>
+      </g>
     </symbol>
-    <symbol id="ico-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>
+    <symbol id="ico-arrow-upright" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-184,-140)">
+      <path d="M203.567 159.5V144.5H188.567"/>
+      <path d="M203.568 144.5L188.883 159.185"/>
+      </g>
     </symbol>
-    <symbol id="ico-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="18" y2="18"/>
+    <symbol id="ico-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <g transform="translate(-360,-140)">
+      <path d="M363.5 145.472L380.5 158.528"/>
+      <path d="M363.5 158.528L380.5 145.472"/>
+      </g>
     </symbol>
   </svg>
 
   <header class="topbar">
-    <button class="iconbtn" id="menuBtn" aria-label="Apri l'indice" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#ico-menu"/></svg></button>
     <a class="brand" href="#top" aria-label="Lotrek · KB Design AI">
       <img class="brand-logo brand-logo--light" src="assets/lotrek-logo-positive.svg" alt="Lotrek" width="108" height="32" />
       <img class="brand-logo brand-logo--dark" src="assets/lotrek-logo-negative.svg" alt="Lotrek" width="108" height="32" />
     </a>
     <span class="spacer"></span>
-    <button class="iconbtn" id="themeBtn" aria-label="Cambia tema" title="Tema: automatico"><svg class="ico" aria-hidden="true"><use href="#ico-monitor"/></svg></button>
+    <a class="toplink" href="https://docs.lotrek.net/en/experience-design" target="_blank" rel="noopener noreferrer">Playbook<svg class="ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg></a>
+    <button type="button" class="btn-cta btn-menu" id="menuBtn" aria-controls="toc" aria-expanded="false" aria-label="Apri l'indice">
+      <p><span>Menu</span><span aria-hidden="true">Menu</span><span aria-hidden="true">Menu</span></p>
+      <svg class="btn-menu-close" aria-hidden="true"><use href="#ico-close"/></svg>
+    </button>
+    <button class="iconbtn" id="themeBtn" aria-label="Passa al tema scuro"><svg class="ico" aria-hidden="true"><use href="#ico-moon"/></svg></button>
   </header>
 
   <div class="shell">
     <aside class="toc" id="toc" aria-label="Indice della guida">
       <p class="toc-label">Indice</p>
       <nav>{{TOC}}</nav>
+      <div class="toc-cta">
+        <a class="btn-cta" href="progettare-con-lai.pdf" download>
+          <p><span>Scarica la guida</span><span aria-hidden="true">Scarica la guida</span><span aria-hidden="true">Scarica la guida</span></p>
+        </a>
+        <a class="toplink toplink--panel" href="https://docs.lotrek.net/en/experience-design" target="_blank" rel="noopener noreferrer">Playbook<svg class="ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg></a>
+      </div>
     </aside>
 
     <main>
@@ -544,6 +749,8 @@
         <section class="hero">
           <span class="eyebrow">Knowledge base per il team di design</span>
           <h1>{{HERO_TITLE}}</h1>
+          <img class="hero-img" src="assets/hero-figma-skills.webp" width="1520" height="855"
+               alt="Un terminale che costruisce un set di componenti in Figma partendo da un file button.tsx, con le skill figma-use e figma-generate-library caricate" />
           <div class="lede">{{INTRO}}</div>
         </section>
 
@@ -562,25 +769,22 @@
 
   <script>
     (function () {
-      // ---- Theme toggle (auto -> light -> dark -> auto) ----
+      // ---- Tema: chiaro / scuro ----
+      // L'iniziale la fissa lo script nel <head>. Qui il pulsante alterna i due
+      // stati e mostra l'icona di dove si va, non di dove si e'.
       var root = document.documentElement;
-      var saved = localStorage.getItem("kb-theme");
-      if (saved) root.setAttribute("data-theme", saved);
       var btn = document.getElementById("themeBtn");
-      var order = ["auto", "light", "dark"];
-      var icon = { auto: "#ico-monitor", light: "#ico-sun", dark: "#ico-moon" };
-      var label = { auto: "automatico", light: "chiaro", dark: "scuro" };
       function render() {
-        var mode = root.getAttribute("data-theme") || "auto";
-        btn.innerHTML = '<svg class="ico" aria-hidden="true"><use href="' + (icon[mode] || icon.auto) + '"/></svg>';
-        btn.title = "Tema: " + (label[mode] || label.auto);
+        var dark = root.getAttribute("data-theme") === "dark";
+        var next = dark ? "chiaro" : "scuro";
+        btn.innerHTML = '<svg class="ico" aria-hidden="true"><use href="' + (dark ? "#ico-sun" : "#ico-moon") + '"/></svg>';
+        btn.setAttribute("aria-label", "Passa al tema " + next);
       }
       render();
       btn.addEventListener("click", function () {
-        var cur = root.getAttribute("data-theme") || "auto";
-        var next = order[(order.indexOf(cur) + 1) % order.length];
+        var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
         root.setAttribute("data-theme", next);
-        localStorage.setItem("kb-theme", next);
+        try { localStorage.setItem("kb-theme", next); } catch (e) {}
         render();
       });
 
@@ -588,12 +792,15 @@
       var toc = document.getElementById("toc");
       var scrim = document.getElementById("scrim");
       var menu = document.getElementById("menuBtn");
-      function closeDrawer() { toc.classList.remove("open"); scrim.classList.remove("show"); menu.setAttribute("aria-expanded", "false"); }
-      menu.addEventListener("click", function () {
-        var open = toc.classList.toggle("open");
+      function setDrawer(open) {
+        toc.classList.toggle("open", open);
         scrim.classList.toggle("show", open);
+        menu.classList.toggle("active", open);
         menu.setAttribute("aria-expanded", open ? "true" : "false");
-      });
+        menu.setAttribute("aria-label", open ? "Chiudi l'indice" : "Apri l'indice");
+      }
+      function closeDrawer() { setDrawer(false); }
+      menu.addEventListener("click", function () { setDrawer(!toc.classList.contains("open")); });
       scrim.addEventListener("click", closeDrawer);
 
       // ---- TOC accordion (single-open) ----
@@ -792,8 +999,13 @@
         return parts.join("\n\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
       }
       function feedback(btn) {
+        var tip = btn.getAttribute("data-tip");
         btn.classList.add("ok");
-        setTimeout(function () { btn.classList.remove("ok"); }, 1600);
+        btn.setAttribute("data-tip", "Copiato");
+        setTimeout(function () {
+          btn.classList.remove("ok");
+          if (tip) btn.setAttribute("data-tip", tip);
+        }, 1600);
       }
       document.addEventListener("click", function (e) {
         var btn = e.target.closest && e.target.closest(".head-tool");

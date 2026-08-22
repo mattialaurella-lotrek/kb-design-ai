@@ -123,17 +123,16 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
   if (level === "2" || level === "3") {
     toc.push({ level: Number(level), id, text: cleanText, flag: !!badge });
   }
-  const anchor = `<a class="anchor" href="#${id}" aria-hidden="true">#</a>`;
   const badgeHtml = badge ? ` <span class="badge">${badge}</span>` : "";
   // Comandi copia/condividi sui titoli H2 e H3 (icone Lucide, stile e logica in template.html)
   const tools =
     level === "2" || level === "3"
       ? `<span class="head-tools" contenteditable="false">` +
-        `<button type="button" class="head-tool" data-tool="copy" title="Copia la sezione in markdown" aria-label="Copia la sezione in markdown">${ICON_COPY}${ICON_CHECK}</button>` +
-        `<button type="button" class="head-tool" data-tool="link" title="Copia il link alla sezione" aria-label="Copia il link alla sezione">${ICON_LINK}${ICON_CHECK}</button>` +
+        `<button type="button" class="head-tool" data-tool="copy" data-tip="Copia la sezione" aria-label="Copia la sezione in markdown">${ICON_COPY}${ICON_CHECK}</button>` +
+        `<button type="button" class="head-tool" data-tool="link" data-tip="Copia il link" aria-label="Copia il link alla sezione">${ICON_LINK}${ICON_CHECK}</button>` +
         `</span>`
       : "";
-  return `<h${level} id="${id}">${anchor}${inner}${badgeHtml}${tools}</h${level}>`;
+  return `<h${level} id="${id}">${inner}${badgeHtml}${tools}</h${level}>`;
 });
 
 // ---- Rimandi interni: «Titolo di sezione» -> link all'ancora ----
@@ -211,7 +210,7 @@ bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tab
 
 // ---- TOC HTML (accordion: ogni H2 = macro-voce collassabile con le sue H3) ----
 const CHEVRON =
-  '<svg class="toc-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"></polyline></svg>';
+  '<svg class="toc-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" aria-hidden="true"><path d="M4.5 9.87L12 15.63L19.5 9.87"/></svg>';
 
 // Voce d'apertura: punta all'hero, così la spalla ha un "torna a casa".
 let tocHtml =

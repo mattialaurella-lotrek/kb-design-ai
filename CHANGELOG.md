@@ -3,6 +3,50 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-22]
+
+### Aggiunto
+- **Palette Lotrek, presa dal design system e non dedotta.** Il file Figma WTF (`29FQjdxBn7fesbU3NJkDxM`) porta quattro scale nominate da 50 a 950, Electric Lime, Shark, Edward e Nebula, più una palette semantica. Tutti e tredici i token dei due temi ora poggiano su un gradino vero di quelle scale. I portanti: fondo `#f3f8f7` Nebula/50, inchiostro `#232323` Shark/950, accento `#cbfb0e` Electric Lime/400.
+- **Icone del design system**, sezione Icons del file WTF (nodo `1:427`), 24×24 a tratto 1,5 con `stroke-miterlimit: 10` e nessun raccordo arrotondato. Sostituiscono le Lucide, che erano a tratto 2. In uso: `copy`, `link`, `check`, `chevron-down`, `close`, `arrow-right`, `arrow-upright`, `mode-dark`, `mode-light`.
+- **Tooltip** su copia sezione, copia link e menu, in forma di breadcrumb Lotrek: raggio 4px, spaziatura 8/12, corpo 13px. Al click la copia diventa «Copiato» insieme alla spunta. I `title` nativi sono stati tolti dai pulsanti che hanno un `data-tip`, altrimenti se ne vedevano due.
+- **Componente CTA** ricalcato su `.btn__primary` del sito: pillola a 100px e l'etichetta che ruota all'hover, con tre `<span>` dentro un `<p>` che li ritaglia. Sotto i 1024px la rotazione non c'è, come su lotrek.it.
+- **PDF scaricabile dell'intera guida**, con la CTA in coda all'indice. `make-pdf.mjs` stampa `index.html` con Chrome headless e un nuovo blocco `@media print` decide la resa: tema chiaro su bianco anche se lo schermo sta in scuro, niente interfaccia, ogni capitolo su pagina nuova, titoli che non si staccano dal testo. Esce a 83 pagine e circa 2 MB, e si rigenera a ogni pubblicazione su entrambi i canali.
+- **Link «Playbook»** nella topbar verso `docs.lotrek.net`, con la freccia in alto a destra del design system. Su mobile esce dalla topbar ed entra nel pannello a pieno schermo, sotto la CTA.
+- **Immagine di apertura** fra il titolo e il lede, con 32px sopra e sotto. WebP a 1520px e q84, 67 KB contro i 501 del PNG originale.
+- **Otto repository in catalogo**: `Checklist-Design/skills` e `vercel/vercel` fra le skill, `anime`, `motion`, `scrollama`, `locomotive-scroll`, `swiper` e `Chart.js` fra le librerie. Gli ultimi due c'erano già come nomi nudi dentro righe compatte e ora hanno una voce descritta.
+- **Cinque token nuovi**: `--w-regular` (il 400 di Ronzino finiva scritto a mano), `--code-tint` e `--code-line` per il codice inline, `--tint-hover` per l'hover neutro, `--ico-arrow-right` per la freccia come maschera CSS.
+
+### Modificato
+- **Occhielli.** Lotrek non ha maiuscoletti nel sistema e stringe sempre, da −.03em sui titoloni a −.005em sui micro-testi. I quattro occhielli passano al tondo alto/basso a 16px con crenatura negativa, in inchiostro pieno e a peso Regular: con l'inchiostro il Medium li faceva pesare quasi quanto il titolo che introducono.
+- **Tema a due stati**, chiaro e scuro. L'opzione «sistema» è sparita e la preferenza del sistema decide solo la prima visita. L'inizializzazione è passata in uno script nel `<head>`, perché senza il caso «auto» nel CSS chi ha il sistema in scuro avrebbe visto lampeggiare la pagina chiara.
+- **Il fondo scuro** era `#0c1a1f`, un blu-verde senza corrispondenza nel brand. Ora è Shark/950 `#232323`.
+- **Mobile rifatto sul sito**: pillola «Menu» a sinistra del tondo della modalità, che si stringe a cerchio con la X quando il pannello è aperto, e la spalla che entra da destra a pieno schermo in 500ms.
+- **Angoli.** Lotrek usa due raggi soli, `0` e `100px`. Frame, tabelle, blocchi di codice e immagini vanno a spigolo; voci dell'indice, chip di codice e tooltip stanno a 4px; restano le pillole e i cerchi.
+- **Una superficie sola.** Topbar e spalla non sono più un gradino sotto la colonna di lettura: a separarle è il filetto, come sul sito.
+- **Il filetto dei link** passa a Electric Lime/500 `#b1e201`. Il 400 puro sul fondo chiaro fa 1,13:1 e sparisce.
+- **Il lime dice una cosa sola.** La velatura faceva insieme stato attivo, hover e fondo del codice, tre mestieri con esigenze opposte. Ora la voce selezionata prende il lime pieno con l'inchiostro sopra a 12,98:1, l'hover è Nebula/100 e il codice inline sta nella famiglia del fondo.
+- **Nove frasi riscritte** perché goffe o illogiche, fra cui «Quanto di questo serve adesso», «Come si gonfia, una regola alla volta», «Potare fa parte della manutenzione» e «Il responsive si scrive in prosa».
+- **«task» diventa «richiesta»** in quattordici occorrenze su diciassette. Nelle altre tre voleva dire unità di lavoro e non prompt, quindi sono diventate «passaggio», «lavorazione» e niente.
+- **Il blocco «Comando vs contesto»** è ora «Comando e contesto», riscritto in prosa piena al posto delle frecce.
+- **Comandi di copia a 20px** invece di 16, con il pulsante da 28 a 32 e il bersaglio dell'hover tondo.
+
+### Rimosso
+- **`repass.io.md`**, il design DNA di riferimento da cui era partito il progetto. Ogni suo valore è stato sostituito dal sistema Lotrek e la coppia tipografica che proponeva non è mai stata adottata.
+- **Il cancelletto sui titoli**, che faceva lo stesso mestiere del pulsante «Copia il link» accanto.
+- **Il paragrafo «Documentare il design system in markdown»** e lo schema «Button rules» dal capitolo 2: erano una versione povera di quello che il capitolo 4 fa per esteso con i tre strati e i registri. Al loro posto un rimando.
+- **Il token `--accent-wash`** e l'unico `color-mix` rimasto in tutto il foglio di stile.
+
+### Corretto
+- **Il pulsante «Menu» non compariva a nessuna larghezza.** Era rimasta la regola `#menuBtn { display: none }` nel blocco base, e un ID batte una classe, quindi la regola mobile non poteva vincere.
+- **La coda della «g» nella CTA era tagliata.** Il `<p>` ritagliava all'altezza di una riga con `line-height: 1`, che per definizione esclude i discendenti.
+- **Lo stato attivo dell'indice perdeva il colore** sul lime, perché `.toc-group.open > .toc-macro` viene dopo nel foglio e riportava il testo a `--ink`, illeggibile in tema scuro.
+- **`.flow3-step` era rimasto maiuscoletto** con crenatura positiva `.09em` e usava `--accent-ink`, che è il token dell'inchiostro sopra il lime, come colore di testo normale.
+
+### Da sapere
+- **Il PDF si rigenera a ogni pubblicazione**, perché `deploy.sh` e il workflow di Actions chiamano `make-pdf.mjs` prima di preparare i file. Il file è gitignored, come `index.html`.
+- **La scala Shark si ferma a 950.** Sotto il fondo scuro non c'è nessun gradino, quindi `--surface` e `--surface-2` del tema scuro restano gli unici due valori interpolati di tutta la palette.
+- ⚠️ **Nel file Figma `mode-dark` e `mode-light` erano lo stesso cerchio vuoto**, poi corretti in due semicerchi speculari. Se un'icona sembra sbagliata, conviene riscaricare il nodo prima di metterci una toppa nel CSS.
+
 ## [2026-08-21]
 
 ### Aggiunto

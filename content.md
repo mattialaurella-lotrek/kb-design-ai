@@ -23,7 +23,7 @@ Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento
   - Dare struttura al contesto
   - Scrivere una richiesta
   - Tenere sano il contesto nel tempo
-  - Checklist pre-task e segnali
+  - Checklist pre-richiesta e segnali
   - Human-in-the-loop
 - **Scrivere il contesto**
   - I file di contesto
@@ -67,10 +67,10 @@ La pratica si è mossa in tre tempi, che NN/g distingue così. Il **prompt engin
 
 La definizione utile da tenere a mente è quella di Anthropic, cioè curare **il più piccolo insieme possibile di token ad alto segnale** che massimizza la probabilità del risultato voluto. È l'opposto dell'istinto comune ("carico tutto: brand PDF + ricerca + design system"). Caricare tutto fa peggiorare l'output, perché il modello si distrae e "dimentica" i vincoli. Vale lo stesso principio della progressive disclosure nell'interfaccia, dove si rivela l'informazione quando è rilevante.
 
-**Comando vs contesto, in pratica:**
+**Comando e contesto, in pratica:**
 
-- **Approccio comando:** "Genera 5 layout di checkout." → opzioni generiche dal training generale; poche utili, molto rework.
-- **Approccio contesto:** si forniscono token + esempio del pattern, vincoli di brand espliciti, dati reali sugli utenti e sui punti di abbandono, e infine il task con criteri di successo. → varianti informate, coerenti col sistema, già inquadrate.
+- **Approccio a comando:** con "Genera un layout di checkout" si ottengono opzioni generiche dal training generale, di cui poche realmente utili a fronte di un elevato rework.
+- **Approccio a contesto:** si forniscono token e un esempio del pattern, vincoli espliciti, dati reali derivati dalla ricerca, e infine la richiesta con i criteri di successo. In questo modo si ottengono varianti informate, coerenti col sistema, già inquadrate.
 
 ### Il contesto è una risorsa finita
 
@@ -83,7 +83,7 @@ Il **context rot** è la versione che si incontra lavorando. Anche partendo da u
 - **Checkpoint periodici:** far riassumere stato e decisioni a intervalli regolari.
 - **Non "buttare tutto dentro":** decidere cosa includere, cosa escludere e quando rinfrescare pesa quanto scrivere la richiesta. Anche gli strumenti collegati occupano spazio, perché ogni MCP attivo si mangia una fetta della finestra (vedi «Setup e loop con Figma MCP»).
 
-**Quanto di questo serve adesso:** prima di riempire il contesto, guarda quello che stai per dargli e chiediti quanto serve a questo compito. Per ridisegnare la pagina delle impostazioni all'agente servono i token pertinenti, i componenti che si usano in quell'area, due o tre vincoli di prodotto, l'implementazione attuale della pagina, i requisiti di accessibilità e un paio di esempi. Restano fuori la strategia di prodotto, l'intero catalogo dei componenti, la documentazione dell'architettura di backend, tre anni di storia del progetto e cinquanta screenshot di altre schermate. Chi prepara il contesto tende a mettere dentro tutte e due le liste, perché aggiungere sembra la mossa prudente, e l'informazione che conta finisce annegata in quella che non serve.
+**Cosa tenere e cosa lasciare fuori:** prima di riempire il contesto, guarda quello che stai per dargli e chiediti quanto serve a questo compito. Per ridisegnare la pagina delle impostazioni all'agente servono i token pertinenti, i componenti che si usano in quell'area, due o tre vincoli di prodotto, l'implementazione attuale della pagina, i requisiti di accessibilità e un paio di esempi. Restano fuori la strategia di prodotto, l'intero catalogo dei componenti, la documentazione dell'architettura di backend, tre anni di storia del progetto e cinquanta screenshot di altre schermate. Chi prepara il contesto tende a mettere dentro tutte e due le liste, perché aggiungere sembra la mossa prudente, e l'informazione che conta finisce annegata in quella che non serve.
 
 ### Requisiti minimi di partenza
 
@@ -114,12 +114,12 @@ Due cose separate: come formuli quello che chiedi, e in che ordine glielo dai.
 
 - **Chain-of-thought:** invece di chiedere l'output finale, si struttura la richiesta in passi (analizza lo stato → individua i vincoli → genera 3 approcci → valuta ciascuno contro i vincoli e raccomanda). Migliora i risultati e rende il ragionamento trasparente, così gli errori si intercettano a metà processo.
 - **Tree-of-thought:** per decisioni strategiche con trade-off, esplora più percorsi di ragionamento; si vede l'albero decisionale, non solo la conclusione.
-- **Spezzare i task lunghi:** un problema per richiesta. Un task che tocca insieme layout, copy e stati torna sbagliato in tutti e tre.
+- **Spezzare le richieste lunghe:** un problema per richiesta. Una richiesta che tocca insieme layout, copy e stati torna sbagliata in tutti e tre.
 - **Partire dall'obiettivo dell'utente:** cosa deve riuscire a fare, e in quanti passi. La forma visiva discende da lì.
-- **Dichiarare i vincoli prima del task:** piattaforma, soglie di accessibilità, regole di brand. Un vincolo scritto restringe lo spazio delle risposte, uno sottinteso viene ignorato.
+- **Dichiarare i vincoli prima della richiesta:** piattaforma, soglie di accessibilità, regole di brand. Un vincolo scritto restringe lo spazio delle risposte, uno sottinteso viene ignorato.
 - **Tradurre lo stile in implementazione:** "rendilo moderno" non significa nulla operativamente; va convertito in regole ("ritmo 8px", "gerarchia primario/secondario chiara", "stati hover/focus/disabled visibili").
 
-**L'ordine dei blocchi:** Il contesto va **prima** del task, perché l'AI processa in sequenza e ciò che vede prima condiziona il resto.
+**L'ordine dei blocchi:** Il contesto va **prima** della richiesta, perché l'AI processa in sequenza e ciò che vede prima condiziona il resto.
 
 - **Foundation-first (generazione di design):** `SYSTEM CONTEXT` → `BRAND CONSTRAINTS` → `USER REQUIREMENTS` → `TASK` → `SUCCESS CRITERIA`.
 - **Reasoning-forward (decisioni strategiche):** `CONTEXT` → `CONSTRAINTS` → `QUESTION` → `PROCESS` (per ogni opzione l'approccio, i vantaggi dati i vincoli, i rischi e una raccomandazione motivata).
@@ -135,9 +135,9 @@ Su un lavoro lungo la finestra si sporca da sé, con falsi avvii, tentativi di d
 
 Il resto lo fa lo strumento. Claude Code carica i `CLAUDE.md` all'avvio e va a prendere gli altri file solo quando servono, e può affidare un'esplorazione lunga a un subagent che lavora in una finestra sua e restituisce la sola sintesi.
 
-### Checklist pre-task e segnali
+### Checklist pre-richiesta e segnali
 
-**Prima di lanciare un task, verifica di avere:**
+**Prima di lanciare una richiesta, verifica di avere:**
 
 - i token con una gerarchia e nomi che dicono il ruolo, più qualche componente d'esempio che li mostra in uso;
 - i casi limite scritti da qualche parte, non solo il percorso in cui va tutto bene;
@@ -255,9 +255,9 @@ Quando due file dicono cose diverse sullo stesso argomento, vince la regola più
 
 **Vive col progetto:** si aggiorna quando noti un errore che ricompare, quando introduci uno strumento nuovo, quando i requisiti cambiano. E va committato in git come qualunque altro file del repo, così tutta la squadra ottiene lo stesso comportamento e le regole hanno una storia leggibile.
 
-**Come si gonfia, una regola alla volta:** l'accumulo arriva da una lunga serie di decisioni ragionevoli, ognuna giusta il giorno in cui l'hai presa. Claude duplica un componente e aggiungi una regola. Tocca un file che non doveva toccare, un'altra regola. Dimentica di lanciare i test, un'altra ancora. Sbaglia un token di spaziatura, un'altra. Sei mesi dopo il file ha centinaia di istruzioni, alcune si sovrappongono, alcune si contraddicono, e parecchie risolvono problemi che non capitano più. A quel punto è diventato l'archivio storico del progetto invece della sua guida, e Claude se lo legge tutto prima di cominciare.
+**Come cresce, una regola alla volta:** l'accumulo arriva da una lunga serie di decisioni ragionevoli, ognuna giusta il giorno in cui l'hai presa. Claude duplica un componente e aggiungi una regola. Tocca un file che non doveva toccare, un'altra regola. Dimentica di lanciare i test, un'altra ancora. Sbaglia un token di spaziatura, un'altra. Sei mesi dopo il file ha centinaia di istruzioni, alcune si sovrappongono, alcune si contraddicono, e parecchie risolvono problemi che non capitano più. A quel punto è diventato l'archivio storico del progetto invece della sua guida, e Claude se lo legge tutto prima di cominciare.
 
-**Potare fa parte della manutenzione:** su un progetto maturo il lavoro sul file di contesto è fatto più di cancellature che di aggiunte. Passando in rassegna le regole, cinque domande dicono cosa tenere.
+**Togliere è manutenzione quanto aggiungere:** su un progetto maturo il lavoro sul file di contesto è fatto più di cancellature che di aggiunte. Passando in rassegna le regole, cinque domande dicono cosa tenere.
 
 - Claude ha ancora bisogno di questa istruzione? Se no, via.
 - La regola vale su tutto il progetto? Se vale solo su una parte, spostala nella cartella giusta.
@@ -306,7 +306,7 @@ Per capire se una regola è scritta abbastanza stretta c'è una prova rapida: ch
 
 Otto regole ben scelte prevengono più output sbagliato che raddoppiare la sezione dei token. Scriverle costa fatica, perché richiede di sapere cosa il sistema non farebbe mai, e quasi nessuno se l'è mai dovuto chiedere.
 
-**Il responsive si scrive in prosa:** qui la spec ha un vuoto che conviene conoscere. La sezione Layout esiste, ma i suoi unici token sono quelli di spaziatura, e le parole «breakpoint» e «responsive» nella specifica non compaiono mai. Il comportamento adattivo va quindi descritto a parole, ed è un bene, perché all'agente serve sapere come cambia la logica più di quanto gli servano le larghezze: a che punto due colonne diventano una, dove finisce la navigazione laterale quando lo schermo si stringe, quali elementi spariscono e quali restano, come cambiano i margini di pagina, se una finestra di dialogo diventa un pannello a tutto schermo.
+**Il responsive resta fuori dai token:** qui la spec ha un vuoto che conviene conoscere. La sezione Layout esiste, ma i suoi unici token sono quelli di spaziatura, e le parole «breakpoint» e «responsive» nella specifica non compaiono mai. Il comportamento adattivo va quindi descritto a parole, ed è un bene, perché all'agente serve sapere come cambia la logica più di quanto gli servano le larghezze: a che punto due colonne diventano una, dove finisce la navigazione laterale quando lo schermo si stringe, quali elementi spariscono e quali restano, come cambiano i margini di pagina, se una finestra di dialogo diventa un pannello a tutto schermo.
 
 **Un file alla root non viene letto da solo:** è la svista che vanifica tutto il lavoro fatto sopra. Creare `DESIGN.md` nella cartella del progetto non basta a farlo entrare nel contesto. Ogni strumento decide per conto suo cosa caricare, e Claude Code si aspetta di trovare le istruzioni di progetto in `CLAUDE.md`, quindi il collegamento va scritto a mano.
 
@@ -343,9 +343,9 @@ I file di contesto visti finora descrivono il prodotto: token, componenti, coman
 
 Le ultime due sono quelle che cambiano di più l'output, e anche le più difficili da recuperare a posteriori: vivono nella testa di chi ha condotto le interviste.
 
-**Come tenerlo:** su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «`CLAUDE.md` come indice, non contenitore», dove l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza di «Il contesto è una risorsa finita», perché un `UX.md` che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Va inclusa la sintesi, non le citazioni integrali delle interviste. E va curato di continuo, perché ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
+**Come gestirlo:** su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «`CLAUDE.md` come indice, non contenitore», dove l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza di «Il contesto è una risorsa finita», perché un `UX.md` che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Va inclusa la sintesi, non le citazioni integrali delle interviste. E va curato di continuo, perché ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
 
-**Da dove partire:** NN/g presenta `UX.md` come ipotesi, non come formato con una spec al modo di `DESIGN.md`, e lascia aperte le domande che contano, a partire da quali artefatti di ricerca spostano l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte. Prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
+**Da dove partire:** NN/g presenta `UX.md` come ipotesi, non come formato con una spec al pari di `DESIGN.md`, e lascia aperte le domande che contano, a partire da quali artefatti di ricerca spostano l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte. Prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
 
 ### Organizzare il progetto
 
@@ -409,25 +409,11 @@ Una variante più snella, sufficiente per molti progetti:
 └── .mcp.json
 ```
 
-Quali sezioni scrivere dentro il `CLAUDE.md` sta in «CLAUDE.md».
+Le sezioni da scrivere dentro il `CLAUDE.md` sono elencate in «CLAUDE.md».
 
-**Documentare il design system in markdown:** Claude diventa molto più utile quando "conosce" il DS, e conviene descriverlo in file dedicati sotto `/design/`, cioè `tokens.md`, `components.md`, `patterns.md` e `accessibility.md`. Ecco come può apparire una regola in `components.md`.
+Come si scrivono i file sotto `design/` perché un agente li sappia leggere è il tema di «Rendere il design system leggibile dall'AI».
 
-```
-# Button rules
-Primary button:
-- Usa una sola volta per schermata.
-- Riservato all'azione principale.
-- Mai per azioni distruttive.
-Secondary button:
-- Per azioni alternative.
-- Può comparire più volte.
-Destructive button:
-- Richiede sempre conferma.
-- Mai come azione di default.
-```
-
-**Cinque best practice di organizzazione:**
+**Cinque buone pratiche di organizzazione:**
 
 1. **`CLAUDE.md` alla root:** letto automaticamente all'avvio; è la guida di onboarding al progetto per l'AI.
 2. **Spezzare i `CLAUDE.md` grandi:** oltre le duecento righe si divide in file importati con `@path/to/import.md`, per esempio `@claude/architecture.md` o `@claude/ui_guidelines.md`. Il perché e il come stanno in «CLAUDE.md».
@@ -543,7 +529,7 @@ Il catalogo pubblico ne conta una ventina contando le varianti. Figma ne documen
 
 **Comandi e pratiche utili in Claude Code:**
 
-- **Plan mode (Shift+Tab / `/plan`):** Claude legge, ragiona e propone un piano senza toccare i file finché non approvi. Particolarmente utile prima di task complessi e prima di un Figma→codice via MCP (spesso migliora il risultato anche senza modifiche al piano).
+- **Plan mode (Shift+Tab / `/plan`):** Claude legge, ragiona e propone un piano senza toccare i file finché non approvi. Particolarmente utile prima di richieste complesse e prima di un Figma→codice via MCP (spesso migliora il risultato anche senza modifiche al piano).
 - **`/init`:** esplora il codebase e scrive un `CLAUDE.md` (briefing letto a ogni sessione). Tienilo lean; aggiorna dopo molte modifiche.
 - **`/skills`:** elenca le skill disponibili sul tuo computer (utile quando diventano tante).
 - **`/help`:** cheat sheet dei comandi.
@@ -552,11 +538,11 @@ Il catalogo pubblico ne conta una ventina contando le varianti. Figma ne documen
 
 **Slash command custom per workflow ripetibili:** ripetere a voce/per iscritto gli stessi prompt porta a drift di qualità e rende impossibile standardizzare le operazioni per il team. Conviene creare comandi dedicati come `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map`, `/design-system-check`, e ognuno è un file markdown in `.claude/commands/` (es. `.claude/commands/page-review.md` = "Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con focus sulle best practice UX").
 
-**Subagent specializzati per il design:** per automatizzare task tenendo pulita la conversazione principale, si creano subagent (file markdown in `.claude/agents/`) che lavorano in autonomia, senza tempestare l'utente di domande. Fra i profili utili in product design ci sono **UX Reviewer**, **Design System Guardian**, **Frontend Implementer**, **Accessibility Reviewer**, **Interaction Designer**, **QA Tester**. Una descrizione di esempio per lo UX Reviewer suona **Role** = senior UX reviewer; **Focus** = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; **Do not** = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande in una futura sezione dedicata all'architettura ad agenti e sub-agenti.)
+**Subagent specializzati per il design:** per automatizzare le richieste ricorrenti tenendo pulita la conversazione principale, si creano subagent (file markdown in `.claude/agents/`) che lavorano in autonomia, senza tempestare l'utente di domande. Fra i profili utili in product design ci sono **UX Reviewer**, **Design System Guardian**, **Frontend Implementer**, **Accessibility Reviewer**, **Interaction Designer**, **QA Tester**. Una descrizione di esempio per lo UX Reviewer suona **Role** = senior UX reviewer; **Focus** = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; **Do not** = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande in una futura sezione dedicata all'architettura ad agenti e sub-agenti.)
 
 **Claude Code dentro l'IDE + Plan mode:** usare Claude Code dentro VS Code (o altro IDE) evita il continuo salto tra ambiente di codice e app, e l'integrazione offre inline diff, plan review, file mention e shortcut. Per il lavoro di design non chiedere di costruire subito. Passa in **Plan mode** e segui il flusso analizza l'esperienza attuale → chiedi un piano UX → rivedi le modifiche proposte → approva → check finale design-system + accessibilità. Così Claude non si butta sul codice prima di aver capito il problema di prodotto.
 
-**Pattern di affidabilità per task lunghi:** **agente esecutore con contesto fresco** per ogni fase (sessione principale pulita, nessun degrado), **commit atomici** per ogni task (history revertibile, `git bisect` per isolare il task rotto), **agente verificatore** che a fine esecuzione controlla il codebase contro gli obiettivi di fase.
+**Pattern di affidabilità per le lavorazioni lunghe:** **agente esecutore con contesto fresco** per ogni fase (sessione principale pulita, nessun degrado), **commit atomici** a ogni passaggio (history revertibile, `git bisect` per isolare quello che ha rotto qualcosa), **agente verificatore** che a fine esecuzione controlla il codebase contro gli obiettivi di fase.
 
 ## Il design system per l'AI
 
@@ -665,15 +651,15 @@ Le cinque intestazioni di quel file sono un buon modello di partenza per qualunq
 
 **Documenta anche gli stati:** vale qui la stessa regola vista in «DESIGN.md», cioè che accanto al comportamento a riposo vanno scritti hover, active, disabled, loading e focus. In una spec di componente la dimenticanza pesa di più, perché è il file da cui l'agente copia.
 
-**Perché tanti file invece di uno solo:** la tentazione è mettere tutto dentro un `DESIGN.md` enorme, e sarebbe la scelta sbagliata per due motivi. Il primo riguarda la manutenzione, perché un file per oggetto si aggiorna da sé e si assegna a chi possiede quell'oggetto. Il secondo è il costo in contesto. Con i registri l'agente recupera solo il ramo che gli serve per il task invece di caricare l'intero design system a ogni richiesta, ed è la stessa economia descritta in «Il contesto è una risorsa finita». Il risultato è un grafo di regole con un punto d'ingresso e rimandi espliciti da seguire quando servono, al posto di un manuale da leggere in blocco.
+**Perché tanti file invece di uno solo:** la tentazione è mettere tutto dentro un `DESIGN.md` enorme, e sarebbe la scelta sbagliata per due motivi. Il primo riguarda la manutenzione, perché un file per oggetto si aggiorna da sé e si assegna a chi possiede quell'oggetto. Il secondo è il costo in contesto. Con i registri l'agente recupera solo il ramo che gli serve invece di caricare l'intero design system a ogni richiesta, ed è la stessa economia descritta in «Il contesto è una risorsa finita». Il risultato è un grafo di regole con un punto d'ingresso e rimandi espliciti da seguire quando servono, al posto di un manuale da leggere in blocco.
 
 **Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Quel lavoro deve però arrivare sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del controllo a due vie descritto in «Enforcement del design system».
 
-**Da dove partire:** si comincia da 3–5 componenti. Per ognuno si genera una spec leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come FigSpecs; la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
+**Da dove partire:** si comincia da 3–5 componenti. Per ognuno si genera una spec leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come [FigSpecs](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator); la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
 
 Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Al momento il problema non ha una risposta, quindi va messo in conto e le spec vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno possiede.
 
-**Una risposta possibile** sposta il ruolo invece di aggiungere una persona: chi mantiene il design system diventa chi modera le regole che gli agenti seguono, e il suo lavoro passa dal ricostruire soluzioni già note al decidere quando la soluzione nota non basta. È un'ipotesi sul mestiere più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
+**Una risposta possibile** cambia un ruolo che esiste già invece di crearne uno nuovo: chi mantiene il design system diventa chi modera le regole che gli agenti seguono, e il suo lavoro passa dal ricostruire soluzioni già note al decidere quando la soluzione nota non basta. È un'ipotesi sul mestiere più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
 
 ### Creare una skill dal proprio design system
 
@@ -768,16 +754,22 @@ Cinque famiglie, dalle fondamenta al dettaglio. Non servono tutte: si prende que
 - [`ibelick/buttons`](https://github.com/ibelick/buttons): collezione bottoni Tailwind
 - [`themesberg/flowbite`](https://github.com/themesberg/flowbite): libreria componenti su Tailwind
 - [`imskyleen/animate-ui`](https://github.com/imskyleen/animate-ui): component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare
+- [`chartjs/Chart.js`](https://github.com/chartjs/Chart.js): grafici disegnati su `<canvas>`, otto tipi di base già pronti, responsive e animati; è la strada corta quando al prototipo serve un grafico credibile senza montare una pipeline di dataviz
 - [`Jakubantalik/Libraries`](https://github.com/Jakubantalik/Libraries): raccolta di effetti React da copiare nel progetto (border beam, liquid gooey, thinking orbs), dallo stesso autore di transitions.dev
 
 **Motion, animazioni e scroll**
 
-- Animazione/scroll: [`greensock/GSAP`](https://github.com/greensock/GSAP), [`darkroomengineering/lenis`](https://github.com/darkroomengineering/lenis), [`locomotivemtl/locomotive-scroll`](https://github.com/locomotivemtl/locomotive-scroll), [`michalsnik/aos`](https://github.com/michalsnik/aos), [`dixonandmoe/rellax`](https://github.com/dixonandmoe/rellax)
+- Animazione/scroll: [`greensock/GSAP`](https://github.com/greensock/GSAP), [`darkroomengineering/lenis`](https://github.com/darkroomengineering/lenis), [`michalsnik/aos`](https://github.com/michalsnik/aos), [`dixonandmoe/rellax`](https://github.com/dixonandmoe/rellax)
+- [`juliangarnier/anime`](https://github.com/juliangarnier/anime): motore di animazione JavaScript con una sola API per proprietà CSS, attributi SVG, nodi del DOM e oggetti JavaScript, con timeline, easing e stagger già dentro
+- [`motiondivision/motion`](https://github.com/motiondivision/motion): la libreria di animazione erede di Framer Motion, per React e per JavaScript puro, con gesture, layout animation e animazioni guidate dallo scroll; una parte gira sulla Web Animations API, quindi fuori dal thread principale
+- [`nolimits4web/swiper`](https://github.com/nolimits4web/swiper): slider e caroselli touch con transizioni accelerate in hardware, senza dipendenze, con i componenti per React, Vue e Web Components
+- [`locomotivemtl/locomotive-scroll`](https://github.com/locomotivemtl/locomotive-scroll): scorrimento morbido con parallasse e rilevamento degli elementi che entrano nel viewport, dallo studio Locomotive
+- [`russellsamora/scrollama`](https://github.com/russellsamora/scrollama): scrollytelling costruito su IntersectionObserver invece che sugli eventi di scroll, quindi senza il costo dei listener continui; fa scattare i passaggi di una narrazione mentre la pagina scorre
 - [`alvarotrigo/fullpage.js`](https://github.com/alvarotrigo/fullpage.js): siti a scorrimento full-screen, con sezioni verticali a tutta pagina e slide orizzontali; vanilla JS (jQuery opzionale) con wrapper Vue/React/Angular, per one-page, portfolio e showcase
 - [`Jakubantalik/transitions.dev`](https://github.com/Jakubantalik/transitions.dev): transizioni essenziali (con "product motion skill")
 - [`delphi-ai/animate-skill`](https://github.com/delphi-ai/animate-skill): skill animazioni Next.js/React (corso di Emil Kowalski)
 - CSS pronte: [`ibelick/animation`](https://github.com/ibelick/animation), [`tilomitra/infinite`](https://github.com/tilomitra/infinite), [`IanLunn/Hover`](https://github.com/IanLunn/Hover)
-- [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati · [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading · [`nolimits4web/swiper`](https://github.com/nolimits4web/swiper): slider/carousel
+- [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati · [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading
 - Particelle/physics: [`VincentGarreau/particles.js`](https://github.com/VincentGarreau/particles.js), [`liabru/matter-js`](https://github.com/liabru/matter-js)
 - SVG/3D/canvas: [`renatoworks/3dsvg`](https://github.com/renatoworks/3dsvg), [`meodai/heerich`](https://github.com/meodai/heerich), [`edoardolunardi/infinite-canvas`](https://github.com/edoardolunardi/infinite-canvas)
 
@@ -898,9 +890,7 @@ Cosa sono le skill di Claude, come si scrive la propria e quali adottare senza i
 
 ### Cosa sono le skill e come si creano
 
-Una skill è un insieme di istruzioni che dicono all'AI come svolgere un compito: la scrivi una volta e, quando serve, l'AI la segue e produce un risultato coerente. Funziona come una ricetta. Nei prodotti Anthropic si chiamano **Claude Skills** e funzionano in Claude in chat (l'app web, senza accesso ai file del computer), in Claude Code e in Claude Cowork (l'app desktop). Anthropic le ha introdotte a ottobre 2025; quando si dice «skill» di solito si intende questo, anche se dal 2026 esistono anche le Gemini Skills di Google.
-
-Il paragone più vicino è la GPT personalizzata: entrambe seguono una procedura per darti un output specifico. Cambia la capacità. Una GPT vive nel cloud e non legge i file della tua macchina; una skill, dentro Claude Code o Cowork, accede ai file locali, lancia script e automatizza compiti più complessi.
+Una skill è un insieme di istruzioni che dicono all'AI come svolgere un compito: la scrivi una volta e, quando serve, l'AI la segue e produce un risultato coerente. Funziona come una ricetta. Nei prodotti Anthropic si chiamano **Claude Skills** e funzionano in Claude in chat (l'app web, senza accesso ai file del computer), in Claude Code e in Claude Cowork (l'app desktop).
 
 **Come si attiva:** una volta creata e caricata, la skill parte da sola quando il prompt corrisponde alla sua `description`. Scrivi «voglio creare una skill» e Claude carica la skill che ha quel caso tra i trigger, poi legge le istruzioni e le esegue. È lo stesso principio di progressive disclosure delle skill Figma, e a differenza di `CLAUDE.md`, che l'AI rilegge a ogni sessione, la skill si carica solo quando serve e consuma meno token. L'auto-attivazione non è sempre affidabile, e se la `description` è scritta male conviene dire esplicitamente «usa la skill xxx». Per le skill che usi spesso, crea uno slash command e le richiami con «/».
 
@@ -926,7 +916,7 @@ Descrivi come dev'essere l'output finale.
 
 **Come crearne o caricarne una:** tre strade.
 
-- **Fartela scrivere da Claude:** descrivi il compito con «Generami una skill Claude a partire da questa esigenza: [descrizione del task]».
+- **Fartela scrivere da Claude:** descrivi il compito con «Generami una skill Claude a partire da questa esigenza: [descrizione]».
 - **Partire da una skill già fatta:** Anthropic ne pubblica alcune «ufficiali» ([`anthropics/skills`](https://github.com/anthropics/skills)), ampie e generiche, quindi conviene leggerne la `description` prima di adottarle. `frontend-design`, la più usata, dà istruzioni precise (evita i font generici Arial e Inter, layout attesi, elementi che rompono la griglia, indicazioni di motion), e leggere cosa fa una skill prima di adottarla conta più che installarne tante. Lo stesso vale per le skill di terze parti da marketplace, dove conviene leggere la `description`, perché spesso contengono più di quanto ti serve e consumano token, o script che è meglio verificare prima di eseguire. Per cercarle puoi chiedere a Claude o usare una skill come `find-skill` (team Vercel), che interroga il marketplace al posto tuo. Si caricano da claude.ai (in `claude.ai/customize/skills` carichi il file dal computer) o da Claude Code.
 - **Usare `skill-creator`:** è la skill ufficiale di Anthropic per creare skill, con un loop di verifica integrato.
 
@@ -934,11 +924,11 @@ Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Crear
 
 ### Catalogo di skill di riferimento
 
-I 59 repository di skill che ho stellato, ordinati per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, design system, ponte con Figma, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Poi uno **starter pack** con i comandi d'installazione. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare un prototipo».
+Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, design system, ponte con Figma, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Poi uno **starter pack** con i comandi d'installazione. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare un prototipo».
 
 **Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
-**Se parti da zero**, un ordine sensato per un product designer: 1) `frontend-design` (si auto-attiva sui task di UI, alza subito la qualità dei layout); 2) una skill di "taste" come [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill) o [`senlindesign/taste-skill`](https://github.com/senlindesign/taste-skill) (rifinitura e coerenza visiva); 3) un ponte Figma (l'MCP nativo di «Setup e loop con Figma MCP», o i plugin [`sherizan/designagent`](https://github.com/sherizan/designagent) per il loop bidirezionale); 4) [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill) per l'accessibilità; 5) [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills) per rifinire le UI generate. Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni skill attiva è contesto in più).
+**Se parti da zero**, un ordine sensato per un product designer: 1) `frontend-design` (si auto-attiva sulle richieste di UI, alza subito la qualità dei layout); 2) una skill di "taste" come [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill) o [`senlindesign/taste-skill`](https://github.com/senlindesign/taste-skill) (rifinitura e coerenza visiva); 3) un ponte Figma (l'MCP nativo di «Setup e loop con Figma MCP», o i plugin [`sherizan/designagent`](https://github.com/sherizan/designagent) per il loop bidirezionale); 4) [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill) per l'accessibilità; 5) [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills) per rifinire le UI generate. Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni skill attiva è contesto in più).
 
 ### Collezioni di skill multi-disciplina
 - [`Owl-Listener/designer-skills`](https://github.com/Owl-Listener/designer-skills): research → sistemi → UI → interazione → delivery
@@ -955,7 +945,7 @@ I 59 repository di skill che ho stellato, ordinati per area. Le prime categorie 
 - [`zarazhangrui/frontend-slides`](https://github.com/zarazhangrui/frontend-slides): la skill `frontend-slides` citata in «Dividere il lavoro tra Claude Desktop e Claude Code», che costruisce deck come pagine web sfruttando le capacità front-end dell'agente
 - [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail): fa ragionare l'agente come il senior più pigro della stanza, cioè spinge a non scrivere il codice che si può evitare; non è una skill di design, ma tiene a bada la tendenza a produrre più artefatti del necessario
 
-### Design system, token, scale, documentazione
+### Design system e documentazione
 - [`dylantarre/design-system-skills`](https://github.com/dylantarre/design-system-skills): skill DS per agentic coding
 - [`somerandomdude/design-system-documentation-schema`](https://github.com/somerandomdude/design-system-documentation-schema): DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
 - [`NateBaldwinDesign/proportio`](https://github.com/NateBaldwinDesign/proportio): scale proporzionali (tipografia, icone, spaziature)
@@ -981,6 +971,7 @@ I 59 repository di skill che ho stellato, ordinati per area. Le prime categorie 
 - [`jakubkrehel/make-interfaces-feel-better`](https://github.com/jakubkrehel/make-interfaces-feel-better): i dettagli che fanno "sentire" meglio un'interfaccia
 - [`nextlevelbuilder/ui-ux-pro-max-skill`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): design intelligence UI/UX multi-piattaforma
 - [`Magdoub/claude-wireframe-skill`](https://github.com/Magdoub/claude-wireframe-skill): wireframe B&W come HTML interattivo
+- [`Checklist-Design/skills`](https://github.com/Checklist-Design/skills): review del design fondata sulle oltre cento checklist pubblicate da Checklist Design. Con `audit` percorre voce per voce la checklist che c'entra e restituisce una tabella con lo stato di ognuna, con `critique` scrive una lettura rapida di gerarchia, layout, tipografia, colore, accessibilità e interazione. Gli basta uno screenshot e sceglie da sé quale dei due modi usare, e le checklist viaggiano dentro la skill, quindi funziona senza rete
 
 ### Accessibilità e performance
 - [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill): audit a11y (axe-core + jsx-a11y)
@@ -1001,6 +992,7 @@ I 59 repository di skill che ho stellato, ordinati per area. Le prime categorie 
 - NotebookLM: [`jacob-bd/gemini-notebook-mcp-cli`](https://github.com/jacob-bd/gemini-notebook-mcp-cli) (ex `notebooklm-mcp-cli`, rinominato), [`PleasePrompto/notebooklm-skill`](https://github.com/PleasePrompto/notebooklm-skill)
 - [`Suleiman19/ai-design-buddy`](https://github.com/Suleiman19/ai-design-buddy): una struttura di cartelle che dà a Claude contesto persistente lungo un progetto di design (vai a «Organizzare il progetto»)
 - [`LewisLiu007/full-page-screenshot`](https://github.com/LewisLiu007/full-page-screenshot): skill che cattura lo screenshot di una pagina intera via Chrome DevTools Protocol, senza dipendenze; serve per l'auto-verifica del prototipo
+- [`vercel/vercel`](https://github.com/vercel/vercel): il repository della piattaforma e della CLI con cui si pubblica il prototipo, quella dei comandi `vercel` e `vercel deploy` descritti in «Deploy del prototipo»
 - [`ibelick/zola`](https://github.com/ibelick/zola): chat multi-modello · [`withastro/astro`](https://github.com/withastro/astro): framework web · [`supabase/supabase`](https://github.com/supabase/supabase): backend
 
 ### Starter pack di skill per product designer
@@ -1010,7 +1002,7 @@ Shortlist consigliata con i comandi d'installazione (da verificare al momento de
 | Skill | A cosa serve | Install |
 |---|---|---|
 | **ui-ux-pro-max-skill** | trasforma Claude in UX strategist: analizza requisiti e genera un design system su misura | `npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max` |
-| **frontend-design** | layout curati e non generici, gerarchia visiva e spaziature forti; si auto-attiva sui task front-end | `npx skills add frontend-design` |
+| **frontend-design** | layout curati e non generici, gerarchia visiva e spaziature forti; si auto-attiva sulle richieste front-end | `npx skills add frontend-design` |
 | **taste-skill** | spinge l'AI verso UI premium (spaziatura, type, colori, refinement); anti-"vibe generico" | `npx skills add Leonxlnx/taste-skill` |
 | **shadcn-ui** | conoscenza profonda di shadcn/ui: sceglie i componenti giusti, UI accessibili con Tailwind | `npx skills add giuseppe-trisciglio/developer-kite@shadcn-ui` |
 | **ui-animation** | best practice di motion UI (easing, timing, transizioni, framer-motion, reduced-motion) | `npx skills add mblode/agent-skillse@ui-animation` |
@@ -1139,6 +1131,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - [Agent skills pubblicate da Figma](https://mcpservers.org/agent-skills/author/figma), mcpservers.org
 - southleft, [Figma Console MCP e plugin Figma Desktop Bridge](https://github.com/southleft/figma-console-mcp)
 - Sherizan, [DesignAgent, plugin Claude Code per designer](https://designagent.dev/) e il [plugin Figma Community](https://www.figma.com/community/plugin/1604428052675393154/designagent-claude-bridge)
+- [FigSpecs, AI Design System Generator](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator), plugin Figma Community
 - @friendlyunit, Figma console MCP to Claude: Setup Guide for Designers
 
 **Claude Skills**

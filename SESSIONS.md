@@ -36,15 +36,19 @@ Sono le cose che un assistente nuovo romperebbe per primo.
 
 **Scrittura.** Ogni testo nuovo si scrive passando per la skill **`/not-ai`**, caricata prima di scrivere e non dopo, insieme al modulo `references/lexicon-it.md`. Poi si rilegge la bozza col secondo passaggio della skill prima di inserirla in `content.md`. In pratica: zero em dash (la casa sta a 0,2 ogni 1.000 parole), niente costrutti «X, non Y» se non portano una distinzione reale, niente frasi di calibrazione tipo «vale la pena notare», niente nomi astratti al posto di conseguenze concrete. La prosa attuale è stata ripulita così: mantenerla lì.
 
-**Tipografia.** Ronzino (Collletttivo, SIL OFL 1.1), self-hostato in `assets/fonts/`. **La famiglia ha 400 / 500 / 700 e non ha il 600**: usare i token `--w-medium` e `--w-bold`, mai `font-weight: 600`, che il browser risolverebbe in Bold ovunque.
+**Tipografia.** Ronzino (Collletttivo, SIL OFL 1.1), self-hostato in `assets/fonts/`. **La famiglia ha 400 / 500 / 700 e non ha il 600**: usare i token `--w-regular`, `--w-medium` e `--w-bold`, mai `font-weight: 600`, che il browser risolverebbe in Bold ovunque.
 
 Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti.
 
 **Ritmo verticale.** Due regole, in `rem` su multipli di 8. Lo spazio *sopra* un titolo cresce col livello: 128 capitolo, 56 sezione, 32 sotto-sezione. Lo spazio *sotto*: 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali, a separare è solo il vuoto: è per questo che il gap di capitolo è così ampio. **Mai margini in `em` sui titoli**: era quello a dare a un capitolo meno aria di una sezione, perché l'occhiello ha corpo 12px.
 
-**Colore.** Accento lime `#d9fb12` usato con parsimonia e mai come fondo esteso, secondo il design DNA in `repass.io.md`. Per questo la numerazione a pallini è in inchiostro e non in lime. Tre livelli di fondo: `--bg-chrome` per topbar e spalla, `--bg` per la colonna di lettura, `--surface` per codice e tabelle.
+**Colore.** La palette viene dal design system Lotrek, file Figma WTF `29FQjdxBn7fesbU3NJkDxM`, quattro scale nominate da 50 a 950: Electric Lime, Shark, Edward, Nebula. Ogni token deve poggiare su un gradino vero, e le uniche due eccezioni dichiarate sono `--surface` e `--surface-2` del tema scuro, perché la scala Shark si ferma a 950. Il lime significa una cosa sola, lo stato attivo: l'hover è neutro e il codice inline sta nella famiglia del fondo. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento. Topbar, spalla e colonna di lettura stanno sullo stesso fondo, a separarle è il filetto.
 
-**Icone.** Tutte da [Lucide](https://lucide.dev/icons/), inline in uno sprite `<symbol>` in cima al `<body>`. In uso: `copy`, `link`, `check`, `sun`, `moon`, `monitor`, `menu`. Niente glifi Unicode nell'interfaccia.
+**Forme.** Due raggi di brand, `0` e `100px`, più 4px per voci dell'indice, chip di codice e tooltip, e i cerchi. Frame, tabelle, blocchi di codice e immagini sono a spigolo.
+
+**Icone.** Dalla sezione Icons del file Figma WTF (nodo `1:427`), 24×24 a tratto 1,5, inline in uno sprite `<symbol>` in cima al `<body>`. Niente glifi Unicode nell'interfaccia. L'SVG di sezione le esporta tutte insieme a coordinate assolute, quindi nel simbolo ognuna si traspone con un `translate`; attenzione ai gruppi annidati, dove il primo `</g>` chiude quello interno e non l'icona.
+
+**PDF.** Si rigenera a ogni pubblicazione, perché `deploy.sh` e il workflow chiamano `make-pdf.mjs` prima di preparare i file. La resa la decide il blocco `@media print` di `template.html`, non lo script: se una modifica tocca colori o struttura dei titoli, va guardato anche lì.
 
 **Schemi nei blocchi di codice.** I caratteri box-drawing non stanno in IBM Plex Mono e il fallback li rende più larghi del 5% (8,70px contro 8,27px). La regola non è vietarli: è che **il numero di glifi Unicode resti quasi uguale su ogni riga del blocco**, perché lo scarto è di 0,43px a carattere. Un albero di cartelle sfasa di un carattere fra un livello e l'altro e non si vede; la riga di bordo di un riquadro ne ha decine in più della riga di contenuto e sfasa di 8px, quindi i riquadri sono da evitare. Lettere accentate, caporali e apostrofo tipografico sono a larghezza giusta. Larghezza utile fino a ~88 colonne, gli schemi in uso stanno fra 68 e 74.
 
@@ -60,35 +64,45 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 ## Fatto in questa sessione
 
-**Riassetto strutturale, da tre capitoli a sei.** Il vecchio capitolo 2 valeva il 58% della guida e teneva insieme i file di contesto e il lavoro con Figma, che non si parlano. Ora sono sei capitoli in sequenza (10/26/16/10/10/15%): Progettare il contesto, Scrivere il contesto, Collegare Claude e Figma, Il design system per l'AI, Costruire e pubblicare un prototipo, Lavorare con le Claude Skills. Il criterio è che ogni capitolo risponda a una domanda sola.
+**Riallineamento al brand Lotrek.** La palette non è più dedotta: viene dal file Figma WTF, quattro scale nominate più una semantica. Tutti e tredici i token dei due temi poggiano su un gradino vero. Il tema scuro è passato dal blu-verde `#0c1a1f`, che nel brand non esisteva, a Shark/950 `#232323`.
 
-**Sezione «CLAUDE.md» nuova**, che mancava del tutto, e «Dal codice al canvas e ritorno» sul giro completo fra Claude e Figma introdotto da Code to Canvas.
+**Icone sostituite** con quelle del design system, 24×24 a tratto 1,5 al posto delle Lucide a tratto 2.
 
-**Glossario da 12 a 43 voci.** I termini tecnici usati nel corpo e mai spiegati erano 29, ora zero. Sono entrate le parole che fermano chi comincia, da `repo` a `front matter`.
+**Occhielli** senza maiuscoletto, con crenatura negativa, in inchiostro pieno e a peso Regular. Lotrek non ha maiuscoletti nel sistema e stringe sempre.
 
-**53 rimandi interni sono diventati link**, generati da `build.mjs` a partire dai guillemets nel sorgente, con avviso in build quando un rimando non centra più il bersaglio.
+**Tema a due stati**, chiaro e scuro, con l'iniziale fissata da uno script nel `<head>`.
 
-**Tre duplicazioni sciolte** (nomi dei token, limite delle duecento righe, stati dei componenti) e le sezioni consigliate del `CLAUDE.md` spostate dove servono. Delle sette ripetizioni misurate, quattro erano falsi positivi.
+**Mobile rifatto sul sito**: pillola «Menu» che si stringe a cerchio con la X, pannello a pieno schermo che entra da destra.
 
-**Capitolo 1 da 2.105 a 1.896 parole**, con la checklist riscritta come checklist vera e un esercizio in coda a «Requisiti minimi di partenza».
+**Componenti nuovi**: tooltip in forma di breadcrumb, CTA con l'etichetta che ruota all'hover, link «Playbook» nella topbar.
 
-**Due bug corretti.** La voce attiva della spalla illuminava sempre la sezione precedente a quella cliccata, perché lo scrollspy ignorava lo `scroll-margin-top` dei titoli; e i capitoli si aprivano e chiudevano durante un salto, perché la finestra di silenzio era un timer fisso da 700ms contro uno scroll che dura fino a 1.635ms.
+**PDF scaricabile dell'intera guida**, 83 pagine, generato da `make-pdf.mjs` e rigenerato a ogni pubblicazione su entrambi i canali.
 
-**Fonti da 42 a 46.**
+**Immagine di apertura** fra titolo e lede, WebP da 67 KB contro i 501 del PNG di partenza.
+
+**Testi.** Nove frasi goffe riscritte, «task» diventato «richiesta» in quattordici occorrenze su diciassette, il blocco «Comando e contesto» riscritto in prosa, e tolti il paragrafo sul design system in markdown già coperto meglio dal capitolo 4 e il passaggio sul paragone con la GPT personalizzata.
+
+**Otto repository in catalogo**, e la categoria «Design system, token, scale, documentazione» è diventata «Design system e documentazione».
+
+**Tre bug.** Il pulsante «Menu» non compariva a nessuna larghezza per una regola `#menuBtn { display: none }` rimasta nel blocco base, e un ID batte una classe. La coda della «g» nella CTA era tagliata perché il ritaglio stava all'altezza di una riga a `line-height: 1`. Lo stato attivo dell'indice perdeva il colore sul lime, illeggibile in tema scuro.
+
+**`repass.io.md` eliminato.** Era il design DNA da cui il progetto era partito, e ogni suo valore è stato sostituito.
 
 ## Aperto
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `MEMORY.md`.
 
-**Il capitolo «Scrivere il contesto» è il più grosso, al 26%.** È coerente, perché i file di contesto sono il cuore della guida, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
+**Due valori interpolati nel tema scuro.** `--surface` e `--surface-2` non poggiano su un gradino, perché la scala Shark si ferma a 950 e sotto il fondo non c'è niente. Se al file Figma vengono aggiunti un 960 e un 980, si agganciano.
+
+**L'immagine di apertura è self-hostata** in `assets/`, 67 KB di materiale di Figma dentro un repo pubblico. La scelta serve a non far dipendere il PDF da un CDN esterno, visto che si genera a ogni deploy. Non ha didascalia né credito in pagina.
+
+**Il capitolo «Scrivere il contesto» è il più grosso, al 26%.** È coerente, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
 
 **Le categorie del catalogo delle skill sono ancora H3**, quindi nella spalla pesano quanto un capitolo. Per le librerie è risolto, per le skill no.
 
-**Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere: «skill» compare 45 volte prima. Non riaprire senza un motivo nuovo.
+**Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere. Non riaprire senza un motivo nuovo.
 
-**I doppi due punti sono sette, non trentatré.** Il vecchio conteggio contava anche i due segni in frasi diverse dello stesso paragrafo, che non è un difetto. Misurando frase per frase i casi sono sette, e solo due o tre valgono una correzione: «**Quale scegliere:** **GitHub Pages:** …» in «Deploy del prototipo», che è il peggiore; il «Passo obbligato: … vivono in un sottopercorso:» sempre lì; e forse la frase sulle due versioni dell'MCP nativo, dove il secondo paio sta dentro una parentesi. Gli altri quattro sono citazioni o voci in forma «nome: descrizione» che introducono un elenco, quindi uso corretto.
-
-**Da provare a mano**: i pulsanti di copia sui titoli non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
+**Da provare a mano**: i pulsanti di copia non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
 
 **Nota**: questo file sta in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
 
