@@ -37,7 +37,7 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **Il design system sta in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non sta lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
 
-**Un'icona che manca la disegna Mattia.** L'inventario del sistema sta in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile.
+**Un'icona che manca la disegna Mattia.** L'inventario del sistema sta in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.
 
 **Ronzino ha 400, 500 e 700 e non ha il 600.** Si usano i token `--w-regular`, `--w-medium` e `--w-bold`.
 

@@ -13,6 +13,14 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **Lampeggio sul bersaglio del salto**, due secondi di velatura `--tint-hover` che sfuma. Su una riga di glossario o di catalogo si arriva in mezzo a quaranta righe uguali e senza un segno non si capisce quale era la propria.
 - **Scorciatoie `/` e `⌘K`** portano il fuoco al campo visibile in quel momento; su mobile aprono il pannello e ci mettono dentro il cursore.
 
+- **Due riquadri di esito** in coda a «Checklist pre-richiesta e segnali», al posto dei due paragrafi «Sta funzionando se» e «Sta andando storto se». Stanno su `--surface` con l'ombra `--shadow`, come i blocchi di codice e le tabelle. Icona in alto a sinistra, `check` nel primo e `close` nel secondo, poi il titolo e il testo, che sta un gradino sotto a `.92rem`. Il «se» passa dal titolo all'attacco del testo. Sotto i 700px si impilano.
+- **`--ok` e `--ko`, i primi due token semantici,** presi dalle scale Success e Danger del file Figma WTF. Cambiano gradino col tema come `--muted` e `--accent-line`: Success/800 e Danger/600 in chiaro, Success/600 e Danger/500 in scuro. Sono icone e non testo, quindi la soglia è il 3:1 di 1.4.11, e su `--surface-2` stanno fra 4,09 e 7,29. Nel chiaro i gradini alti non servivano, perché Success/500 si ferma a 1,37:1.
+- **Due riquadri di confronto in coda a «Deploy del prototipo»,** GitHub Pages e Vercel, al posto del paragrafo «Quale scegliere» che impilava quattro titoletti in grassetto e tre paia di due punti in una riga sola. Stessa forma dei riquadri di esito, ma con il logo del prodotto al posto dell'icona e senza titolo, perché il marchio lo fa già.
+- **`assets/logo-github.png` e `assets/logo-vercel.png`,** ridotti a 80px di altezza per 24 a schermo. Restano neri come vogliono le linee guida dei due marchi e sul tema scuro si invertono, con l'inversione spenta in stampa perché un logo bianco su carta bianca non si vede.
+- **Voce di glossario «SPA (single page application)»,** con la regola in più che serve a pubblicarne una su un hosting statico. Nella card di GitHub la sigla è sciolta per esteso al primo incontro.
+- **Interlinea 1,55 sul gradino `.92rem`,** cioè il testo dei riquadri e la nota dello schema a tre passaggi. L'1,7 della prosa è tarato sui 18px su una colonna larga il doppio.
+- **L'icona a 32px dà il tratto 2 senza ridisegnare niente,** perché il disegno da 24 con tratto 1,5 scala esattamente a 2px ottici. Un tratto 2 scritto nel simbolo, a questa misura, sarebbe diventato 2,67.
+
 ### Modificato
 - **Su mobile il campo entra in cima al pannello a pieno schermo,** a tutta larghezza, e i risultati prendono il posto dell'elenco dei capitoli invece di sovrapporglisi. La CTA in coda passa a tutta larghezza.
 - **Le voci di elenco hanno uno `scroll-margin-top`** di 84px. Senza, un salto della ricerca su una riga di glossario o di catalogo la faceva atterrare sotto la topbar appiccicata.
@@ -30,6 +38,14 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **«Playbook» va a destra nel pannello,** staccato dalla CTA da un filetto a tutta larghezza. È un link fuori dalla guida, non un'altra azione sulla guida, e il filetto è il modo in cui il sito separa le cose.
 - **In focus il campo di ricerca cambia il filetto invece di prendere l'anello.** Il token è `--accent-line`, perché il lime 400 pieno sul fondo chiaro fa 1,13:1 e la riga sparirebbe; un'ombra da 1px dello stesso colore ne raddoppia lo spessore senza spostare niente.
 - **Riscritto un titoletto del capitolo 2.** «Le prime trenta righe pesano più di tutte le altre» diceva due volte la stessa cosa insieme alla frase che seguiva, e il paragone fra le prime trenta e «tutte le altre» era ambiguo. Ora è «Le prime trenta righe orientano la lettura di tutto il resto».
+
+- **«Tenere sano il contesto nel tempo» diventa «Mantenere il contesto nel tempo»,** con i tre rimandi interni e la voce d'indice allineati.
+- **«mestiere» diventa «compito»** ovunque compaia nella guida: i due `CLAUDE.md` hanno «due compiti diversi», tenere gli appunti è «il compito di `SESSIONS.md`», e l'ipotesi sul ruolo di chi mantiene il design system è «un'ipotesi sul compito».
+- **«La domanda che seleziona» diventa «Cosa ci va dentro»** dentro la sezione «CLAUDE.md». Il titoletto precedente non diceva niente a chi legge in italiano.
+- **«Se parti da zero» apre un ordine per «un flusso standard di design»** invece che per «un product designer». I cinque passaggi, prima numerati dentro il paragrafo con i punti e virgola, sono un elenco numerato vero.
+
+### Rimosso
+- **La sezione «Dare struttura al contesto»** del primo capitolo. Le sue tre regole riguardavano i nomi dei file e delle skill, ma arrivavano prima che il lettore avesse incontrato gli uni o le altre, e l'esempio (`account-support`, `customer-help`, `access-workflow`) veniva da un servizio di assistenza clienti e non dal design. Delle tre resta solo la precedenza fra fonti che si contraddicono, spostata in «I file di contesto» come «Dichiara quale file vince», dove i file di cui parla sono già sul tavolo.
 
 ### Corretto
 - **La X di svuotamento restava a vista a campo vuoto.** La regola `.search-clear { display: flex }` batteva lo stile che l'attributo `hidden` porta da sé. Aggiunto `[hidden] { display: none !important; }`, che chiude la stessa classe di errore per tutto il documento.

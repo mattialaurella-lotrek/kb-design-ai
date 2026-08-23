@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 16.428 parole di prosa senza i blocchi di codice, 6 capitoli, 33 sezioni, 41 voci nell'indice laterale
+- 16.468 parole di prosa senza i blocchi di codice, 6 capitoli, 32 sezioni, 40 voci nell'indice laterale
 - 46 documenti in `docs/FONTI.md`
-- `index.html` pesa 276 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 24 agosto 2026
+- `index.html` pesa 279 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Ultima build: 23 agosto 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro
@@ -45,11 +45,11 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Ritmo verticale.** Due regole, in `rem` su multipli di 8. Lo spazio *sopra* un titolo cresce col livello: 128 capitolo, 56 sezione, 32 sotto-sezione. Lo spazio *sotto*: 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali, a separare è solo il vuoto: è per questo che il gap di capitolo è così ampio. **Mai margini in `em` sui titoli**: era quello a dare a un capitolo meno aria di una sezione, perché l'occhiello ha corpo 12px.
 
-**Colore.** La palette viene dal design system Lotrek, file Figma WTF `29FQjdxBn7fesbU3NJkDxM`, quattro scale nominate da 50 a 950: Electric Lime, Shark, Edward, Nebula. Ogni token deve poggiare su un gradino vero, e le uniche due eccezioni dichiarate sono `--surface` e `--surface-2` del tema scuro, perché la scala Shark si ferma a 950. Il lime significa una cosa sola, lo stato attivo: l'hover è neutro e il codice inline sta nella famiglia del fondo. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento. Topbar, spalla e colonna di lettura stanno sullo stesso fondo, a separarle è il filetto.
+**Colore.** La palette viene dal design system Lotrek, file Figma WTF `29FQjdxBn7fesbU3NJkDxM`, quattro scale nominate da 50 a 950: Electric Lime, Shark, Edward, Nebula. Ogni token deve poggiare su un gradino vero, e le uniche due eccezioni dichiarate sono `--surface` e `--surface-2` del tema scuro, perché la scala Shark si ferma a 950. Il lime significa una cosa sola, lo stato attivo: l'hover è neutro e il codice inline sta nella famiglia del fondo. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento. Topbar, spalla e colonna di lettura stanno sullo stesso fondo, a separarle è il filetto. Dal 23 agosto 2026 sono in uso anche due token semantici, `--ok` e `--ko`, presi dalle scale Success e Danger dello stesso file: cambiano gradino col tema per stare sopra il 3:1 in tutti e due.
 
 **Forme.** Due raggi di brand, `0` e `100px`, più 4px per voci dell'indice, chip di codice e tooltip, e i cerchi. Frame, tabelle, blocchi di codice e immagini sono a spigolo.
 
-**Icone.** Dalla sezione Icons del file Figma WTF (nodo `1:427`), 24×24 a tratto 1,5, inline in uno sprite `<symbol>` in cima al `<body>`. Niente glifi Unicode nell'interfaccia. L'SVG di sezione le esporta tutte insieme a coordinate assolute, quindi nel simbolo ognuna si traspone con un `translate`; attenzione ai gruppi annidati, dove il primo `</g>` chiude quello interno e non l'icona.
+**Icone.** Dalla sezione Icons del file Figma WTF (nodo `1:427`), 24×24 a tratto 1,5, inline in uno sprite `<symbol>` in cima al `<body>`. Niente glifi Unicode nell'interfaccia. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo né ricolorarlo. L'SVG di sezione le esporta tutte insieme a coordinate assolute, quindi nel simbolo ognuna si traspone con un `translate`; attenzione ai gruppi annidati, dove il primo `</g>` chiude quello interno e non l'icona.
 
 **PDF.** Si rigenera a ogni pubblicazione, perché `deploy.sh` chiama `scripts/make-pdf.mjs` prima di preparare i file. La resa la decide il blocco `@media print` di `src/template.html`, non lo script: se una modifica tocca colori o struttura dei titoli, va guardato anche lì.
 

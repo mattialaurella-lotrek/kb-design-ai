@@ -20,9 +20,8 @@ Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento
   - Dal comando al contesto
   - Il contesto è una risorsa finita
   - Requisiti minimi di partenza
-  - Dare struttura al contesto
   - Scrivere una richiesta
-  - Tenere sano il contesto nel tempo
+  - Mantenere il contesto nel tempo
   - Checklist pre-richiesta e segnali
   - Human-in-the-loop
 - **Scrivere il contesto**
@@ -76,7 +75,7 @@ La finestra di contesto è lo spazio in cui l'AI tiene tutto quello che sta cons
 
 Il **context rot** è la versione che si incontra lavorando. Anche partendo da un contesto curato, falsi avvii, tentativi di debug e divagazioni riempiono la finestra di rumore, e il modello comincia a riferirsi ai propri output scadenti. Le contromisure sono quattro.
 
-- **Riassumere e ripartire:** chiudere l'istanza, riassumere e aprirne una nuova col riassunto come seme (la meccanica sta in «Tenere sano il contesto nel tempo»).
+- **Riassumere e ripartire:** chiudere l'istanza, riassumere e aprirne una nuova col riassunto come seme (la meccanica sta in «Mantenere il contesto nel tempo»).
 - **Confini espliciti:** marcare le sezioni ("tentativi precedenti, solo riferimento" contro "contesto di lavoro attuale").
 - **Checkpoint periodici:** far riassumere stato e decisioni a intervalli regolari.
 - **Non "buttare tutto dentro":** decidere cosa includere, cosa escludere e quando rinfrescare pesa quanto scrivere la richiesta. Anche gli strumenti collegati occupano spazio, perché ogni MCP attivo si mangia una fetta della finestra (vedi «Setup e loop con Figma MCP»).
@@ -93,16 +92,6 @@ Nella finestra di contesto finiscono anche le istruzioni di sistema, gli strumen
 4. **Il modo di chiedere:** come strutturi la richiesta (vai a «Scrivere una richiesta»).
 
 **Provalo adesso:** prendi un compito che daresti all'AI oggi e scrivi in quattro righe cosa hai da darle su ciascuno dei quattro punti. Quello che non riesci a riempire è il motivo per cui l'output ti tornerà generico.
-
-### Dare struttura al contesto
-
-I nomi che dai alle cose e il posto in cui le metti decidono cosa l'agente trova quando va a cercare. Tre regole coprono quasi tutti i casi.
-
-**Un nome, un mestiere:** se tre file o tre skill si chiamano `account-support`, `customer-help` e `access-workflow`, l'agente non ha modo di sapere quale gli serve e prende quella sbagliata. Un nome come `account-access-support`, che dichiara da sé quando si usa, viene scelto senza esitazione.
-
-**Le parole di chi chiede, non quelle di chi lavora dentro:** scrivi «non riesco ad accedere» e non «invalidazione delle credenziali», perché l'agente cerca con le parole che gli arrivano, che sono quelle degli utenti.
-
-**Dichiara chi vince:** quando due fonti dicono cose diverse, scrivi da qualche parte quale delle due comanda. La linea guida approvata sta sopra gli appunti di squadra, la procedura corrente sopra quella dismessa. Senza questa riga l'agente sceglie da sé, e non ha modo di sapere quale delle due è quella buona.
 
 ### Scrivere una richiesta
 
@@ -123,13 +112,13 @@ Due cose separate: come formuli quello che chiedi, e in che ordine glielo dai.
 - **Reasoning-forward (decisioni strategiche):** `CONTEXT` → `CONSTRAINTS` → `QUESTION` → `PROCESS` (per ogni opzione l'approccio, i vantaggi dati i vincoli, i rischi e una raccomandazione motivata).
 - **Iterative refinement (miglioramento):** `CURRENT STATE` → `FEEDBACK` → `NEW CONSTRAINTS` → `TASK` (raffina e spiega cosa è cambiato e perché).
 
-### Tenere sano il contesto nel tempo
+### Mantenere il contesto nel tempo
 
 Su un lavoro lungo la finestra si sporca da sé, con falsi avvii, tentativi di debug e file aperti una volta e mai più usati. Due mosse dipendono da te.
 
 **Chiudere e ripartire da un riassunto:** quando la conversazione si allunga e le risposte peggiorano, chiudila, fatti scrivere un riassunto di dove sei arrivato e aprine una nuova con quello dentro. Claude Code lo fa anche da solo avvicinandosi al limite, tenendo le decisioni prese e i problemi ancora aperti, ma farlo tu prima costa meno.
 
-**Tenere gli appunti in un file, non nella chat:** quello che deve sopravvivere alla sessione va scritto in un file, così alla ripresa lo rileggi invece di ricostruirlo a memoria. È il mestiere di `SESSIONS.md`, descritto in «I file di contesto».
+**Tenere gli appunti in un file, non nella chat:** quello che deve sopravvivere alla sessione va scritto in un file, così alla ripresa lo rileggi invece di ricostruirlo a memoria. È il compito di `SESSIONS.md`, descritto in «I file di contesto».
 
 Il resto lo fa lo strumento. Claude Code carica i `CLAUDE.md` all'avvio e va a prendere gli altri file solo quando servono, e può affidare un'esplorazione lunga a un subagent che lavora in una finestra sua e restituisce la sola sintesi.
 
@@ -143,9 +132,18 @@ Il resto lo fa lo strumento. Claude Code carica i `CLAUDE.md` all'avvio e va a p
 - chi è l'utente, con i requisiti di accessibilità e gli attriti che la ricerca ha trovato davvero;
 - la richiesta divisa in fasi, con i criteri per dire che è riuscita e la priorità fra i vincoli che si contraddicono.
 
-**Sta funzionando se:** l'output rispetta il design system senza che tu debba ricordarglielo, le varianti sono nel brand senza correzioni pesanti, l'accessibilità c'è dall'inizio e passi più tempo a decidere che a rifare.
-
-**Sta andando storto se:** rilavori molto quello che torna, le varianti sono generiche o quasi giuste, aggiungi vincoli in continuazione a metà strada, la qualità cambia parecchio da una sessione all'altra. Quasi sempre è un problema di contesto e non del modello.
+<div class="verdict">
+<div class="verdict-ok">
+<svg class="verdict-ico" aria-hidden="true"><use href="#ico-check"/></svg>
+<p class="verdict-title">Sta funzionando</p>
+<p>Se l'output rispetta il design system senza che tu debba ricordarglielo, le varianti sono on brand senza correzioni pesanti, l'accessibilità c'è dall'inizio e passi più tempo a decidere che a rifare.</p>
+</div>
+<div class="verdict-ko">
+<svg class="verdict-ico" aria-hidden="true"><use href="#ico-close"/></svg>
+<p class="verdict-title">Non sta funzionando</p>
+<p>Se rilavori molto gli output, le varianti sono generiche o quasi giuste, aggiungi vincoli in continuazione, la qualità cambia parecchio da una sessione all'altra. Quasi sempre si tratta di un problema di contesto e non del modello.</p>
+</div>
+</div>
 
 ### Human-in-the-loop
 
@@ -191,17 +189,19 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 **Non scriverli tutti insieme:** tutti questi documenti ipotetici forniti in blocco non aiutano e, anzi, una buona metà non verrà nemmeno usata, perché non serviva davvero. Si parte da pochi documenti, quelli essenziali, il file root e quello di design, e gli altri si aggiungono in seguito, quando la loro assenza inizia a farsi sentire.
 
+**Dichiara quale file vince:** con più file capita che due si contraddicano, e l'agente non ha modo di sapere quale dei due vale. L'ordine di precedenza va scritto in `CLAUDE.md`, così la regola approvata sta sopra gli appunti di lavoro e la procedura corrente sopra quella dismessa.
+
 **`CLAUDE.md` come indice, non contenitore:** con molti file di contesto la tentazione è fare `@import` di tutti in `CLAUDE.md`, così l'agente ha sempre tutto. Funziona ma spreca, perché ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**, dove `CLAUDE.md` dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Conviene caricare sempre solo due file, **`SESSIONS.md`** (dove eri rimasto è sempre rilevante) e **`PLAN.md`** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (`VOICE.md` quando scrivi copy, `DESIGN.md` quando tocchi l'interfaccia, `CONTRACT.md` sul secondo repo). Come test pratico, se `CLAUDE.md` è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
 
 ### CLAUDE.md
 
 `CLAUDE.md` è il primo file che Claude Code legge quando apri un progetto, e decide come Claude si comporterà per il resto della sessione. Nell'elenco qui sopra è una voce fra tante. Qui c'è come si scrive, perché è il file da cui si parte e quello su cui si sbaglia di più.
 
-**Due file con lo stesso nome, due mestieri diversi:** quello di progetto sta nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. Quello globale sta in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
+**Due file con lo stesso nome, due compiti diversi:** quello di progetto sta nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. Quello globale sta in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
 
 **Il primo file non si scrive dal foglio bianco:** il comando `/init` guarda la cartella e ne butta giù una bozza. Claude sta ricostruendo il progetto a ritroso da quello che vede, quindi quella bozza è generica e non contiene niente delle tue intenzioni: vale come punto di partenza, non come file finito. I due passaggi che la rendono utile vengono dopo. Il primo si fa lontano dal computer, su un foglio. Immagina che domani entri in squadra una persona che sa progettare e sa scrivere codice: scrivi cosa le spiegheresti del progetto, quali vincoli ha (tecnici e commerciali) e quale livello di qualità ti aspetti. Il secondo passaggio è tornare sulla bozza con quel foglio davanti, cancellare quello che non serve e aggiungere quello che sai solo tu.
 
-**La domanda che seleziona:** va incluso quello che Claude sbaglierebbe se nessuno glielo dicesse. Il resto occupa contesto e basta. In pratica sono quattro famiglie, cioè i comandi veri del progetto (installazione, sviluppo, build, lint, test), i passaggi che vuoi sempre nello stesso ordine (cosa succede prima di un commit), i vincoli tecnici (questa versione del framework e non un'altra) e i vincoli commerciali (le cose da non toccare perché il danno arriverebbe fino agli utenti).
+**Cosa ci va dentro:** quello che Claude sbaglierebbe se nessuno glielo dicesse. Il resto occupa contesto e basta. In pratica sono quattro famiglie, cioè i comandi veri del progetto (installazione, sviluppo, build, lint, test), i passaggi che vuoi sempre nello stesso ordine (cosa succede prima di un commit), i vincoli tecnici (questa versione del framework e non un'altra) e i vincoli commerciali (le cose da non toccare perché il danno arriverebbe fino agli utenti).
 
 **Le prime trenta righe orientano la lettura di tutto il resto:** Claude guarda l'inizio del file con più attenzione, quindi lì vanno l'identità del progetto, i vincoli non negoziabili, la tecnologia principale e le cose che non deve mai fare.
 
@@ -657,7 +657,7 @@ Le cinque intestazioni di quel file sono un buon modello di partenza per qualunq
 
 Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Al momento il problema non ha una risposta, quindi va messo in conto e le spec vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno possiede.
 
-**Una risposta possibile** cambia un ruolo che esiste già invece di crearne uno nuovo: chi mantiene il design system diventa chi modera le regole che gli agenti seguono, e il suo lavoro passa dal ricostruire soluzioni già note al decidere quando la soluzione nota non basta. È un'ipotesi sul mestiere più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
+**Una risposta possibile** cambia un ruolo che esiste già invece di crearne uno nuovo: chi mantiene il design system diventa chi modera le regole che gli agenti seguono, e il suo lavoro passa dal ricostruire soluzioni già note al decidere quando la soluzione nota non basta. È un'ipotesi sul compito più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
 
 ### Creare una skill dal proprio design system
 
@@ -881,7 +881,18 @@ jobs:
 
 Se usi React Router, allinea il `basename` del router al `base` di Vite (altrimenti 404 sulle rotte). Dominio custom: file `CNAME` nella cartella pubblicata.
 
-**Quale scegliere:** **GitHub Pages:** solo statico (HTML/CSS/JS o SPA buildate), gratis, perfetto per portfolio, landing e per pubblicare questa knowledge base; nessun backend o serverless, e va gestito il base path. **Vercel:** statico **e** framework con SSR/funzioni serverless (es. API routes di Next.js), preview per ogni PR, variabili d'ambiente gestite, zero-config sulla maggior parte dei framework; è la via più liscia per un prototipo condivisibile in fretta e che potrebbe crescere verso funzioni dinamiche. Entrambe danno HTTPS e ripubblicazione automatica a ogni push.
+**Quale scegliere:** dipende da una cosa sola, se il prototipo resta statico o gli serve qualcosa che giri su un server. Ricorda che entrambe danno HTTPS e ripubblicano da sé a ogni push.
+
+<div class="verdict">
+<div>
+<img class="verdict-logo" src="assets/logo-github.png" alt="GitHub Pages" width="349" height="80">
+<p>Pubblica solo statico, quindi HTML, CSS e JavaScript o una single page application (SPA) già buildata. È gratis ed è la scelta giusta per un portfolio, per una landing e per una knowledge base come questa. Non ha backend né funzioni serverless, e il base path va sistemato a mano.</p>
+</div>
+<div>
+<img class="verdict-logo" src="assets/logo-vercel.png" alt="Vercel" width="355" height="80">
+<p>Pubblica statico e framework con SSR e funzioni serverless, per esempio le API routes di Next.js. Apre un'anteprima a ogni pull request, tiene le variabili d'ambiente e sulla maggior parte dei framework non chiede configurazione. È la strada migliore per un prototipo che potrebbe includere funzioni dinamiche.</p>
+</div>
+</div>
 
 ## Lavorare con le Claude Skills
 
@@ -927,7 +938,15 @@ Selezione di skill, classificate per area. Le prime categorie sono le più centr
 
 **Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
-**Se parti da zero**, un ordine sensato per un product designer: 1) `frontend-design` (si auto-attiva sulle richieste di UI, alza subito la qualità dei layout); 2) una skill di "taste" come [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill) o [`senlindesign/taste-skill`](https://github.com/senlindesign/taste-skill) (rifinitura e coerenza visiva); 3) un ponte Figma (l'MCP nativo di «Setup e loop con Figma MCP», o i plugin [`sherizan/designagent`](https://github.com/sherizan/designagent) per il loop bidirezionale); 4) [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill) per l'accessibilità; 5) [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills) per rifinire le UI generate. Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni skill attiva è contesto in più).
+**Se parti da zero**, un ordine sensato per un flusso standard di design può essere questo:
+
+1. `frontend-design`, che si auto-attiva sulle richieste di UI e alza subito la qualità dei layout.
+2. Una skill di "taste" come [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill) o [`senlindesign/taste-skill`](https://github.com/senlindesign/taste-skill), per la rifinitura e la coerenza visiva.
+3. Un ponte Figma, cioè l'MCP nativo di «Setup e loop con Figma MCP» oppure il plugin [`sherizan/designagent`](https://github.com/sherizan/designagent) per il loop bidirezionale.
+4. [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill) per l'accessibilità.
+5. [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills) per rifinire le UI generate.
+
+Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni skill attiva è contesto in più).
 
 ### Collezioni di skill multi-disciplina
 - [`Owl-Listener/designer-skills`](https://github.com/Owl-Listener/designer-skills): research → sistemi → UI → interazione → delivery
@@ -1017,9 +1036,9 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Canvas:** l'area di lavoro di un file Figma, quella dove stanno frame e layer.
 - **CLI:** programma che si usa scrivendo comandi in un terminale invece che cliccando. Claude Code è una CLI.
 - **Code Connect:** mappatura ufficiale di Figma che lega un componente Figma al componente di codice reale, così l'agente usa quello vero invece di ricostruirne uno simile. Vedi «Tre modi di collegare Figma a confronto» e «Le skill Figma per Claude Code».
-- **Compaction:** riassunto automatico della conversazione quando la finestra si avvicina al limite, per ripartire da una finestra nuova senza perdere le decisioni prese. Vedi «Tenere sano il contesto nel tempo».
+- **Compaction:** riassunto automatico della conversazione quando la finestra si avvicina al limite, per ripartire da una finestra nuova senza perdere le decisioni prese. Vedi «Mantenere il contesto nel tempo».
 - **Commit:** un salvataggio registrato nella storia del progetto, con un messaggio che dice cosa è cambiato. Permette di tornare indietro e di far capire agli altri cosa hai fatto.
-- **Context architecture:** applicazione dei principi di information architecture all'ambiente in cui un agente lavora, cioè come l'informazione è gerarchizzata, nominata e resa trovabile. Sta un livello sopra il context engineering, che si occupa di cosa entra nella finestra. Vedi «Dal comando al contesto» e «Dare struttura al contesto».
+- **Context architecture:** applicazione dei principi di information architecture all'ambiente in cui un agente lavora, cioè come l'informazione è gerarchizzata, nominata e resa trovabile. Sta un livello sopra il context engineering, che si occupa di cosa entra nella finestra. Vedi «Dal comando al contesto» e «I file di contesto».
 - **Context engineering:** la pratica di decidere cosa entra nella finestra di contesto e cosa resta fuori. Vedi «Dal comando al contesto».
 - **Context rot:** degrado della qualità delle risposte quando la finestra di contesto si riempie di materiale accessorio, come falsi avvii, tentativi di debug e divagazioni. Vedi «Il contesto è una risorsa finita».
 - **Deploy:** la pubblicazione della versione buildata su un indirizzo che si può aprire nel browser. Vedi «Deploy del prototipo».
@@ -1047,6 +1066,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Scope:** quello che un lavoro comprende e, per differenza, quello che lascia fuori.
 - **Skill:** un insieme di istruzioni scritte una volta, che l'AI carica quando il compito corrisponde, per svolgere sempre allo stesso modo un'attività ricorrente. Vedi «Cosa sono le skill e come si creano».
 - **Slash command:** comando che si richiama scrivendo `/` seguito dal nome, per esempio `/init`.
+- **SPA (single page application):** un sito che carica una pagina sola e da lì in poi cambia i contenuti col JavaScript invece di ricaricare. Pubblicarne una su un hosting statico chiede una regola in più, perché il server deve rispondere con quella pagina anche sulle rotte interne (vedi «Deploy del prototipo»).
 - **SSR / serverless:** rendering lato server e funzioni eseguite on-demand senza gestire un server dedicato; distinguono un sito statico da un'app con logica dinamica. Vedi «Deploy del prototipo».
 - **Subagent:** agente separato che svolge un compito con una finestra di contesto sua e restituisce solo il risultato, senza consumare quella principale.
 - **Token (design token):** un valore del design system a cui è stato dato un nome, per esempio un colore o una misura di spaziatura, così si richiama per nome invece di ricopiarne il valore.

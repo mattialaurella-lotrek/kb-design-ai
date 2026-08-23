@@ -10,7 +10,7 @@ La fonte del colore e delle icone è il file Figma WTF, chiave `29FQjdxBn7fesbU3
 
 **Cosa si rilegge da MCP:** nel file solo Electric Lime, con undici gradini da 50 a 950, e la palette semantica, con ventisette gradini fra Success, Warning e Danger, sono legati a variabili Figma. La sezione Palette espone sei valori nominati. Shark, Edward e Nebula esistono come scale disegnate ma sono riempimenti crudi, quindi `get_variable_defs` su quei frame torna vuoto.
 
-**Cosa ne segue per noi:** sei dei nostri valori si possono riverificare in automatico, gli altri sette no. Chi cambia un token che non sta nell'elenco verificato apre il file Figma e legge il gradino a mano, poi annota qui il valore letto.
+**Cosa ne segue per noi:** dieci dei nostri valori si possono riverificare in automatico, gli altri no. Chi cambia un token che non sta nell'elenco verificato apre il file Figma e legge il gradino a mano, poi annota qui il valore letto.
 
 Verificati contro le variabili del file il 23 agosto 2026:
 
@@ -22,10 +22,14 @@ Verificati contro le variabili del file il 23 agosto 2026:
 | Nebula/50 | `#f3f8f7` | `--bg` in chiaro, `--ink` in scuro |
 | Nebula/200 | `#cce0df` | `--border` e `--code-line` in chiaro |
 | Edward/500 | `#9baaaa` | `--muted` in scuro |
+| Success/800 | `#3a8a0d` | `--ok` in chiaro |
+| Success/600 | `#6ccd1e` | `--ok` in scuro |
+| Danger/600 | `#db2e30` | `--ko` in chiaro |
+| Danger/500 | `#ff4c3e` | `--ko` in scuro |
 
 ## Colore
 
-Tredici token per tema, dichiarati in `:root` e `:root[data-theme="dark"]`.
+Diciassette token per tema, dichiarati in `:root` e `:root[data-theme="dark"]`.
 
 | Token | Chiaro | Scuro | Gradino |
 |---|---|---|---|
@@ -44,10 +48,14 @@ Tredici token per tema, dichiarati in `:root` e `:root[data-theme="dark"]`.
 | `--tint-hover` | `#dfedec` | `#3d3d3d` | Nebula/100 · Shark/900 |
 | `--code-tint` | `#dfedec` | `#2c2c2c` | Nebula/100 · interpolato |
 | `--code-line` | `#cce0df` | `#3d3d3d` | Nebula/200 · Shark/900 |
+| `--ok` | `#3a8a0d` | `#6ccd1e` | Success/800 · Success/600 |
+| `--ko` | `#db2e30` | `#ff4c3e` | Danger/600 · Danger/500 |
 
 **Il lime segna lo stato attivo:** l'hover resta neutro con `--tint-hover` e il codice inline sta nella famiglia del fondo con `--code-tint`. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento.
 
 **Una superficie sola:** topbar, spalla e colonna di lettura stanno sullo stesso fondo, come su lotrek.it, e a separarle c'è il filetto `--border`.
+
+**I due token semantici cambiano gradino col tema,** come già fanno `--muted` e `--accent-line`. Sono icone e non testo, quindi la soglia è il 3:1 del criterio 1.4.11, misurato su `--surface-2`. Sul fondo chiaro passano solo i gradini fondi, perché Success/500 sta a 1,37:1 e Success/700 a 2,71, mentre l'800 arriva a 4,09. Sul fondo scuro succede il contrario, perché Success/800 scende a 3,38 e il 600 sale a 7,29. Sul rosso il salto è più corto, con Danger/600 a 4,44 in chiaro e Danger/500 a 4,46 in scuro. Il segno di spunta e la croce dicono la stessa cosa senza il colore, che resta un rinforzo e non l'unico portatore di significato.
 
 **Tre deviazioni dichiarate:** `--muted` in chiaro usa Edward/800 `#546061` invece dei due grigi della sezione Palette, perché Edward/600 `#78898a` si ferma a 3,9:1 sul fondo e non passa AA sul testo piccolo; questo sta a 6,08:1 sulla colonna e 5,42:1 sulla spalla. `--surface` e `--surface-2` del tema scuro sono interpolati, perché la scala Shark finisce a 950 e sotto il fondo non c'è nessun gradino; se al file Figma arrivano un 960 e un 980 si agganciano. `--accent-line` in chiaro scende al 500 perché il 400 puro sul fondo chiaro fa 1,13:1 e il filetto dei link sparisce.
 
@@ -58,6 +66,8 @@ Ronzino di Collletttivo, licenza SIL OFL 1.1, self-hostata in `assets/fonts/` co
 **La famiglia ha 400, 500 e 700, senza il 600:** si usano i token `--w-regular`, `--w-medium` e `--w-bold`. Un `font-weight: 600` scritto a mano il browser lo risolve in Bold ovunque, quindi sparisce la distinzione fra testo medio e grassetto.
 
 **La scala della prosa** vive in `rem` e ha cinque gradini: 18 corpo, 20 h4, 24 h3, 33,6 h2, 52,8 h1. H1 e h2 sono `clamp()` e scendono a 33,6 e 25,6 sui viewport stretti. La crenatura si stringe man mano che il corpo cresce, da −.005em sui micro-testi a −.025em sull'h1: Lotrek non ha maiuscoletti nel sistema e stringe sempre.
+
+**Sotto la prosa c'è un gradino solo,** `.92rem` con interlinea 1,55 invece dell'1,7, e lo usano la nota dello schema a tre passaggi e il testo dei riquadri affiancati. L'1,7 è tarato sui 18px su una colonna larga il doppio, e a corpo minore in mezza colonna apre troppo.
 
 **Il ritmo verticale della prosa** sta su tre token, tutti multipli di 8px: `--gap-cap` 128px sopra un capitolo, `--gap-sez` 56px sopra una sezione, `--gap-sub` 32px sopra un h4. Sotto i titoli lo spazio scala 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali e a separare è solo il vuoto, che è la ragione di un gap di capitolo così ampio. I margini dei titoli non vanno mai in `em`, altrimenti un capitolo prende meno aria di una sezione perché il suo occhiello ha corpo 12px.
 
@@ -88,9 +98,11 @@ Due token per lo stesso valore e i tre raggi veri fuori dai token: da sistemare 
 
 ## Icone
 
-Il sistema ne ha quindici nella sezione Icons del file WTF, nodo `1:427`: `arrow-right`, `arrow-upright`, `check`, `chevron-down`, `chevron-up`, `close`, `copy`, `download`, `share`, `link`, `menu`, `mode-dark`, `mode-light`, `plus`, `minus`. La sedicesima è `search`, disegnata il 23 agosto 2026 per il campo di ricerca e da riportare nel file Figma, dove al momento non c'è.
+Il sistema ne ha quindici nella sezione Icons del file WTF, nodo `1:427`: `arrow-right`, `arrow-upright`, `check`, `chevron-down`, `chevron-up`, `close`, `copy`, `download`, `share`, `link`, `menu`, `mode-dark`, `mode-light`, `plus`, `minus`. La sedicesima è `search`, disegnata il 23 agosto 2026 per il campo di ricerca ed entrata nel file Figma come nodo `10:2`.
 
 **Forma:** 24×24, tratto 1,5, `stroke-miterlimit: 10`, nessun raccordo arrotondato. Le Lucide, che stavano a tratto 2, sono state tolte il 22 agosto. Un'icona che serve e sta già nel file si copia da lì con questi quattro attributi.
+
+I loghi di prodotti terzi non sono icone di sistema e non seguono questa regola: si prende il file ufficiale del marchio e non lo si ridisegna.
 
 **Un'icona che non c'è la disegna Mattia.** Non si prende da Lucide, da Feather o da altre librerie, e non si abbozza un path a mano: si chiede a lui, che la aggiunge al file Figma, e poi entra nello sprite. Un segno estraneo si vede accanto a quelli di casa, ed è già successo.
 
@@ -118,14 +130,26 @@ Componente nuovo del 23 agosto 2026, e usa solo materiale che c'era già.
 
 **Corpi:** 15px il campo, come il bottone di sistema; 14,5px il titolo del risultato; 13,5px lo spezzone; 12px l'etichetta del tipo. Tutti già in uso altrove, secondo la regola qui sopra.
 
+## I riquadri affiancati
+
+Componente del 23 agosto 2026, usato due volte. In coda a «Checklist pre-richiesta e segnali» porta i due esiti, quello che dice che il lavoro sta funzionando e quello che dice il contrario. In coda a «Deploy del prototipo» mette a confronto GitHub Pages e Vercel.
+
+**Forma:** la stessa dei blocchi di codice e delle tabelle, cioè `--surface`, filetto `--border`, spigolo vivo e ombra `--shadow`. Padding 24 sopra e sotto e 20 ai lati. Fra il segno in cima e il testo ci sono 20px. Sotto i 700px i due riquadri si impilano.
+
+**L'icona apre il riquadro in alto a sinistra,** `check` nel primo e `close` nel secondo, dallo sprite. Sotto stanno il titolo, sul corpo della prosa, e il testo, che scende a `.92rem` come la nota dello schema a tre passaggi. Il riquadro è da 32px sul disegno da 24, quindi il tratto 1,5 del sistema scala a 2px ottici senza che si debba ridisegnare niente. Un tratto 2 scritto nel simbolo diventerebbe 2,67 a questa misura, e sarebbe un peso che il sistema non ha.
+
+**Il colore viene dalla palette semantica,** con `--ok` e `--ko`, ed è il primo posto in cui la usiamo.
+
+**Nella variante di confronto il logo prende il posto dell'icona,** alto 24px e allineato a sinistra come lei, e il riquadro non ha titolo perché il marchio lo fa già. I due file stanno in `assets/logo-github.png` e `assets/logo-vercel.png`, ridotti a 80px di altezza, cioè tre volte la misura a schermo. Restano del loro nero invece di prendere `--ink`, perché le linee guida dei due marchi non li vogliono ricolorati, e sul tema scuro si invertono in bianco, che è l'uso monocromatico che entrambe prevedono. Nel blocco `@media print` l'inversione va spenta, altrimenti chi stampa dal tema scuro ottiene un logo bianco su carta bianca. La misura sta su `.prose .verdict-logo` e non sulla classe da sola, perché `.prose img` porta `height: auto` ed è più specifica.
+
 ## Cosa il sistema ha e noi non usiamo
 
-**Palette semantica:** ventisette gradini fra Success, Warning e Danger. La guida non ha blocchi nota o attenzione, quindi oggi non servono. Se un giorno arrivano, i valori si prendono da lì e non si inventano.
+**Palette semantica:** dei ventisette gradini fra Success, Warning e Danger ne usiamo quattro, i due di `--ok` e i due di `--ko`. Warning resta fuori, perché la guida non ha un blocco attenzione.
 
 **Color pairings:** venticinque accostamenti approvati nel file, mai consultati per questa piattaforma.
 
 ## Debito noto
 
-- Il blocco `@media print` di `src/template.html`, dalla riga 626, riscrive a mano tredici token invece di poggiare sul tema chiaro. Sono gli unici sedici valori esadecimali fuori dai token, e ogni ritocco alla palette va fatto due volte.
+- Il blocco `@media print` di `src/template.html` riscrive a mano diciassette token di colore invece di poggiare sul tema chiaro. Sono gli unici diciotto valori esadecimali fuori dai token, e ogni ritocco alla palette va fatto due volte.
 - L'interfaccia non ha token di corpo, di spaziatura e di raggio.
 - La favicon in `assets/lotrek-favicon.svg` pesa 139 KB con un solo `<path>`, il doppio dell'immagine di apertura.
