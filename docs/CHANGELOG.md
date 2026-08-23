@@ -3,6 +3,30 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-23]
+
+### Aggiunto
+- **`CLAUDE.md` e `DESIGN.md` in radice.** Il repo che insegna a scriverli non ne aveva nessuno, e le regole vincolanti vivevano sparse fra `docs/MEMORY.md` e la memoria di sessione. `CLAUDE.md` tiene pipeline, comandi, le regole che non si rompono e le convenzioni editoriali; `DESIGN.md` tiene il design system con i valori verificati contro il file Figma, le deviazioni motivate e il debito noto.
+- **Blocco di stato generato in `docs/HANDOFF.md`.** Fra i marcatori `<!-- stato:inizio -->` e `<!-- stato:fine -->` la build riscrive parole, capitoli, sezioni, voci d'indice, fonti e peso della pagina. I numeri scritti a mano si erano sfasati due volte: il file diceva «quattro capitoli» quando erano sei da due giorni.
+- **`BUILD_DATE` per la data del piè di pagina.** `BUILD_DATE=2026-08-24 npm run build` pubblica una revisione datata al giorno in cui va online invece che al giorno del build. Senza la variabile vale la data di oggi, come prima.
+- **Undici repository in catalogo,** ricavati sciogliendo le due sezioni-appendice e le righe compatte: `vercel-labs/agent-skills`, `mblode/agent-skills`, `shadcn-ui/ui`, `VoltAgent/awesome-design-md`, `kaokaohate/design-system-extractor`, `ceorkm/mobile-app-ui-design`, `HermeticOrmus/LibreUIUX-Claude-Code`, più le descrizioni per `agno-agi/agno`, `google-gemini/gemini-cli`, `jackwener/OpenCLI` e gli altri nomi che stavano nudi.
+- **Regola sulle icone:** se ne serve una che il file Figma WTF non ha, si chiede a Mattia e la disegna lui. Scritta in `CLAUDE.md` e in `DESIGN.md`.
+
+### Modificato
+- **Cartelle.** `src/` per contenuto e template, `scripts/` per build e PDF, `docs/` per memoria, changelog, fonti e handoff. La radice passa da undici elementi a nove e tiene solo ciò che si legge per primo. Percorsi aggiornati in `scripts/build.mjs`, `deploy.sh`, `package.json` e nei file di `docs/`.
+- **`SESSIONS.md` è diventato `docs/HANDOFF.md`,** senza la sezione «Fatto in questa sessione», che era un diario e duplicava questo changelog.
+- **Icone in un posto solo.** `ico-sun` e `ico-moon` prendono i nomi del sistema, `ico-mode-light` e `ico-mode-dark`. Il chevron dell'indice stava inline in `scripts/build.mjs` ed è entrato nello sprite come `ico-chevron-down`, con la misura spostata in `.toc-chev`. Restano nove icone in due posti, perché `arrow-right` è una maschera CSS e uno pseudo-elemento non può puntare a un `<symbol>`.
+- **CTA della spalla:** padding verticale da 12 a 8px e l'etichetta che torna ai 15px del bottone di sistema, togliendo l'eccezione a 14px. La pillola scende da 46 a 38px di altezza.
+- **Il catalogo ha una forma sola,** una riga per repository con la sua descrizione. Le due sezioni «Starter pack di skill per product designer» e «Skill UI/UX con comando» erano tabelle di nomi commerciali senza link, e le cinque righe compatte tenevano undici repository ammucchiati con due parole a testa.
+- **Un canale di pubblicazione solo.** Il workflow GitHub Pages è stato eliminato: le build erano in coda da luglio senza mai partire, quindi il canale non è mai stato verificato e teneva in vita una cartella `dist/` e un secondo percorso di build.
+- **`awesome-design-md` corretto:** i prodotti analizzati sono 73, non 55, e non è una skill con uno slash command ma una raccolta di file `DESIGN.md` da copiare nella radice del progetto.
+
+### Rimosso
+- **L'etichetta «Indice»** nella spalla. Il nome della regione resta l'`aria-label` dell'`<aside>`, quindi per uno screen reader non cambia niente.
+- **La riga «UX UI Mastery».** Non corrisponde a nessun repository rintracciabile, e nell'articolo di origine il suo nome e il suo comando non combaciano con quelli della riga accanto. Quello che descriveva è coperto da `nextlevelbuilder/ui-ux-pro-max-skill` e da LibreUIUX.
+- **Tre comandi d'installazione morti.** `giuseppe-trisciglio/developer-kite` non esiste su GitHub, e `mblode/agent-skillse` e `vercel-labs/agent-skillse` avevano una «e» di troppo.
+- **`dist/` e il workflow Actions,** con la riga `dist/` tolta dal `.gitignore`.
+
 ## [2026-08-22]
 
 ### Aggiunto

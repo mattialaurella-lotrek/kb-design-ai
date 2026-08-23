@@ -48,8 +48,6 @@ Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento
 - **Lavorare con le Claude Skills**
   - Cosa sono le skill e come si creano
   - Catalogo di skill di riferimento
-  - Starter pack di skill per product designer
-  - Skill UI/UX con comando
 - **Glossario**
 - **Fonti**
 
@@ -755,6 +753,7 @@ Cinque famiglie, dalle fondamenta al dettaglio. Non servono tutte: si prende que
 - [`themesberg/flowbite`](https://github.com/themesberg/flowbite): libreria componenti su Tailwind
 - [`imskyleen/animate-ui`](https://github.com/imskyleen/animate-ui): component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare
 - [`chartjs/Chart.js`](https://github.com/chartjs/Chart.js): grafici disegnati su `<canvas>`, otto tipi di base già pronti, responsive e animati; è la strada corta quando al prototipo serve un grafico credibile senza montare una pipeline di dataviz
+- [`shadcn-ui/ui`](https://github.com/shadcn-ui/ui): componenti accessibili su Tailwind che si copiano dentro il progetto invece di installarli come dipendenza, quindi restano modificabili. Nel repo c'è anche la skill ufficiale `skills/shadcn`, che legge il `components.json` del progetto e la documentazione di ogni componente, così l'agente sceglie fra quelli che esistono invece di inventarne uno. È la base su cui poggiano `animate-ui` qui sopra e il registry di `marvkr/better-design`
 - [`Jakubantalik/Libraries`](https://github.com/Jakubantalik/Libraries): raccolta di effetti React da copiare nel progetto (border beam, liquid gooey, thinking orbs), dallo stesso autore di transitions.dev
 
 **Motion, animazioni e scroll**
@@ -924,7 +923,7 @@ Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Crear
 
 ### Catalogo di skill di riferimento
 
-Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, design system, ponte con Figma, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Poi uno **starter pack** con i comandi d'installazione. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare un prototipo».
+Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, sta nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare un prototipo».
 
 **Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
@@ -939,20 +938,14 @@ Selezione di skill, classificate per area. Le prime categorie sono le più centr
 - [`PatternsDev/skills`](https://github.com/PatternsDev/skills): agent skill di patterns.dev
 - [`edenspiekermann/Skills`](https://github.com/edenspiekermann/Skills): raccolta skill dello studio Eden Spiekermann
 - [`phuryn/pm-skills`](https://github.com/phuryn/pm-skills): marketplace di 68 skill + 42 workflow in 9 plugin (discovery, strategy, execution, research, analytics, GTM, growth, toolkit, AI-shipping); per Claude Code e Cowork, install da marketplace; include `strategy-red-team` / `/red-team-prd` e `/ship-check` (adiacente, lato PM)
-- [`anthropics/skills`](https://github.com/anthropics/skills): repository ufficiale Anthropic delle Agent Skills (riferimento canonico)
+- [`anthropics/skills`](https://github.com/anthropics/skills): repository ufficiale Anthropic delle Agent Skills (riferimento canonico); qui dentro sta `frontend-design`, che si auto-attiva sulle richieste di UI e alza subito la qualità dei layout, install `npx skills add frontend-design`
 - [`nexu-io/open-design`](https://github.com/nexu-io/open-design): alternativa open a Claude Design (259+ skill, 142+ design system)
+- [`vercel-labs/agent-skills`](https://github.com/vercel-labs/agent-skills): la raccolta ufficiale di Vercel, da cui viene `web-design-guidelines`, oltre cento principi di layout, tipografia, responsività e accessibilità; nello stesso repo stanno `composition-patterns`, `react-best-practices` e le skill di deploy. Si prende solo quella che serve, con `npx skills add vercel-labs/agent-skills@web-design-guidelines`
+- [`mblode/agent-skills`](https://github.com/mblode/agent-skills): venticinque skill di cui quattro toccano il design, cioè `ui-animation` (easing, timing, transizioni, `prefers-reduced-motion`), `ui-design`, `typography-audit` e `product-design`; install `npx skills add mblode/agent-skills@ui-animation`
+- [`HermeticOrmus/LibreUIUX-Claude-Code`](https://github.com/HermeticOrmus/LibreUIUX-Claude-Code): il cassetto di tutto, con 74 skill, 152 agent, 70 plugin e 76 comandi che applicano psicologia cognitiva, regole di accessibilità e componenti nativi di piattaforma. È tanto, e conviene installare il plugin che serve invece del pacchetto intero, perché ogni skill attiva è contesto in più
 - [`wshobson/agents`](https://github.com/wshobson/agents): marketplace di plugin agentici che gira su più harness (Claude Code, Codex CLI, Cursor, OpenCode, Copilot, Gemini CLI): utile se il team non usa tutti lo stesso client
 - [`zarazhangrui/frontend-slides`](https://github.com/zarazhangrui/frontend-slides): la skill `frontend-slides` citata in «Dividere il lavoro tra Claude Desktop e Claude Code», che costruisce deck come pagine web sfruttando le capacità front-end dell'agente
 - [`DietrichGebert/ponytail`](https://github.com/DietrichGebert/ponytail): fa ragionare l'agente come il senior più pigro della stanza, cioè spinge a non scrivere il codice che si può evitare; non è una skill di design, ma tiene a bada la tendenza a produrre più artefatti del necessario
-
-### Design system e documentazione
-- [`dylantarre/design-system-skills`](https://github.com/dylantarre/design-system-skills): skill DS per agentic coding
-- [`somerandomdude/design-system-documentation-schema`](https://github.com/somerandomdude/design-system-documentation-schema): DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
-- [`NateBaldwinDesign/proportio`](https://github.com/NateBaldwinDesign/proportio): scale proporzionali (tipografia, icone, spaziature)
-- [`southleft/ds-contracts-poc`](https://github.com/southleft/ds-contracts-poc): contratti di componente: un'unica fonte macchina-leggibile da cui si generano sia la libreria React sia quella Figma, con un differ a tre vie che dimostra se combaciano davvero (vedi «Enforcement del design system»)
-- [`DirectedEdges/specs`](https://github.com/DirectedEdges/specs): schema, tipi e CLI per registrare e mantenere le specifiche dei componenti UI in un formato che l'agente può leggere
-- [`marvkr/better-design`](https://github.com/marvkr/better-design): MCP server open source più un registry shadcn/ui con 31 temi ricavati da prodotti reali (Linear, Stripe, Vercel…), per dare all'agente un sistema di partenza invece di un foglio bianco
-- [`tt-a1i/archify`](https://github.com/tt-a1i/archify): skill che genera diagrammi di architettura, flusso, sequenza e stati come HTML autonomo, con validazione ed export
 
 ### Ponte tra Claude e Figma
 - [`figma/mcp-server-guide`](https://github.com/figma/mcp-server-guide): guida ufficiale al Figma MCP server
@@ -963,14 +956,26 @@ Selezione di skill, classificate per area. Le prime categorie sono le più centr
 - [`alima-max/prototype-to-figma-skill`](https://github.com/alima-max/prototype-to-figma-skill): il verso opposto del solito: analizza un prototipo fatto in Claude Code, mappa i componenti sulla libreria Figma via ricerca e Code Connect, ed esplode ogni flusso di interazione nei suoi stati
 - [`kreako/fig2json`](https://github.com/kreako/fig2json): CLI in Rust che converte i file `.fig` salvati in locale in JSON pulito e ottimizzato (rimuove metadati e valori di default), pensato per far leggere e implementare il design all'AI (HTML/CSS)
 
+### Design system e documentazione
+- [`dylantarre/design-system-skills`](https://github.com/dylantarre/design-system-skills): skill DS per agentic coding
+- [`somerandomdude/design-system-documentation-schema`](https://github.com/somerandomdude/design-system-documentation-schema): DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
+- [`NateBaldwinDesign/proportio`](https://github.com/NateBaldwinDesign/proportio): scale proporzionali (tipografia, icone, spaziature)
+- [`southleft/ds-contracts-poc`](https://github.com/southleft/ds-contracts-poc): contratti di componente: un'unica fonte macchina-leggibile da cui si generano sia la libreria React sia quella Figma, con un differ a tre vie che dimostra se combaciano davvero (vedi «Enforcement del design system»)
+- [`DirectedEdges/specs`](https://github.com/DirectedEdges/specs): schema, tipi e CLI per registrare e mantenere le specifiche dei componenti UI in un formato che l'agente può leggere
+- [`marvkr/better-design`](https://github.com/marvkr/better-design): MCP server open source più un registry shadcn/ui con 31 temi ricavati da prodotti reali (Linear, Stripe, Vercel…), per dare all'agente un sistema di partenza invece di un foglio bianco
+- [`VoltAgent/awesome-design-md`](https://github.com/VoltAgent/awesome-design-md): 73 file `DESIGN.md` già scritti, ricavati da siti reali come Stripe, Vercel, Figma e Spotify, con token, logica di layout e comportamento dei componenti veri. Si copia il file nella radice del progetto e l'agente lo legge, nel formato `DESIGN.md` introdotto da Google Stitch (vedi «DESIGN.md»), quindi non c'è nessuna skill da installare. Vale come punto di partenza, e il rischio è copiare la superficie di un prodotto scambiandola per una strategia
+- [`kaokaohate/design-system-extractor`](https://github.com/kaokaohate/design-system-extractor): da uno screenshot di interfaccia ricava un design system intero, cioè classificazione dello stile, token di colore in forma `color.primary.500`, scala tipografica, griglia a 8pt, raggi e ombre, inventario dei componenti con varianti e stati, differenza fra tema chiaro e scuro e la specifica di uno sticker sheet Figma, tutto in un solo `.md` scaricabile. Parte dall'immagine, dove `senlindesign/taste-skill` parte da un URL, e uno screenshot compresso o riscalato mente sui valori
+- [`tt-a1i/archify`](https://github.com/tt-a1i/archify): skill che genera diagrammi di architettura, flusso, sequenza e stati come HTML autonomo, con validazione ed export
+
 ### UI design e wireframing
-- [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill): dà "buon gusto" all'AI, anti-slop
+- [`leonxlnx/taste-skill`](https://github.com/leonxlnx/taste-skill): dà "buon gusto" all'AI, anti-slop: spaziature, tipografia, colore e rifinitura contro il vibe generico; install `npx skills add Leonxlnx/taste-skill`
 - [`senlindesign/taste-skill`](https://github.com/senlindesign/taste-skill): Design DNA Extractor: `/taste <url>` fa reverse-engineering del "gusto" di un sito (token + il perché dietro le scelte) con pipeline Playwright; esporta in `CLAUDE.md`, Cursor, Windsurf, ecc.
 - [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable): design language per rendere l'AI più brava nel design
 - [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills): skill per rifinire le UI generate dagli agenti: `baseline-ui`, `fixing-accessibility`, `fixing-metadata`, `fixing-motion-performance`; install `npx skills add ibelick/ui-skills`, uso `/baseline-ui review src/`
 - [`jakubkrehel/make-interfaces-feel-better`](https://github.com/jakubkrehel/make-interfaces-feel-better): i dettagli che fanno "sentire" meglio un'interfaccia
-- [`nextlevelbuilder/ui-ux-pro-max-skill`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): design intelligence UI/UX multi-piattaforma
+- [`nextlevelbuilder/ui-ux-pro-max-skill`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): design intelligence UI/UX multi-piattaforma: analizza i requisiti e genera un design system su misura; install `npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max`
 - [`Magdoub/claude-wireframe-skill`](https://github.com/Magdoub/claude-wireframe-skill): wireframe B&W come HTML interattivo
+- [`ceorkm/mobile-app-ui-design`](https://github.com/ceorkm/mobile-app-ui-design): pattern mobile ricavati da Airbnb, Duolingo, Spotify, Revolut e Phantom, con convenzioni per nove settori (AI, crypto, finance, health…), griglia a 8 punti, la regola 60/30/10 sul colore e i principi di emotional design. Si attiva da sé quando chiedi una schermata mobile, un onboarding o una navigazione, e arriva fino all'implementazione in React e Tailwind
 - [`Checklist-Design/skills`](https://github.com/Checklist-Design/skills): review del design fondata sulle oltre cento checklist pubblicate da Checklist Design. Con `audit` percorre voce per voce la checklist che c'entra e restituisce una tabella con lo stato di ognuna, con `critique` scrive una lettura rapida di gerarchia, layout, tipografia, colore, accessibilità e interazione. Gli basta uno screenshot e sceglie da sé quale dei due modi usare, e le checklist viaggiano dentro la skill, quindi funziona senza rete
 
 ### Accessibilità e performance
@@ -986,39 +991,20 @@ Selezione di skill, classificate per area. Le prime categorie sono le più centr
 - [`content-designer/ux-writing-skill`](https://github.com/content-designer/ux-writing-skill): UX writing sistematico su quattro standard (Purposeful, Concise, Conversational, Clear), con pattern per bottoni/errori/empty state/form e checklist di scoring; per Claude, Codex e Cursor, install `npx skills add content-designer/ux-writing-skill`
 
 ### Agenti, CLI, plugin e infrastruttura
-- [`anthropics/claude-code`](https://github.com/anthropics/claude-code): Claude Code (riferimento) · [`agno-agi/agno`](https://github.com/agno-agi/agno): framework piattaforme di agenti
-- CLI: [`google-gemini/gemini-cli`](https://github.com/google-gemini/gemini-cli), [`jackwener/OpenCLI`](https://github.com/jackwener/OpenCLI)
-- Plugin Claude Code: [`makenotion/claude-code-notion-plugin`](https://github.com/makenotion/claude-code-notion-plugin), [`vercel/vercel-deploy-claude-code-plugin`](https://github.com/vercel/vercel-deploy-claude-code-plugin)
-- NotebookLM: [`jacob-bd/gemini-notebook-mcp-cli`](https://github.com/jacob-bd/gemini-notebook-mcp-cli) (ex `notebooklm-mcp-cli`, rinominato), [`PleasePrompto/notebooklm-skill`](https://github.com/PleasePrompto/notebooklm-skill)
+- [`anthropics/claude-code`](https://github.com/anthropics/claude-code): l'agente da terminale su cui poggia tutta la guida, riferimento canonico
+- [`agno-agi/agno`](https://github.com/agno-agi/agno): framework per costruire e gestire piattaforme di agenti; sta un gradino sotto il lavoro di design e serve quando l'agente diventa il prodotto
+- [`google-gemini/gemini-cli`](https://github.com/google-gemini/gemini-cli): l'agente open source di Google nel terminale, l'alternativa diretta a Claude Code; le raccolte che girano su più harness, come `Owl-Listener/ai-design-skills` e `wshobson/agents`, lo supportano
+- [`jackwener/OpenCLI`](https://github.com/jackwener/OpenCLI): trasforma un sito qualsiasi in una CLI e fa usare all'agente il browser dove sei già autenticato
+- [`makenotion/claude-code-notion-plugin`](https://github.com/makenotion/claude-code-notion-plugin): collega Claude Code a Notion, utile quando la documentazione di progetto vive lì
+- [`vercel/vercel-deploy-claude-code-plugin`](https://github.com/vercel/vercel-deploy-claude-code-plugin): porta il deploy su Vercel dentro Claude Code, senza uscire dal terminale (vedi «Deploy del prototipo»)
+- [`jacob-bd/gemini-notebook-mcp-cli`](https://github.com/jacob-bd/gemini-notebook-mcp-cli): accesso programmatico a Gemini Notebook da riga di comando, da server MCP e da skill (ex `notebooklm-mcp-cli`, rinominato)
+- [`PleasePrompto/notebooklm-skill`](https://github.com/PleasePrompto/notebooklm-skill): fa parlare Claude Code con i tuoi notebook NotebookLM, per interrogare i documenti che ci hai caricato
 - [`Suleiman19/ai-design-buddy`](https://github.com/Suleiman19/ai-design-buddy): una struttura di cartelle che dà a Claude contesto persistente lungo un progetto di design (vai a «Organizzare il progetto»)
 - [`LewisLiu007/full-page-screenshot`](https://github.com/LewisLiu007/full-page-screenshot): skill che cattura lo screenshot di una pagina intera via Chrome DevTools Protocol, senza dipendenze; serve per l'auto-verifica del prototipo
 - [`vercel/vercel`](https://github.com/vercel/vercel): il repository della piattaforma e della CLI con cui si pubblica il prototipo, quella dei comandi `vercel` e `vercel deploy` descritti in «Deploy del prototipo»
-- [`ibelick/zola`](https://github.com/ibelick/zola): chat multi-modello · [`withastro/astro`](https://github.com/withastro/astro): framework web · [`supabase/supabase`](https://github.com/supabase/supabase): backend
-
-### Starter pack di skill per product designer
-
-Shortlist consigliata con i comandi d'installazione (da verificare al momento dell'installazione, gli handle possono cambiare):
-
-| Skill | A cosa serve | Install |
-|---|---|---|
-| **ui-ux-pro-max-skill** | trasforma Claude in UX strategist: analizza requisiti e genera un design system su misura | `npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max` |
-| **frontend-design** | layout curati e non generici, gerarchia visiva e spaziature forti; si auto-attiva sulle richieste front-end | `npx skills add frontend-design` |
-| **taste-skill** | spinge l'AI verso UI premium (spaziatura, type, colori, refinement); anti-"vibe generico" | `npx skills add Leonxlnx/taste-skill` |
-| **shadcn-ui** | conoscenza profonda di shadcn/ui: sceglie i componenti giusti, UI accessibili con Tailwind | `npx skills add giuseppe-trisciglio/developer-kite@shadcn-ui` |
-| **ui-animation** | best practice di motion UI (easing, timing, transizioni, framer-motion, reduced-motion) | `npx skills add mblode/agent-skillse@ui-animation` |
-| **web-design-guidelines** | 100+ principi di web design curati da Vercel (layout, type, responsività, a11y) | `npx skills add vercel-labs/agent-skillse@web-design-guidelines` |
-
-### Skill UI/UX con comando
-
-Cinque skill che danno a Claude "memoria di design" (pattern, sistemi e reference di prodotti reali) senza sostituire il gusto. Comandi riportati come nell'articolo di origine; verificane nome ed esatta invocazione al momento dell'installazione, perché nella fonte alcuni nomi e comandi non combaciano del tutto.
-
-| Skill | A cosa serve | Comando (esempio) |
-|---|---|---|
-| **[Awesome Design MD](https://github.com/VoltAgent/awesome-design-md)** | design DNA di 55 prodotti reali (Stripe, Vercel, Figma, Spotify…): token, logica di layout e comportamento dei componenti reali, non un'imitazione vaga | `/awesome-design-md "build a pricing page like Stripe"` |
-| **Mobile App UI Design** | pattern mobile di app come Airbnb, Duolingo, Spotify, Revolut: pattern per settore, griglie di spaziatura, principi di emotional design (utile dove conta la fiducia: finance, health, booking, education) | `/mobile-app-ui-design "fintech app dark theme"` |
-| **UX UI Mastery** | "senior designer in a box": ragionamento UX senior, check di accessibilità, decisioni frontend-aware (guarda oltre l'estetica: accessibilità, flusso, implementazione) | `/design-mastery "build a SaaS onboarding flow"` |
-| **LibreUIUX** | bundle molto ampio (74 skill, 152 agent, 76 slash command): applica in automatico psicologia cognitiva, regole di accessibilità e componenti platform-native | `/ux-ui-mastery "design a checkout flow"` |
-| **Design System Extractor** | estrae un design system da uno screenshot UI (colori, scala tipografica, regole di spaziatura, token riutilizzabili); i risultati vanno verificati perché uno screenshot può ingannare | `/design-system-extractor "extract tokens from this Notion screenshot"` |
+- [`ibelick/zola`](https://github.com/ibelick/zola): interfaccia di chat aperta che parla con tutti i modelli, dallo stesso autore di `ui-skills` e `prompt-kit`
+- [`withastro/astro`](https://github.com/withastro/astro): framework web per siti fatti di contenuto, l'alternativa a Next.js quando il prototipo è una pagina da leggere più che un'applicazione
+- [`supabase/supabase`](https://github.com/supabase/supabase): database Postgres gestito con autenticazione e storage, per il prototipo che deve salvare qualcosa davvero
 
 ## Glossario
 

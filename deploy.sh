@@ -17,7 +17,7 @@ npm install
 npm run build
 # Il PDF scaricabile dalla CTA in coda all'indice. Si rigenera a ogni deploy,
 # cosi' non puo' restare indietro rispetto alla pagina.
-node make-pdf.mjs index.html progettare-con-lai.pdf
+node scripts/make-pdf.mjs index.html progettare-con-lai.pdf
 
 # staging con nome fisso = nome progetto Vercel (kb-design-ai -> kb-design-ai.vercel.app)
 out="$(mktemp -d)/kb-design-ai"

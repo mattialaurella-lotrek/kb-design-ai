@@ -62,7 +62,7 @@ function smartQuotes(md) {
 }
 
 // ---- Pre-processing del markdown ----
-let md = readFileSync(new URL("./content.md", import.meta.url), "utf8");
+let md = readFileSync(new URL("../src/content.md", import.meta.url), "utf8");
 const lines = md.split("\n");
 
 // 1) Titolo H1 (prima riga "# ...") -> rimosso dal corpo, usato nell'hero
@@ -210,7 +210,7 @@ bodyHtml = bodyHtml.replace(/<table>[\s\S]*?<\/table>/g, (t) => `<div class="tab
 
 // ---- TOC HTML (accordion: ogni H2 = macro-voce collassabile con le sue H3) ----
 const CHEVRON =
-  '<svg class="toc-chev" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" aria-hidden="true"><path d="M4.5 9.87L12 15.63L19.5 9.87"/></svg>';
+  '<svg class="toc-chev" aria-hidden="true"><use href="#ico-chevron-down"/></svg>';
 
 // Voce d'apertura: punta all'hero, così la spalla ha un "torna a casa".
 let tocHtml =
@@ -244,14 +244,16 @@ for (let k = 0; k < toc.length; ) {
 
 // ---- Data build (it-IT, senza dipendenze di ICU incerte) ----
 const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
-const now = new Date();
+// BUILD_DATE=YYYY-MM-DD forza la data mostrata a piè di pagina, per pubblicare
+// una revisione datata al giorno in cui va online invece che al giorno del build.
+const now = process.env.BUILD_DATE ? new Date(`${process.env.BUILD_DATE}T12:00:00`) : new Date();
 const buildDate = `${now.getDate()} ${MESI[now.getMonth()]} ${now.getFullYear()}`;
 
 // ---- Render template ----
 const heroTitle = smartQuotesText(pageTitle.split(/\s+[—–-]\s+/)[0].trim());
 const titleSmart = smartQuotesText(pageTitle);
 
-let out = readFileSync(new URL("./template.html", import.meta.url), "utf8");
+let out = readFileSync(new URL("../src/template.html", import.meta.url), "utf8");
 out = out
   .replaceAll("{{TITLE}}", titleSmart)
   .replaceAll("{{HERO_TITLE}}", heroTitle)
@@ -261,5 +263,35 @@ out = out
   .replace("{{CONTENT}}", bodyHtml)
   .replace("{{BUILD_DATE}}", buildDate);
 
-writeFileSync(new URL("./index.html", import.meta.url), out, "utf8");
+writeFileSync(new URL("../index.html", import.meta.url), out, "utf8");
+
+// ---- Blocco di stato in docs/HANDOFF.md ----
+// L'handoff si incolla in una chat che non vede il repo, quindi i suoi numeri
+// devono essere veri. Scritti a mano si erano sfasati due volte, cosi' li scrive
+// la build: fra i due marcatori non si mette mano.
+const parole = bodyMd
+  .replace(/```[\s\S]*?```/g, " ")
+  .replace(/`[^`]*`/g, " ")
+  .replace(/[#*_>|\[\]()]/g, " ")
+  .split(/\s+/)
+  .filter((w) => /\p{L}/u.test(w)).length;
+const capitoli = toc.filter((t, n) => t.level === 2 && toc[n + 1] && toc[n + 1].level === 3).length;
+const fontiUrl = new URL("../docs/FONTI.md", import.meta.url);
+const fonti = (readFileSync(fontiUrl, "utf8").match(/^\*\*\d+\./gm) || []).length;
+const stato = [
+  `- ${parole.toLocaleString("it-IT")} parole di prosa senza i blocchi di codice, ${capitoli} capitoli, ${toc.filter((t) => t.level === 3).length} sezioni, ${toc.length} voci nell'indice laterale`,
+  `- ${fonti} documenti in \`docs/FONTI.md\``,
+  `- \`index.html\` pesa ${Math.round(out.length / 1024)} KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts`,
+  `- Ultima build: ${buildDate}`,
+].join("\n");
+
+const handoffUrl = new URL("../docs/HANDOFF.md", import.meta.url);
+const handoff = readFileSync(handoffUrl, "utf8");
+const marcatori = /(<!-- stato:inizio -->)[\s\S]*?(<!-- stato:fine -->)/;
+if (marcatori.test(handoff)) {
+  writeFileSync(handoffUrl, handoff.replace(marcatori, `$1\n${stato}\n$2`), "utf8");
+} else {
+  console.warn("! docs/HANDOFF.md non ha i marcatori <!-- stato:inizio --> / <!-- stato:fine -->: blocco non aggiornato");
+}
+
 console.log(`✓ index.html generato — ${toc.length} voci nel TOC, aggiornato al ${buildDate}`);

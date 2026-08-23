@@ -300,15 +300,13 @@
       padding: 26px 18px 60px 26px;
       font-family: var(--font-display);
     }
-    aside.toc .toc-label {
-      font-size: 15px; letter-spacing: -.0075em;
-      color: var(--ink); font-weight: var(--w-regular); margin: 0 0 14px 6px;
-    }
     aside.toc nav { display: flex; flex-direction: column; gap: 2px; }
     /* La CTA scorre col resto dell'indice invece di stare fissa in basso: sotto
        i 900px di viewport una barra ancorata mangerebbe una voce su sei. */
     .toc-cta { margin-top: 32px; }
-    .toc-cta .btn-cta { font-size: 14px; }
+    /* La CTA della spalla torna al corpo del bottone di sistema (15px) e stringe
+       il passo verticale: sotto un indice lungo un bottone alto pesa troppo. */
+    .toc-cta .btn-cta { padding-top: 8px; padding-bottom: 8px; }
 
     /* Accordion group: macro-voce (H2) + sotto-lista (H3) collassabile */
     .toc-group + .toc-group { margin-top: 4px; }
@@ -322,7 +320,7 @@
     .toc-macro:hover { background: var(--tint-hover); }
     .toc-macro .toc-macro-text { flex: 1; min-width: 0; }
     
-    .toc-chev { flex: none; color: var(--muted); transition: transform .22s ease; }
+    .toc-chev { flex: none; width: 16px; height: 16px; color: var(--muted); transition: transform .22s ease; }
     /* Chiuso mostra il chevron in giu', aperto in su: mezzo giro della stessa forma,
        cosi' la geometria e' identica alle due icone e non serve un secondo simbolo. */
     .toc-group.open > .toc-macro .toc-chev { transform: rotate(180deg); }
@@ -685,7 +683,7 @@
 <path d="M232.501 151.634L237.749 156.875L247.499 147.125"/>
       </g>
     </symbol>
-    <symbol id="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+    <symbol id="ico-mode-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
       <g transform="translate(-668,-140)">
       <path d="M680 161C684.971 161 689 156.971 689 152C689 147.029 684.971 143 680 143C675.029 143 671 147.029 671 152C671 156.971 675.029 161 680 161Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
       <g>
@@ -694,7 +692,7 @@
       </g>
       </g>
     </symbol>
-    <symbol id="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+    <symbol id="ico-mode-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
       <g transform="translate(-624,-140)">
       <path d="M636 161C631.029 161 627 156.971 627 152C627 147.029 631.029 143 636 143C640.971 143 645 147.029 645 152C645 156.971 640.971 161 636 161Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"/>
       <g>
@@ -715,6 +713,9 @@
       <path d="M363.5 158.528L380.5 145.472"/>
       </g>
     </symbol>
+    <symbol id="ico-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <path d="M4.5 9.87L12 15.63L19.5 9.87"/>
+    </symbol>
   </svg>
 
   <header class="topbar">
@@ -728,12 +729,11 @@
       <p><span>Menu</span><span aria-hidden="true">Menu</span><span aria-hidden="true">Menu</span></p>
       <svg class="btn-menu-close" aria-hidden="true"><use href="#ico-close"/></svg>
     </button>
-    <button class="iconbtn" id="themeBtn" aria-label="Passa al tema scuro"><svg class="ico" aria-hidden="true"><use href="#ico-moon"/></svg></button>
+    <button class="iconbtn" id="themeBtn" aria-label="Passa al tema scuro"><svg class="ico" aria-hidden="true"><use href="#ico-mode-dark"/></svg></button>
   </header>
 
   <div class="shell">
     <aside class="toc" id="toc" aria-label="Indice della guida">
-      <p class="toc-label">Indice</p>
       <nav>{{TOC}}</nav>
       <div class="toc-cta">
         <a class="btn-cta" href="progettare-con-lai.pdf" download>
@@ -777,7 +777,7 @@
       function render() {
         var dark = root.getAttribute("data-theme") === "dark";
         var next = dark ? "chiaro" : "scuro";
-        btn.innerHTML = '<svg class="ico" aria-hidden="true"><use href="' + (dark ? "#ico-sun" : "#ico-moon") + '"/></svg>';
+        btn.innerHTML = '<svg class="ico" aria-hidden="true"><use href="' + (dark ? "#ico-mode-light" : "#ico-mode-dark") + '"/></svg>';
         btn.setAttribute("aria-label", "Passa al tema " + next);
       }
       render();
