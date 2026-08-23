@@ -249,6 +249,26 @@ const MESI = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","
 const now = process.env.BUILD_DATE ? new Date(`${process.env.BUILD_DATE}T12:00:00`) : new Date();
 const buildDate = `${now.getDate()} ${MESI[now.getMonth()]} ${now.getFullYear()}`;
 
+// ---- Id sulle voci di glossario ----
+// La ricerca deve poter atterrare sulla singola definizione, non sulla sezione
+// che ne contiene quaranta. Gli id nascono dal termine, come quelli dei titoli,
+// cosi' una definizione si puo' anche linkare da fuori.
+bodyHtml = bodyHtml.replace(
+  /(<h2 id="glossario"[\s\S]*?<ul>)([\s\S]*?)(<\/ul>)/,
+  (m, apre, lista, chiude) =>
+    apre +
+    lista.replace(/<li>(\s*<strong>)([\s\S]*?)(<\/strong>)/g, (li, pre, termine, post) => {
+      // Il termine puo' contenere markup (`DESIGN.md` sta in <code>), quindi lo slug
+      // si prende dal testo nudo e non dal contenuto grezzo di <strong>.
+      let id = "voce-" + (slugify(stripTags(termine).replace(/:$/, "")) || "x");
+      let base = id, n = 2;
+      while (usedIds.has(id)) id = `${base}-${n++}`;
+      usedIds.add(id);
+      return `<li id="${id}">${pre}${termine}${post}`;
+    }) +
+    chiude
+);
+
 // ---- Render template ----
 const heroTitle = smartQuotesText(pageTitle.split(/\s+[—–-]\s+/)[0].trim());
 const titleSmart = smartQuotesText(pageTitle);

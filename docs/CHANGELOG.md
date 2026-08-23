@@ -3,6 +3,38 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-24]
+
+### Aggiunto
+- **Ricerca nella guida.** Campo nella topbar, prima di «Playbook», con i suggerimenti che si aprono dal secondo carattere. Trova tre cose: le 51 sezioni, le 43 voci di glossario e i 120 repository del catalogo, ognuna con la sua etichetta e il capitolo o la categoria che la contiene. Dal suggerimento si va diritti alla voce in pagina, senza schermata intermedia.
+- **L'indice si costruisce nel browser al primo fuoco sul campo,** leggendo il DOM. La guida è una pagina sola, quindi il testo c'è già: incorporarlo come JSON dalla build avrebbe aggiunto un centinaio di KB su 249 e avrebbe potuto disallinearsi dal contenuto. Nessuna libreria esterna. La pagina cresce di 20 KB non compressi, 5 sulla rete: sarebbero stati un centinaio incorporando il testo una seconda volta.
+- **Icona `search`**, disegnata da Mattia, sedicesima del sistema e nona nello sprite. Da riportare nel file Figma WTF, dove ancora non c'è.
+- **Un `id` su ogni voce di glossario** (43), generato dal termine come quelli dei titoli. Serve alla ricerca per atterrare sulla definizione invece che sulla sezione che ne contiene quaranta, e rende ogni definizione linkabile da fuori.
+- **Lampeggio sul bersaglio del salto**, due secondi di velatura `--tint-hover` che sfuma. Su una riga di glossario o di catalogo si arriva in mezzo a quaranta righe uguali e senza un segno non si capisce quale era la propria.
+- **Scorciatoie `/` e `⌘K`** portano il fuoco al campo visibile in quel momento; su mobile aprono il pannello e ci mettono dentro il cursore.
+
+### Modificato
+- **Su mobile il campo entra in cima al pannello a pieno schermo,** a tutta larghezza, e i risultati prendono il posto dell'elenco dei capitoli invece di sovrapporglisi. La CTA in coda passa a tutta larghezza.
+- **Le voci di elenco hanno uno `scroll-margin-top`** di 84px. Senza, un salto della ricerca su una riga di glossario o di catalogo la faceva atterrare sotto la topbar appiccicata.
+- **Il testo di una sezione si ferma al primo titolo di qualunque livello** e non ripete ciò che è già indicizzato per conto suo. Prima un capitolo si prendeva anche il testo delle sue sezioni e ogni parola usciva due volte nei risultati; la sezione «Glossario» ripeteva tutte le definizioni e le categorie del catalogo tutte le righe dei repository.
+- **«Buona lettura»** chiude con `( ͡ʘ ͜ʖ ͡ʘ)` al posto dell'emoji del libro.
+- **Il pannello mobile copre davvero tutto.** La topbar sta sopra il pannello perché ospita il pulsante che lo chiude, ma il suo fondo è velato all'84% con un blur, quindi a pannello aperto ci si vedeva attraverso la pagina che scorre. Aperto, il fondo diventa pieno.
+- **Il pannello scorre per conto suo.** `overscroll-behavior: contain` e blocco dello scroll del `body`: arrivato in fondo all'indice, lo scroll passava alla pagina sotto, che si muoveva mentre credevi di muovere il menu.
+- **Nel pannello mobile la macro-voce è un interruttore.** Il secondo tap sullo stesso capitolo lo richiude, invece di riportare la pagina dov'è già. Il tap che chiude non fa saltare la lettura: la pagina resta dove il primo tap l'aveva messa. Su desktop non cambia niente, perché lì la spalla è alta quanto la finestra e un capitolo resta sempre aperto.
+- **Il pannello mobile si apre con tutti gli accordion chiusi.** I dieci capitoli stanno in una schermata sola: con uno aperto la lista sforava di 380px e per vedere cosa c'era sotto bisognava scorrere subito. Su desktop il primo capitolo resta aperto di default, perché lì la spalla è alta quanto la finestra. Il capitolo in lettura resta segnato in lime anche da chiuso.
+- **Un gruppo chiuso restava alto 380px.** La transizione su `grid-template-rows` non partiva, perché il cambio arrivava nello stesso fotogramma in cui il pannello entra da destra, e la riga restava incastrata al valore aperto. Ora la chiusura all'apertura del pannello avviene senza animazione. Le tracce sono passate anche a `minmax(0, …)`: con `auto` come minimo la riga non scendeva sotto il contenuto minimo delle voci, da quando le sotto-voci hanno un `min-height` da dito.
+- **Lo scrollspy non espande più niente a pannello aperto.** Un tocco per scorrere fa scattare `releasePin`, e da lì un accordion si apriva sotto il dito.
+- **Il fondo del pannello mobile lasciava vedere la pagina.** Il pannello aveva `inset: 0` e `height: 100dvh` insieme: con un'altezza esplicita il `bottom: 0` non conta più, e mentre la barra del browser si ritrae il box resta corto. Ora la misura la dà solo `inset: 0`. Serve anche `align-self: stretch`, perché lo `start` che la spalla desktop usa come cella di griglia impediva lo stiramento e faceva tornare l'altezza a fit-content. Il padding basso tiene conto della barra di casa dell'iPhone con `env(safe-area-inset-bottom)`.
+- **Spaziature della coda del pannello.** Prima 18px sopra e 18 sotto il filetto, che sotto diventavano 32 ottici per la centratura del link, quindi il divisore era schiacciato verso la CTA. Ora 40px separano l'ultimo capitolo dalla CTA, e il filetto sta fra 24 sopra e 26 ottici sotto: il link «Playbook» è alto 44 con dentro una riga da 15, e quei 14,5px di centratura vanno contati.
+- **Misure da dito nel pannello mobile.** Nessun bersaglio arrivava al minimo: macro-voci a 35px, sotto-voci a 31 e per giunta attaccate senza un pixel fra l'una e l'altra, campo e CTA a 38, pulsanti della topbar a 38. Ora le macro-voci, la CTA e il campo stanno a 48 (soglia Material), le sotto-voci, «Playbook» e i due pulsanti della topbar a 44 (soglia Apple), e fra due bersagli adiacenti restano almeno 4px. Sopra i 1024px non cambia niente, perché lì l'indice è denso e si usa col mouse.
+- **«Playbook» va a destra nel pannello,** staccato dalla CTA da un filetto a tutta larghezza. È un link fuori dalla guida, non un'altra azione sulla guida, e il filetto è il modo in cui il sito separa le cose.
+- **In focus il campo di ricerca cambia il filetto invece di prendere l'anello.** Il token è `--accent-line`, perché il lime 400 pieno sul fondo chiaro fa 1,13:1 e la riga sparirebbe; un'ombra da 1px dello stesso colore ne raddoppia lo spessore senza spostare niente.
+- **Riscritto un titoletto del capitolo 2.** «Le prime trenta righe pesano più di tutte le altre» diceva due volte la stessa cosa insieme alla frase che seguiva, e il paragone fra le prime trenta e «tutte le altre» era ambiguo. Ora è «Le prime trenta righe orientano la lettura di tutto il resto».
+
+### Corretto
+- **La X di svuotamento restava a vista a campo vuoto.** La regola `.search-clear { display: flex }` batteva lo stile che l'attributo `hidden` porta da sé. Aggiunto `[hidden] { display: none !important; }`, che chiude la stessa classe di errore per tutto il documento.
+- **`aria-activedescendant` puntava a un `<button>` dentro il `<li role="option">`,** quindi a un elemento che opzione non era. Ora l'opzione è il `<li>` stesso.
+
 ## [2026-08-23]
 
 ### Aggiunto

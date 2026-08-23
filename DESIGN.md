@@ -67,6 +67,14 @@ Ronzino di Collletttivo, licenza SIL OFL 1.1, self-hostata in `assets/fonts/` co
 
 La prosa sta su multipli di 8 in `rem`, come sopra. L'interfaccia usa ventisette valori px distinti fra 2 e 120, senza token, e quattro di questi (8, 12, 20, 18) coprono trentadue dichiarazioni su settanta. Stessa regola della tipografia: si pesca fra i valori già in uso, si preferiscono i quattro frequenti, non se ne inventano di nuovi.
 
+## Bersagli da dito
+
+Vale sotto i 1024px, cioè dove la spalla diventa il pannello a pieno schermo. Sopra, l'indice è denso e si legge col mouse, e una riga da 35px va bene.
+
+- **48px** le macro-voci dell'indice, la CTA e il campo di ricerca. È la soglia Material, e sono i bersagli che si toccano più spesso.
+- **44px** le sotto-voci, il link «Playbook», il pulsante del menu e quello del tema. È la soglia Apple, ed è anche il massimo che sta in una topbar alta 60px lasciando 8px di respiro.
+- **4px almeno fra due bersagli adiacenti.** Le sotto-voci erano attaccate, senza un pixel fra l'una e l'altra: un pollice che sbaglia di poco apriva la sezione sbagliata.
+
 ## Raggi
 
 Il sistema Lotrek usa due raggi, `0` e `100px`. Qui ne servono quattro, e tre stanno scritti a mano nel CSS:
@@ -80,17 +88,35 @@ Due token per lo stesso valore e i tre raggi veri fuori dai token: da sistemare 
 
 ## Icone
 
-Il sistema ne ha quindici nella sezione Icons del file WTF, nodo `1:427`: `arrow-right`, `arrow-upright`, `check`, `chevron-down`, `chevron-up`, `close`, `copy`, `download`, `share`, `link`, `menu`, `mode-dark`, `mode-light`, `plus`, `minus`.
+Il sistema ne ha quindici nella sezione Icons del file WTF, nodo `1:427`: `arrow-right`, `arrow-upright`, `check`, `chevron-down`, `chevron-up`, `close`, `copy`, `download`, `share`, `link`, `menu`, `mode-dark`, `mode-light`, `plus`, `minus`. La sedicesima è `search`, disegnata il 23 agosto 2026 per il campo di ricerca e da riportare nel file Figma, dove al momento non c'è.
 
 **Forma:** 24×24, tratto 1,5, `stroke-miterlimit: 10`, nessun raccordo arrotondato. Le Lucide, che stavano a tratto 2, sono state tolte il 22 agosto. Un'icona che serve e sta già nel file si copia da lì con questi quattro attributi.
 
 **Un'icona che non c'è la disegna Mattia.** Non si prende da Lucide, da Feather o da altre librerie, e non si abbozza un path a mano: si chiede a lui, che la aggiunge al file Figma, e poi entra nello sprite. Un segno estraneo si vede accanto a quelli di casa, ed è già successo.
 
-**Dove stanno le nostre nove:** otto come `<symbol>` nello sprite in coda a `src/template.html`, che porta i nomi del sistema con il prefisso `ico-` (`ico-copy`, `ico-link`, `ico-check`, `ico-mode-light`, `ico-mode-dark`, `ico-arrow-upright`, `ico-close`, `ico-chevron-down`). La nona è `arrow-right`, che sta come maschera CSS dentro il token `--ico-arrow-right` perché un `::before` non può puntare a un `<symbol>` dello sprite.
+**Dove stanno le nostre dieci:** nove come `<symbol>` nello sprite in coda a `src/template.html`, che porta i nomi del sistema con il prefisso `ico-` (`ico-copy`, `ico-link`, `ico-check`, `ico-mode-light`, `ico-mode-dark`, `ico-arrow-upright`, `ico-close`, `ico-chevron-down`, `ico-search`). La decima è `arrow-right`, che sta come maschera CSS dentro il token `--ico-arrow-right` perché un `::before` non può puntare a un `<symbol>` dello sprite.
 
 Un'icona nuova entra nello sprite, non nel markup generato da `scripts/build.mjs` e non in un token. Il chevron dell'indice ci stava fino al 23 agosto 2026.
 
 Due cose restano aperte, e sono scelte di design da fare. La CTA «Scarica la guida» non ha l'icona `download`, che nel sistema esiste. Il bottone «Menu» non ha `icon/menu`.
+
+## Il campo di ricerca
+
+Componente nuovo del 23 agosto 2026, e usa solo materiale che c'era già.
+
+**Forma:** pillola da 100px come i bottoni di casa, alta 38px, fondo `--surface` e filetto `--border`. Sul fondo unico della chrome un campo trasparente si leggerebbe come un'etichetta, e il gradino di superficie è l'unico modo di dire che ci si può scrivere dentro.
+
+**In focus il filetto del campo passa al lime** `--accent-line`, con un'ombra da 1px dello stesso colore che ne raddoppia lo spessore senza spostare niente. Non è il token `--accent`, perché il 400 pieno sul fondo chiaro fa 1,13:1 e la riga sparirebbe. Gli altri comandi della topbar tengono l'anello `:focus-visible` con lo scostamento: qui il campo ha già un suo filetto, e cambiargli colore dice la stessa cosa senza aggiungere un secondo segno.
+
+**La X di svuotamento compare solo quando c'è del testo.** Nel CSS serve `[hidden] { display: none !important; }`, perché un `display` d'autore batte lo stile che l'attributo `hidden` porta da sé.
+
+**La tendina** poggia su `--surface` con raggio 4px, lo stesso dei tooltip e delle voci d'indice, e l'ombra `--shadow`.
+
+**Il termine trovato** si segna con un filetto sotto in `--accent-line`, che è il ruolo che quel token ha già sui link. Il lime pieno resta lo stato attivo e non entra nei risultati.
+
+**L'atterraggio lampeggia** per due secondi con `--tint-hover`, la stessa velatura neutra dell'hover, e sfuma senza lasciare stato. Serve perché su una riga di glossario o di catalogo si arriva in mezzo a quaranta righe uguali.
+
+**Corpi:** 15px il campo, come il bottone di sistema; 14,5px il titolo del risultato; 13,5px lo spezzone; 12px l'etichetta del tipo. Tutti già in uso altrove, secondo la regola qui sopra.
 
 ## Cosa il sistema ha e noi non usiamo
 

@@ -12,7 +12,7 @@ Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI: come s
 - **Le librerie** di icone, componenti, motion ed effetti con cui si monta il prototipo.
 - **GitHub e Vercel** per versionare il lavoro e pubblicarlo a un indirizzo condivisibile.
 
-Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, le Claude Skills, la costruzione e la pubblicazione del prototipo. Chiudono glossario e fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura 📚
+Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, le Claude Skills, la costruzione e la pubblicazione del prototipo. Chiudono glossario e fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura ( ͡ʘ ͜ʖ ͡ʘ)
 
 **Indice**
 
@@ -203,7 +203,7 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 **La domanda che seleziona:** va incluso quello che Claude sbaglierebbe se nessuno glielo dicesse. Il resto occupa contesto e basta. In pratica sono quattro famiglie, cioè i comandi veri del progetto (installazione, sviluppo, build, lint, test), i passaggi che vuoi sempre nello stesso ordine (cosa succede prima di un commit), i vincoli tecnici (questa versione del framework e non un'altra) e i vincoli commerciali (le cose da non toccare perché il danno arriverebbe fino agli utenti).
 
-**Le prime trenta righe pesano più di tutte le altre:** Claude dà più attenzione all'inizio del file, e quell'apertura orienta la lettura di tutto il resto. Vanno incluse l'identità del progetto, i vincoli non negoziabili, la tecnologia principale e le cose che Claude non deve mai fare.
+**Le prime trenta righe orientano la lettura di tutto il resto:** Claude guarda l'inizio del file con più attenzione, quindi lì vanno l'identità del progetto, i vincoli non negoziabili, la tecnologia principale e le cose che non deve mai fare.
 
 ```
 # Panoramica

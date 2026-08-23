@@ -139,6 +139,9 @@
 
 
     * { box-sizing: border-box; }
+    /* Un display d'autore batte lo stile utente-agente di [hidden]: senza questa
+       riga la X di svuotamento restava a vista anche a campo vuoto. */
+    [hidden] { display: none !important; }
     html { scroll-behavior: smooth; scroll-padding-top: 90px; }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
@@ -206,6 +209,7 @@
     .toplink:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
     /* Nel pannello a pieno schermo il link sta sotto la CTA, non nella topbar. */
     .toplink--panel { display: none; margin: 18px 0 0 -12px; }
+    .toc-foot { display: none; }
 
     /* ---------- Tooltip ---------- */
     /* Il title nativo tarda quasi un secondo e non si puo' vestire, quindi i
@@ -308,6 +312,90 @@
        il passo verticale: sotto un indice lungo un bottone alto pesa troppo. */
     .toc-cta .btn-cta { padding-top: 8px; padding-bottom: 8px; }
 
+    /* ---- Ricerca ----------------------------------------------------------
+       Il campo sta nella topbar prima di Playbook e sotto i 1024px si sposta in
+       cima al pannello. Stessa pillola dei bottoni di casa (100px), fondo
+       --surface perche' sul fondo unico della chrome un campo trasparente non
+       si distingue da un'etichetta. */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; margin: -1px;
+      padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .search { position: relative; display: flex; align-items: center; width: 260px; flex: none; }
+    .search-ico {
+      position: absolute; left: 12px; width: 18px; height: 18px;
+      color: var(--muted); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; height: 38px; padding: 0 36px 0 38px;
+      border: 1px solid var(--border); border-radius: 100px;
+      background: var(--surface); color: var(--ink);
+      font-family: var(--font-display); font-size: 15px; font-weight: var(--w-regular);
+      letter-spacing: -.01em; line-height: 1;
+    }
+    .search-input::placeholder { color: var(--muted); }
+    /* In focus il filetto del campo passa al lime. Il token e' --accent-line e non
+       --accent perche' il 400 pieno sul fondo chiaro fa 1,13:1 e la riga sparisce.
+       L'ombra da 1px raddoppia lo spessore senza spostare niente: un filetto solo,
+       a quel contrasto, non basta come indicatore di fuoco. */
+    .search-input:focus {
+      outline: none; border-color: var(--accent-line);
+      box-shadow: 0 0 0 1px var(--accent-line);
+    }
+    .search-clear {
+      position: absolute; right: 6px; display: flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; padding: 0; border: 0; border-radius: 50%;
+      background: none; color: var(--muted); cursor: pointer;
+    }
+    .search-clear .ico { width: 16px; height: 16px; }
+    .search-clear:hover { background: var(--tint-hover); color: var(--ink); }
+    .search-clear:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 1px; }
+
+    .search-panel {
+      position: absolute; top: calc(100% + 8px); left: 0; z-index: 950;
+      width: min(440px, calc(100vw - 48px)); max-height: min(60vh, 520px); overflow-y: auto;
+      padding: 6px; border: 1px solid var(--border); border-radius: 4px;
+      background: var(--surface); box-shadow: var(--shadow);
+    }
+    .search-list { list-style: none; margin: 0; padding: 0; }
+    .search-hit {
+      display: block; padding: 10px 12px; border-radius: 4px;
+      color: var(--ink); font-family: var(--font-display); cursor: pointer;
+    }
+    .search-hit:hover, .search-hit.on { background: var(--tint-hover); }
+    .search-kind {
+      display: block; margin: 0 0 2px; font-size: 12px; letter-spacing: .01em;
+      color: var(--muted); font-weight: var(--w-regular);
+    }
+    .search-title {
+      display: block; font-size: 14.5px; line-height: 1.3;
+      font-weight: var(--w-medium); letter-spacing: -.0075em;
+    }
+    .search-snip {
+      display: block; margin-top: 2px; font-size: 13.5px; line-height: 1.45;
+      color: var(--muted); letter-spacing: -.005em;
+    }
+    /* Il termine trovato si segna col filetto dell'accento, che e' il ruolo che
+       quel token ha gia' sui link. Il lime pieno resta lo stato attivo. */
+    .search-hit mark {
+      background: none; color: inherit; font-weight: var(--w-medium);
+      box-shadow: inset 0 -2px 0 var(--accent-line);
+    }
+    .search-empty { margin: 0; padding: 12px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+    .search-empty a { color: var(--ink); }
+    .search--panel { display: none; }
+
+    /* Il bersaglio di un salto dalla ricerca lampeggia, perche' su una riga di
+       glossario o di catalogo si atterra in mezzo a quaranta righe uguali. */
+    .search-target { animation: searchFlash 2s ease-out 1; border-radius: 4px; }
+    @keyframes searchFlash {
+      0%, 55% { background: var(--tint-hover); box-shadow: 0 0 0 6px var(--tint-hover); }
+      100% { background: transparent; box-shadow: 0 0 0 6px transparent; }
+    }
+    @media (prefers-reduced-motion: reduce) { .search-target { animation-duration: .01s; } }
+    /* Le voci non-titolo non hanno uno scroll-margin: senza, atterrano sotto la topbar. */
+    .prose li { scroll-margin-top: 84px; }
+
     /* Accordion group: macro-voce (H2) + sotto-lista (H3) collassabile */
     .toc-group + .toc-group { margin-top: 4px; }
     .toc-macro {
@@ -328,9 +416,13 @@
     @media (prefers-reduced-motion: reduce) { .toc-chev { transition: none; } }
 
     /* Sotto-lista: animazione altezza via grid-template-rows (0fr -> 1fr) */
-    .toc-sub { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .28s ease; }
-    .toc-group.open > .toc-sub { grid-template-rows: 1fr; }
+    /* minmax(0, …) e non 0fr secco: con "auto" come minimo la traccia non scende
+       sotto il contenuto minimo delle voci, e da quando le sotto-voci hanno un
+       min-height da dito le sei liste chiuse si tenevano 380px di pannello. */
+    .toc-sub { display: grid; grid-template-rows: minmax(0, 0fr); transition: grid-template-rows .28s ease; }
+    .toc-group.open > .toc-sub { grid-template-rows: minmax(0, 1fr); }
     @media (prefers-reduced-motion: reduce) { .toc-sub { transition: none; } }
+    nav.no-anim .toc-sub { transition: none; }
     .toc-sub-inner { overflow: hidden; min-height: 0; }
 
     aside.toc a.lvl-3 {
@@ -599,20 +691,97 @@
     @media (max-width: 1024px) {
       .shell { grid-template-columns: 1fr; }
       .topbar .toplink { display: none; }
-      .toplink--panel { display: inline-flex; }
+      .toplink--panel { display: inline-flex; margin: 0 -12px 0 0; }
+      /* Playbook a destra, staccato dalla CTA da un filetto a tutta larghezza:
+         e' un link fuori dalla guida e non un'altra azione sulla guida. */
+      /* Il filetto sta in mezzo a due vuoti che devono pesare uguale. Sopra si
+         misura dal bordo pieno della CTA, quindi 24 sono 24. Sotto il link e'
+         alto 44 con dentro una riga da 15, cioe' 14,5px di centratura che si
+         sommano al padding: 10 + 14,5 pareggiano i 24 di sopra. */
+      .toc-foot {
+        display: flex; justify-content: flex-end;
+        margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--border);
+      }
       /* Come sul sito: il pannello copre lo schermo ed entra da destra, con la
          topbar che gli resta sopra perche' li' c'e' il pulsante per chiuderlo. */
       aside.toc {
         position: fixed; inset: 0; z-index: 900;
-        width: 100%; height: 100dvh;
-        padding: 84px 24px 60px; border-right: 0;
+        /* height: auto serve a disfare il calc(100vh - 60px) della spalla desktop.
+           A dare la misura e' inset: 0, e basta lui. Con height: 100dvh insieme a
+           inset: 0 la regola d'altezza vince su bottom: 0, e mentre la barra del
+           browser si ritrae il pannello resta corto: in fondo si vedeva la pagina.
+           Il padding basso tiene conto della barra di casa dell'iPhone. */
+        /* align-self: start arriva dalla spalla desktop, che e' una cella di
+           griglia. Su un box fisso con top e bottom a zero quell'allineamento
+           impedisce lo stiramento e l'altezza torna a fit-content: il pannello
+           diventava alto quanto l'indice, 1291px su 673, e lo scroll interno
+           spariva. Con stretch, bottom: 0 fa il suo mestiere. */
+        width: 100%; height: auto; align-self: stretch;
+        padding: 84px 24px max(60px, calc(env(safe-area-inset-bottom) + 40px));
+        border-right: 0;
         background: var(--bg); transform: translateX(110vw);
         transition: transform .5s ease-in-out;
+        /* Il pannello scorre per conto suo: senza "contain" arrivato in fondo
+           lo scroll passa alla pagina sotto, che si muove mentre credi di
+           muovere l'indice. */
+        overflow-y: auto; overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
       }
       aside.toc.open { transform: translateX(0); }
       /* Il pannello e' pieno e copre tutto: non c'e' nessun fuori da oscurare. */
       #scrim.show { display: none; }
+      /* La topbar sta sopra il pannello, perche' li' c'e' il pulsante che lo chiude.
+         Il suo fondo pero' e' velato all'84% con un blur: a pannello aperto ci si
+         vedeva attraverso la pagina che scorre. Aperto, diventa pieno. */
+      body.menu-open header.topbar {
+        background: var(--bg-chrome);
+        backdrop-filter: none; -webkit-backdrop-filter: none;
+      }
+      body.menu-open { overflow: hidden; }
       main { padding: 0 24px 100px; }
+
+      /* Il campo esce dalla topbar ed entra in cima al pannello, a tutta larghezza.
+         Qui i risultati non sono una tendina sospesa: prendono il posto dell'elenco
+         dei capitoli, perche' su uno schermo alto 844px una lista sopra un'altra
+         copre proprio quello che stai cercando. */
+      .topbar .search { display: none; }
+      .search--panel { display: flex; width: 100%; margin: 0 0 20px; }
+      .search-panel--inline {
+        position: static; width: auto; max-height: none; overflow: visible;
+        padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none;
+      }
+      aside.toc.searching nav { display: none; }
+      aside.toc.searching .toc-cta { display: none; }
+      .toc-cta { margin-top: 40px; }
+      .toc-cta .btn-cta { width: 100%; justify-content: center; }
+
+      /* ---- Misure da dito ----
+         La spalla su desktop e' un indice denso da leggere col mouse, e li' 35px
+         di riga vanno bene. Nel pannello a pieno schermo si tocca, e nessuno dei
+         bersagli arrivava al minimo: le macro-voci stavano a 35px, le sotto-voci
+         a 31 e per giunta attaccate, senza un pixel fra l'una e l'altra. Qui le
+         macro vanno a 48 (la soglia Material), le sotto-voci e i comandi a 44
+         (quella di Apple), e fra due bersagli adiacenti restano almeno 4px. */
+      aside.toc nav { gap: 4px; }
+      .toc-group + .toc-group { margin-top: 8px; }
+      .toc-macro { min-height: 48px; padding: 10px 12px; }
+      aside.toc a.lvl-3 {
+        display: flex; align-items: center; min-height: 44px;
+        padding: 8px 12px 8px 20px; margin-bottom: 4px;
+      }
+      aside.toc .toc-sub-inner > a.lvl-3:last-child { margin-bottom: 0; }
+      .search--panel { margin-bottom: 24px; }
+      .search--panel .search-input { height: 48px; padding-right: 44px; }
+      .search--panel .search-clear { width: 36px; height: 36px; right: 6px; }
+      .search--panel .search-clear .ico { width: 18px; height: 18px; }
+      .search-hit { padding: 12px; }
+      .toc-cta .btn-cta { min-height: 48px; }
+      .toplink--panel { min-height: 44px; padding: 10px 12px; }
+      /* Il tondo del tema e la pillola del menu stanno nella topbar alta 60px:
+         44 e' il massimo che ci sta lasciando 8px di respiro sopra e sotto. */
+      .iconbtn { width: 44px; height: 44px; }
+      .btn-menu { height: 44px; }
+      .btn-menu.active { width: 44px; }
     }
     @media (prefers-reduced-motion: reduce) { aside.toc { transition: none; } }
 
@@ -636,7 +805,8 @@
       html { scroll-padding-top: 0; }
       body { background: #fff; }
       /* Comandi dell'interfaccia: sulla pagina stampata non hanno senso. */
-      header.topbar, aside.toc, #progress, #scrim, .head-tools, .toc-cta, .toplink { display: none !important; }
+      header.topbar, aside.toc, #progress, #scrim, .head-tools, .toc-cta, .toplink,
+      .search, .search-panel { display: none !important; }
       .shell { display: block; }
       main { padding: 0; }
       .prose { max-width: none; margin: 0; }
@@ -716,6 +886,10 @@
     <symbol id="ico-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
       <path d="M4.5 9.87L12 15.63L19.5 9.87"/>
     </symbol>
+    <symbol id="ico-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10">
+      <path d="M10.155 17.31C14.1066 17.31 17.31 14.1066 17.31 10.155C17.31 6.2034 14.1066 3 10.155 3C6.2034 3 3 6.2034 3 10.155C3 14.1066 6.2034 17.31 10.155 17.31Z"/>
+      <path d="M15.2173 15.2175L20.9998 21"/>
+    </symbol>
   </svg>
 
   <header class="topbar">
@@ -724,6 +898,20 @@
       <img class="brand-logo brand-logo--dark" src="assets/lotrek-logo-negative.svg" alt="Lotrek" width="108" height="32" />
     </a>
     <span class="spacer"></span>
+    <div class="search" id="search">
+      <svg class="ico search-ico" aria-hidden="true"><use href="#ico-search"/></svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Cerca nella guida"
+             autocomplete="off" spellcheck="false"
+             role="combobox" aria-expanded="false" aria-controls="searchList"
+             aria-autocomplete="list" aria-label="Cerca nella guida" />
+      <button type="button" class="search-clear" id="searchClear" aria-label="Svuota la ricerca" hidden>
+        <svg class="ico" aria-hidden="true"><use href="#ico-close"/></svg>
+      </button>
+      <div class="search-panel" id="searchPanel" hidden>
+        <ul class="search-list" id="searchList" role="listbox" aria-label="Risultati"></ul>
+        <p class="search-empty" id="searchEmpty" hidden></p>
+      </div>
+    </div>
     <a class="toplink" href="https://docs.lotrek.net/en/experience-design" target="_blank" rel="noopener noreferrer">Playbook<svg class="ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg></a>
     <button type="button" class="btn-cta btn-menu" id="menuBtn" aria-controls="toc" aria-expanded="false" aria-label="Apri l'indice">
       <p><span>Menu</span><span aria-hidden="true">Menu</span><span aria-hidden="true">Menu</span></p>
@@ -732,14 +920,31 @@
     <button class="iconbtn" id="themeBtn" aria-label="Passa al tema scuro"><svg class="ico" aria-hidden="true"><use href="#ico-mode-dark"/></svg></button>
   </header>
 
+  <p class="sr-only" id="searchLive" aria-live="polite"></p>
   <div class="shell">
     <aside class="toc" id="toc" aria-label="Indice della guida">
+      <div class="search search--panel" id="searchM">
+        <svg class="ico search-ico" aria-hidden="true"><use href="#ico-search"/></svg>
+        <input type="text" id="searchInputM" class="search-input" placeholder="Cerca nella guida"
+               autocomplete="off" spellcheck="false"
+               role="combobox" aria-expanded="false" aria-controls="searchListM"
+               aria-autocomplete="list" aria-label="Cerca nella guida" />
+        <button type="button" class="search-clear" id="searchClearM" aria-label="Svuota la ricerca" hidden>
+          <svg class="ico" aria-hidden="true"><use href="#ico-close"/></svg>
+        </button>
+      </div>
+      <div class="search-panel search-panel--inline" id="searchPanelM" hidden>
+        <ul class="search-list" id="searchListM" role="listbox" aria-label="Risultati"></ul>
+        <p class="search-empty" id="searchEmptyM" hidden></p>
+      </div>
       <nav>{{TOC}}</nav>
       <div class="toc-cta">
         <a class="btn-cta" href="progettare-con-lai.pdf" download>
           <p><span>Scarica la guida</span><span aria-hidden="true">Scarica la guida</span><span aria-hidden="true">Scarica la guida</span></p>
         </a>
-        <a class="toplink toplink--panel" href="https://docs.lotrek.net/en/experience-design" target="_blank" rel="noopener noreferrer">Playbook<svg class="ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg></a>
+        <div class="toc-foot">
+          <a class="toplink toplink--panel" href="https://docs.lotrek.net/en/experience-design" target="_blank" rel="noopener noreferrer">Playbook<svg class="ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg></a>
+        </div>
       </div>
     </aside>
 
@@ -794,6 +999,12 @@
       var menu = document.getElementById("menuBtn");
       function setDrawer(open) {
         toc.classList.toggle("open", open);
+        document.body.classList.toggle("menu-open", open);
+        // Il pannello si apre con tutti gli accordion chiusi: gli otto capitoli
+        // stanno in una schermata sola, mentre con uno aperto la lista sfora e
+        // si comincia a scorrere per vedere cosa c'e'. Il capitolo in lettura
+        // resta segnato in lime anche da chiuso, quindi non si perde il segno.
+        if (open) chiudiTuttiSubito();
         scrim.classList.toggle("show", open);
         menu.classList.toggle("active", open);
         menu.setAttribute("aria-expanded", open ? "true" : "false");
@@ -817,8 +1028,21 @@
           if (m && m.hasAttribute("aria-expanded")) m.setAttribute("aria-expanded", on ? "true" : "false");
         });
       }
+      // Chiude tutto senza animazione. Con la transizione attiva un gruppo che
+      // era aperto restava incastrato al suo valore (380px di riga anche da
+      // chiuso), perche' il cambio arriva nello stesso fotogramma in cui il
+      // pannello entra da destra e la transizione non parte mai.
+      function chiudiTuttiSubito() {
+        nav.classList.add("no-anim");
+        openGroup(null);
+        void nav.offsetHeight;
+        nav.classList.remove("no-anim");
+      }
+
+      // Su desktop il primo capitolo e' aperto di default. Nel pannello mobile no:
+      // chiusi, gli otto capitoli stanno in una schermata sola.
       var firstWithSubs = groups.filter(function (g) { return g.querySelector(".toc-sub"); })[0];
-      if (firstWithSubs) openGroup(firstWithSubs); // primo capitolo aperto di default
+      if (firstWithSubs && !window.matchMedia("(max-width: 1024px)").matches) openGroup(firstWithSubs);
 
       // Scorre SOLO la spalla per tenere visibile il link attivo (non tocca mai la finestra:
       // così non interrompe lo smooth-scroll della pagina — il bug "si blocca prima" su Chrome).
@@ -843,7 +1067,17 @@
         e.preventDefault();
         var id = a.getAttribute("href").slice(1);
         if (a.classList.contains("toc-macro")) {
-          if (id !== "top") openGroup(a.closest(".toc-group")); // apre questa, chiude le altre
+          var g = a.closest(".toc-group");
+          // Nel pannello mobile la macro-voce e' un interruttore: il secondo tap
+          // richiude il capitolo invece di riportare la pagina dov'e' gia'. Su
+          // desktop resta com'era, con un capitolo sempre aperto: li' la spalla
+          // e' alta quanto la finestra e non c'e' niente da guadagnare a chiudere.
+          if (id !== "top" && g && g.classList.contains("open") &&
+              window.matchMedia("(max-width: 1024px)").matches) {
+            openGroup(null);
+            return;
+          }
+          if (id !== "top") openGroup(g); // apre questa, chiude le altre
           goTo(id);
           if (a.classList.contains("toc-macro--leaf")) closeDrawer(); // Glossario/Fonti: nessuna sotto-voce
         } else {
@@ -852,6 +1086,305 @@
           goTo(id);
           closeDrawer(); // su mobile, scelta una sotto-voce si chiude il drawer
         }
+      });
+
+      // ---- Ricerca ----------------------------------------------------------
+      // L'indice non lo costruisce la build: la guida e' una pagina sola, quindi
+      // il testo e' gia' nel DOM e duplicarlo in un JSON incorporato costerebbe
+      // un centinaio di KB su 249. Si legge al primo fuoco sul campo e resta in
+      // memoria: cosi' non puo' disallinearsi dal contenuto, perche' e' il contenuto.
+      var idx = null;
+
+      function norm(t) {
+        return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      }
+      function testo(el) {
+        return (el.textContent || "").replace(/\s+/g, " ").trim();
+      }
+      // Il corpo di una sezione non ripete cio' che e' gia' indicizzato per conto
+      // suo: le definizioni del glossario e le righe di catalogo hanno una voce
+      // propria, e lasciarle anche qui farebbe uscire lo stesso testo due volte.
+      function testoProprio(el) {
+        if (!el.querySelector || !el.querySelector('li[id^="voce-"], li a[href*="github.com/"]')) return testo(el);
+        var c = el.cloneNode(true);
+        Array.prototype.forEach.call(
+          c.querySelectorAll('li[id^="voce-"], li a[href*="github.com/"]'),
+          function (n) { var li = n.closest ? (n.closest("li") || n) : n; if (li.remove) li.remove(); }
+        );
+        return testo(c);
+      }
+
+      function buildIndex() {
+        var out = [];
+
+        // 1) sezioni: dal titolo fino al titolo di pari livello o superiore
+        Array.prototype.forEach.call(
+          document.querySelectorAll(".prose h2[id], .prose h3[id], .prose h4[id]"),
+          function (h) {
+            // Il corpo si ferma al PRIMO titolo di qualunque livello, non a uno di
+            // livello pari o superiore: se un H2 si prendesse anche il testo delle
+            // sue sezioni, ogni parola comparirebbe due volte nei risultati, una
+            // per la sezione e una per il capitolo che la contiene.
+            var parti = [], el = h.nextElementSibling;
+            while (el) {
+              if (/^H[1-6]$/.test(el.tagName)) break;
+              if (el.tagName === "FOOTER") break;
+              parti.push(testoProprio(el));
+              el = el.nextElementSibling;
+            }
+            // Il capitolo di appartenenza serve a distinguere due sezioni omonime.
+            // Un H2 e' gia' il capitolo, quindi non ha contesto da mostrare.
+            var capitolo = null;
+            if (h.tagName !== "H2") {
+              var q = h.previousElementSibling;
+              while (q && !capitolo) {
+                if (q.tagName === "H2") capitolo = testo(scrostaTitolo(q));
+                q = q.previousElementSibling;
+              }
+            }
+            out.push({
+              tipo: "Sezione", ctx: capitolo, titolo: testo(scrostaTitolo(h)),
+              corpo: parti.join(" "), el: h, id: h.id
+            });
+          }
+        );
+
+        // 2) glossario: termine e definizione, separati sui due punti del <strong>
+        Array.prototype.forEach.call(document.querySelectorAll('.prose li[id^="voce-"]'), function (li) {
+          var st = li.querySelector("strong");
+          var termine = st ? testo(st).replace(/:$/, "") : testo(li).split(":")[0];
+          var def = testo(li).slice(termine.length).replace(/^:\s*/, "");
+          out.push({ tipo: "Glossario", ctx: null, titolo: termine, corpo: def, el: li, id: li.id });
+        });
+
+        // 3) repository: il chip di codice dentro il link da owner/repo, il resto
+        //    della riga fa da descrizione, e il titolo piu' vicino da categoria.
+        Array.prototype.forEach.call(document.querySelectorAll('.prose li'), function (li) {
+          if (li.id && li.id.indexOf("voce-") === 0) return;
+          var a = li.querySelector('a[href*="github.com/"]');
+          if (!a) return;
+          var nome = testo(a);
+          if (!/^[\w.-]+\/[\w.-]+$/.test(nome)) return;
+          var h = li.closest("ul") ? intestazionePrecedente(li) : null;
+          out.push({
+            tipo: "Repository", ctx: h ? h.t : null, titolo: nome,
+            corpo: testo(li).slice(nome.length).replace(/^:\s*/, ""),
+            el: li, id: li.id || null, ancora: h ? h.id : null
+          });
+        });
+
+        out.forEach(function (v) {
+          v.nTit = norm(v.titolo);
+          v.nCor = norm(v.corpo);
+        });
+        return out;
+      }
+
+      // Il titolo porta con se' i pulsanti copia/condividi e l'eventuale badge:
+      // vanno tolti, altrimenti "Copia la sezione" finisce nell'indice.
+      function scrostaTitolo(h) {
+        var c = h.cloneNode(true);
+        Array.prototype.forEach.call(c.querySelectorAll(".head-tools, .badge"), function (n) { n.remove(); });
+        return c;
+      }
+      function intestazionePrecedente(el) {
+        var n = el.closest("ul") || el;
+        while (n) {
+          n = n.previousElementSibling;
+          if (n && /^H[2-4]$/.test(n.tagName)) return { t: testo(scrostaTitolo(n)), id: n.id };
+        }
+        return null;
+      }
+
+      // Tutte le parole della query devono comparire. Il punteggio tiene il titolo
+      // sopra il corpo, cosi' "token" mette la voce di glossario prima di una
+      // sezione che la nomina di sfuggita.
+      function cerca(q) {
+        if (!idx) idx = buildIndex();
+        var parole = norm(q).split(/\s+/).filter(Boolean);
+        if (!parole.length) return [];
+        var res = [];
+        for (var i = 0; i < idx.length; i++) {
+          var v = idx[i], punti = 0, ok = true;
+          for (var j = 0; j < parole.length; j++) {
+            var w = parole[j], p = 0;
+            if (v.nTit === w) p = 100;
+            else if (v.nTit.indexOf(w) === 0) p = 60;
+            else if (new RegExp("\\b" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(v.nTit)) p = 30;
+            else if (v.nCor.indexOf(w) !== -1) p = 10;
+            if (!p) { ok = false; break; }
+            punti += p;
+          }
+          if (ok) res.push({ v: v, punti: punti });
+        }
+        res.sort(function (a, b) { return b.punti - a.punti || a.v.titolo.length - b.v.titolo.length; });
+        return res.slice(0, 8).map(function (r) { return r.v; });
+      }
+
+      function esc(t) {
+        return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+      // Finestra di ~110 caratteri intorno alla prima occorrenza, con la parola segnata.
+      function spezzone(v, q) {
+        var parole = norm(q).split(/\s+/).filter(Boolean);
+        var testoIn = v.corpo, n = norm(testoIn), pos = -1, lung = 0;
+        for (var i = 0; i < parole.length && pos < 0; i++) {
+          pos = n.indexOf(parole[i]);
+          lung = parole[i].length;
+        }
+        if (pos < 0) return esc(testoIn.slice(0, 110)) + (testoIn.length > 110 ? "…" : "");
+        var da = Math.max(0, pos - 45), a = Math.min(testoIn.length, pos + lung + 65);
+        return (da > 0 ? "…" : "") + esc(testoIn.slice(da, pos)) +
+               "<mark>" + esc(testoIn.slice(pos, pos + lung)) + "</mark>" +
+               esc(testoIn.slice(pos + lung, a)) + (a < testoIn.length ? "…" : "");
+      }
+      function titoloSegnato(v, q) {
+        var parole = norm(q).split(/\s+/).filter(Boolean);
+        var t = v.titolo, n = norm(t);
+        for (var i = 0; i < parole.length; i++) {
+          var pos = n.indexOf(parole[i]);
+          if (pos >= 0) {
+            return esc(t.slice(0, pos)) + "<mark>" + esc(t.slice(pos, pos + parole[i].length)) +
+                   "</mark>" + esc(t.slice(pos + parole[i].length));
+          }
+        }
+        return esc(t);
+      }
+
+      // Un salto dalla ricerca si comporta come un click sull'indice: aggancia la
+      // voce, apre il suo capitolo e lascia zitto lo scrollspy finche' non atterra.
+      function vaiA(v) {
+        var ancora = v.id || v.ancora;
+        var linkTOC = ancora && map[ancora] ? map[ancora] : null;
+        if (!linkTOC && v.el) {
+          var h = intestazionePrecedente(v.el);
+          if (h && map[h.id]) linkTOC = map[h.id];
+        }
+        if (linkTOC) {
+          var g = linkTOC.closest(".toc-group");
+          if (g) openGroup(g);
+          pin(linkTOC);
+        }
+        var bersaglio = v.el;
+        bersaglio.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+        if (v.id && history.replaceState) history.replaceState(null, "", "#" + v.id);
+        bersaglio.classList.remove("search-target");
+        void bersaglio.offsetWidth;
+        bersaglio.classList.add("search-target");
+        setTimeout(function () { bersaglio.classList.remove("search-target"); }, 2100);
+      }
+
+      var live = document.getElementById("searchLive");
+
+      function collegaRicerca(o) {
+        var input = document.getElementById(o.input);
+        var clear = document.getElementById(o.clear);
+        var pannello = document.getElementById(o.panel);
+        var lista = document.getElementById(o.list);
+        var vuoto = document.getElementById(o.empty);
+        if (!input) return;
+        var correnti = [], sel = -1;
+
+        function chiudi() {
+          pannello.hidden = true;
+          input.setAttribute("aria-expanded", "false");
+          input.removeAttribute("aria-activedescendant");
+          sel = -1;
+          if (o.inline) toc.classList.remove("searching");
+        }
+        function evidenzia(n) {
+          var voci = lista.querySelectorAll(".search-hit");
+          if (!voci.length) return;
+          if (sel >= 0 && voci[sel]) {
+            voci[sel].classList.remove("on");
+            voci[sel].setAttribute("aria-selected", "false");
+          }
+          sel = (n + voci.length) % voci.length;
+          voci[sel].classList.add("on");
+          voci[sel].setAttribute("aria-selected", "true");
+          input.setAttribute("aria-activedescendant", voci[sel].id);
+          voci[sel].scrollIntoView({ block: "nearest" });
+        }
+        function apri(q) {
+          var res = cerca(q);
+          correnti = res;
+          sel = -1;
+          lista.innerHTML = res.map(function (v, i) {
+            var etichetta = v.ctx ? v.tipo + " · " + v.ctx : v.tipo;
+            // L'opzione e' il <li> stesso: aria-activedescendant deve puntare a un
+            // elemento con role="option", quindi un <button> dentro non ci sta.
+            return '<li role="option" aria-selected="false" class="search-hit" ' +
+              'id="' + o.list + '-' + i + '" data-i="' + i + '">' +
+              '<span class="search-kind">' + esc(etichetta) + '</span>' +
+              '<span class="search-title">' + titoloSegnato(v, q) + '</span>' +
+              '<span class="search-snip">' + spezzone(v, q) + '</span>' +
+              '</li>';
+          }).join("");
+          if (res.length) {
+            vuoto.hidden = true;
+          } else {
+            vuoto.hidden = false;
+            vuoto.innerHTML = 'Nessun risultato per &ldquo;' + esc(q) + '&rdquo;. ' +
+              'Prova con una parola più corta, oppure guarda il <a href="#glossario">glossario</a>.';
+          }
+          pannello.hidden = false;
+          input.setAttribute("aria-expanded", "true");
+          if (o.inline) toc.classList.add("searching");
+          live.textContent = res.length
+            ? res.length + (res.length === 1 ? " risultato" : " risultati")
+            : "Nessun risultato";
+        }
+        function aggiorna() {
+          var q = input.value.trim();
+          clear.hidden = !input.value;
+          if (q.length < 2) { chiudi(); return; }
+          apri(q);
+        }
+
+        input.addEventListener("input", aggiorna);
+        input.addEventListener("focus", function () { if (!idx) idx = buildIndex(); });
+        clear.addEventListener("click", function () {
+          input.value = ""; clear.hidden = true; chiudi(); input.focus();
+        });
+        lista.addEventListener("click", function (e) {
+          var b = e.target.closest(".search-hit");
+          if (!b) return;
+          var v = correnti[+b.getAttribute("data-i")];
+          chiudi();
+          if (o.inline) closeDrawer();
+          vaiA(v);
+        });
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowDown") { e.preventDefault(); evidenzia(sel + 1); }
+          else if (e.key === "ArrowUp") { e.preventDefault(); evidenzia(sel - 1); }
+          else if (e.key === "Enter") {
+            var v = correnti[sel >= 0 ? sel : 0];
+            if (v) { e.preventDefault(); chiudi(); if (o.inline) closeDrawer(); vaiA(v); }
+          } else if (e.key === "Escape") {
+            if (!pannello.hidden) { chiudi(); }
+            else { input.value = ""; clear.hidden = true; input.blur(); }
+          }
+        });
+        if (!o.inline) {
+          document.addEventListener("click", function (e) {
+            if (!e.target.closest("#search")) chiudi();
+          });
+        }
+      }
+
+      collegaRicerca({ input: "searchInput", clear: "searchClear", panel: "searchPanel", list: "searchList", empty: "searchEmpty" });
+      collegaRicerca({ input: "searchInputM", clear: "searchClearM", panel: "searchPanelM", list: "searchListM", empty: "searchEmptyM", inline: true });
+
+      // "/" e Cmd/Ctrl+K portano il fuoco al campo visibile in quel momento.
+      document.addEventListener("keydown", function (e) {
+        var scorciatoia = (e.key === "/" && !/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) ||
+                          ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k");
+        if (!scorciatoia) return;
+        e.preventDefault();
+        var desktop = document.getElementById("searchInput");
+        if (desktop.offsetParent) { desktop.focus(); return; }
+        setDrawer(true);
+        setTimeout(function () { document.getElementById("searchInputM").focus(); }, 60);
       });
 
       // ---- Scroll progress ----
@@ -894,7 +1427,10 @@
         }
         if (!force && pinned) return; // durante un salto l'accordion non insegue la lettura
         var g = a.getAttribute("href") === "#top" ? null : a.closest(".toc-group");
-        if (g && !g.classList.contains("open")) openGroup(g);
+        // A pannello aperto nessuno espande niente da solo: un tocco per scorrere
+        // fa scattare releasePin, e da li' lo scrollspy aprirebbe un accordion
+        // sotto il dito.
+        if (g && !g.classList.contains("open") && !toc.classList.contains("open")) openGroup(g);
         keepLinkVisible(a);
       }
 

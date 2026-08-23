@@ -43,6 +43,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **`index.html` e `progettare-con-lai.pdf` sono artefatti,** gitignored, rigenerati a ogni build. Una modifica scritta lì dentro sparisce al giro dopo.
 
+**L'indice della ricerca lo costruisce il browser, non la build.** La guida è una pagina sola, quindi il testo è già nel DOM: incorporarlo una seconda volta come JSON costerebbe un centinaio di KB su 249. Si legge al primo fuoco sul campo. La build fa solo una cosa per la ricerca, cioè mette un `id` su ogni voce di glossario, così un risultato può atterrare sulla singola definizione.
+
 **`src/content.md` ha due indici da tenere allineati,** quello manuale in testa al file e quello che `scripts/build.mjs` genera per la spalla. Aggiungendo o togliendo una sezione vanno aggiornati entrambi, il primo a mano.
 
 ## Convenzioni editoriali
