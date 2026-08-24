@@ -651,13 +651,25 @@ Le cinque intestazioni di quel file sono un buon modello di partenza per qualunq
 
 **Perché tanti file invece di uno solo:** la tentazione è mettere tutto dentro un `DESIGN.md` enorme, e sarebbe la scelta sbagliata per due motivi. Il primo riguarda la manutenzione, perché un file per oggetto si aggiorna da sé e si assegna a chi possiede quell'oggetto. Il secondo è il costo in contesto. Con i registri l'agente recupera solo il ramo che gli serve invece di caricare l'intero design system a ogni richiesta, ed è la stessa economia descritta in «Il contesto è una risorsa finita». Il risultato è un grafo di regole con un punto d'ingresso e rimandi espliciti da seguire quando servono, al posto di un manuale da leggere in blocco.
 
-**Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Quel lavoro deve però arrivare sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del controllo a due vie descritto in «Enforcement del design system».
+**Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Quel lavoro deve però arrivare sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del doppio controllo descritto in «Enforcement del design system».
 
 **Da dove partire:** si comincia da 3–5 componenti. Per ognuno si genera una spec leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come [FigSpecs](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator); la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
 
-Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Al momento il problema non ha una risposta, quindi va messo in conto e le spec vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno possiede.
+Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Al momento il problema non ha una risposta, quindi va messo in conto e le spec vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno deve governare.
 
-**Una risposta possibile** cambia un ruolo che esiste già invece di crearne uno nuovo: chi mantiene il design system diventa chi modera le regole che gli agenti seguono, e il suo lavoro passa dal ricostruire soluzioni già note al decidere quando la soluzione nota non basta. È un'ipotesi sul compito più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
+**Una risposta possibile** dà il compito a chi mantiene il design system, cioè a una figura che il team ha già. Il suo mestiere cambia. Dal ricostruire soluzioni che il sistema conosce già passa al tenere aggiornate le regole che gli agenti seguono, e a decidere quando la soluzione nota non basta. È un'ipotesi sul compito più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
+
+Fantasy ha provato a portare l'idea fino in fondo. Caroline Hilman ha preso il design system di un progetto già consegnato, l'ha fatto estrarre in un file `.md` da un plugin Figma e l'ha passato a Claude Code senza aggiungere altro contesto. Due cose che ne ha ricavato servono anche a chi parte da qui. I nomi dei token non si ripensano per il modello, perché quelli chiari e coerenti che servono già a uno sviluppatore vanno bene così come sono. E il codice che ne esce lei lo chiama vibe-coded design, buono per esplorare e prototipare, corto sugli allineamenti e sulle spaziature, cioè proprio i dettagli che un designer non sbaglia.
+
+L'estrazione le consegna però un file solo, che è la scelta opposta ai registri e alle spec separate di qui sopra. Il resto del racconto sta nell'articolo, dalla domanda su Slack che ha fatto partire tutto a dove passa oggi il confine fra l'agente e il designer.
+
+<div class="linkcard-wrap">
+<a href="https://fantasy.co/latest/figma-design-system-ai-components" class="linkcard">
+<img class="linkcard-img" src="assets/fantasy-caroline-hilman.webp" width="360" height="255" alt="" loading="lazy">
+<span class="linkcard-text"><span class="linkcard-title">Can AI Generate UI Components from a Figma Design System?</span><span class="linkcard-src">Fantasy</span></span>
+<svg class="linkcard-ico" aria-hidden="true"><use href="#ico-arrow-upright"/></svg>
+</a>
+</div>
 
 ### Creare una skill dal proprio design system
 
@@ -711,7 +723,7 @@ Un sistema leggibile e impacchettato in una skill può ancora essere disatteso, 
 
 Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assistente di design" produce output che un umano può riprendere e modificare (DS enforcement attivo); in modalità "prototipo rapido" la velocità ha priorità sull'enforcement e i valori grezzi sono accettati.
 
-**Il controllo a due vie:** l'enforcement guarda in avanti, dal file verso quello che viene generato. Serve anche il controllo opposto, dal prodotto verso il file, perché il confronto periodico tra `DESIGN.md` e il sito live dice chi dei due è rimasto indietro, e il divario che emerge è il lavoro da fare (vedi la sezione «`DESIGN.md`»). Dove il formato ha un CLI, una parte si automatizza, dal lint dei riferimenti ai token ai contrasti WCAG e al diff tra versioni.
+**Il doppio controllo:** l'enforcement guarda in avanti, dal file verso quello che viene generato. Serve anche il controllo opposto, dal prodotto verso il file, perché il confronto periodico tra `DESIGN.md` e il sito live dice chi dei due è rimasto indietro, e il divario che emerge è il lavoro da fare (vedi la sezione «`DESIGN.md`»). Dove il formato ha un CLI, una parte si automatizza, dal lint dei riferimenti ai token ai contrasti WCAG e al diff tra versioni.
 
 ## Costruire e pubblicare un prototipo
 
@@ -1116,6 +1128,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Christine Vallaure, [Design system contracts: the component lives in neither Figma nor code](https://uxdesign.cc/design-system-contracts-the-component-lives-in-neither-figma-nor-code-3032d94ca067) (luglio 2026)
 - Nick Babich, [Design Systems Are About to Become Executable](https://uxplanet.org/design-systems-are-about-to-become-executable-f125a94fe4ad) (agosto 2026)
 - Eva Nudea Hörner, [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) (agosto 2026)
+- Fantasy, [Can AI Generate UI Components from a Figma Design System?](https://fantasy.co/latest/figma-design-system-ai-components) (agosto 2026)
 
 **Flusso tra Claude Code e Figma**
 - Tommaso Nervegna, [Claude Code for Designers: A Practical Guide](https://nervegna.substack.com/p/claude-code-for-designers-a-practical) (gennaio 2026)

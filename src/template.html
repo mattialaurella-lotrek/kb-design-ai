@@ -647,6 +647,58 @@
     :root[data-theme="dark"] .prose .verdict-logo { filter: invert(1); }
     @media (max-width: 700px) { .verdict { grid-template-columns: 1fr; gap: 20px; } }
 
+    /* Rimando a un articolo esterno: immagine a sinistra, titolo e testata al
+       centro, freccia a destra. La freccia e' `arrow-upright`, lo stesso segno
+       che in topbar dice che il link esce dal sito. Il bersaglio e' tutta la
+       card, quindi il filetto lime del link di prosa non serve e si toglie:
+       `background` di sfondo pieno azzera il gradiente ereditato da a[href]. */
+    .linkcard-wrap { margin: 1.8em 0; }
+    .prose a.linkcard {
+      display: grid; grid-template-columns: 120px 1fr auto; align-items: center;
+      gap: 20px; padding: 0 20px 0 0; overflow: hidden;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--surface); box-shadow: var(--shadow);
+      color: var(--ink); font-weight: var(--w-regular);
+      transition: border-color .2s ease;
+    }
+    /* L'hover cambia due cose sole, il filetto e la freccia. La superficie
+       resta ferma: un terzo segno sul fondo avrebbe fatto lampeggiare tutta
+       la card sotto il mouse. Il lime non entra, perche' nel sistema segna
+       lo stato attivo e non il passaggio del mouse. */
+    .prose a.linkcard:hover, .prose a.linkcard:focus-visible {
+      border-color: var(--border-strong);
+    }
+    .prose a.linkcard:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+    /* L'immagine riempie la colonna in altezza e il taglio lo fa `cover`: la
+       card e' alta quanto il testo. La misura sta su `.prose .linkcard-img`,
+       perche' `.prose img` porta height auto. */
+    .prose .linkcard-img {
+      display: block; width: 120px; height: 100%; align-self: stretch;
+      object-fit: cover; margin: 0; border-radius: var(--radius);
+    }
+    .linkcard-text { display: block; min-width: 0; padding: 20px 0; }
+    .linkcard-title { display: block; font-size: 1rem; font-weight: var(--w-bold); line-height: 1.35; }
+    .linkcard-src { display: block; margin-top: 4px; font-size: .92rem; color: var(--muted); }
+    .linkcard-ico {
+      display: block; width: 24px; height: 24px; color: var(--muted);
+      transition: color .2s ease, transform .2s ease;
+    }
+    /* La freccia scarta di 2px nella direzione in cui punta: e' il solo
+       movimento della card, e dice dove porta il click. */
+    .prose a.linkcard:hover .linkcard-ico,
+    .prose a.linkcard:focus-visible .linkcard-ico {
+      color: var(--ink); transform: translate(2px, -2px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .linkcard-ico { transition: none; }
+      .prose a.linkcard:hover .linkcard-ico,
+      .prose a.linkcard:focus-visible .linkcard-ico { transform: none; }
+    }
+    @media (max-width: 700px) {
+      .prose a.linkcard { grid-template-columns: 80px 1fr auto; gap: 16px; }
+      .prose .linkcard-img { width: 80px; }
+    }
+
     /* Blockquote */
     .prose blockquote {
       margin: 1.6em 0; padding: 2px 0 2px 20px;
@@ -1544,6 +1596,12 @@
         if (tag === "PRE") return "```\n" + el.textContent.replace(/\n+$/, "") + "\n```";
         if (tag === "BLOCKQUOTE") return inline(el).trim().split("\n").map(function (l) { return "> " + l; }).join("\n");
         if (tag === "HR") return "---";
+        if (el.classList && el.classList.contains("linkcard-wrap")) {
+          var card = el.querySelector("a"), t = el.querySelector(".linkcard-title"),
+              f = el.querySelector(".linkcard-src");
+          if (card && t) return "[" + t.textContent.trim() + "](" + card.getAttribute("href") + ")" +
+            (f ? ", " + f.textContent.trim() : "");
+        }
         if (el.classList && el.classList.contains("flow3")) {
           return Array.prototype.map.call(el.children, function (c) {
             var q = function (sel) { var n = c.querySelector(sel); return n ? n.textContent.trim() : ""; };

@@ -142,6 +142,20 @@ Componente del 23 agosto 2026, usato due volte. In coda a «Checklist pre-richie
 
 **Nella variante di confronto il logo prende il posto dell'icona,** alto 24px e allineato a sinistra come lei, e il riquadro non ha titolo perché il marchio lo fa già. I due file stanno in `assets/logo-github.png` e `assets/logo-vercel.png`, ridotti a 80px di altezza, cioè tre volte la misura a schermo. Restano del loro nero invece di prendere `--ink`, perché le linee guida dei due marchi non li vogliono ricolorati, e sul tema scuro si invertono in bianco, che è l'uso monocromatico che entrambe prevedono. Nel blocco `@media print` l'inversione va spenta, altrimenti chi stampa dal tema scuro ottiene un logo bianco su carta bianca. La misura sta su `.prose .verdict-logo` e non sulla classe da sola, perché `.prose img` porta `height: auto` ed è più specifica.
 
+## La card di rimando
+
+Componente del 24 agosto 2026, usato una volta, in coda a «Rendere il design system leggibile dall'AI». Porta a un articolo esterno e non sostituisce la voce nelle fonti, che resta.
+
+**Forma:** la stessa dei riquadri affiancati, cioè `--surface`, filetto `--border`, spigolo vivo e ombra `--shadow`. Tre colonne, l'immagine da 120px, il testo e la freccia, con 20px fra l'una e l'altra e 20px di padding sopra e sotto il testo. L'immagine non ha padding e riempie la colonna in altezza, quindi la card è alta quanto il testo e il taglio lo fa `cover`. Sotto i 700px l'immagine scende a 80px e il resto non cambia.
+
+**Il bersaglio è tutta la card,** quindi il filetto lime che il link di prosa porta con sé qui si toglie, e a toglierlo è il fondo pieno, che azzera il gradiente ereditato da `a[href]`.
+
+**L'hover cambia due cose sole,** il filetto che sale a `--border-strong` e la freccia, che passa da `--muted` a `--ink` e scarta di 2px nella direzione in cui punta. La superficie non si muove: due segni bastano, e un terzo sul fondo avrebbe fatto lampeggiare tutta la card sotto il mouse. Lo scarto della freccia è il solo movimento del componente, e sotto `prefers-reduced-motion` cade insieme alla transizione. Il lime non entra, perché segna lo stato attivo e non il passaggio del mouse. Il fuoco prende l'anello `--accent-line` con lo scostamento, come gli altri comandi dell'interfaccia: il link di prosa non ne ha uno, e una card che si raggiunge da tastiera senza vedersi non va bene.
+
+**La freccia è `arrow-upright`** dallo sprite, a 24px. È lo stesso segno che in topbar dice che il link esce dal sito.
+
+**L'immagine di anteprima** è quella pubblicata dall'articolo, in `assets/fantasy-caroline-hilman.webp`: 360px di larghezza per 120 a schermo, 15 KB.
+
 ## Cosa il sistema ha e noi non usiamo
 
 **Palette semantica:** dei ventisette gradini fra Success, Warning e Danger ne usiamo quattro, i due di `--ok` e i due di `--ko`. Warning resta fuori, perché la guida non ha un blocco attenzione.

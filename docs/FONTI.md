@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 46 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 47 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF vivono in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Quarantacinque fonti su 46 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 46). Delle 46, 43 hanno il PDF in `sources/`: fanno eccezione le voci 28, 29 e 43, due pagine pubbliche e stabili che non serve archiviare.
+Quarantasei fonti su 47 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 47). Delle 47, 44 hanno il PDF in `sources/`: fanno eccezione le voci 29, 30 e 44, due pagine pubbliche e stabili che non serve archiviare.
 
 ---
 
@@ -153,77 +153,83 @@ https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea
 File: `How to Make Your Design System Agent-Ready.pdf`
 Nota: Medium serve un 403 Cloudflare sia a curl sia a Chrome headless, quindi il PDF è stato salvato a mano dal browser.
 
+**27. Can AI Generate UI Components from a Figma Design System?** — occhiello *When the Design System Writes the Code*, serie *How We Build*
+Fantasy, 24 agosto 2026
+https://fantasy.co/latest/figma-design-system-ai-components
+File: `Can AI generate UI components from a Figma design system.pdf`
+Nota: firmato dallo studio, ma è un'intervista a Caroline Hilman, Design Director di Fantasy, sul suo esperimento. Unica fonte del corpus che non sia un articolo di metodo: è un caso di studio con un verdetto («vibe-coded design», buono per esplorazione e prototipo). Il plugin che cita, DesignBridge, estrae il design system in un file `.md` unico, cioè la scelta opposta ai registri e alle spec separate raccontati nella guida.
+
 ---
 
 ## Flusso tra Claude Code e Figma
 
-**27. Claude Code for Designers: A Practical Guide**
+**28. Claude Code for Designers: A Practical Guide**
 Tommaso Nervegna — Substack personale, 26 gennaio 2026
 https://nervegna.substack.com/p/claude-code-for-designers-a-practical
 Sistema di meta-prompting citato (GSD): https://github.com/glittercowboy/get-shit-done
 File: `Claude Code for designers.pdf`
 
-**28. From Claude Code to Figma: Turning production code into editable Figma designs**
+**29. From Claude Code to Figma: Turning production code into editable Figma designs**
 Figma (blog ufficiale), 17 febbraio 2026
 https://www.figma.com/blog/introducing-claude-code-to-figma/
 File: nessun PDF, pagina pubblica e stabile.
 Nota: è l'annuncio ufficiale di Code to Canvas, seconda fonte primaria del corpus dopo la guida Anthropic sulle skill.
 
-**29. Claude Code to Figma: How the New "Code to Canvas" Integration Works**
+**30. Claude Code to Figma: How the New "Code to Canvas" Integration Works**
 Muz.li (blog), 17 febbraio 2026
 https://muz.li/blog/claude-code-to-figma-how-the-new-code-to-canvas-integration-works/
 File: nessun PDF, pagina pubblica ad accesso libero.
 
-**30. Claude Code + Figma**
+**31. Claude Code + Figma**
 Nick Babich — UX Planet (Medium), 4 marzo 2026
 https://uxplanet.org/claude-code-figma-f647facbe181
 File: `Claude Code + Figma.pdf`
-Nota: da non confondere con `Claude Code + Figma Design System.pdf` (voce 31), che è un articolo diverso dello stesso autore. È il tutorial in quattro passi del giro completo codice-canvas-codice.
+Nota: da non confondere con `Claude Code + Figma Design System.pdf` (voce 32), che è un articolo diverso dello stesso autore. È il tutorial in quattro passi del giro completo codice-canvas-codice.
 
-**31. Claude Code + Figma Design System** — sottotitolo *How To Generate Design Using Figma Design System in Claude Code*
+**32. Claude Code + Figma Design System** — sottotitolo *How To Generate Design Using Figma Design System in Claude Code*
 Nick Babich — UX Planet (Medium), 30 marzo 2026
 https://uxplanet.org/claude-code-figma-design-system-498573c5d357
 File: `Claude Code + Figma Design System.pdf`
 
-**32. Figma Skills for Claude Code** — sottotitolo *How to create UI design in Figma without leaving Claude Code*
+**33. Figma Skills for Claude Code** — sottotitolo *How to create UI design in Figma without leaving Claude Code*
 Nick Babich — UX Planet (Medium), 1 aprile 2026
 https://uxplanet.org/figma-skills-for-claude-code-bb05a21984fd
 File: `Figma skills for Claude Code.pdf`
-Nota: da non confondere con il «Complete Guide» di giugno (voce 36), che è un articolo diverso dello stesso autore.
+Nota: da non confondere con il «Complete Guide» di giugno (voce 37), che è un articolo diverso dello stesso autore.
 
-**33. How to Connect Figma to Claude (MCP Setup Guide — 2026)**
+**34. How to Connect Figma to Claude (MCP Setup Guide — 2026)**
 Garima Agarwal — Medium, 10 aprile 2026
 https://medium.com/@garimaagarwal1200/claude-desktop-figma-console-mcp-complete-setup-guide-2026-babba46b12a0
 File: `How to connect Figma to Claude (MCP setup guide).pdf`
 Nota: titolo originale *Claude Desktop + Figma Console MCP: Complete Setup Guide (2026)*, poi cambiato.
 
-**34. How to make Claude Code follow your design system in Figma**
+**35. How to make Claude Code follow your design system in Figma**
 Sen Lin — UX Collective (Medium), 7 maggio 2026
 https://uxdesign.cc/how-to-make-claude-code-follow-your-design-system-in-figma-559618cffaa9
 Repo citato: https://github.com/senlindesign/claude2figma
 File: `How to make Claude Code follow your design system in Figma.pdf`
 
-**35. Ultimate Claude Code Setup for Product Designers**
+**36. Ultimate Claude Code Setup for Product Designers**
 Nick Babich — UX Planet (Medium), 3 giugno 2026
 https://uxplanet.org/ultimate-claude-code-setup-for-product-designers-f8b2fff4ac69
 File: `Ultimate Claude Code setup for product designers.pdf` e la cheatsheet `Ultimate Claude Code setup.jpeg`
 
-**36. Figma skills for Claude Code: Complete Guide**
+**37. Figma skills for Claude Code: Complete Guide**
 Nick Babich — UX Planet (Medium), 8 giugno 2026
 https://uxplanet.org/figma-skills-for-claude-code-complete-guide-c8db2b581a76
 File: `Figma skills for Claude Code (complete guide).pdf`
 
-**37. My Top 14 Claude Code Commands**
+**38. My Top 14 Claude Code Commands**
 Xinran Ma — Design with AI (Substack), 12 giugno 2026
 https://designwithai.substack.com/p/my-top-14-claude-code-commands
 File: `My top Claude Code commands.pdf`
 
-**38. Claude Code Cheatsheets for Product Designer**
+**39. Claude Code Cheatsheets for Product Designer**
 Nick Babich — UX Planet (Medium), 16 giugno 2026
 https://uxplanet.org/claude-code-cheatsheets-for-product-designer-e1d9c16d577a
 File: `Claude Code cheatsheets for product designers.pdf` e la cheatsheet `File structure for design project in Claude Code.jpeg`
 
-**39. Figma console MCP to Claude: Setup Guide for Designers**
+**40. Figma console MCP to Claude: Setup Guide for Designers**
 @friendlyunit — carosello/deck, testata e data non indicate
 Strumento documentato: https://github.com/southleft/figma-console-mcp
 File: `Claude to Figma Console.pdf`
@@ -233,20 +239,20 @@ Nota: è un deck di slide senza URL sorgente stampato. L'autore è identificabil
 
 ## Skill: cosa sono e come si creano
 
-**40. A complete guide to building skills for Claude**
+**41. A complete guide to building skills for Claude**
 Anthropic, 29 gennaio 2026
 https://claude.com/blog/complete-guide-to-building-skills-for-claude
 Versione PDF (quella in cartella, intitolata *The Complete Guide to Building Skills for Claude*): https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf
 File: `The Complete Guide to Building Skills for Claude.pdf`
 Nota: è la guida ufficiale di Anthropic, 32 pagine. Unica fonte primaria del corpus: tutte le altre sono articoli di terzi.
 
-**41. Design Systems in 2026: Turn Your System into a Claude Skill**
+**42. Design Systems in 2026: Turn Your System into a Claude Skill**
 Garima Agarwal — Design Systems Collective (Medium), 13 maggio 2026
 https://www.designsystemscollective.com/design-systems-in-2026-turn-your-system-into-a-claude-skill-3dd4d8bf5feb
 File: `Turn your design system into a Claude Skill.pdf`
 Nota: è la parte 3 di una serie in tre puntate.
 
-**42. 5 New claude skills for UI/UX designers**
+**43. 5 New claude skills for UI/UX designers**
 Jack Henry — Medium, 26 giugno 2026
 https://medium.com/@jackhenrys/5-new-claude-skills-for-ui-ux-designers-c23446dfb2e6
 File: `New claude skills for UI-UX designers.pdf`
@@ -255,25 +261,25 @@ File: `New claude skills for UI-UX designers.pdf`
 
 ## Contesto e pratica di design con l'AI
 
-**43. A Practical Guide to Reducing Token Spend**
+**44. A Practical Guide to Reducing Token Spend**
 Adam Jacob — blog personale, 16 luglio 2026
 https://www.adamhjk.com/blog/a-practical-guide-to-reducing-token-spend
 File: nessun PDF, pagina pubblica ad accesso libero.
 Nota: integrata solo per il dato di confronto fra una skill che orchestra sub-agenti e la stessa procedura scritta come codice deterministico. Lo strumento che propone (Swamp) è un prodotto per sviluppatori e resta fuori dalla guida.
 
-**44. Context engineering: A repeatable AI workflow for product designers**
+**45. Context engineering: A repeatable AI workflow for product designers**
 Vadym Grin — UX Collective (Medium), 16 marzo 2026
 https://uxdesign.cc/context-engineering-a-repeatable-ai-workflow-for-product-designers-8d7b55b83b2b
 Cross-post integrale sul Substack dell'autore: https://eidosdesign.substack.com/p/context-engineering-a-repeatable
 File: `Context engineering.pdf`
 
-**45. How I use AI to partner on design problems**
+**46. How I use AI to partner on design problems**
 Suleiman Shakir — UX Collective (Medium), 11 maggio 2026
 https://uxdesign.cc/how-i-use-ai-to-think-through-design-problems-4a484080484b
 Starter kit citato: https://github.com/Suleiman19/ai-design-buddy
 File: `How I use AI to partner on design problems.pdf`
 
-**46. Design with AI** — fonte non identificata
+**47. Design with AI** — fonte non identificata
 Autore non indicato nel documento, nessuna data, nessun URL
 File: `Design with AI IAAD.pdf`
 È un deck di slide, presumibilmente materiale didattico IAAD, non indicizzato online. Ricerche su tre frasi distintive («Now anyone can vibe something up that looks passable», «The algorithm proposes, the designer disposes», «Human-agent centred design») non hanno restituito corrispondenze. Il TOKEN framework di una delle slide compare in *A Practical Prompting Guide for Figma Make* di Nick Babich (https://uxplanet.org/a-practical-prompting-guide-for-figma-make-eb72f78ff1ce), che però non è la fonte del deck nel suo insieme.
@@ -282,11 +288,11 @@ File: `Design with AI IAAD.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 20 documenti su 46**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 20 documenti su 47**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
 Una sola fonte primaria, la guida Anthropic sulle skill. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 16 e 17, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Ventisette documenti su quarantasei escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 16 e 17, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Ventisette documenti su quarantasette escono fra marzo e giugno 2026.
 
 ## Manutenzione
 
