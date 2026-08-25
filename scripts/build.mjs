@@ -173,7 +173,7 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
 
 // ---- Occhielli sull'attacco delle macro-voci ----
 // H2 con sotto-sezioni -> "Capitolo N" (numerato); H2 senza figli (chiusura) -> etichetta non numerata.
-const BACKMATTER_KICKER = { glossario: "Appendice", fonti: "Riferimenti" };
+const BACKMATTER_KICKER = { "prossimi-argomenti": "In arrivo", glossario: "Appendice", fonti: "Riferimenti" };
 let chap = 0;
 for (let a = 0; a < toc.length; a++) {
   if (toc[a].level !== 2) continue;

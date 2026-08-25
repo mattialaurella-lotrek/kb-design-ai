@@ -135,6 +135,36 @@ Sei capitoli in sequenza, ognuno dà per acquisito il precedente. Prima erano tr
 - **Fantasy, caso di studio** (24 agosto 2026): «Can AI Generate UI Components from a Figma Design System?» sta in coda a «Rendere il design system leggibile dall'AI» come card di rimando, non come sezione, perché per otto decimi ripete cose che la guida già dice. Le due che aggiunge sono che **i nomi dei token non si ripensano per l'LLM** (bastano quelli buoni per uno sviluppatore) e il verdetto di Caroline Hilman sull'output, «vibe-coded design». Il plugin che cita, DesignBridge, estrae il sistema in un **file unico**, cioè la scelta opposta ai registri e alle spec separate raccontati nella sezione: la divergenza è dichiarata nel testo, non va tolta. Voce 27 di `docs/FONTI.md`, con PDF in `sources/` e le voci successive rinumerate.
 - **Skill Figma** (18 agosto 2026): la sezione «Le skill Figma per Claude Code» sta su due fonti, l'help center di Figma (nove skill documentate con requisiti e limiti) e il catalogo mcpservers.org (una ventina di voci contando le varianti). Nessuna delle due pagina porta una data, quindi nelle Fonti sono citate senza. Due cose sono dichiarate instabili e vanno ricontrollate: la funzione è **gratuita solo durante la beta** e passerà a pagamento a consumo, e i requisiti di seat e piano cambiano da skill a skill. Se Figma chiude la beta, il blocco «Requisiti e limiti» va riscritto.
 
+## Prossimi argomenti, dal 25 agosto 2026
+Cinque temi annunciati nella sezione «Prossimi argomenti» di `src/content.md`, che sta prima del glossario e li elenca senza svilupparli. Stanno tutti dalla parte dell'attrezzatura, cioè installazione, configurazione e messa in sicurezza dell'ambiente, e non del metodo di progetto: è la ragione per cui formano una sezione sola invece di finire sparsi nei sei capitoli.
+
+⚠️ **Le fonti qui sotto sono una prima selezione dell'utente e non sono ancora in `docs/FONTI.md`**, né hanno un PDF in `sources/`, perché nessun articolo è integrato nel testo. Quando un tema diventa sezione vale la regola di sempre: ogni fonte che entra nel testo va aggiunta sia alla sezione «Fonti» di `src/content.md` sia a `docs/FONTI.md`, rinumerando le voci successive e correggendo i conteggi in testa al file.
+
+- **Installare le skill in locale.** Una cartella di skill dentro `~/.claude/skills/` vale per ogni progetto, non solo per quello dove è stata scritta. Il taglio è la distinzione fra skill globali e skill del repo, che è anche ciò che manca al capitolo «Lavorare con le Claude Skills».
+  - [Extend Claude with skills](https://code.claude.com/docs/en/skills), Claude Code Docs
+  - [Agent Skills overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview), Claude Platform Docs
+  - [The Complete Guide to Building Skills for Claude](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf), Anthropic (PDF)
+- **Governare Claude Code dal terminale.** Connessioni MCP, livello di effort, plugin e marketplace dai comandi della CLI invece che a mano nei file di configurazione. Si aggancia a «Setup e loop con Figma MCP», dove l'MCP si collega una volta sola.
+  - [Connect to MCP servers](https://code.claude.com/docs/en/mcp-quickstart), Claude Code Docs
+  - [Model configuration](https://code.claude.com/docs/en/model-config), Claude Code Docs
+  - [Model and effort in Claude Code](https://claude.com/blog/claude-model-and-effort-level-in-claude-code), Anthropic
+  - [Plugins reference](https://code.claude.com/docs/en/plugins-reference), Claude Code Docs
+  - [Claude Code Plugins Complete Guide](https://hidekazu-konishi.com/entry/claude_code_plugins_complete_guide.html), Hidekazu Konishi
+- **VS Code e Cursor a confronto.** Lo stesso progetto aperto nei due editor, differenze e vantaggi.
+  - [Use Claude Code in VS Code](https://code.claude.com/docs/en/vs-code), Claude Code Docs
+  - [Claude Code + Cursor 2026](https://www.futureproofing.dev/resources/ai-native-team/claude-code-cursor-integration-2026), FutureProofing
+- **Il versionamento chiesto a Claude.** Configurazione iniziale (init del repo, collegamento a GitHub, CLI ufficiale), gestione quotidiana del versionamento a voce, e automazione del push come backup continuo. Su quest'ultimo pezzo il repo è già un caso di studio: l'hook `.githooks/post-commit` esiste dal 25 agosto 2026, vedi «Pubblicazione».
+  - [Overview](https://code.claude.com/docs/en/overview), Claude Code Docs
+  - [Common workflows](https://code.claude.com/docs/en/common-workflows), Claude Code Docs
+  - [Hooks](https://code.claude.com/docs/en/hooks), Claude Code Docs
+  - [GitHub CLI manual](https://cli.github.com/manual)
+  - [Git integration](https://claudefa.st/blog/guide/development/git-integration), ClaudeFast
+  - [Claude Code GitHub Actions](https://code.claude.com/docs/it/github-actions), Claude Code Docs
+- **Archiviare un progetto su Google Drive.** Dove tenere un progetto quando il disco di una macchina sola non basta. Si lega alla valutazione aperta in «In sospeso / da valutare», che riguarda proprio questo repo e la cartella `sources/`.
+  - [Gestisci Google Drive per computer, guida avanzata](https://support.google.com/drive/answer/16631477?hl=it)
+  - [Domande frequenti su Drive Sync per gli amministratori](https://knowledge.workspace.google.com/admin/drive/drive-sync-faq-for-admins?hl=it)
+  - [Move GitHub Private Repos to Google Drive in Minutes](https://tonym.us/move-github-repos-to-google-drive.html), Tony Metzidis
+
 ## Prossima sessione, deciso il 21 agosto 2026
 - **Le Figma Agent Skills**, cioè le skill dell'agente che vive **dentro Figma**, sono cosa diversa dalle skill del plugin già coperte in «Le skill Figma per Claude Code». Rinviate dall'utente il 21 agosto 2026. Due decisioni già prese e da non riaprire: restano due sezioni distinte, e ogni titolo deve dire chi esegue la skill e dove (nome proposto per la nuova, «Le skill dell'agente di Figma»). Mancano le fonti, che fornisce l'utente, e la scelta fra capitolo «Lavorare con le Claude Skills» e coda di «Collegare Claude e Figma».
 

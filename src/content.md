@@ -12,7 +12,7 @@ Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI: come s
 - **Le librerie** di icone, componenti, motion ed effetti con cui si monta il prototipo.
 - **GitHub e Vercel** per versionare il lavoro e pubblicarlo a un indirizzo condivisibile.
 
-Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, le Claude Skills, la costruzione e la pubblicazione del prototipo. Chiudono glossario e fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura ( ͡ʘ ͜ʖ ͡ʘ)
+Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, le Claude Skills, la costruzione e la pubblicazione del prototipo. Chiudono i prossimi argomenti, il glossario e le fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura ( ͡ʘ ͜ʖ ͡ʘ)
 
 **Indice**
 
@@ -47,6 +47,7 @@ Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento
 - **Lavorare con le Claude Skills**
   - Cosa sono le skill e come si creano
   - Catalogo di skill di riferimento
+- **Prossimi argomenti**
 - **Glossario**
 - **Fonti**
 
@@ -1037,6 +1038,18 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`ibelick/zola`](https://github.com/ibelick/zola): interfaccia di chat aperta che parla con tutti i modelli, dallo stesso autore di `ui-skills` e `prompt-kit`
 - [`withastro/astro`](https://github.com/withastro/astro): framework web per siti fatti di contenuto, l'alternativa a Next.js quando il prototipo è una pagina da leggere più che un'applicazione
 - [`supabase/supabase`](https://github.com/supabase/supabase): database Postgres gestito con autenticazione e storage, per il prototipo che deve salvare qualcosa davvero
+
+## Prossimi argomenti
+
+Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno tutti dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare. Le fonti sono già raccolte, il testo no.
+
+- **Installare le skill in locale:** una cartella di skill dentro `~/.claude/skills/` diventa disponibile in ogni progetto, non solo in quello dove l'hai scritta. Cambia il modo di ragionare sul catalogo di «Lavorare con le Claude Skills», perché separa le skill che valgono per te da quelle che valgono per il repo.
+- **Governare Claude Code dal terminale:** connessioni MCP, livello di effort, plugin e marketplace si gestiscono con i comandi dedicati della CLI invece che a mano nei file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
+- **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor, con le differenze che contano davvero e cosa conviene in quale caso.
+- **Il versionamento chiesto a Claude:** dall'inizializzazione del repo e dal collegamento a GitHub, con la CLI ufficiale, fino al push automatico che fa da backup continuo. Il punto è che i comandi git puoi chiederli a Claude invece di ricordarteli, e che una parte del giro si automatizza e smette di dipendere da te.
+- **Archiviare un progetto su Google Drive:** dove tenere un progetto Claude Code quando il disco di una sola macchina non basta più, e cosa succede a un repo git dentro una cartella sincronizzata.
+
+Se uno di questi ti serve prima degli altri, dillo e sale in cima.
 
 ## Glossario
 
