@@ -781,6 +781,7 @@ Cinque famiglie, dalle fondamenta al dettaglio. Non servono tutte: si prende que
 - [`delphi-ai/animate-skill`](https://github.com/delphi-ai/animate-skill): skill animazioni Next.js/React (corso di Emil Kowalski)
 - CSS pronte: [`ibelick/animation`](https://github.com/ibelick/animation), [`tilomitra/infinite`](https://github.com/tilomitra/infinite), [`IanLunn/Hover`](https://github.com/IanLunn/Hover)
 - [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati · [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading
+- [`guillermolg00/morphicons`](https://github.com/guillermolg00/morphicons): fa passare un'icona a tratto in un'altra con un'animazione a molla, prendendo i tracciati da Lucide, Tabler, Heroicons o dai tuoi. Le rotazioni non si dichiarano a mano, escono dal calcolo che allinea le due forme, così `arrow-right` verso `arrow-down` gira di 90 gradi da sé. ESM, ~7 KB gzip e nessuna dipendenza a runtime, con i pacchetti per React, Vue, Svelte, React Native e Astro più il custom element `<morph-icon>`
 - Particelle/physics: [`VincentGarreau/particles.js`](https://github.com/VincentGarreau/particles.js), [`liabru/matter-js`](https://github.com/liabru/matter-js)
 - SVG/3D/canvas: [`renatoworks/3dsvg`](https://github.com/renatoworks/3dsvg), [`meodai/heerich`](https://github.com/meodai/heerich), [`edoardolunardi/infinite-canvas`](https://github.com/edoardolunardi/infinite-canvas)
 
@@ -1109,6 +1110,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Lisa Demchenko, [How to write a DESIGN.md file Claude can actually use](https://uxdesign.cc/how-to-write-a-design-md-file-claude-can-actually-use-2d89d183f823) (maggio 2026)
 - Murphy Trueman, [Your design system is fragmenting into agent files](https://www.designsystemscollective.com/your-design-system-is-fragmenting-into-agent-files-26a9b19a2fad) (maggio 2026)
 - Nick Babich, [DESIGN.md Best Practices](https://uxplanet.org/design-md-best-practices-c00325e8b23a) (giugno 2026)
+- Frank Andrade e Kevin Gargate Osorio, [If You Use Claude, You Need This Simple Folder System](https://artificialcorner.com/p/claude-file-system) (giugno 2026)
 - Nick Babich, [CLAUDE.md vs DESIGN.md: What to Put in Each for Claude Code](https://uxplanet.org/claude-md-vs-design-md-what-to-put-in-each-for-claude-code-53647d015bfd) (luglio 2026)
 - Patrick Neeman, [Design.md: the one standard file carries your visual identity, for humans and agents](https://uxdesign.cc/design-md-the-one-standard-file-carries-your-visual-identity-for-humans-and-agents-9058d5b39d9b) (agosto 2026)
 - Lisa Demchenko, [What your AI co-designer can't infer from your hex values](https://uxdesign.cc/what-your-ai-co-designer-cant-infer-from-your-hex-values-d2023364e80e) (agosto 2026)

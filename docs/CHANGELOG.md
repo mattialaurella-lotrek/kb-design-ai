@@ -3,6 +3,13 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-25]
+
+### Aggiunto
+- **`guillermolg00/morphicons` fra le librerie di motion:** un'icona a tratto che passa in un'altra con un'animazione a molla, sui dati di Lucide, Tabler, Heroicons o sui propri tracciati, con le rotazioni ricavate dall'allineamento delle due forme invece che dichiarate a mano.
+- **Voce 16 in `docs/FONTI.md`,** *If You Use Claude, You Need This Simple Folder System* di Frank Andrade e Kevin Gargate Osorio (Artificial Corner, 28 giugno 2026), con la riga nel gruppo «File di contesto e formati `.md`» della sezione «Fonti». Le voci da 16 in poi sono rinumerate e i conteggi in testa al file passano a 48. Il PDF sta in `sources/`, stampato da Chrome headless.
+- **`docs/NOTE-ORGANIZZARE-IL-PROGETTO.md`,** l'analisi di quell'articolo con il verdetto in testa e cinque candidati di integrazione per la sezione «Organizzare il progetto», due da tenere e tre da scartare, ognuno con l'obiezione che gli si può fare. Il verdetto è che come fonte da integrare vale poco, perché descrive un workspace personale e non un repo. La sezione non è toccata.
+
 ## [2026-08-24]
 
 ### Aggiunto
