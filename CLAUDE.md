@@ -11,6 +11,7 @@ scripts/build.mjs   converte content.md in index.html e genera l'indice
 index.html          artefatto, gitignored, non si tocca mai a mano
 scripts/make-pdf.mjs stampa index.html in PDF con Chrome headless
 deploy.sh           build, PDF e deploy su Vercel
+.githooks/post-commit manda ogni commit su GitHub, si attiva a mano
 ```
 
 Il corpo della guida è generato dal markdown, il template è scritto a mano. Ogni intervento passa da uno di tre posti: `src/content.md` per il testo, `src/template.html` per stile e comportamento, `scripts/build.mjs` per il markup generato.
@@ -38,6 +39,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 **Il design system sta in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non sta lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
 
 **Un'icona che manca la disegna Mattia.** L'inventario del sistema sta in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.
+
+**Il push lo fa un hook,** `.githooks/post-commit`, che manda su GitHub ogni commit appena chiuso. Su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, perché git non installa da sé gli hook che arrivano da un repo. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano.
 
 **Ronzino ha 400, 500 e 700 e non ha il 600.** Si usano i token `--w-regular`, `--w-medium` e `--w-bold`.
 

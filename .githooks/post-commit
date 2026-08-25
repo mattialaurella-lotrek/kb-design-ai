@@ -1,0 +1,19 @@
+#!/bin/sh
+# Manda su GitHub ogni commit appena e' stato fatto.
+# Se il push non riesce (rete assente, remoto avanti) il commit resta in locale
+# e si recupera con un "git push" a mano.
+#
+# Su un clone nuovo va attivato una volta:  git config core.hooksPath .githooks
+
+unset GIT_DIR GIT_WORK_TREE
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+[ "$branch" = "HEAD" ] && exit 0   # detached head, non si pusha
+
+if git push --quiet origin "$branch" 2>/dev/null; then
+	echo "post-commit: $branch spinto su origin"
+else
+	echo "post-commit: push di $branch fallito, il commit resta in locale"
+fi
+exit 0
