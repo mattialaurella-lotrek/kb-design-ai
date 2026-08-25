@@ -1049,8 +1049,6 @@ Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno t
 - **Il versionamento chiesto a Claude:** dall'inizializzazione del repo e dal collegamento a GitHub, con la CLI ufficiale, fino al push automatico che fa da backup continuo. Il punto è che i comandi git puoi chiederli a Claude invece di ricordarteli, e che una parte del giro si automatizza e smette di dipendere da te.
 - **Archiviare un progetto su Google Drive:** dove tenere un progetto Claude Code quando il disco di una sola macchina non basta più, e cosa succede a un repo git dentro una cartella sincronizzata.
 
-Se uno di questi ti serve prima degli altri, dillo e sale in cima.
-
 ## Glossario
 
 In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal contesto, segnalala.
