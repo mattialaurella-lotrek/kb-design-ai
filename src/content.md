@@ -1041,7 +1041,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno tutti dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare. Le fonti sono già raccolte, il testo no.
+Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno tutti dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare.
 
 - **Installare le skill in locale:** una cartella di skill dentro `~/.claude/skills/` diventa disponibile in ogni progetto, non solo in quello dove l'hai scritta. Cambia il modo di ragionare sul catalogo di «Lavorare con le Claude Skills», perché separa le skill che valgono per te da quelle che valgono per il repo.
 - **Governare Claude Code dal terminale:** connessioni MCP, livello di effort, plugin e marketplace si gestiscono con i comandi dedicati della CLI invece che a mano nei file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
