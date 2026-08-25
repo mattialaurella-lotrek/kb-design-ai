@@ -10,6 +10,8 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **Voce 16 in `docs/FONTI.md`,** *If You Use Claude, You Need This Simple Folder System* di Frank Andrade e Kevin Gargate Osorio (Artificial Corner, 28 giugno 2026), con la riga nel gruppo «File di contesto e formati `.md`» della sezione «Fonti». Le voci da 16 in poi sono rinumerate e i conteggi in testa al file passano a 48. Il PDF sta in `sources/`, stampato da Chrome headless.
 - **`docs/NOTE-ORGANIZZARE-IL-PROGETTO.md`,** l'analisi di quell'articolo con il verdetto in testa e cinque candidati di integrazione per la sezione «Organizzare il progetto», due da tenere e tre da scartare, ognuno con l'obiezione che gli si può fare. Il verdetto è che come fonte da integrare vale poco, perché descrive un workspace personale e non un repo. La sezione non è toccata.
 
+- **Hook `post-commit` in `.githooks/`,** che manda su GitHub ogni commit appena chiuso. Serve perché i commit si fermavano in locale e il remoto restava indietro, tre prima di questo giro. Lo script è versionato, ma `core.hooksPath` è configurazione locale: su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, altrimenti il file c'è e non parte. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano. Le due righe che lo spiegano stanno in `CLAUDE.md`, nella mappa del repo e fra le regole.
+
 ## [2026-08-24]
 
 ### Aggiunto
