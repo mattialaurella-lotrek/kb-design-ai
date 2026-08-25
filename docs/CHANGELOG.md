@@ -11,6 +11,7 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **`docs/NOTE-ORGANIZZARE-IL-PROGETTO.md`,** l'analisi di quell'articolo con il verdetto in testa e cinque candidati di integrazione per la sezione «Organizzare il progetto», due da tenere e tre da scartare, ognuno con l'obiezione che gli si può fare. Il verdetto è che come fonte da integrare vale poco, perché descrive un workspace personale e non un repo. La sezione non è toccata.
 
 - **Hook `post-commit` in `.githooks/`,** che manda su GitHub ogni commit appena chiuso. Serve perché i commit si fermavano in locale e il remoto restava indietro, tre prima di questo giro. Lo script è versionato, ma `core.hooksPath` è configurazione locale: su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, altrimenti il file c'è e non parte. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano. Le due righe che lo spiegano stanno in `CLAUDE.md`, nella mappa del repo e fra le regole.
+- **Nota in `docs/MEMORY.md` su come spostare il progetto su Google Drive,** sotto «In sospeso / da valutare». L'unica cosa senza backup è `sources/`, 47 PDF per 118 MB tenuti fuori da git perché il repo è pubblico, e perderla lascerebbe `docs/FONTI.md` a puntare a file che non esistono più. La nota segnala anche che un repo git dentro una cartella sincronizzata si può corrompere e che Drive tiene l'ultima copia, non la storia. Nessuna decisione presa, la valutazione resta aperta.
 
 ## [2026-08-24]
 
