@@ -156,6 +156,12 @@ Componente del 24 agosto 2026, usato una volta, in coda a «Rendere il design sy
 
 **L'immagine di anteprima** è quella pubblicata dall'articolo, in `assets/fantasy-caroline-hilman.webp`: 360px di larghezza per 120 a schermo, 15 KB.
 
+## Il badge di stato
+
+Pill lime accanto a un titolo, fondo `--accent` e testo `--accent-ink`, che segnala una sezione ancora in movimento. La sintassi è `{badge:Testo}` a fine heading e la gestisce `scripts/build.mjs`. Il corpo è fisso a 15px, uno dei nove già in uso nell'interfaccia, e non in `em`: legato al titolo darebbe 14,9px su un h3 e 20,8px su un h2, cioè due badge diversi per la stessa etichetta.
+
+Nell'indice laterale la stessa marcatura diventa un pallino da 6px in `--accent-line`, davanti alla voce. Sulla macro-voce di un H2, che è un flex con gap 8px, il pallino azzera il margine destro che gli serve nelle voci di terzo livello, altrimenti lo stacco si somma e diventa 16.
+
 ## Cosa il sistema ha e noi non usiamo
 
 **Palette semantica:** dei ventisette gradini fra Success, Warning e Danger ne usiamo quattro, i due di `--ok` e i due di `--ko`. Warning resta fuori, perché la guida non ha un blocco attenzione.

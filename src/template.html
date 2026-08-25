@@ -452,6 +452,9 @@
       width: 6px; height: 6px; margin-right: 8px; border-radius: 50%;
       background: var(--accent-line);
     }
+    /* La macro-voce e' flex con gap 8px, quindi il margine del pallino
+       raddoppierebbe lo stacco e il flex lo schiaccerebbe. */
+    aside.toc .toc-macro.flag::before { margin-right: 0; flex: none; }
 
     /* ---------- Main ---------- */
     main { padding: 0 6vw 120px; min-width: 0; }
@@ -525,10 +528,14 @@
       font-family: var(--font-display); font-weight: var(--w-bold);
       font-size: 1.25rem; line-height: 1.35; margin: var(--gap-sub) 0 .5rem;
     }
+    /* Sta su h3 (una sezione) e su h2 (una macro-voce come «Prossimi argomenti»).
+       Il corpo e' fisso a 15px, uno dei nove gia' in uso nell'interfaccia: in em
+       seguirebbe il titolo e sull'h2, che arriva a 33,6px, diventerebbe 20,8. */
+    .prose h2 .badge,
     .prose h3 .badge {
       display: inline-block; vertical-align: middle; transform: translateY(-.1em);
       margin-left: .55em; font-family: var(--font-display);
-      font-size: .62em; font-weight: var(--w-medium); line-height: 1;
+      font-size: 15px; font-weight: var(--w-medium); line-height: 1;
       letter-spacing: -.005em;
       color: var(--accent-ink); background: var(--accent);
       padding: .38em .72em; border-radius: 100px;

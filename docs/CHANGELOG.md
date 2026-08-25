@@ -15,6 +15,9 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **Sezione «Prossimi argomenti»,** prima del glossario, con l'occhiello «In arrivo». Elenca i cinque temi su cui si lavora, tutti di attrezzatura e non di metodo: le skill installate in `~/.claude/skills/`, il governo di MCP, effort, plugin e marketplace dal terminale, VS Code e Cursor a confronto, il versionamento chiesto a Claude e l'archiviazione di un progetto su Google Drive. L'indice sale da 40 voci a 41 e la frase di apertura della guida cambia di conseguenza.
 - **`BACKMATTER_KICKER` conosce una terza voce** in `scripts/build.mjs`. Un H2 senza sezioni figlie prendeva l'occhiello «Appendice», che su una sezione di temi futuri diceva la cosa sbagliata.
 - **Sezione «Prossimi argomenti» in `docs/MEMORY.md`,** con il perimetro di ognuno dei cinque temi e diciannove fonti di partenza fornite dall'utente. Non entrano in `docs/FONTI.md` e non hanno PDF in `sources/`, perché nessun articolo è ancora integrato nel testo, e la nota lo dichiara insieme a cosa fare quando lo saranno.
+- **Badge «In lavorazione» su «Prossimi argomenti»,** con il pallino sulla voce della spalla, come su «UX.md». Era la prima volta su un H2, quindi la classe `flag` è stata estesa alla macro-voce del TOC e il badge nel CSS a `.prose h2`. Il pallino sulla macro-voce azzera il margine destro, perché lì il contenitore è un flex con gap 8px e lo stacco si sarebbe sommato.
+- **Il badge ha un corpo fisso di 15px** invece di `.62em`, uno dei nove già in uso nell'interfaccia. Legato al titolo valeva 14,9px su un h3 e sarebbe salito a 20,8px su un h2. Voce nuova in `DESIGN.md`.
+- **L'occhiello della sezione passa da «In arrivo» ad «Anteprima»,** perché con il badge accanto al titolo diceva due volte la stessa cosa.
 
 ## [2026-08-24]
 

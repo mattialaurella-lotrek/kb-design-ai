@@ -1039,7 +1039,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`withastro/astro`](https://github.com/withastro/astro): framework web per siti fatti di contenuto, l'alternativa a Next.js quando il prototipo è una pagina da leggere più che un'applicazione
 - [`supabase/supabase`](https://github.com/supabase/supabase): database Postgres gestito con autenticazione e storage, per il prototipo che deve salvare qualcosa davvero
 
-## Prossimi argomenti
+## Prossimi argomenti {badge:In lavorazione}
 
 Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno tutti dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare. Le fonti sono già raccolte, il testo no.
 

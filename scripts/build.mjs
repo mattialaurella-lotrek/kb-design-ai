@@ -173,7 +173,7 @@ bodyHtml = bodyHtml.replace(/<h([234])>([\s\S]*?)<\/h\1>/g, (m, level, inner) =>
 
 // ---- Occhielli sull'attacco delle macro-voci ----
 // H2 con sotto-sezioni -> "Capitolo N" (numerato); H2 senza figli (chiusura) -> etichetta non numerata.
-const BACKMATTER_KICKER = { "prossimi-argomenti": "In arrivo", glossario: "Appendice", fonti: "Riferimenti" };
+const BACKMATTER_KICKER = { "prossimi-argomenti": "Anteprima", glossario: "Appendice", fonti: "Riferimenti" };
 let chap = 0;
 for (let a = 0; a < toc.length; a++) {
   if (toc[a].level !== 2) continue;
@@ -224,7 +224,7 @@ for (let k = 0; k < toc.length; ) {
     while (j < toc.length && toc[j].level === 3) { subs.push(toc[j]); j++; }
     const hasSubs = subs.length > 0;
     const macro =
-      `<a class="toc-macro${hasSubs ? "" : " toc-macro--leaf"}" href="#${t.id}"${hasSubs ? ' aria-expanded="false"' : ""}>` +
+      `<a class="toc-macro${hasSubs ? "" : " toc-macro--leaf"}${t.flag ? " flag" : ""}" href="#${t.id}"${hasSubs ? ' aria-expanded="false"' : ""}>` +
       `<span class="toc-macro-text">${t.text}</span>` +
       (hasSubs ? CHEVRON : "") +
       `</a>`;
