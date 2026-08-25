@@ -64,6 +64,7 @@ Sei capitoli in sequenza, ognuno dà per acquisito il precedente. Prima erano tr
 ## Pubblicazione — un canale solo, dal 23 agosto 2026
 - **Vercel**: riceve l'HTML buildato in locale da `./deploy.sh` (build + copia `assets/` + `vercel deploy --prod --scope lotrek`).
 - ⚠️ **Un push su `main` non pubblica niente**: la pubblicazione è sempre e solo `./deploy.sh`.
+- **Il push su GitHub è automatico dal 25 agosto 2026**: `.githooks/post-commit` manda il commit appena chiuso, perché prima i commit restavano fermi in locale, tre quando ce ne siamo accorti. Lo script è versionato, ma la riga che lo attiva no, quindi su un clone nuovo serve `git config core.hooksPath .githooks`. Un push resta comunque una cosa diversa dalla pubblicazione, che è sempre e solo `./deploy.sh`.
 - **Il workflow GitHub Pages è stato eliminato.** Le build di Pages su questo account sono rimaste in coda da luglio ad agosto senza mai partire, quindi il canale non è mai stato verificato e teneva in vita una cartella `dist/` e un secondo percorso di build da mantenere. Se un giorno serve un mirror pubblico senza SSO, si rimette.
 
 ## Anteprima prima di pubblicare
