@@ -767,6 +767,7 @@ Cinque famiglie, dalle fondamenta al dettaglio. Non servono tutte: si prende que
 - [`imskyleen/animate-ui`](https://github.com/imskyleen/animate-ui): component distribution animata (React, TypeScript, Tailwind, Motion via Shadcn CLI): componenti pronti da installare, modificare e usare
 - [`chartjs/Chart.js`](https://github.com/chartjs/Chart.js): grafici disegnati su `<canvas>`, otto tipi di base già pronti, responsive e animati; è la strada corta quando al prototipo serve un grafico credibile senza montare una pipeline di dataviz
 - [`shadcn-ui/ui`](https://github.com/shadcn-ui/ui): componenti accessibili su Tailwind che si copiano dentro il progetto invece di installarli come dipendenza, quindi restano modificabili. Nel repo c'è anche la skill ufficiale `skills/shadcn`, che legge il `components.json` del progetto e la documentazione di ogni componente, così l'agente sceglie fra quelli che esistono invece di inventarne uno. È la base su cui poggiano `animate-ui` qui sopra e il registry di `marvkr/better-design`
+- [`pedrobalsa/balsa-ui`](https://github.com/pedrobalsa/balsa-ui): un centinaio di componenti per Vue 3 e React 19 che si installano come sorgente dentro il progetto con lo stesso comando in entrambi i framework. Ogni componente porta con sé una specifica in JSON ricavata dal sorgente, così l'agente cerca per intento, analizza e installa quello che gli serve senza passare dalla documentazione
 - [`Jakubantalik/Libraries`](https://github.com/Jakubantalik/Libraries): raccolta di effetti React da copiare nel progetto (border beam, liquid gooey, thinking orbs), dallo stesso autore di transitions.dev
 
 **Motion, animazioni e scroll**
@@ -900,7 +901,7 @@ Se usi React Router, allinea il `basename` del router al `base` di Vite (altrime
 <div class="verdict">
 <div>
 <img class="verdict-logo" src="assets/logo-github.png" alt="GitHub Pages" width="349" height="80">
-<p>Pubblica solo statico, quindi HTML, CSS e JavaScript o una single page application (SPA) già buildata. È gratis ed è la scelta giusta per un portfolio, per una landing e per una knowledge base come questa. Non ha backend né funzioni serverless, e il base path va sistemato a mano.</p>
+<p>Pubblica solo statico, quindi HTML, CSS e JavaScript o una Single Page Application (SPA) già buildata. È gratis ed è la scelta giusta per un portfolio, per una landing e per una knowledge base come questa. Non ha backend né funzioni serverless, e il base path va sistemato a mano.</p>
 </div>
 <div>
 <img class="verdict-logo" src="assets/logo-vercel.png" alt="Vercel" width="355" height="80">
@@ -1041,13 +1042,15 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Sono cinque temi che stanno tutti dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare.
+Quello che ancora manca e su cui stiamo lavorando. Cinque temi stanno dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare. Gli altri due sono di metodo. Il loop engineering riguarda quanto lavoro puoi lasciar fare all'agente da solo, la ricerca UX con l'AI riguarda come si decide cosa costruire.
 
-- **Installare le skill in locale:** una cartella di skill dentro `~/.claude/skills/` diventa disponibile in ogni progetto, non solo in quello dove l'hai scritta. Cambia il modo di ragionare sul catalogo di «Lavorare con le Claude Skills», perché separa le skill che valgono per te da quelle che valgono per il repo.
-- **Governare Claude Code dal terminale:** connessioni MCP, livello di effort, plugin e marketplace si gestiscono con i comandi dedicati della CLI invece che a mano nei file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
+- **Installare le skill in locale:** una skill che sta dentro `~/.claude/skills/` vale in tutti i progetti, non solo in quello dove l'hai scritta. Serve a dividere le skill tue da quelle del repo, la distinzione che oggi manca al catalogo di «Lavorare con le Claude Skills».
+- **Gestire Claude Code dal terminale:** i comandi della CLI gestiscono le connessioni MCP, il livello di effort, i plugin e i marketplace, così non devi aprire i file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
 - **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor, con le differenze che contano davvero e cosa conviene in quale caso.
-- **Il versionamento chiesto a Claude:** dall'inizializzazione del repo e dal collegamento a GitHub, con la CLI ufficiale, fino al push automatico che fa da backup continuo. Il punto è che i comandi git puoi chiederli a Claude invece di ricordarteli, e che una parte del giro si automatizza e smette di dipendere da te.
+- **Versionamento e backup del progetto:** come si crea il repo, come lo si collega a GitHub con la CLI ufficiale e come si arriva al push automatico che a ogni commit manda tutto sul remoto. I comandi git puoi chiederli a Claude invece di ricordarteli, e una parte del giro poi va avanti da sola.
 - **Archiviare un progetto su Google Drive:** dove tenere un progetto Claude Code quando il disco di una sola macchina non basta più, e cosa succede a un repo git dentro una cartella sincronizzata.
+- **Loop engineering:** un loop è un agente che ripete lo stesso ciclo di lavoro finché non incontra la condizione che lo ferma. I tipi sono quattro. Il giro a turni lo guidi tu, `/goal` si ferma quando l'obiettivo è verificato, `/loop` e `/schedule` ripartono a intervallo, i loop proattivi scattano su un evento senza nessuno davanti allo schermo. A ogni passaggio lasci andare qualcosa, prima la verifica del risultato, poi la condizione di arrivo, poi l'innesco. È una prospettiva differente rispetto alla sezione «Human-in-the-loop», che spiega invece cosa resta in capo a chi progetta.
+- **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code stanno in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
 
 ## Glossario
 
@@ -1058,7 +1061,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Boilerplate:** la struttura di partenza standard di un file o di un progetto, che si riusa così com'è invece di riscriverla ogni volta.
 - **Build:** il passaggio che trasforma i file sorgente nella versione pronta da pubblicare. Si lancia con un comando, di solito `npm run build`.
 - **Canvas:** l'area di lavoro di un file Figma, quella dove stanno frame e layer.
-- **CLI:** programma che si usa scrivendo comandi in un terminale invece che cliccando. Claude Code è una CLI.
+- **CLI (Command Line Interface):** programma che si usa scrivendo comandi in un terminale invece che cliccando. Claude Code è una CLI.
 - **Code Connect:** mappatura ufficiale di Figma che lega un componente Figma al componente di codice reale, così l'agente usa quello vero invece di ricostruirne uno simile. Vedi «Tre modi di collegare Figma a confronto» e «Le skill Figma per Claude Code».
 - **Compaction:** riassunto automatico della conversazione quando la finestra si avvicina al limite, per ripartire da una finestra nuova senza perdere le decisioni prese. Vedi «Mantenere il contesto nel tempo».
 - **Commit:** un salvataggio registrato nella storia del progetto, con un messaggio che dice cosa è cambiato. Permette di tornare indietro e di far capire agli altri cosa hai fatto.
@@ -1077,6 +1080,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Front matter:** il blocco di dati strutturati in cima a un file markdown, delimitato da `---`, che gli strumenti leggono come configurazione invece che come testo.
 - **Handoff:** il passaggio di consegne a chi riprende il lavoro dopo di te, che può essere un collega o te stesso alla sessione successiva.
 - **Happy path:** il percorso in cui tutto va bene e nessuno sbaglia niente. È quello che gli agenti costruiscono per primo, e spesso l'unico.
+- **IDE (Integrated Development Environment):** il programma in cui si scrive il codice, che tiene nello stesso posto editor, ricerca nei file, terminale e strumenti di debug. VS Code e Cursor sono due IDE, e Claude Code ci gira dentro come estensione. Vedi «Comandi e subagent per il design».
 - **Lint:** controllo automatico che segnala errori e violazioni delle regole dentro un file, prima che diventino un problema.
 - **Marketplace:** il catalogo da cui si installano i plugin di Claude Code, con `/plugin marketplace add`.
 - **MCP (Model Context Protocol):** standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
@@ -1090,13 +1094,13 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Scope:** quello che un lavoro comprende e, per differenza, quello che lascia fuori.
 - **Skill:** un insieme di istruzioni scritte una volta, che l'AI carica quando il compito corrisponde, per svolgere sempre allo stesso modo un'attività ricorrente. Vedi «Cosa sono le skill e come si creano».
 - **Slash command:** comando che si richiama scrivendo `/` seguito dal nome, per esempio `/init`.
-- **SPA (single page application):** un sito che carica una pagina sola e da lì in poi cambia i contenuti col JavaScript invece di ricaricare. Pubblicarne una su un hosting statico chiede una regola in più, perché il server deve rispondere con quella pagina anche sulle rotte interne (vedi «Deploy del prototipo»).
-- **SSR / serverless:** rendering lato server e funzioni eseguite on-demand senza gestire un server dedicato; distinguono un sito statico da un'app con logica dinamica. Vedi «Deploy del prototipo».
+- **SPA (Single Page Application):** un sito che carica una pagina sola e da lì in poi cambia i contenuti col JavaScript invece di ricaricare. Pubblicarne una su un hosting statico chiede una regola in più, perché il server deve rispondere con quella pagina anche sulle rotte interne (vedi «Deploy del prototipo»).
+- **SSR (Server-Side Rendering) / serverless:** pagine costruite dal server a ogni richiesta e funzioni eseguite on-demand senza gestire un server dedicato; distinguono un sito statico da un'app con logica dinamica. Vedi «Deploy del prototipo».
 - **Subagent:** agente separato che svolge un compito con una finestra di contesto sua e restituisce solo il risultato, senza consumare quella principale.
 - **Token (design token):** un valore del design system a cui è stato dato un nome, per esempio un colore o una misura di spaziatura, così si richiama per nome invece di ricopiarne il valore.
 - **Variante:** in Figma, una versione alternativa dello stesso componente (il pulsante primario e quello secondario) raccolta insieme alle altre.
-- **WCAG:** le linee guida internazionali per l'accessibilità dei contenuti web. I livelli AA e AAA fissano soglie precise, per esempio sul contrasto fra testo e sfondo.
-- **YAML:** formato per scrivere dati strutturati in modo leggibile, usato per esempio nel front matter di `DESIGN.md`.
+- **WCAG (Web Content Accessibility Guidelines):** lo standard internazionale per l'accessibilità dei contenuti web. I livelli AA e AAA fissano soglie precise, per esempio sul contrasto fra testo e sfondo.
+- **YAML (YAML Ain't Markup Language):** formato per scrivere dati strutturati in modo leggibile, usato per esempio nel front matter di `DESIGN.md`.
 
 ## Fonti
 
