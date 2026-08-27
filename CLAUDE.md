@@ -36,6 +36,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **Ogni articolo integrato entra nelle fonti,** sia nella sezione «Fonti» di `src/content.md` sia in `docs/FONTI.md`. Vale anche quando il PDF non si riesce ad archiviare in `sources/`, e in quel caso il campo `File:` dichiara perché manca.
 
+**Un tema integrato esce da «Prossimi argomenti».** Quando una voce di quella sezione diventa testo della guida, la voce si toglie e si riscrive l'occhiello, che conta i temi rimasti e li divide fra attrezzatura e metodo. Vale anche al contrario: un tema che si decide di rinviare entra lì.
+
 **Il design system sta in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non sta lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
 
 **Un'icona che manca la disegna Mattia.** L'inventario del sistema sta in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.

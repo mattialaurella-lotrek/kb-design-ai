@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 48 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 53 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF vivono in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Quarantasette fonti su 48 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 48, 45 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare.
+Cinquantadue fonti su 53 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 53, 50 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare.
 
 ---
 
@@ -292,13 +292,45 @@ File: `Design with AI IAAD.pdf`
 
 ---
 
+## Loop e autonomia dell'agente
+
+I cinque PDF di questa sezione sono stampe della pagina viva fatte il 27 agosto 2026, non snapshot `archive.is`: le date qui sotto sono quelle stampate dalla pagina originale.
+
+**49. A harness for every task: dynamic workflows in Claude Code**
+Anthropic — blog di Claude, 2 giugno 2026
+https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code
+File: `A harness for every task, dynamic workflows in Claude Code.pdf`
+
+**50. Loop Engineering**
+Addy Osmani — blog personale, 7 giugno 2026
+https://addyosmani.com/blog/loop-engineering/
+File: `Loop engineering.pdf`
+
+**51. Loop Engineering in Claude Code**
+Nick Babich — UX Planet (Medium), 23 giugno 2026
+https://uxplanet.org/loop-engineering-in-claude-code-a36e3b1ca589
+File: `Loop Engineering in Claude Code.pdf`
+
+**52. Loop engineering: Getting started with loops**
+Anthropic — blog di Claude, 30 giugno 2026
+https://claude.com/blog/getting-started-with-loops
+File: `Loop engineering, getting started with loops.pdf`
+È la fonte canonica dei quattro tipi di loop: il corpo dell'articolo si monta via JavaScript, quindi una stampa headless con poco tempo di rendering esce vuota.
+
+**53. 4 Types of Loops You Can Create in Claude Code**
+Nick Babich — UX Planet (Medium), 13 luglio 2026
+https://uxplanet.org/4-types-of-loops-you-can-create-in-claude-code-aff824404834
+File: `4 Types of Loops You Can Create in Claude Code.pdf`
+
+---
+
 ## Come è distribuito il corpus
 
-**Nick Babich firma 20 documenti su 48**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 53**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
-Una sola fonte primaria, la guida Anthropic sulle skill. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
+Le fonti primarie sono tre, tutte di Anthropic: la guida sulle skill e i due post sui loop e sui dynamic workflows. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Ventotto documenti su quarantotto escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Trentadue documenti su cinquantatré escono fra marzo e giugno 2026.
 
 ## Manutenzione
 

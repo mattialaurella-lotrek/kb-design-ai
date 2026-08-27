@@ -9,7 +9,7 @@ Le decisioni di lungo periodo stanno in `docs/MEMORY.md`, la cronologia in `docs
 
 ## Cos'è
 
-Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il senno)»**, knowledge base del team di design Lotrek. Sei capitoli in sequenza, ognuno dà per acquisito il precedente: progettare il contesto, scriverlo nei file, collegare Claude e Figma, il design system per l'AI, costruire e pubblicare un prototipo, lavorare con le Claude Skills. Più glossario e fonti.
+Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il senno)»**, knowledge base del team di design Lotrek. Sette capitoli in sequenza, ognuno dà per acquisito il precedente: progettare il contesto, scriverlo nei file, collegare Claude e Figma, il design system per l'AI, costruire e pubblicare il prototipo (versionamento e archiviazione compresi), progettare con le skill di Claude, far lavorare l'agente da solo. Più i prossimi argomenti, il glossario e le fonti.
 
 - Repo pubblico: `mattialaurella-lotrek/kb-design-ai`
 - Online su [kb-design-ai.vercel.app](https://kb-design-ai.vercel.app), anteprime su [kb-design-ai-preview.vercel.app](https://kb-design-ai-preview.vercel.app)
@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 17.353 parole di prosa senza i blocchi di codice, 6 capitoli, 32 sezioni, 41 voci nell'indice laterale
-- 48 documenti in `docs/FONTI.md`
-- `index.html` pesa 290 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 26 agosto 2026
+- 20.109 parole di prosa senza i blocchi di codice, 7 capitoli, 38 sezioni, 48 voci nell'indice laterale
+- 53 documenti in `docs/FONTI.md`
+- `index.html` pesa 317 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Ultima build: 27 agosto 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro
@@ -72,11 +72,11 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **L'immagine di apertura è self-hostata** in `assets/`, 67 KB di materiale di Figma dentro un repo pubblico. La scelta serve a non far dipendere il PDF da un CDN esterno, visto che si genera a ogni deploy. Non ha didascalia né credito in pagina.
 
-**Il capitolo «Scrivere il contesto» è il più grosso, al 26%.** È coerente, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
+**Il capitolo «Scrivere il contesto» è il più grosso, al 23%.** È coerente, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
 
 **Le categorie del catalogo delle skill sono ancora H3**, quindi nella spalla pesano quanto un capitolo. Per le librerie è risolto, per le skill no.
 
-**Il capitolo sulle skill sta in fondo per decisione dell'utente**, contro il mio parere. Non riaprire senza un motivo nuovo.
+**Il capitolo sulle skill sta dopo tutto il resto per decisione dell'utente**, contro il mio parere. Dal 27 agosto 2026 non è più l'ultimo, perché lo segue «Far lavorare l'agente da solo», ma la decisione resta: non riaprire senza un motivo nuovo.
 
 **Da provare a mano**: i pulsanti di copia non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
 

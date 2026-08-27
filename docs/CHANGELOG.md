@@ -3,7 +3,26 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
-## [2026-08-26]
+## [2026-08-27]
+
+### Aggiunto
+- **Capitolo «Far lavorare l'agente da solo»,** il settimo, dopo quello sulle skill. Tre sezioni: «I quattro tipi di loop» con la tabella che li distingue per innesco, arresto e uso; «Le parti di un loop», le sette da scrivere prima di lanciarlo, con l'obiettivo debole contro quello forte e lo stato che sopravvive fra una corsa e l'altra; «Verificare il risultato», cioè cosa può fare da controllo in un lavoro di design, la skill in cui scrivi il tuo giro di QA, gli hook, gli agenti in parallelo con i worktree e la chiusura sul giudizio che si sposta invece di sparire. Sta in fondo perché usa tutto quello che viene prima, dal design system come criterio di verifica alle skill.
+- **Sezione «Versionare il progetto su GitHub»** nel capitolo 5, prima del deploy. Sorgente contro derivato con `node_modules` e i file di lock, il `.gitignore` scritto prima del primo commit, i cinque comandi con `gh repo create`, i commit chiesti a Claude, il push automatico con l'hook `post-commit` e i limiti di GitHub sui file pesanti con Git LFS.
+- **Sezione «Archiviare un progetto concluso»,** in coda al capitolo 5. I sette passaggi dalla pulizia delle cartelle rigenerabili alla cancellazione in locale, i file di Claude Code da conservare, il `.git` che non va dentro una cartella sincronizzata e le tre strade per la repository, con l'archiviazione consigliata.
+- **Sezione «Dove vivono le skill»,** fra «Cosa sono le skill e come si creano» e il catalogo. I due percorsi con quello che comportano, la precedenza della skill personale su quella di progetto, i comandi per installarne una da GitHub, il caso in cui serve riavviare e il criterio per scegliere il livello. Chiude il buco per cui il catalogo elencava decine di skill senza dire dove si mettono.
+- **Sei voci di glossario:** `.gitignore`, Git LFS, hook, JSON, loop e worktree. Quella su loop dichiara i tre sensi che la parola ha nella guida, così il capitolo nuovo non deve spiegarlo nel testo.
+- **Cinque fonti, voci 49-53 di `docs/FONTI.md`,** con i PDF in `sources/`: i due articoli UX Planet sui loop, il post Anthropic sui dynamic workflows, quello sul loop engineering e il pezzo di Addy Osmani. Nella guida nascono il gruppo «Loop e autonomia dell'agente» e tre pagine di documentazione GitHub nel gruppo del deploy. Le date sono verificate sulle pagine originali, non dedotte dalle sintesi.
+- **Regola in `CLAUDE.md`: un tema integrato esce da «Prossimi argomenti»,** e l'occhiello che conta i temi rimasti si riscrive. Chiesta dall'utente come regola permanente.
+
+### Modificato
+- **I titoli dei capitoli 5 e 6,** su indicazione dell'utente: «Costruire e pubblicare il prototipo» e «Progettare con le skill di Claude». Rinominati anche l'indice manuale e i due rimandi interni, che la build risolve per corrispondenza esatta del titolo.
+- **«Deploy del prototipo» perde il punto 2,** quello che faceva `.gitignore`, `git init` e `git push`: la stessa procedura stava per finire in due sezioni. Ora i passaggi sono tre e l'attacco rimanda a «Versionare il progetto su GitHub». Nella stessa riga «l'ultimo anello del loop» diventa «del ciclo», perché con un capitolo sui loop la parola deve significare una cosa sola.
+- **Il blocco sui pattern di affidabilità per le lavorazioni lunghe** si sposta da «Comandi e subagent per il design» a «Verificare il risultato», dove sta col resto del tema. Nel capitolo 3 resta un rimando.
+- **«Prossimi argomenti» scende da sette temi a tre,** perché installare le skill in locale, il versionamento, l'archiviazione e il loop engineering sono diventati testo. L'occhiello ora conta due temi di attrezzatura e uno di metodo.
+- **Punteggiatura dei titoletti in grassetto,** quindici correzioni. Tredici chiudevano col punto invece che coi due punti, e due grassetti a metà frase tenevano la virgola dentro. Due erano precedenti a questo giro, in «Dal codice al canvas e ritorno». Cinque paragrafi sono stati rifrasati perché, spostando i due punti sul titoletto, ne aprivano un secondo più avanti.
+- **L'attacco di «I quattro tipi di loop»** entra dal concetto invece che dal preambolo su dove la parola loop era già comparsa.
+
+
 
 ### Aggiunto
 - **La voce `Personal Access Token (PAT)` resta con la sigla in coda,** valutata e confermata. È l'unica delle nove scritta al contrario, e il motivo è che «PAT» nella guida non compare mai: l'unica ricorrenza sta in «Tre modi di collegare Figma a confronto» ed è per esteso. Il lemma segue la forma che il lettore incontra leggendo, ed è la regola che spiega tutti e nove i casi invece di lasciarne uno come eccezione. Annotata in `docs/MEMORY.md`.

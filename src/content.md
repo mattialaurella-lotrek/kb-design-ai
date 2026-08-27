@@ -12,7 +12,7 @@ Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI: come s
 - **Le librerie** di icone, componenti, motion ed effetti con cui si monta il prototipo.
 - **GitHub e Vercel** per versionare il lavoro e pubblicarlo a un indirizzo condivisibile.
 
-Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, le Claude Skills, la costruzione e la pubblicazione del prototipo. Chiudono i prossimi argomenti, il glossario e le fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura ( ͡ʘ ͜ʖ ͡ʘ)
+Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamento con Figma, il design system, la costruzione e la pubblicazione del prototipo, le Claude Skills e il lavoro che l'agente porta avanti da solo. Chiudono i prossimi argomenti, il glossario e le fonti. Usa l'**indice laterale** per saltare dove ti serve, oppure leggi in ordine. Buona lettura ( ͡ʘ ͜ʖ ͡ʘ)
 
 **Indice**
 
@@ -40,13 +40,20 @@ Sei capitoli in sequenza: il contesto e come si scrive nei file, il collegamento
   - Rendere il design system leggibile dall'AI
   - Creare una skill dal proprio design system
   - Enforcement del design system
-- **Costruire e pubblicare un prototipo**
+- **Costruire e pubblicare il prototipo**
   - Dal codice al canvas e ritorno
   - Librerie per asset ed effetti
+  - Versionare il progetto su GitHub
   - Deploy del prototipo
-- **Lavorare con le Claude Skills**
+  - Archiviare un progetto concluso
+- **Progettare con le skill di Claude**
   - Cosa sono le skill e come si creano
+  - Dove vivono le skill
   - Catalogo di skill di riferimento
+- **Far lavorare l'agente da solo**
+  - I quattro tipi di loop
+  - Le parti di un loop
+  - Verificare il risultato
 - **Prossimi argomenti**
 - **Glossario**
 - **Fonti**
@@ -166,7 +173,7 @@ Sono formati con funzioni diverse, spesso complementari:
 - **`DESIGN.md`:** l'identità visiva condensata in un front matter YAML con i token più un corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts). Aperta da Google Labs nell'aprile 2026, è la più matura della lista. Estrarre i token però è il passo che costa meno, perché quello che sposta l'output sono l'intento e i confini scritti attorno (vai a «DESIGN.md»).
 - **`UX.md`:** quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se `DESIGN.md` dice come deve apparire il prodotto, `UX.md` dice per chi è e come deve comportarsi, con i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista, una proposta di NN/g del luglio 2026 che nessuno strumento carica in automatico. Copre però un vuoto che gli altri file lasciano aperto (vai a «UX.md»).
 - **`MEMORY.md`:** memoria di progetto a lungo termine, con le decisioni prese e il contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
-- **`SKILL.md`:** conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. La struttura è a progressive disclosure. I metadati (~100 token) caricano per primi e decidono se la skill è rilevante, il corpo markdown (~500–2000 token) dà le istruzioni, i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve. Come si scrivono e quali adottare sta in «Lavorare con le Claude Skills», l'ultimo capitolo.
+- **`SKILL.md`:** conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. La struttura è a progressive disclosure. I metadati (~100 token) caricano per primi e decidono se la skill è rilevante, il corpo markdown (~500–2000 token) dà le istruzioni, i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve. Come si scrivono e quali adottare sta in «Progettare con le skill di Claude», l'ultimo capitolo.
 
 A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored).
 
@@ -541,7 +548,7 @@ Il catalogo pubblico ne conta una ventina contando le varianti. Figma ne documen
 
 **Claude Code dentro l'IDE + Plan mode:** usare Claude Code dentro VS Code (o altro IDE) evita il continuo salto tra ambiente di codice e app, e l'integrazione offre inline diff, plan review, file mention e shortcut. Per il lavoro di design non chiedere di costruire subito. Passa in **Plan mode** e segui il flusso analizza l'esperienza attuale → chiedi un piano UX → rivedi le modifiche proposte → approva → check finale design-system + accessibilità. Così Claude non si butta sul codice prima di aver capito il problema di prodotto.
 
-**Pattern di affidabilità per le lavorazioni lunghe:** **agente esecutore con contesto fresco** per ogni fase (sessione principale pulita, nessun degrado), **commit atomici** a ogni passaggio (history revertibile, `git bisect` per isolare quello che ha rotto qualcosa), **agente verificatore** che a fine esecuzione controlla il codebase contro gli obiettivi di fase.
+**Le lavorazioni lunghe** hanno pattern loro, che stanno in «Verificare il risultato» insieme al resto di quello che serve per lasciar lavorare l'agente senza guardarlo a ogni passaggio.
 
 ## Il design system per l'AI
 
@@ -726,9 +733,9 @@ Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assis
 
 **Il doppio controllo:** l'enforcement guarda in avanti, dal file verso quello che viene generato. Serve anche il controllo opposto, dal prodotto verso il file, perché il confronto periodico tra `DESIGN.md` e il sito live dice chi dei due è rimasto indietro, e il divario che emerge è il lavoro da fare (vedi la sezione «`DESIGN.md`»). Dove il formato ha un CLI, una parte si automatizza, dal lint dei riferimenti ai token ai contrasti WCAG e al diff tra versioni.
 
-## Costruire e pubblicare un prototipo
+## Costruire e pubblicare il prototipo
 
-Questo capitolo sviluppa il giro completo fra Claude e Figma, cioè come si porta su canvas un'interfaccia costruita in codice e come si rimandano indietro le modifiche fatte lì; le librerie di icone, componenti, motion, effetti e suono con cui si mette insieme quello che serve; e i due modi per pubblicare il risultato, GitHub Pages e Vercel, con il criterio per scegliere fra i due.
+Questo capitolo sviluppa il giro completo fra Claude e Figma, cioè come si porta su canvas un'interfaccia costruita in codice e come si rimandano indietro le modifiche fatte lì; le librerie di icone, componenti, motion, effetti e suono con cui si mette insieme quello che serve; e i due modi per pubblicare il risultato, GitHub Pages e Vercel, con il criterio per scegliere fra i due. Attorno alla pubblicazione stanno i due passaggi che tengono in vita il progetto oltre la giornata di lavoro, cioè come si versiona su GitHub mentre lo costruisci e come si archivia quando è finito.
 
 ### Dal codice al canvas e ritorno
 
@@ -736,12 +743,12 @@ Per anni il passaggio è andato in una direzione sola: si disegnava in Figma e q
 
 **A cosa serve davvero:** costruire in codice fa convergere, perché lanci una build, clicchi un percorso e vedi uno stato per volta, con tutto il quadro in testa a una persona sola. Il canvas fa l'opposto, perché ci metti accanto tutte le schermate, ci lasci commenti e decidete insieme. Con gli agenti la strozzatura si è spostata: la domanda non è più come si costruisce, ma quale delle versioni si spedisce, e quella decisione si prende sul canvas.
 
-**Il giro completo, in quattro passaggi.**
+**Il giro completo, in quattro passaggi:**
 
 1. **Collega Claude a Figma** con l'MCP e installa il plugin ufficiale, `/plugin install figma@claude-plugins-official`, che è quello che abilita il doppio senso. La configurazione dell'MCP è in «Setup e loop con Figma MCP».
 2. **Fatti scrivere l'interfaccia**, passando nel prompt anche il link al file Figma che userai dopo. Se quel file è ancora vuoto Claude segnala che non trova niente da leggere, e a questo punto l'errore si ignora.
 3. **Chiedi di portarla su Figma**, con una richiesta diretta del tipo «trasferisci questo design in Figma». Dopo qualche istante il file si popola con la pagina come frame editabili.
-4. **Modifica sul canvas e rimanda indietro.** Cambi un colore o rifai la spaziatura di una card in Figma, poi chiedi a Claude di applicare la modifica al codice. Ti mostra prima cosa intende cambiare, e tocca solo quello.
+4. **Modifica sul canvas e rimanda indietro:** cambi un colore o rifai la spaziatura di una card in Figma, poi chiedi a Claude di applicare la modifica al codice. Ti mostra prima cosa intende cambiare, e tocca solo quello.
 
 Quando la connessione a due vie è attiva, in cima all'anteprima della pagina compare un pannello con cui selezionare un elemento e mandarlo su Figma senza passare dal prompt.
 
@@ -816,9 +823,34 @@ Tutorial e fork pubblicati dai singoli autori:
 - [`romainsimon/uisfx`](https://github.com/romainsimon/uisfx): UI SFX, sistema sonoro semantico per interfacce: 78 effetti in 12 "personalità" audio richiamati per nome (`success`, `drop`…) invece che gestendo i singoli file; TypeScript su Web Audio API, ~12KB e zero dipendenze, per web app, mobile, SaaS e giochi
 - [`rexa-developer/tiks`](https://github.com/rexa-developer/tiks): suoni di interfaccia generati per sintesi invece che caricati da file: nessun asset audio da distribuire e timbro regolabile da codice
 
+### Versionare il progetto su GitHub
+
+Mentre ci lavori, il progetto vive in una cartella sul tuo disco, perché Claude Code legge e scrive file veri. GitHub non è la copia di quella cartella, è la storia del suo sorgente, e le due cose non coincidono. Sapere dove non coincidono evita la sorpresa di scoprire a lavoro finito che sul remoto manca metà del materiale.
+
+**Sorgente e derivato:** il sorgente è quello che avete scritto tu o l'agente, cioè il codice, i file di contesto, gli asset. Il derivato è tutto quello che una macchina ricostruisce da sé, e il caso tipico è `node_modules/`, dove finisce ogni libreria elencata in `package.json` insieme all'albero delle sue dipendenze. Bastano cinque librerie dirette per arrivare a qualche centinaio di megabyte. Tenerla fuori dal repository non fa perdere niente, perché `package.json` dichiara cosa serve e `package-lock.json` fissa le versioni esatte, quindi `npm install` la rifà identica, e i due file si conservano sempre insieme. Stesso discorso per la cartella di build `dist/` e, in un progetto Python, per l'ambiente virtuale `venv/`.
+
+**Il `.gitignore` si scrive prima del primo commit:** un file entrato nella storia non esce più cancellandolo dopo. Il minimo per un progetto Vite è `node_modules/`, `dist/`, `.env` e `.env.local`. I file `.env` non vanno mai in un repository pubblico, e una chiave finita in un commit va considerata compromessa anche se il commit dopo la toglie.
+
+Il repository si crea in cinque comandi, e la CLI ufficiale di GitHub (`gh`) evita il giro dal browser.
+
+```
+git init
+git add .
+git commit -m "Primo commit"
+git branch -M main
+gh repo create <nome-progetto> --private --source=. --remote=origin
+git push -u origin main
+```
+
+**I comandi non serve impararli a memoria:** Claude Code sta già dentro la cartella, quindi "committa quello che abbiamo fatto, con un messaggio che dice cosa è cambiato" funziona come richiesta. Conviene fermarsi spesso, un commit per ogni passaggio chiuso, perché una storia fatta di commit piccoli si legge e permette di tornare indietro di un passo solo quando qualcosa si rompe (vedi i commit atomici in «Comandi e subagent per il design»).
+
+**Il push si può automatizzare** con un hook `post-commit`, cioè un file eseguibile in `.githooks/post-commit` che lancia `git push` appena il commit è chiuso, acceso una volta sola con `git config core.hooksPath .githooks`. Due avvertenze. Git non installa da sé gli hook che arrivano con un clone, quindi su un'altra macchina il comando va rilanciato. E quando il push fallisce il commit resta in locale, quindi l'hook deve dirlo, altrimenti credi di aver pubblicato e non è vero.
+
+**I file pesanti non entrano come file normali:** GitHub blocca il push di un singolo file sopra i 100 MB e consiglia di tenere il repository sotto il gigabyte, perché la storia se li porta dietro tutti e il clone diventa lento per chiunque. Per dataset, video ed esportazioni ad alta risoluzione che devono comunque stare sotto controllo di versione si usa Git LFS, che nel repository lascia un puntatore e tiene il file vero altrove.
+
 ### Deploy del prototipo
 
-Il deploy è l'ultimo anello del loop (Design → Build → **Deploy** → Test → Iterate): serve a passare da "gira sulla mia macchina" a un URL condivisibile. Tre livelli, dal più veloce al più pubblico: anteprima in locale, pubblicazione su Vercel, pubblicazione su GitHub Pages.
+Il deploy è l'ultimo anello del ciclo (Design → Build → **Deploy** → Test → Iterate) e serve a passare da "gira sulla mia macchina" a un URL condivisibile. Tre livelli, dal più veloce al più pubblico: anteprima in locale, pubblicazione su Vercel, pubblicazione su GitHub Pages. Le due pubblicazioni partono tutte e due dal repository di «Versionare il progetto su GitHub».
 
 **1) Anteprima in locale:** prima di pubblicare, conviene sempre far girare il progetto in locale, perché una build che fallisce sul server è più lenta da debuggare di una intercettata subito. Per un progetto Vite tipico valgono questi comandi.
 
@@ -829,25 +861,14 @@ npm run build      # genera la build di produzione in /dist
 npm run preview    # serve la build di produzione in locale, per verificarla
 ```
 
-**2) Preparare il repository Git:** crea un `.gitignore` (almeno `node_modules/`, `.env`, `.env.local`, `dist/`) prima del primo `git add`; non committare mai file `.env` in un repo pubblico. Poi inizializza e pubblica su GitHub.
-
-```
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/<utente>/<repo>.git
-git push -u origin main
-```
-
-**3) Pubblicare su Vercel:** due strade. **Dashboard (consigliata la prima volta):** `vercel.com` → Add New → Project → Import del repo GitHub → Vercel rileva il framework (React/Vite/Next.js…) e propone Build Command `npm run build` e Output Directory `dist` (per Vite) → Deploy. **CLI:** `npm i -g vercel`, poi `vercel login` e `vercel`, rispondendo ai prompt. Restano da tenere presenti alcuni punti.
+**2) Pubblicare su Vercel:** due strade. **Dashboard (consigliata la prima volta):** `vercel.com` → Add New → Project → Import del repo GitHub → Vercel rileva il framework (React/Vite/Next.js…) e propone Build Command `npm run build` e Output Directory `dist` (per Vite) → Deploy. **CLI:** `npm i -g vercel`, poi `vercel login` e `vercel`, rispondendo ai prompt. Restano da tenere presenti alcuni punti.
 - **CI/CD automatico:** collegando GitHub, Vercel installa un webhook, quindi ogni push su `main` diventa un deploy di produzione, e ogni branch/PR ottiene un preview URL da condividere.
 - **SPA 404 al refresh (es. React Router):** aggiungi un `vercel.json` con un rewrite di tutte le rotte su `/`.
 - **Variabili d'ambiente:** si impostano nel dashboard (Settings → Environment Variables), non nel repo; per Vite devono avere il prefisso `VITE_`.
 - **Dominio custom:** Settings → Domains, SSL automatico. Il piano gratuito (Hobby) basta per prototipi.
 - In alternativa, si può deployare da dentro Claude Code con il plugin `vercel/vercel-deploy-claude-code-plugin`.
 
-**4) Pubblicare su GitHub Pages** (hosting statico gratuito, ideale per la guida stessa e per prototipi senza backend). Passo obbligato: impostare il `base` in `vite.config.js`, perché le Pages di progetto vivono in un sottopercorso:
+**3) Pubblicare su GitHub Pages** (hosting statico gratuito, ideale per la guida stessa e per prototipi senza backend). Passo obbligato: impostare il `base` in `vite.config.js`, perché le Pages di progetto vivono in un sottopercorso:
 
 ```
 // vite.config.js — project page su <utente>.github.io/<repo>/
@@ -909,7 +930,29 @@ Se usi React Router, allinea il `basename` del router al `base` di Vite (altrime
 </div>
 </div>
 
-## Lavorare con le Claude Skills
+### Archiviare un progetto concluso
+
+A progetto chiuso restano una cartella pesante che non aprirai più e una repository che contiene solo il sorgente. Manca il terzo posto, cioè l'archivio completo, quello che tiene anche le parti che in git non sono mai entrate, dagli asset originali alle configurazioni locali. Sette passaggi, in quest'ordine.
+
+1. **Pulisci quello che si rigenera:** `rm -rf node_modules dist` (in un progetto Python anche `venv` e `__pycache__`). È la parte che pesa, ed è l'unica che torna con un comando.
+2. **Togli i segreti:** chiavi API, token, file `.env` con le credenziali. Vanno in un password manager, non dentro l'archivio, altrimenti fra un anno ti ritrovi uno zip che nessuno può condividere.
+3. **Annota la versione dell'interprete:** `package-lock.json` fissa le librerie e non la versione di Node con cui giravano. Basta un file `.nvmrc` o una riga in `CLAUDE.md`, e chi riapre il progetto non passa mezza giornata a capire perché la build non parte.
+4. **Controlla i file di Claude Code:** `CLAUDE.md` e `DESIGN.md` sono quelli che fanno ripartire senza rispiegare tutto, quindi si conservano sempre, insieme a `.claude/skills/`, `.claude/commands/` e `.mcp.json`. Il file `.claude/settings.local.json` invece va guardato prima, perché può contenere percorsi che esistono solo su questa macchina. La cronologia delle conversazioni non sta nella cartella di progetto ma nella tua home, quindi comprimere il progetto non se la porta dietro, quindi riaprendolo Claude riparte da una conversazione vuota e ricostruisce il contesto dai file, che è il motivo per cui esistono (vedi «I file di contesto»).
+5. **Comprimi la cartella** con `tar -czf progetto.tar.gz cartella-progetto/`, oppure in zip se preferisci aprirla con un doppio clic. Qui decidi se includere anche `.git`, e da quella scelta dipende il punto 7.
+6. **Carica l'archivio** sul cloud storage che usa il team, Google Drive o quello che è.
+7. **Cancella la cartella locale** solo dopo aver riscaricato l'archivio e averlo aperto davvero. Un archivio mai riaperto non è un archivio verificato.
+
+**Il repository non si tiene dentro una cartella sincronizzata:** Drive e Dropbox caricano i file uno per uno e in ordine sparso, mentre `.git` è un database in cui indice e oggetti devono restare coerenti fra loro. Una sincronizzazione a metà, o la stessa cartella aperta su due macchine, produce un repository corrotto o una fila di copie in conflitto. Il progetto attivo sta su un disco locale, sul cloud ci va l'archivio compresso, che è un file solo e si carica intero.
+
+**Che fine fa la repository su GitHub:** tre strade, e la scelta dipende da quanto ti vale la storia dei commit.
+
+- **Archiviarla** dalle impostazioni della repository, che è la scelta giusta quasi sempre: diventa di sola lettura, esce dalla lista dei progetti attivi, non occupa niente sul tuo disco e resta consultabile con tutta la storia.
+- **Lasciarla attiva**, che non costa niente ma col tempo riempie la lista di progetti che nessuno ricorda più.
+- **Cancellarla**, che ha senso solo se al punto 5 hai incluso `.git` nell'archivio. Se hai compresso soltanto lo stato finale dei file, cancellare la repository butta via la storia per sempre.
+
+**Per riaprire il progetto** si scompatta l'archivio e si reinstallano le dipendenze con `npm install` (o `pip install -r requirements.txt`). Sono pochi minuti, e Claude Code ritrova la cartella nello stato in cui l'hai lasciata.
+
+## Progettare con le skill di Claude
 
 Cosa sono le skill di Claude, come si scrive la propria e quali adottare senza installarne cinquanta. Chiude un catalogo di repository ordinati per area, da consultare quando serve invece che da leggere in fila.
 
@@ -923,7 +966,7 @@ Una skill è un insieme di istruzioni che dicono all'AI come svolgere un compito
 
 **Quando la skill è lo strumento sbagliato:** una skill che orchestra molti passaggi e delega ad altri agenti costa parecchio, perché a ogni giro chiede a un modello di decidere qualcosa che spesso è già deciso. Una misura pubblicata a luglio 2026 confronta una skill di revisione del codice con lo stesso lavoro riscritto come procedura deterministica: da 4,6 milioni di token a 506mila, da 23 agenti a 3, e metà del tempo. Il segnale da tenere d'occhio è la ripetitività, perché se i passaggi sono sempre gli stessi nello stesso ordine quella parte è codice travestito da prompt, e conviene scriverla come codice lasciando al modello solo i punti in cui serve un giudizio.
 
-**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può stare a due livelli, **globale** (nella cartella root di Claude sul computer, si attiva in qualsiasi progetto, comodo per le skill che usi ovunque) o **di progetto** (dentro la cartella del progetto, si attiva solo lì, utile per il team, perché in un repo GitHub condiviso la skill diventa disponibile a tutti). Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
+**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può stare a due livelli, sul tuo computer o dentro il progetto, e la differenza fra i due la sviluppa «Dove vivono le skill». Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
 
 ```
 ---
@@ -945,11 +988,33 @@ Descrivi come dev'essere l'output finale.
 - **Partire da una skill già fatta:** Anthropic ne pubblica alcune «ufficiali» ([`anthropics/skills`](https://github.com/anthropics/skills)), ampie e generiche, quindi conviene leggerne la `description` prima di adottarle. `frontend-design`, la più usata, dà istruzioni precise (evita i font generici Arial e Inter, layout attesi, elementi che rompono la griglia, indicazioni di motion), e leggere cosa fa una skill prima di adottarla conta più che installarne tante. Lo stesso vale per le skill di terze parti da marketplace, dove conviene leggere la `description`, perché spesso contengono più di quanto ti serve e consumano token, o script che è meglio verificare prima di eseguire. Per cercarle puoi chiedere a Claude o usare una skill come `find-skill` (team Vercel), che interroga il marketplace al posto tuo. Si caricano da claude.ai (in `claude.ai/customize/skills` carichi il file dal computer) o da Claude Code.
 - **Usare `skill-creator`:** è la skill ufficiale di Anthropic per creare skill, con un loop di verifica integrato.
 
-Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Creare una skill dal proprio design system». Il catalogo qui sotto raccoglie skill e repository di riferimento, ordinati per area.
+Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Creare una skill dal proprio design system». Dove va messa una volta scritta o scaricata è il tema della sezione qui sotto, e il catalogo che chiude il capitolo raccoglie skill e repository di riferimento, ordinati per area.
+
+### Dove vivono le skill
+
+Una skill è una cartella con dentro un `SKILL.md`, e il posto in cui la metti decide chi la vede. I livelli sono due.
+
+- **Le tue:** stanno in `~/.claude/skills/<nome-skill>/SKILL.md`, valgono in qualunque cartella tu apra, anche fuori da un repository, e non finiscono nel progetto di nessuno. È il posto del metodo che ti porti dietro da un cliente all'altro, per esempio il giro di controlli che fai prima di consegnare.
+- **Quelle del progetto:** stanno in `.claude/skills/<nome-skill>/SKILL.md` dentro la cartella del progetto, si committano come qualsiasi altro file e chi clona il repository se le ritrova attive senza installare niente. È il posto di quello che vale per quel prodotto e per quella squadra.
+
+**Se lo stesso nome sta in tutti e due i posti vince la tua:** quella del repository resta zitta, senza nessun messaggio che lo dica. È il modo tipico di ritrovarsi con un risultato diverso da quello di un collega sullo stesso progetto, quindi una skill personale conviene chiamarla in modo che non collida con niente.
+
+**Installare una skill presa da GitHub è una copia di cartella:** un comando ufficiale per farlo non esiste.
+
+```
+git clone https://github.com/<utente>/<repo>.git
+cp -r <repo>/skills/<nome-skill> ~/.claude/skills/
+```
+
+La destinazione cambia a seconda del livello, `~/.claude/skills/` per le tue e `.claude/skills/` per quelle del progetto. Se invece la skill arriva impacchettata dentro un plugin, si installa il plugin da `/plugin` e la richiami col nome del plugin davanti, nella forma `/nome-plugin:nome-skill`.
+
+**Le skill nuove si vedono subito:** non serve riavviare niente. L'unica eccezione è la cartella `.claude/skills/` creata in un progetto che non ce l'aveva, perché fino a quel momento Claude Code non la stava guardando. Il comando `/skills` elenca quelle attive dicendo da dove arriva ciascuna, e da lì si accendono e si spengono una per una.
+
+**Come si sceglie il livello:** una skill sta nel progetto quando descrive quel prodotto, cioè il suo design system, le sue convenzioni, il suo giro di verifica, e sta fra le tue quando descrive come lavori tu. Nel dubbio conviene il progetto, perché una skill che vive solo sul tuo computer è un pezzo di metodo che la squadra non eredita e che sparisce quando cambi macchina.
 
 ### Catalogo di skill di riferimento
 
-Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, sta nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare un prototipo».
+Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, sta nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare il prototipo».
 
 **Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
@@ -1040,16 +1105,75 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`withastro/astro`](https://github.com/withastro/astro): framework web per siti fatti di contenuto, l'alternativa a Next.js quando il prototipo è una pagina da leggere più che un'applicazione
 - [`supabase/supabase`](https://github.com/supabase/supabase): database Postgres gestito con autenticazione e storage, per il prototipo che deve salvare qualcosa davvero
 
+## Far lavorare l'agente da solo
+
+Fin qui ogni richiesta è un giro solo, cioè tu chiedi, l'agente lavora, tu guardi il risultato. Un loop è lo stesso giro ripetuto finché non incontra la condizione che lo ferma, e il mestiere di progettare quella condizione si chiama loop engineering. Qui trovi i quattro tipi di loop, le parti di cui sono fatti e il pezzo che decide se puoi fidartene, cioè la verifica.
+
+### I quattro tipi di loop
+
+Progettare un loop vuol dire decidere tre cose, cioè che cosa lo fa partire, che cosa l'agente può fare mentre gira e che cosa lo ferma. I quattro tipi si distinguono per quanta parte di quelle decisioni resta in mano tua a ogni giro.
+
+| Tipo | Parte quando | Si ferma quando | Serve per |
+|---|---|---|---|
+| **A turni**, con il prompt normale | mandi una richiesta | l'agente considera chiuso il compito o ti chiede qualcosa | il lavoro con requisiti ancora aperti, dove il giudizio serve a ogni passaggio |
+| **A obiettivo**, con `/goal` | scrivi la condizione da raggiungere | la condizione risulta raggiunta, oppure impossibile, oppure finiscono i tentativi | il lavoro con un traguardo controllabile, per esempio un componente che deve corrispondere alla sua spec |
+| **A intervallo**, con `/loop` e `/schedule` | scatta il tempo che hai fissato | lo fermi tu o finisce il lavoro che stava sorvegliando | tenere d'occhio qualcosa che cambia per conto suo, una pull request, un deploy, una build |
+| **Proattivo**, con `/goal` dentro `/schedule` | un evento o un orario, senza nessuno davanti allo schermo | ogni corsa si chiude sul suo obiettivo e la routine va avanti finché non la spegni | un flusso ricorrente e già definito, per esempio il triage delle segnalazioni di QA |
+
+A ogni gradino lasci andare un pezzo in più. Nel giro a turni tieni tutto. Con `/goal` cedi la verifica del risultato, perché la condizione la controlla il sistema al posto tuo. Con `/loop` e `/schedule` cedi anche il momento in cui si riparte. Nel loop proattivo cedi l'innesco, e quello che ti resta in mano è la condizione che hai scritto prima.
+
+**Il primo è quello che usi già:** resta la forma giusta ogni volta che il compito non ha un traguardo riconoscibile da una macchina. Gli altri tre servono dove il collo di bottiglia sei tu che rilanci, non l'agente che lavora.
+
+**Due cose da sapere prima di provare `/schedule`:** gira nel cloud, quindi non ha bisogno che il computer resti acceso, e per questo chiede un abbonamento Claude.ai. L'intervallo minimo è un'ora, e non è un limite che si aggira lanciandolo più spesso.
+
+### Le parti di un loop
+
+Un loop che si comporta male quasi sempre ha un pezzo mancante. Le parti sono sette e conviene scriverle tutte prima di lanciarlo.
+
+- **Innesco:** cosa lo fa partire, cioè una tua richiesta, un orario, una segnalazione che arriva.
+- **Obiettivo:** dove deve arrivare, scritto come condizione che si può controllare e non come direzione.
+- **Contesto:** i file, le regole del design system e i vincoli che gli servono per muoversi nella direzione giusta invece che in una qualsiasi.
+- **Strumenti:** cosa gli è permesso leggere, modificare, lanciare, fotografare.
+- **Verifica:** come si controlla il risultato. È la parte che decide se il loop vale qualcosa.
+- **Condizione di arresto:** come fa a sapere di aver finito, con un tetto di tentativi che valga anche quando non ci arriva.
+- **Stato:** dove resta scritto quello che ha già fatto. Un loop che riparte a intervallo non si ricorda la corsa precedente, quindi senza un file che tenga il punto ricomincia ogni volta da zero, ed è il mestiere di `SESSIONS.md` e `BACKLOG.md` (vedi «I file di contesto»).
+
+**Un obiettivo funziona se l'agente può confrontarlo con qualcosa:** "migliora questa pagina" non lo è, perché non esiste il momento in cui risulta vero. Funziona invece una condizione come "aggiorna la dashboard finché non corrisponde al riferimento a 375, 768 e 1440 pixel di larghezza, passa un controllo di accessibilità a livello AA e non mostra elementi sovrapposti, e fermati dopo cinque tentativi se la condizione non è raggiungibile". Traguardo e tetto stanno nella stessa frase, perché `/goal` legge la condizione per intero e il limite di tentativi si scrive lì dentro, non come opzione a parte.
+
+Il tetto conta quanto il traguardo. Senza, un loop a obiettivo continua a girare anche quando ha smesso di avvicinarsi, e la spesa cresce mentre il risultato sta fermo. `/goal` lanciato da solo, senza condizione, mostra a che punto è quella attiva, quanti turni sono già stati valutati e quanti token sono andati; `/usage` dà lo stesso conto sull'intera sessione.
+
+### Verificare il risultato
+
+Un loop senza verifica è automazione che gira sulla fiducia. Il punto delicato è chi controlla, perché il modello che ha fatto il lavoro è il giudice meno affidabile di quel lavoro: lo valuta con le stesse assunzioni che l'hanno prodotto. Per questo `/goal` non chiede all'agente se ha finito e passa la condizione a un secondo modello, più piccolo e veloce, che dopo ogni turno risponde una di tre cose, non ancora, raggiunta, impossibile.
+
+**Cosa può fare da verifica in un lavoro di design:**
+
+- il confronto di uno screenshot con un riferimento, che è la forma più diretta per un componente o una schermata;
+- una scansione di accessibilità con una soglia dichiarata, per esempio contrasto e navigazione da tastiera a livello AA;
+- il controllo dei valori usati contro i token del design system, che intercetta il colore scritto a mano al posto della variabile (vedi «Enforcement del design system»);
+- un punteggio Lighthouse, quando quello che conta è la resa della pagina;
+- un secondo agente che rivede il risultato senza sapere come è stato costruito.
+
+Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire finito, e più controllo gli puoi passare senza guardare ogni passaggio.
+
+**Scrivi il tuo controllo come skill:** se davanti a una modifica apriresti il browser, cliccheresti il controllo nuovo e confronteresti uno screenshot, quella sequenza va messa per iscritto una volta sola e richiamata sempre uguale, invece di essere ricostruita a memoria a ogni giro (vedi «Cosa sono le skill e come si creano»). È anche il motivo per cui `/loop` senza prompt legge un file `loop.md`, che è il posto dove sta il giro di controllo ricorrente.
+
+**Gli hook fanno partire la verifica da sé:** sono comandi che Claude Code lancia in un momento fisso del ciclo, per esempio dopo ogni modifica a un file o alla fine di un turno, e si dichiarano in `.claude/settings.json`. La differenza rispetto a una regola scritta in `CLAUDE.md` è che l'hook parte comunque, mentre la regola dipende da quanto l'agente se la ricorda.
+
+**Pattern di affidabilità per le lavorazioni lunghe:** **agente esecutore con contesto fresco** per ogni fase (sessione principale pulita, nessun degrado), **commit atomici** a ogni passaggio (storia su cui si torna indietro, `git bisect` per isolare quello che ha rotto qualcosa), **agente verificatore** che a fine esecuzione controlla il codebase contro gli obiettivi di fase.
+
+**Gli agenti in parallelo costano:** un compito si può dividere fra più subagent che lavorano insieme, per esempio uno che stima l'impatto sul front-end mentre un altro controlla l'accessibilità; Claude Code sa anche costruirsi da sé l'impalcatura adatta al compito, ed è quello che Anthropic chiama dynamic workflows. Conviene quando le parti sono davvero indipendenti, perché coordinamento e token si pagano lo stesso. Se due agenti toccano gli stessi file serve un worktree per ciascuno, cioè una copia separata della cartella di lavoro su un ramo suo, e si chiede con `isolation: worktree` nella definizione del subagent; sparisce da sé se quell'agente non ha modificato niente.
+
+**Un loop che finisce dichiara una cosa sola:** che il risultato ha superato il controllo che gli hai messo davanti. Vale quanto vale quel controllo, quindi «fatto» resta qualcosa da confermare. C'è anche un effetto meno visibile, cioè che meno scrivi tu, più si allarga la distanza fra quello che esiste nel progetto e quello che sapresti spiegare a voce, quindi quello che il loop produce va letto e non solo lanciato. Il giudizio non sparisce, si sposta dalla revisione di ogni passaggio alla scrittura dell'obiettivo e del controllo. È lo stesso mestiere di «Human-in-the-loop», spostato un gradino più in là.
+
+**Da dove partire:** prendi un compito che fai a mano e in cui il collo di bottiglia sei tu, e chiediti quale pezzo puoi cedere per primo, se la verifica, la condizione di arrivo o l'innesco. Cedi quello, guarda dove il loop si inceppa o esagera, e passa al pezzo dopo.
+
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Cinque temi stanno dalla parte dell'attrezzatura, cioè come si installa, si configura e si mette al sicuro l'ambiente in cui la guida ti chiede di lavorare. Gli altri due sono di metodo. Il loop engineering riguarda quanto lavoro puoi lasciar fare all'agente da solo, la ricerca UX con l'AI riguarda come si decide cosa costruire.
+Quello che ancora manca e su cui stiamo lavorando. Due temi stanno dalla parte dell'attrezzatura, cioè come si configura l'ambiente in cui la guida ti chiede di lavorare. L'ultimo è di metodo e riguarda come si decide cosa costruire.
 
-- **Installare le skill in locale:** una skill che sta dentro `~/.claude/skills/` vale in tutti i progetti, non solo in quello dove l'hai scritta. Serve a dividere le skill tue da quelle del repo, la distinzione che oggi manca al catalogo di «Lavorare con le Claude Skills».
 - **Gestire Claude Code dal terminale:** i comandi della CLI gestiscono le connessioni MCP, il livello di effort, i plugin e i marketplace, così non devi aprire i file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
 - **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor, con le differenze che contano davvero e cosa conviene in quale caso.
-- **Versionamento e backup del progetto:** come si crea il repo, come lo si collega a GitHub con la CLI ufficiale e come si arriva al push automatico che a ogni commit manda tutto sul remoto. I comandi git puoi chiederli a Claude invece di ricordarteli, e una parte del giro poi va avanti da sola.
-- **Archiviare un progetto su Google Drive:** dove tenere un progetto Claude Code quando il disco di una sola macchina non basta più, e cosa succede a un repo git dentro una cartella sincronizzata.
-- **Loop engineering:** un loop è un agente che ripete lo stesso ciclo di lavoro finché non incontra la condizione che lo ferma. I tipi sono quattro. Il giro a turni lo guidi tu, `/goal` si ferma quando l'obiettivo è verificato, `/loop` e `/schedule` ripartono a intervallo, i loop proattivi scattano su un evento senza nessuno davanti allo schermo. A ogni passaggio lasci andare qualcosa, prima la verifica del risultato, poi la condizione di arrivo, poi l'innesco. È una prospettiva differente rispetto alla sezione «Human-in-the-loop», che spiega invece cosa resta in capo a chi progetta.
 - **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code stanno in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
 
 ## Glossario
@@ -1078,10 +1202,15 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Finestra di contesto:** lo spazio in cui l'AI tiene insieme istruzioni, file e conversazione mentre lavora. Vedi «Il contesto è una risorsa finita».
 - **Frame:** in Figma, il contenitore che tiene dentro altri elementi. È l'unità con cui si costruisce una schermata.
 - **Front matter:** il blocco di dati strutturati in cima a un file markdown, delimitato da `---`, che gli strumenti leggono come configurazione invece che come testo.
+- **`.gitignore`:** il file che elenca quello che git deve ignorare, cioè le cartelle rigenerabili e i file con dentro le chiavi. Si scrive prima del primo commit. Vedi «Versionare il progetto su GitHub».
+- **Git LFS (Large File Storage):** estensione di git per i file pesanti, che nel repository lascia un puntatore e tiene il file vero altrove. Vedi «Versionare il progetto su GitHub».
 - **Handoff:** il passaggio di consegne a chi riprende il lavoro dopo di te, che può essere un collega o te stesso alla sessione successiva.
 - **Happy path:** il percorso in cui tutto va bene e nessuno sbaglia niente. È quello che gli agenti costruiscono per primo, e spesso l'unico.
+- **Hook:** comando che un programma lancia da sé in un momento fisso, per esempio dopo ogni modifica a un file o subito dopo un commit. Serve a far succedere un controllo senza doverselo ricordare. Vedi «Verificare il risultato».
 - **IDE (Integrated Development Environment):** il programma in cui si scrive il codice, che tiene nello stesso posto editor, ricerca nei file, terminale e strumenti di debug. VS Code e Cursor sono due IDE, e Claude Code ci gira dentro come estensione. Vedi «Comandi e subagent per il design».
+- **JSON (JavaScript Object Notation):** formato per scrivere dati strutturati come coppie di nome e valore, dentro parentesi graffe. È quello dei file di configurazione come `.mcp.json` e `settings.json`, e copre le stesse funzioni di YAML con una sintassi meno tollerante.
 - **Lint:** controllo automatico che segnala errori e violazioni delle regole dentro un file, prima che diventino un problema.
+- **Loop:** un ciclo di lavoro che si ripete finché non incontra la condizione che lo ferma. Nella guida la parola ha tre usi vicini: il giro fra Figma e il codice, il ciclo che porta dalla costruzione alla pubblicazione, e il loop che l'agente ripete da solo di «Far lavorare l'agente da solo».
 - **Marketplace:** il catalogo da cui si installano i plugin di Claude Code, con `/plugin marketplace add`.
 - **MCP (Model Context Protocol):** standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
 - **node-id:** identificatore di un nodo (frame, layer, componente) in un file Figma; serve all'MCP per sapere su quale oggetto lavorare.
@@ -1100,6 +1229,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Token (design token):** un valore del design system a cui è stato dato un nome, per esempio un colore o una misura di spaziatura, così si richiama per nome invece di ricopiarne il valore.
 - **Variante:** in Figma, una versione alternativa dello stesso componente (il pulsante primario e quello secondario) raccolta insieme alle altre.
 - **WCAG (Web Content Accessibility Guidelines):** lo standard internazionale per l'accessibilità dei contenuti web. I livelli AA e AAA fissano soglie precise, per esempio sul contrasto fra testo e sfondo.
+- **Worktree:** copia di lavoro separata dello stesso repository, su un ramo suo, così due agenti che lavorano insieme non si toccano gli stessi file. Vedi «Verificare il risultato».
 - **YAML (YAML Ain't Markup Language):** formato per scrivere dati strutturati in modo leggibile, usato per esempio nel front matter di `DESIGN.md`.
 
 ## Fonti
@@ -1178,6 +1308,17 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Xinran Ma, [The Claude Skills Playbook](https://designwithai.substack.com/p/the-claude-skills-playbook)
 - Adam Jacob, [A Practical Guide to Reducing Token Spend](https://www.adamhjk.com/blog/a-practical-guide-to-reducing-token-spend) (luglio 2026)
 
-**Deploy**
+**Deploy, versionamento e archiviazione**
 - MindStudio, [How to Deploy a Claude Code Project to GitHub and Vercel in Under 10 Minutes](https://www.mindstudio.ai/blog/deploy-claude-code-project-github-vercel)
 - Vite, [Deploying a Static Site](https://vite.dev/guide/static-deploy)
+- GitHub, [About large files on GitHub](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github)
+- GitHub, [About Git Large File Storage](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage)
+- GitHub, [Archiving repositories](https://docs.github.com/en/repositories/archiving-a-github-repository/archiving-repositories)
+
+**Loop e autonomia dell'agente**
+- Addy Osmani, [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) (giugno 2026)
+- Anthropic, [A harness for every task: dynamic workflows in Claude Code](https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code) (giugno 2026)
+- Nick Babich, [Loop Engineering in Claude Code](https://uxplanet.org/loop-engineering-in-claude-code-a36e3b1ca589) (giugno 2026)
+- Anthropic, [Loop engineering: Getting started with loops](https://claude.com/blog/getting-started-with-loops) (giugno 2026)
+- Nick Babich, [4 Types of Loops You Can Create in Claude Code](https://uxplanet.org/4-types-of-loops-you-can-create-in-claude-code-aff824404834) (luglio 2026)
+- Anthropic, documentazione di Claude Code per [`/goal`](https://code.claude.com/docs/en/goal), [`/loop` e `/schedule`](https://code.claude.com/docs/en/scheduled-tasks), [gli hook](https://code.claude.com/docs/en/hooks) e [i subagent](https://code.claude.com/docs/en/sub-agents)
