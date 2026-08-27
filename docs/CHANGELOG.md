@@ -21,6 +21,7 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 - **«Prossimi argomenti» scende da sette temi a tre,** perché installare le skill in locale, il versionamento, l'archiviazione e il loop engineering sono diventati testo. L'occhiello ora conta due temi di attrezzatura e uno di metodo.
 - **Punteggiatura dei titoletti in grassetto,** quindici correzioni. Tredici chiudevano col punto invece che coi due punti, e due grassetti a metà frase tenevano la virgola dentro. Due erano precedenti a questo giro, in «Dal codice al canvas e ritorno». Cinque paragrafi sono stati rifrasati perché, spostando i due punti sul titoletto, ne aprivano un secondo più avanti.
 - **L'attacco di «I quattro tipi di loop»** entra dal concetto invece che dal preambolo su dove la parola loop era già comparsa.
+- **L'attacco di «Librerie per asset ed effetti»** dice a cosa servono quelle librerie invece di annunciare quante famiglie sono. Frase dell'utente: «Servono a costruire il prototipo con elementi già impostati invece di progettarli singolarmente: icone, componenti, animazioni, effetti e suoni». Le mie due versioni precedenti erano roboanti, e la seconda spiegava anche come si nomina una libreria nel prompt, che lì non serviva.
 
 
 

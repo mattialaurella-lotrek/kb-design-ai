@@ -756,7 +756,7 @@ Quando la connessione a due vie è attiva, in cima all'anteprima della pagina co
 
 ### Librerie per asset ed effetti
 
-Cinque famiglie, dalle fondamenta al dettaglio. Non servono tutte: si prende quella che risolve il problema che hai davanti.
+Servono a costruire il prototipo con elementi già impostati invece di progettarli singolarmente: icone, componenti, animazioni, effetti e suoni.
 
 **Fondamenta e asset**
 
