@@ -3,6 +3,16 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-08-28]
+
+### Modificato
+- **«Quali sezioni mettere» del `CLAUDE.md` passa da sei sezioni a quattro.** `# Role` e `# Output format` escono e un paragrafo nuovo dice perché: la prima assegna a Claude una competenza che ha già, la seconda fissa in un file valido per tutte le sessioni una cosa che cambia da una richiesta all'altra, e per quel caso il posto è una skill o uno slash command. Le sei sezioni contraddicevano «Cosa ci va dentro», due paragrafi sopra, che chiede di scrivere solo quello che Claude sbaglierebbe da solo. La correzione viene dal post di Anthropic sul context engineering per i modelli di generazione Claude 5 (voce 54).
+- **«Sotto le duecento righe» diventa «Duecento righe sono il tetto»,** perché la soglia veniva letta come traguardo. Il paragrafo ora dice che l'obiettivo sta più in basso e che sessanta righe di trappole del progetto valgono più di centottanta che ripetono quello che si vede aprendo la cartella. Cade anche l'indicazione di spezzare il file richiamando le parti con `@`: un file importato si carica comunque a ogni avvio, quindi in `CLAUDE.md` resta il puntatore che dice quando aprirlo, com'era già scritto in «`CLAUDE.md` come indice, non contenitore».
+- **Il punto 2 delle buone pratiche in «Organizzare il progetto»** allineato alla stessa logica. Diceva di dividere oltre le duecento righe in file importati con `@path/to/import.md`, cioè la terza versione della stessa istruzione e l'unica che non riduceva il contesto caricato.
+
+### Aggiunto
+- **Fonte 54,** il post di Thariq Shihipar per Anthropic del 24 luglio 2026 sulle nuove regole del context engineering. In `docs/FONTI.md` con la nota sul PDF che manca, e nella sezione «Fonti» della guida sotto «Contesto e pratica di design con l'AI». Il corpo si monta via JavaScript e la stampa headless esce vuota, come per la voce 52.
+
 ## [2026-08-27]
 
 ### Aggiunto

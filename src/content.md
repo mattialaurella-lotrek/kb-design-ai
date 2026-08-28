@@ -222,7 +222,9 @@ Da evitare: estetica SaaS generica, spaziature larghe, decorazione.
 Tecnologia: Next.js, TypeScript, Tailwind, shadcn/ui.
 ```
 
-**Quali sezioni mettere:** dopo l'apertura il file si organizza per aree, e per un lavoro di design queste sei coprono quasi tutto. `# Role` dice chi deve essere Claude (per esempio «sei un senior product designer e frontend engineer»). `# Product context` dice cosa fa il prodotto e per chi. `# Design principles` elenca i principi a cui attenersi, come la chiarezza prima della decorazione o una sola azione primaria per schermata. `# Design system rules` fissa le regole del sistema, quindi riusare i componenti che esistono, seguire i token, non scrivere gli stili a mano. `# Workflow` descrive l'ordine dei passaggi, per esempio analizza la UX, spiega la modifica, individua i componenti coinvolti, proponi un piano e aspetta l'approvazione. `# Output format` dice in che forma vuoi la risposta, per esempio ragionamento, modifiche proposte, file toccati e rischi.
+**Quali sezioni mettere:** dopo l'apertura il file si organizza per aree, e per un lavoro di design ne bastano quattro. `# Product context` dice cosa fa il prodotto e per chi. `# Design principles` elenca i principi a cui attenersi, come la chiarezza prima della decorazione o una sola azione primaria per schermata. `# Design system rules` fissa le regole del sistema, quindi riusare i componenti che esistono, seguire i token, non scrivere gli stili a mano. `# Workflow` descrive l'ordine dei passaggi, per esempio analizza la UX, spiega la modifica, individua i componenti coinvolti, proponi un piano e aspetta l'approvazione.
+
+Due sezioni che si trovano spesso consigliate stanno meglio fuori. `# Role` («sei un senior product designer e frontend engineer») assegna a Claude una competenza che ha già, e il resto del file gliela mostra meglio di un'etichetta. `# Output format` fissa la forma della risposta in un file che vale per tutte le sessioni, quando quella forma cambia da una richiesta all'altra; se la vuoi sempre uguale su un certo compito, il posto è una skill o uno slash command (vedi «Cosa sono le skill e come si creano»).
 
 Su un progetto più tecnico le aree cambiano nome ma non logica, quindi `# Project Overview`, `# Architecture`, `# Tech Stack`, `# Coding Conventions`, `# Folder Structure`, `# Commands` e `# Important Rules`.
 
@@ -245,7 +247,7 @@ Su un progetto più tecnico le aree cambiano nome ma non logica, quindi `# Proje
 - Mai un hero centrato se non è stato chiesto
 ```
 
-**Sotto le duecento righe:** il file entra nel contesto a ogni sessione, quindi ogni riga si paga per sempre (vedi «Il contesto è una risorsa finita»). Quando il materiale cresce, il file si spezza in file separati che `CLAUDE.md` richiama con `@`, secondo il principio di «`CLAUDE.md` come indice, non contenitore». Una convenzione diffusa è tenerli in una cartella `.claude/rules/` divisi per tema (`ui.md`, `accessibility.md`, `copywriting.md`). Quella cartella però non ha niente di speciale: Claude Code non la carica da sola, e i file si leggono perché li hai richiamati con `@`.
+**Duecento righe sono il tetto:** il file entra nel contesto a ogni sessione, quindi ogni riga si paga per sempre (vedi «Il contesto è una risorsa finita»), e l'obiettivo sta parecchio più in basso. Sessanta righe che dicono quello che Claude sbaglierebbe da solo valgono più di centottanta che ripetono quello che si vede aprendo la cartella. Quando il materiale cresce, la parte che non serve a ogni sessione esce in file separati, e in `CLAUDE.md` resta una riga per ciascuno che dice cosa contiene e quando aprirlo, secondo il principio di «`CLAUDE.md` come indice, non contenitore». Richiamarli tutti con `@` è la mossa che viene per prima e non cambia niente, perché un file importato si carica comunque a ogni avvio. Una convenzione diffusa è tenerli in una cartella `.claude/rules/` divisi per tema (`ui.md`, `accessibility.md`, `copywriting.md`), che però non ha niente di speciale, perché Claude Code non la carica da sola e quei file si leggono solo se glieli hai indicati.
 
 **Un `CLAUDE.md` per cartella, quando serve:** Claude legge il file più vicino a quello su cui sta lavorando, quindi parti diverse dello stesso progetto possono avere regole diverse.
 
@@ -422,7 +424,7 @@ Come si scrivono i file sotto `design/` perché un agente li sappia leggere è i
 **Cinque buone pratiche di organizzazione:**
 
 1. **`CLAUDE.md` alla root:** letto automaticamente all'avvio; è la guida di onboarding al progetto per l'AI.
-2. **Spezzare i `CLAUDE.md` grandi:** oltre le duecento righe si divide in file importati con `@path/to/import.md`, per esempio `@claude/architecture.md` o `@claude/ui_guidelines.md`. Il perché e il come stanno in «CLAUDE.md».
+2. **Spezzare i `CLAUDE.md` grandi:** quando il file cresce, quello che non serve a ogni sessione va in file separati come `claude/architecture.md` o `claude/ui_guidelines.md`, e in `CLAUDE.md` resta il puntatore che dice quando aprirli. L'`@` davanti al percorso li importa e li carica sempre, quindi si tiene per i pochi che servono davvero a ogni avvio. Il perché e il come stanno in «CLAUDE.md».
 3. **Cartella `/docs`:** Claude legge benissimo il markdown; ci metti roadmap, requisiti, API, decisioni, così puoi dirgli "leggi `docs/api.md` e implementa…".
 4. **Cartella `/workflows`:** i workflow ripetibili come file dedicati (`build-new-component.md`, `code-refactoring.md`, `write-auto-tests.md`, `migrate-db.md`). Un workflow può richiamarne un altro (es. dopo aver creato un componente, invoca `@workflows/write-auto-tests.md`).
 5. **Cartella `/tools`:** gli script di servizio che Claude scrive (`migrate-db.py`, `seed-data.py`, `export-data.py`). Nome `/tools` (non `/scripts`) per non confonderli con gli script di front/back-end del progetto.
@@ -1241,6 +1243,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Vadym Grin, [Context engineering: A repeatable AI workflow for product designers](https://uxdesign.cc/context-engineering-a-repeatable-ai-workflow-for-product-designers-8d7b55b83b2b) (marzo 2026)
 - Suleiman Shakir, [How I use AI to partner on design problems](https://uxdesign.cc/how-i-use-ai-to-think-through-design-problems-4a484080484b) (maggio 2026)
 - Tony Alicea, [UX-Context Design: Using UX Knowledge to Inform AI-Generated Design](https://www.nngroup.com/articles/ux-context-design/), NN/g (luglio 2026)
+- Anthropic, [The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (luglio 2026)
 - [The AI Design Library](https://library.aidesign.guide/)
 - NN/g, AI prototyping; Testing AI methodology; Vague prototyping
 - Design with AI, Five insights from workflows to think, test, build, ship with AI

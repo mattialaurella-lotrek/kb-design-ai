@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 53 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 54 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF vivono in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Cinquantadue fonti su 53 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 53, 50 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare.
+Cinquantatré fonti su 54 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 54, 50 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
 
 ---
 
@@ -290,6 +290,12 @@ Autore non indicato nel documento, nessuna data, nessun URL
 File: `Design with AI IAAD.pdf`
 È un deck di slide, presumibilmente materiale didattico IAAD, non indicizzato online. Ricerche su tre frasi distintive («Now anyone can vibe something up that looks passable», «The algorithm proposes, the designer disposes», «Human-agent centred design») non hanno restituito corrispondenze. Il TOKEN framework di una delle slide compare in *A Practical Prompting Guide for Figma Make* di Nick Babich (https://uxplanet.org/a-practical-prompting-guide-for-figma-make-eb72f78ff1ce), che però non è la fonte del deck nel suo insieme.
 
+**54. The new rules of context engineering for Claude 5 generation models**
+Thariq Shihipar — blog di Claude (Anthropic), 24 luglio 2026
+https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models
+File: nessuno. Come per la voce 52, il corpo dell'articolo si monta via JavaScript e la stampa headless restituisce solo l'involucro della pagina.
+Aggiunta fuori sequenza il 28 agosto 2026, dopo la chiusura del corpus: il numero segue l'ordine di ingresso, non la posizione nel file.
+
 ---
 
 ## Loop e autonomia dell'agente
@@ -326,11 +332,11 @@ File: `4 Types of Loops You Can Create in Claude Code.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 22 documenti su 53**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 54**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
-Le fonti primarie sono tre, tutte di Anthropic: la guida sulle skill e i due post sui loop e sui dynamic workflows. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
+Le fonti primarie sono quattro, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows e quello sul context engineering per i modelli di generazione Claude 5. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Trentadue documenti su cinquantatré escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Trentadue documenti su cinquantaquattro escono fra marzo e giugno 2026.
 
 ## Manutenzione
 
