@@ -13,19 +13,24 @@ Anticamera di `docs/FONTI.md`. Qui si annotano le fonti raccolte ma non ancora e
 Le caselle qui sotto ricalcano i sette capitoli. Una fonte che rafforza o corregge una sezione esistente va qui, con una riga che dice cosa aggiunge rispetto a quello che c'è già.
 
 ### Progettare il contesto
-Nessuna in attesa.
+Tre fonti sull'economia del contesto e dei token, che è il tema di «Il contesto è una risorsa finita» e «Mantenere il contesto nel tempo». Le prime due si sovrappongono e vanno lette insieme prima di decidere se diventano una sottosezione o due paragrafi.
+
+- [Maximizing the value of your Claude Code sessions](https://claude.com/blog/maximizing-the-value-of-your-claude-code-sessions), Lydia Hallie, blog di Claude, 14 agosto 2026. Fonte primaria. `/clear` fra un compito e l'altro, modello ed effort fissati all'inizio per non rompere la cache, i file richiamati con `@` invece che a percorso, `/context` per vedere cosa è caricato e `/compact` prima di una pausa lunga, perché la cache scade dopo un'ora. Chiude sui subagent per il lavoro che produce molto output di scarto
+- [Claude Code's New Concise Style Can Save You a Lot of Tokens](https://uxplanet.org/claude-codes-new-concise-style-can-save-you-a-lot-of-tokens-5ef2bd0241fc), Nick Babich, UX Planet, agosto 2026. Lo stile di output Concise, che toglie il preambolo e la cronaca dei passaggi lasciando il risultato. Si accende da `/config` alla voce Output style o con `"outputStyle": "Concise"` in `settings.json`, dalla versione 2.1.237. Tocca anche «I comandi di Claude Code», dove `/config` non è in tabella
+- [Claude Code 101, for Designers](https://yaronschoen.com/blog/claude-code-101-for-designers), Yaron Schoen, 10 agosto 2026. Primer per designer senza background di codice, che definisce LLM, finestra di contesto, token e MCP, poi sessioni, modalità di approvazione, `CLAUDE.md` e agenti. Non abbiamo un capitolo di primer e non è detto che serva, quindi vale come materiale da saccheggiare per le definizioni, non come sezione
 
 ### Scrivere il contesto
-Nessuna in attesa.
+- [My Top 5 Favorite Ways of Using DESIGN.md in Claude Code](https://uxplanet.org/my-top-5-favorite-ways-of-using-design-md-in-claude-code-d1b52fd49cea), Nick Babich, UX Planet, agosto 2026. Cinque modi di usare `DESIGN.md`, fra cui il richiamo permanente dentro `CLAUDE.md` quando il design system esiste già e ogni richiesta di UI deve seguirlo. Va confrontato con quello che «DESIGN.md» dice oggi, perché su quel file abbiamo già otto fonti e il rischio è aggiungere la nona che ripete
 
 ### Collegare Claude e Figma
-Nessuna in attesa.
+- [You Can Now Design in Claude Code](https://uxplanet.org/you-can-now-design-in-claude-code-2946d6088e4a), Nick Babich, UX Planet, agosto 2026. La skill `/design`, che apre una tela con gli artboard dentro Claude Code, e un processo di ideazione in tre passaggi. La tesi è che serva a praticare il design prima del codice, non a rendere Claude un designer migliore. `/design` è già nella tabella di «I comandi di Claude Code» con una riga sola, e questo articolo è il materiale per farne un paragrafo
+- ⚠️ [From Figma to front-end without losing your mind](https://medium.com/design-bootcamp/from-figma-to-front-end-without-losing-your-mind-65518cafe5b6), Bootcamp (Medium). **Titolo, autore e data non verificati:** Medium risponde 403 alla lettura automatica, anche da browser vero, e la ricerca non trova l'articolo. Prima di trattarlo come fonte va aperto a mano e vanno presi autore e data dalla pagina
 
 ### Il design system per l'AI
 Nessuna in attesa.
 
 ### Costruire e pubblicare il prototipo
-Nessuna in attesa.
+- [How to build a design sandbox for your team to prototype with real code](https://designwithai.substack.com/p/how-to-build-a-design-sandbox-for-your-team-to-prototype-with-real-code), Xinran Ma, Design with AI, 1 settembre 2026. Sette passaggi per montare un ambiente in cui il team prototipa con i componenti veri del design system invece che con quelli di produzione, con AWS Cloudscape come caso di studio. Dentro ci sono l'indice dei componenti, le regole per l'AI, le salvaguardie che impediscono componenti inventati e le skill che chiudono il giro. Tocca anche «Rendere il design system leggibile dall'AI», perché l'indice dei componenti è il nostro registro
 
 ### Progettare con le skill di Claude
 Nessuna in attesa.
@@ -50,6 +55,7 @@ Voce di «Prossimi argomenti», dal 26 agosto 2026. Sta un gradino prima di «UX
 
 - [How to AI UXR: A Map for Building AI-Augmented Research Operations](https://www.theresearchopsreview.com/p/how-to-ai-uxr-a-map), Kate Towsey, The ResearchOps Review, 21 maggio 2026. La mappa vera è un PDF di cinque pagine scaricabile dall'articolo
 - [The UX Researcher's Guide to Claude, Claude Cowork, and Claude Code](https://productimpactpod.com/news/ux-researcher-guide-claude-tools/), Brittany Hobbs, Product Impact, 27 aprile 2026, aggiornato al 27 luglio 2026. Ha due seguiti citati in pagina, sul cambio di mentalità e sulla ricerca come strato di contesto
+- [Researcher-in-the-loop](https://uxdesign.cc/researcher-in-the-loop-18a8ffddf48e), Jennifer L. Bowie, UX Collective, agosto 2026. Un modello di ricerca UX con l'AI dentro in cui a governare resta chi la ricerca la conduce. È il pezzo che regge la parte di metodo del tema, dove gli altri due stanno sull'attrezzatura e sull'organizzazione
 
 ### Le skill dell'agente di Figma
 Tema rinviato dall'utente il 21 agosto 2026, distinto da «Le skill Figma per Claude Code» perché lì la skill la esegue Claude Code e qui l'agente che vive dentro Figma. Manca la collocazione, fra il capitolo sulle skill e la coda di «Collegare Claude e Figma».
@@ -63,3 +69,9 @@ Nessuna fonte fornita.
 Articoli che stanno già in `docs/FONTI.md` perché sono stati letti e valutati, ma il cui contenuto non è entrato nel testo. Per questi vale la convenzione delle note, cioè un file `docs/NOTE-<SEZIONE>.md` che dice se e quando riaprire la sezione.
 
 - Voce 16, `If You Use Claude, You Need This Simple Folder System`, analizzata in `docs/NOTE-ORGANIZZARE-IL-PROGETTO.md`
+
+---
+
+## Nota sull'archiviazione
+
+Medium risponde 403 a qualunque lettura automatica, browser headless compreso, quindi per le fonti su `medium.com`, `uxplanet.org` e `uxdesign.cc` il PDF va preso a mano o via `archive.is` al momento dell'integrazione. Vale la solita avvertenza di `docs/FONTI.md`, cioè che la data in testa a uno snapshot è quella di archiviazione e non di pubblicazione.
