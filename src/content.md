@@ -84,7 +84,7 @@ La finestra di contesto è lo spazio in cui l'AI tiene tutto quello che sta cons
 
 Il **context rot** è la versione che si incontra lavorando. Anche partendo da un contesto curato, falsi avvii, tentativi di debug e divagazioni riempiono la finestra di rumore, e il modello comincia a riferirsi ai propri output scadenti. Le contromisure sono quattro.
 
-- **Riassumere e ripartire:** chiudere l'istanza, riassumere e aprirne una nuova col riassunto come seme (la meccanica sta in «Mantenere il contesto nel tempo»).
+- **Riassumere e ripartire:** chiudere l'istanza, riassumere e aprirne una nuova col riassunto come seme (la meccanica si trova in «Mantenere il contesto nel tempo»).
 - **Confini espliciti:** marcare le sezioni ("tentativi precedenti, solo riferimento" contro "contesto di lavoro attuale").
 - **Checkpoint periodici:** far riassumere stato e decisioni a intervalli regolari.
 - **Non "buttare tutto dentro":** decidere cosa includere, cosa escludere e quando rinfrescare pesa quanto scrivere la richiesta. Anche gli strumenti collegati occupano spazio, perché ogni MCP attivo si mangia una fetta della finestra (vedi «Setup e loop con Figma MCP»).
@@ -168,13 +168,13 @@ Un agente che progetta senza contesto consegna qualcosa di corretto e generico i
 
 Sono formati con funzioni diverse, spesso complementari:
 
-- **`CLAUDE.md`:** memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo **snello**. Come si scrive e quali sezioni contiene sta in «CLAUDE.md».
+- **`CLAUDE.md`:** memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo **snello**. Come si scrive e quali sezioni contiene si trova in «CLAUDE.md».
 - **`CLAUDE.local.md`:** le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.
 - **`AGENTS.md`:** il **livello di orchestrazione**. Non è documentazione del design system, ma dice all'agente dove guardare per ogni cosa (quale file ha i token canonici, dove vive la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno, perché costa poche ore di scrittura e viene consultato di continuo.
 - **`DESIGN.md`:** l'identità visiva condensata in un front matter YAML con i token più un corpo markdown con le regole visive. La spec definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts). Aperta da Google Labs nell'aprile 2026, è la più matura della lista. Estrarre i token però è il passo che costa meno, perché quello che sposta l'output sono l'intento e i confini scritti attorno (vai a «DESIGN.md»).
 - **`UX.md`:** quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se `DESIGN.md` dice come deve apparire il prodotto, `UX.md` dice per chi è e come deve comportarsi, con i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista, una proposta di NN/g del luglio 2026 che nessuno strumento carica in automatico. Copre però un vuoto che gli altri file lasciano aperto (vai a «UX.md»).
 - **`MEMORY.md`:** memoria di progetto a lungo termine, con le decisioni prese e il contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
-- **`SKILL.md`:** conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. La struttura è a progressive disclosure. I metadati (~100 token) caricano per primi e decidono se la skill è rilevante, il corpo markdown (~500–2000 token) dà le istruzioni, i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve. Come si scrivono e quali adottare sta in «Progettare con le skill di Claude», l'ultimo capitolo.
+- **`SKILL.md`:** conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. La struttura è a progressive disclosure. I metadati (~100 token) caricano per primi e decidono se la skill è rilevante, il corpo markdown (~500–2000 token) dà le istruzioni, i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve. Come si scrivono e quali adottare si trova in «Progettare con le skill di Claude», l'ultimo capitolo.
 
 A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored).
 
@@ -206,7 +206,7 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 `CLAUDE.md` è il primo file che Claude Code legge quando apri un progetto, e decide come Claude si comporterà per il resto della sessione. Nell'elenco qui sopra è una voce fra tante. Qui c'è come si scrive, perché è il file da cui si parte e quello su cui si sbaglia di più.
 
-**Due file con lo stesso nome, due compiti diversi:** quello di progetto sta nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. Quello globale sta in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
+**Due file con lo stesso nome, due compiti diversi:** quello di progetto si trova nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. Quello globale si trova in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
 
 **Il primo file non si scrive dal foglio bianco:** il comando `/init` guarda la cartella e ne butta giù una bozza. Claude sta ricostruendo il progetto a ritroso da quello che vede, quindi quella bozza è generica e non contiene niente delle tue intenzioni: vale come punto di partenza, non come file finito. I due passaggi che la rendono utile vengono dopo. Il primo si fa lontano dal computer, su un foglio. Immagina che domani entri in squadra una persona che sa progettare e sa scrivere codice: scrivi cosa le spiegheresti del progetto, quali vincoli ha (tecnici e commerciali) e quale livello di qualità ti aspetti. Il secondo passaggio è tornare sulla bozza con quel foglio davanti, cancellare quello che non serve e aggiungere quello che sai solo tu.
 
@@ -425,7 +425,7 @@ Come si scrivono i file sotto `design/` perché un agente li sappia leggere è i
 **Cinque buone pratiche di organizzazione:**
 
 1. **`CLAUDE.md` alla root:** letto automaticamente all'avvio; è la guida di onboarding al progetto per l'AI.
-2. **Spezzare i `CLAUDE.md` grandi:** quando il file cresce, quello che non serve a ogni sessione va in file separati come `claude/architecture.md` o `claude/ui_guidelines.md`, e in `CLAUDE.md` resta il puntatore che dice quando aprirli. L'`@` davanti al percorso li importa e li carica sempre, quindi si tiene per i pochi che servono davvero a ogni avvio. Il perché e il come stanno in «CLAUDE.md».
+2. **Spezzare i `CLAUDE.md` grandi:** quando il file cresce, quello che non serve a ogni sessione va in file separati come `claude/architecture.md` o `claude/ui_guidelines.md`, e in `CLAUDE.md` resta il puntatore che dice quando aprirli. L'`@` davanti al percorso li importa e li carica sempre, quindi si tiene per i pochi che servono davvero a ogni avvio. Il perché e il come si trovano in «CLAUDE.md».
 3. **Cartella `/docs`:** Claude legge benissimo il markdown; ci metti roadmap, requisiti, API, decisioni, così puoi dirgli "leggi `docs/api.md` e implementa…".
 4. **Cartella `/workflows`:** i workflow ripetibili come file dedicati (`build-new-component.md`, `code-refactoring.md`, `write-auto-tests.md`, `migrate-db.md`). Un workflow può richiamarne un altro (es. dopo aver creato un componente, invoca `@workflows/write-auto-tests.md`).
 5. **Cartella `/tools`:** gli script di servizio che Claude scrive (`migrate-db.py`, `seed-data.py`, `export-data.py`). Nome `/tools` (non `/scripts`) per non confonderli con gli script di front/back-end del progetto.
@@ -451,7 +451,7 @@ Due ambienti con vincoli diversi: uno vede i tuoi file, l'altro no. È quella di
 4. **In Claude Code:** invoca le skill locali (es. `/frontend-slides` per un deck, le skill Figma per il canvas), collega solo gli MCP necessari e costruisci.
 5. Sempre in Claude Code: commit atomici e deploy (vedi «Deploy del prototipo»).
 
-Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) sta in Claude Code.** Lo spec o il `DESIGN.md` scritto in chat è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.
+Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) si fa in Claude Code.** Lo spec o il `DESIGN.md` scritto in chat è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.
 
 Scrivere la soluzione è a sua volta contesto. Messo per iscritto, lo spec di un flusso diventa l'ancora da cui l'AI ricava output diversi: prototipo hi-fi, journey map, piano d'implementazione. Sui flussi complessi tiene anche a bada le allucinazioni, perché i passaggi l'agente li ha davanti invece di ricostruirseli a ogni richiesta.
 
@@ -629,7 +629,7 @@ Ripetere a voce gli stessi prompt dà un risultato che cambia ogni volta, e impe
 
 **Cinque comandi che vale la pena avere:** `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map` e `/design-system-check`. Ognuno è un file di poche righe. In `.claude/commands/page-review.md` può starci «Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con attenzione alle buone pratiche UX», e da quel momento `/page-review` fa sempre quel controllo, con le stesse parole.
 
-**Dove metterli:** vale la stessa divisione delle skill, quindi `~/.claude/commands/` per i comandi tuoi, che ti seguono in ogni progetto, e `.claude/commands/` dentro il repository per quelli della squadra, che arrivano con il clone e si versionano insieme al resto. Un comando personale ha la precedenza su quello di progetto con lo stesso nome. Il criterio è quello di «Dove vivono le skill», cioè se serve solo a te sta nella cartella personale, se descrive come lavora il progetto sta nel repository.
+**Dove metterli:** vale la stessa divisione delle skill, quindi `~/.claude/commands/` per i comandi tuoi, che ti seguono in ogni progetto, e `.claude/commands/` dentro il repository per quelli della squadra, che arrivano con il clone e si versionano insieme al resto. Un comando personale ha la precedenza su quello di progetto con lo stesso nome. Il criterio è quello di «Dove vivono le skill», cioè se serve solo a te va nella cartella personale, se descrive come lavora il progetto va nel repository.
 
 **Comando o skill:** un comando lo lanci tu quando decidi, una skill Claude la carica da sé quando riconosce che serve. Per un giro di controllo che vuoi fare in un momento preciso, come la revisione prima di una consegna, la forma giusta è il comando. Per una regola che deve valere ogni volta che l'agente tocca un componente, è la skill.
 
@@ -641,7 +641,7 @@ Un subagent si descrive in tre parti. Per l'UX Reviewer il ruolo è quello di un
 
 **Come li chiami:** `/subtask` passa un compito a un subagent che eredita tutta la conversazione e riporta qui quando ha finito. `/batch` lavora su scala più grande e spezza un lavoro in unità indipendenti, una per subagent, ognuno nel suo worktree. `/tasks` mostra a che punto sono.
 
-**Le lavorazioni lunghe** hanno pattern propri, che stanno in «Verificare il risultato» insieme al resto di quello che serve per lasciar lavorare l'agente senza guardarlo a ogni passaggio.
+**Le lavorazioni lunghe** hanno pattern propri, che si trovano in «Verificare il risultato» insieme al resto di quello che serve per lasciar lavorare l'agente senza guardarlo a ogni passaggio.
 
 ## Il design system per l'AI
 
@@ -653,7 +653,7 @@ Un agente che vede solo hex e valori grezzi, senza riferimenti ai token né sign
 
 C'è un secondo modo di sbagliare, più insidioso perché il risultato sembra a posto. Generi il frontend dai file Figma con l'MCP e in pochi minuti hai codice funzionante. Poi lo guardi da vicino. Una card con lo stato hover sbagliato. Un colore usato per un significato che non era il suo. Spaziature fuori dalle regole, e la gerarchia fra azione primaria e secondaria applicata a intermittenza. Niente di brutto, semplicemente non è il tuo sistema. Generare l'interfaccia era la parte facile; mancava il contesto per costruirla come la costruisce la tua squadra.
 
-**I token risolvono lo stile e si fermano lì:** un `tokens.json` consegna colori, tipografia, spaziature e raggi, quindi copre l'aspetto. Resta fuori tutto il resto. Non dice che il wizard è fatto di top bar, stepper, header, area di contenuto e barra di azioni in fondo, non dice quali azioni stanno dove, e nemmeno quando un utente può passare allo step successivo. Quella parte del sistema oggi vive nelle librerie Figma e nelle pagine di documentazione, cioè in posti costruiti perché una persona li cerchi e li interpreti.
+**I token risolvono lo stile e si fermano lì:** un `tokens.json` consegna colori, tipografia, spaziature e raggi, quindi copre l'aspetto. Resta fuori tutto il resto. Non dice che il wizard è fatto di top bar, stepper, header, area di contenuto e barra di azioni in fondo, non dice quale azione va dove, e nemmeno quando un utente può passare allo step successivo. Quella parte del sistema oggi vive nelle librerie Figma e nelle pagine di documentazione, cioè in posti costruiti perché una persona li cerchi e li interpreti.
 
 **I tre strati, dal disegno al prodotto:** il sistema si divide in authoring, specification e delivery. Il primo strato è dove il sistema si disegna, il secondo è la stessa conoscenza scritta in una forma che un agente può leggere, il terzo è ciò che finisce nel prodotto. È la struttura che tiene insieme il resto di questa sezione.
 
@@ -688,7 +688,7 @@ C'è un secondo modo di sbagliare, più insidioso perché il risultato sembra a 
 
 **Nomina per ruolo, non per aspetto:** è la regola che rende utile il Tier 2, ed è la stessa già vista in «DESIGN.md». Vale anche per i componenti, dove conviene prendere in prestito il vocabolario che ogni strumento già conosce (button, input, card, badge, tabs) invece di inventare un dizionario privato che l'agente deve indovinare. C'è anche un effetto collaterale utile, perché costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
 
-**Specification, i registri e le spec:** sopra i token stanno i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto nella sezione «`DESIGN.md`». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Le specifiche vere stanno in un file per oggetto, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
+**Specification, i registri e le spec:** sopra i token stanno i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto nella sezione «`DESIGN.md`». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Le specifiche vere si trovano in un file per oggetto, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
 
 ```
 design-system/
@@ -734,9 +734,9 @@ di step gestibili.
 - I dati inseriti si conservano passando da uno step all'altro.
 - Lo Stepper segnala lo step corrente e quelli completati.
 ## Actions
-- Exit usa Button / Tertiary e sta nella Top Bar.
-- Back usa Button / Secondary e sta nella Bottom Action Bar.
-- Next usa Button / Primary e sta nella Bottom Action Bar.
+- Exit usa Button / Tertiary e si trova nella Top Bar.
+- Back usa Button / Secondary e si trova nella Bottom Action Bar.
+- Next usa Button / Primary e si trova nella Bottom Action Bar.
 - Back torna allo step precedente.
 - Next valida lo step corrente prima di proseguire.
 - Exit chiede conferma con un dialog.
@@ -935,11 +935,11 @@ gh repo create <nome-progetto> --private --source=. --remote=origin
 git push -u origin main
 ```
 
-**I comandi non serve impararli a memoria:** Claude Code sta già dentro la cartella, quindi "committa quello che abbiamo fatto, con un messaggio che dice cosa è cambiato" funziona come richiesta. Conviene fermarsi spesso, un commit per ogni passaggio chiuso, perché una storia fatta di commit piccoli si legge e permette di tornare indietro di un passo solo quando qualcosa si rompe (vedi i commit atomici in «Dividere il lavoro tra Claude Desktop e Claude Code»).
+**I comandi non serve impararli a memoria:** Claude Code è già dentro la cartella, quindi "committa quello che abbiamo fatto, con un messaggio che dice cosa è cambiato" funziona come richiesta. Conviene fermarsi spesso, un commit per ogni passaggio chiuso, perché una storia fatta di commit piccoli si legge e permette di tornare indietro di un passo solo quando qualcosa si rompe (vedi i commit atomici in «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
 **Il push si può automatizzare** con un hook `post-commit`, cioè un file eseguibile in `.githooks/post-commit` che lancia `git push` appena il commit è chiuso, acceso una volta sola con `git config core.hooksPath .githooks`. Due avvertenze. Git non installa da sé gli hook che arrivano con un clone, quindi su un'altra macchina il comando va rilanciato. E quando il push fallisce il commit resta in locale, quindi l'hook deve dirlo, altrimenti credi di aver pubblicato e non è vero.
 
-**I file pesanti non entrano come file normali:** GitHub blocca il push di un singolo file sopra i 100 MB e consiglia di tenere il repository sotto il gigabyte, perché la storia se li porta dietro tutti e il clone diventa lento per chiunque. Per dataset, video ed esportazioni ad alta risoluzione che devono comunque stare sotto controllo di versione si usa Git LFS, che nel repository lascia un puntatore e tiene il file vero altrove.
+**I file pesanti non entrano come file normali:** GitHub blocca il push di un singolo file sopra i 100 MB e consiglia di tenere il repository sotto il gigabyte, perché la storia se li porta dietro tutti e il clone diventa lento per chiunque. Per dataset, video ed esportazioni ad alta risoluzione che devono comunque essere sotto controllo di versione si usa Git LFS, che nel repository lascia un puntatore e tiene il file vero altrove.
 
 ### Deploy del prototipo
 
@@ -1030,12 +1030,12 @@ A progetto chiuso restano una cartella pesante che non aprirai più e una reposi
 1. **Pulisci quello che si rigenera:** `rm -rf node_modules dist` (in un progetto Python anche `venv` e `__pycache__`). È la parte che pesa, ed è l'unica che torna con un comando.
 2. **Togli i segreti:** chiavi API, token, file `.env` con le credenziali. Vanno in un password manager, non dentro l'archivio, altrimenti fra un anno ti ritrovi uno zip che nessuno può condividere.
 3. **Annota la versione dell'interprete:** `package-lock.json` fissa le librerie e non la versione di Node con cui giravano. Basta un file `.nvmrc` o una riga in `CLAUDE.md`, e chi riapre il progetto non passa mezza giornata a capire perché la build non parte.
-4. **Controlla i file di Claude Code:** `CLAUDE.md` e `DESIGN.md` sono quelli che fanno ripartire senza rispiegare tutto, quindi si conservano sempre, insieme a `.claude/skills/`, `.claude/commands/` e `.mcp.json`. Il file `.claude/settings.local.json` invece va guardato prima, perché può contenere percorsi che esistono solo su questa macchina. La cronologia delle conversazioni non sta nella cartella di progetto ma nella tua home, quindi comprimere il progetto non se la porta dietro, quindi riaprendolo Claude riparte da una conversazione vuota e ricostruisce il contesto dai file, che è il motivo per cui esistono (vedi «I file di contesto»).
+4. **Controlla i file di Claude Code:** `CLAUDE.md` e `DESIGN.md` sono quelli che fanno ripartire senza rispiegare tutto, quindi si conservano sempre, insieme a `.claude/skills/`, `.claude/commands/` e `.mcp.json`. Il file `.claude/settings.local.json` invece va guardato prima, perché può contenere percorsi che esistono solo su questa macchina. La cronologia delle conversazioni non si trova nella cartella di progetto ma nella tua home, quindi comprimere il progetto non se la porta dietro, quindi riaprendolo Claude riparte da una conversazione vuota e ricostruisce il contesto dai file, che è il motivo per cui esistono (vedi «I file di contesto»).
 5. **Comprimi la cartella** con `tar -czf progetto.tar.gz cartella-progetto/`, oppure in zip se preferisci aprirla con un doppio clic. Qui decidi se includere anche `.git`, e da quella scelta dipende il punto 7.
 6. **Carica l'archivio** sul cloud storage che usa il team, Google Drive o quello che è.
 7. **Cancella la cartella locale** solo dopo aver riscaricato l'archivio e averlo aperto davvero. Un archivio mai riaperto non è un archivio verificato.
 
-**Il repository non si tiene dentro una cartella sincronizzata:** Drive e Dropbox caricano i file uno per uno e in ordine sparso, mentre `.git` è un database in cui indice e oggetti devono restare coerenti fra loro. Una sincronizzazione a metà, o la stessa cartella aperta su due macchine, produce un repository corrotto o una fila di copie in conflitto. Il progetto attivo sta su un disco locale, sul cloud ci va l'archivio compresso, che è un file solo e si carica intero.
+**Il repository non si tiene dentro una cartella sincronizzata:** Drive e Dropbox caricano i file uno per uno e in ordine sparso, mentre `.git` è un database in cui indice e oggetti devono restare coerenti fra loro. Una sincronizzazione a metà, o la stessa cartella aperta su due macchine, produce un repository corrotto o una fila di copie in conflitto. Il progetto attivo resta su un disco locale, sul cloud ci va l'archivio compresso, che è un file solo e si carica intero.
 
 **Che fine fa la repository su GitHub:** tre strade, e la scelta dipende da quanto ti vale la storia dei commit.
 
@@ -1059,7 +1059,7 @@ Una skill è un insieme di istruzioni che dicono all'AI come svolgere un compito
 
 **Quando la skill è lo strumento sbagliato:** una skill che orchestra molti passaggi e delega ad altri agenti costa parecchio, perché a ogni giro chiede a un modello di decidere qualcosa che spesso è già deciso. Una misura pubblicata a luglio 2026 confronta una skill di revisione del codice con lo stesso lavoro riscritto come procedura deterministica: da 4,6 milioni di token a 506mila, da 23 agenti a 3, e metà del tempo. Il segnale da tenere d'occhio è la ripetitività, perché se i passaggi sono sempre gli stessi nello stesso ordine quella parte è codice travestito da prompt, e conviene scriverla come codice lasciando al modello solo i punti in cui serve un giudizio.
 
-**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può stare a due livelli, sul tuo computer o dentro il progetto, e la differenza fra i due la sviluppa «Dove vivono le skill». Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
+**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può trovarsi a due livelli, sul tuo computer o dentro il progetto, e la differenza fra i due la sviluppa «Dove vivono le skill». Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
 
 ```
 ---
@@ -1087,10 +1087,10 @@ Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Crear
 
 Una skill è una cartella con dentro un `SKILL.md`, e il posto in cui la metti decide chi la vede. I livelli sono due.
 
-- **Le tue:** stanno in `~/.claude/skills/<nome-skill>/SKILL.md`, valgono in qualunque cartella tu apra, anche fuori da un repository, e non finiscono nel progetto di nessuno. È il posto del metodo che ti porti dietro da un cliente all'altro, per esempio il giro di controlli che fai prima di consegnare.
-- **Quelle del progetto:** stanno in `.claude/skills/<nome-skill>/SKILL.md` dentro la cartella del progetto, si committano come qualsiasi altro file e chi clona il repository se le ritrova attive senza installare niente. È il posto di quello che vale per quel prodotto e per quella squadra.
+- **Le tue:** si trovano in `~/.claude/skills/<nome-skill>/SKILL.md`, valgono in qualunque cartella tu apra, anche fuori da un repository, e non finiscono nel progetto di nessuno. È il posto del metodo che ti porti dietro da un cliente all'altro, per esempio il giro di controlli che fai prima di consegnare.
+- **Quelle del progetto:** si trovano in `.claude/skills/<nome-skill>/SKILL.md` dentro la cartella del progetto, si committano come qualsiasi altro file e chi clona il repository se le ritrova attive senza installare niente. È il posto di quello che vale per quel prodotto e per quella squadra.
 
-**Se lo stesso nome sta in tutti e due i posti vince la tua:** quella del repository resta zitta, senza nessun messaggio che lo dica. È il modo tipico di ritrovarsi con un risultato diverso da quello di un collega sullo stesso progetto, quindi una skill personale conviene chiamarla in modo che non collida con niente.
+**Se lo stesso nome compare in tutti e due i posti vince la tua:** quella del repository resta zitta, senza nessun messaggio che lo dica. È il modo tipico di ritrovarsi con un risultato diverso da quello di un collega sullo stesso progetto, quindi una skill personale conviene chiamarla in modo che non collida con niente.
 
 **Installare una skill presa da GitHub è una copia di cartella:** un comando ufficiale per farlo non esiste.
 
@@ -1103,11 +1103,11 @@ La destinazione cambia a seconda del livello, `~/.claude/skills/` per le tue e `
 
 **Le skill nuove si vedono subito:** non serve riavviare niente. L'unica eccezione è la cartella `.claude/skills/` creata in un progetto che non ce l'aveva, perché fino a quel momento Claude Code non la stava guardando. Il comando `/skills` elenca quelle attive dicendo da dove arriva ciascuna, e da lì si accendono e si spengono una per una.
 
-**Come si sceglie il livello:** una skill sta nel progetto quando descrive quel prodotto, cioè il suo design system, le sue convenzioni, il suo giro di verifica, e sta fra le tue quando descrive come lavori tu. Nel dubbio conviene il progetto, perché una skill che vive solo sul tuo computer è un pezzo di metodo che la squadra non eredita e che sparisce quando cambi macchina.
+**Come si sceglie il livello:** una skill va nel progetto quando descrive quel prodotto, cioè il suo design system, le sue convenzioni, il suo giro di verifica, e va fra le tue quando descrive come lavori tu. Nel dubbio conviene il progetto, perché una skill che vive solo sul tuo computer è un pezzo di metodo che la squadra non eredita e che sparisce quando cambi macchina.
 
 ### Catalogo di skill di riferimento
 
-Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, sta nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non stanno qui: hanno un capitolo loro, «Costruire e pubblicare il prototipo».
+Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, si trova nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non compaiono qui: hanno un capitolo loro, «Costruire e pubblicare il prototipo».
 
 **Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
@@ -1232,7 +1232,7 @@ Un loop che si comporta male quasi sempre ha un pezzo mancante. Le parti sono se
 - **Condizione di arresto:** come fa a sapere di aver finito, con un tetto di tentativi che valga anche quando non ci arriva.
 - **Stato:** dove resta scritto quello che ha già fatto. Un loop che riparte a intervallo non si ricorda la corsa precedente, quindi senza un file che tenga il punto ricomincia ogni volta da zero, ed è il mestiere di `SESSIONS.md` e `BACKLOG.md` (vedi «I file di contesto»).
 
-**Un obiettivo funziona se l'agente può confrontarlo con qualcosa:** "migliora questa pagina" non lo è, perché non esiste il momento in cui risulta vero. Funziona invece una condizione come "aggiorna la dashboard finché non corrisponde al riferimento a 375, 768 e 1440 pixel di larghezza, passa un controllo di accessibilità a livello AA e non mostra elementi sovrapposti, e fermati dopo cinque tentativi se la condizione non è raggiungibile". Traguardo e tetto stanno nella stessa frase, perché `/goal` legge la condizione per intero e il limite di tentativi si scrive lì dentro, non come opzione a parte.
+**Un obiettivo funziona se l'agente può confrontarlo con qualcosa:** "migliora questa pagina" non lo è, perché non esiste il momento in cui risulta vero. Funziona invece una condizione come "aggiorna la dashboard finché non corrisponde al riferimento a 375, 768 e 1440 pixel di larghezza, passa un controllo di accessibilità a livello AA e non mostra elementi sovrapposti, e fermati dopo cinque tentativi se la condizione non è raggiungibile". Traguardo e tetto vanno nella stessa frase, perché `/goal` legge la condizione per intero e il limite di tentativi si scrive lì dentro, non come opzione a parte.
 
 Il tetto conta quanto il traguardo. Senza, un loop a obiettivo continua a girare anche quando ha smesso di avvicinarsi, e la spesa cresce mentre il risultato sta fermo. `/goal` lanciato da solo, senza condizione, mostra a che punto è quella attiva, quanti turni sono già stati valutati e quanti token sono andati; `/usage` dà lo stesso conto sull'intera sessione.
 
@@ -1266,8 +1266,8 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 
 Quello che ancora manca e su cui stiamo lavorando. Il primo tema sta dalla parte dell'attrezzatura, cioè come si configura l'ambiente in cui la guida ti chiede di lavorare. Il secondo è di metodo e riguarda come si decide cosa costruire.
 
-- **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente sta già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
-- **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code stanno in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
+- **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente si trova già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
+- **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code si collocano in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
 
 ## Glossario
 

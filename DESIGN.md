@@ -2,7 +2,7 @@
 
 Il design system di questa piattaforma, scritto perché lo legga un agente prima di toccare `src/template.html`. Fotografa i valori in uso al 24 agosto 2026, dice quali sono verificati contro il file Figma e quali no, e dichiara i punti dove il sistema non c'è ancora.
 
-Regola sola che vale su tutto: nessun valore nuovo si inventa a occhio. O sta qui dentro, o si aggiunge qui prima di scriverlo nel CSS.
+Regola sola che vale su tutto: nessun valore nuovo si inventa a occhio. O è qui dentro, o si aggiunge qui prima di scriverlo nel CSS.
 
 ## Da dove vengono i valori
 
@@ -51,7 +51,7 @@ Diciassette token per tema, dichiarati in `:root` e `:root[data-theme="dark"]`.
 | `--ok` | `#3a8a0d` | `#6ccd1e` | Success/800 · Success/600 |
 | `--ko` | `#db2e30` | `#ff4c3e` | Danger/600 · Danger/500 |
 
-**Il lime segna lo stato attivo:** l'hover resta neutro con `--tint-hover` e il codice inline sta nella famiglia del fondo con `--code-tint`. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento.
+**Il lime segna lo stato attivo:** l'hover resta neutro con `--tint-hover` e il codice inline resta nella famiglia del fondo con `--code-tint`. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento.
 
 **Una superficie sola:** topbar, spalla e colonna di lettura stanno sullo stesso fondo, come su lotrek.it, e a separarle c'è il filetto `--border`.
 
@@ -69,13 +69,13 @@ Ronzino di Collletttivo, licenza SIL OFL 1.1, self-hostata in `assets/fonts/` co
 
 **Sotto la prosa c'è un gradino solo,** `.92rem` con interlinea 1,55 invece dell'1,7, e lo usano la nota dello schema a tre passaggi e il testo dei riquadri affiancati. L'1,7 è tarato sui 18px su una colonna larga il doppio, e a corpo minore in mezza colonna apre troppo.
 
-**Il ritmo verticale della prosa** sta su tre token, tutti multipli di 8px: `--gap-cap` 128px sopra un capitolo, `--gap-sez` 56px sopra una sezione, `--gap-sub` 32px sopra un h4. Sotto i titoli lo spazio scala 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali e a separare è solo il vuoto, che è la ragione di un gap di capitolo così ampio. I margini dei titoli non vanno mai in `em`, altrimenti un capitolo prende meno aria di una sezione perché il suo occhiello ha corpo 12px.
+**Il ritmo verticale della prosa** poggia su tre token, tutti multipli di 8px: `--gap-cap` 128px sopra un capitolo, `--gap-sez` 56px sopra una sezione, `--gap-sub` 32px sopra un h4. Sotto i titoli lo spazio scala 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali e a separare è solo il vuoto, che è la ragione di un gap di capitolo così ampio. I margini dei titoli non vanno mai in `em`, altrimenti un capitolo prende meno aria di una sezione perché il suo occhiello ha corpo 12px.
 
-**L'interfaccia non ha ancora una scala:** topbar, spalla, tooltip, CTA e badge usano nove corpi in px fra 12 e 18, sette dei quali stanno in cinque pixel di distanza (13, 13,5, 14, 14,5, 15, 16, 16,5). Sono aggiustamenti stratificati, non gradini di un sistema. Finché la scala non c'è, un valore nuovo si prende fra quelli già in uso e non se ne aggiungono altri.
+**L'interfaccia non ha ancora una scala:** topbar, spalla, tooltip, CTA e badge usano nove corpi in px fra 12 e 18, sette dei quali si concentrano in cinque pixel di distanza (13, 13,5, 14, 14,5, 15, 16, 16,5). Sono aggiustamenti stratificati, non gradini di un sistema. Finché la scala non c'è, un valore nuovo si prende fra quelli già in uso e non se ne aggiungono altri.
 
 ## Spaziatura
 
-La prosa sta su multipli di 8 in `rem`, come sopra. L'interfaccia usa ventisette valori px distinti fra 2 e 120, senza token, e quattro di questi (8, 12, 20, 18) coprono trentadue dichiarazioni su settanta. Stessa regola della tipografia: si pesca fra i valori già in uso, si preferiscono i quattro frequenti, non se ne inventano di nuovi.
+La prosa poggia su multipli di 8 in `rem`, come sopra. L'interfaccia usa ventisette valori px distinti fra 2 e 120, senza token, e quattro di questi (8, 12, 20, 18) coprono trentadue dichiarazioni su settanta. Stessa regola della tipografia: si pesca fra i valori già in uso, si preferiscono i quattro frequenti, non se ne inventano di nuovi.
 
 ## Bersagli da dito
 
@@ -148,7 +148,7 @@ Componente del 23 agosto 2026, usato due volte. In coda a «Checklist pre-richie
 
 **Il colore viene dalla palette semantica,** con `--ok` e `--ko`, ed è il primo posto in cui la usiamo.
 
-**Nella variante di confronto il logo prende il posto dell'icona,** alto 24px e allineato a sinistra come lei, e il riquadro non ha titolo perché il marchio lo fa già. I due file stanno in `assets/logo-github.png` e `assets/logo-vercel.png`, ridotti a 80px di altezza, cioè tre volte la misura a schermo. Restano del loro nero invece di prendere `--ink`, perché le linee guida dei due marchi non li vogliono ricolorati, e sul tema scuro si invertono in bianco, che è l'uso monocromatico che entrambe prevedono. Nel blocco `@media print` l'inversione va spenta, altrimenti chi stampa dal tema scuro ottiene un logo bianco su carta bianca. La misura sta su `.prose .verdict-logo` e non sulla classe da sola, perché `.prose img` porta `height: auto` ed è più specifica.
+**Nella variante di confronto il logo prende il posto dell'icona,** alto 24px e allineato a sinistra come lei, e il riquadro non ha titolo perché il marchio lo fa già. I due file si trovano in `assets/logo-github.png` e `assets/logo-vercel.png`, ridotti a 80px di altezza, cioè tre volte la misura a schermo. Restano del loro nero invece di prendere `--ink`, perché le linee guida dei due marchi non li vogliono ricolorati, e sul tema scuro si invertono in bianco, che è l'uso monocromatico che entrambe prevedono. Nel blocco `@media print` l'inversione va spenta, altrimenti chi stampa dal tema scuro ottiene un logo bianco su carta bianca. La misura è su `.prose .verdict-logo` e non sulla classe da sola, perché `.prose img` porta `height: auto` ed è più specifica.
 
 ## La card di rimando
 

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek. Un solo markdown sorgente diventa una pagina statica e un PDF. Questo file dice come si lavora sul repo. Il sistema visivo sta in `DESIGN.md`, le decisioni di lungo periodo in `docs/MEMORY.md`.
+Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek. Un solo markdown sorgente diventa una pagina statica e un PDF. Questo file dice come si lavora sul repo. Il sistema visivo si trova in `DESIGN.md`, le decisioni di lungo periodo in `docs/MEMORY.md`.
 
 ## Come è fatta
 
@@ -38,9 +38,9 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **Un tema integrato esce da «Prossimi argomenti».** Quando una voce di quella sezione diventa testo della guida, la voce si toglie e si riscrive l'occhiello, che conta i temi rimasti e li divide fra attrezzatura e metodo. Vale anche al contrario: un tema che si decide di rinviare entra lì.
 
-**Il design system sta in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non sta lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
+**Il design system si trova in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non compare lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
 
-**Un'icona che manca la disegna Mattia.** L'inventario del sistema sta in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.
+**Un'icona che manca la disegna Mattia.** L'inventario del sistema si trova in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.
 
 **Il push lo fa un hook,** `.githooks/post-commit`, che manda su GitHub ogni commit appena chiuso. Su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, perché git non installa da sé gli hook che arrivano da un repo. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano.
 
@@ -60,7 +60,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 - **Ogni file `.md` citato va in codice inline,** così prende il monospace col fondo lime. Unica eccezione i titoli degli articoli nella sezione Fonti.
 - **Niente numeri di sezione** nei titoli o nell'indice.
 - **Le sigle sciolte vanno con le iniziali maiuscole,** in tutte e due le direzioni, `MCP (Model Context Protocol)` e `Personal Access Token (PAT)`. Vale anche dove l'espansione da sola sarebbe un nome comune, come `IDE (Integrated Development Environment)`, perché la regola opposta obbligherebbe a scrivere in minuscolo i nomi propri veri Ogni sigla che ha una voce di glossario si scioglie lì, nessuna esclusa. La voce si apre con la forma che il lettore incontra nel testo, che di solito è la sigla ma non sempre.
-- **Le voci del catalogo di skill hanno tutte lo stesso peso,** cioè intorno alle 150 battute di testo visibile, URL escluso, con 240 come tetto. La mediana delle sessantaquattro già scritte è 156, e quattordici stanno sopra il tetto, fra 245 e 519 battute: sono debito, e si accorciano quando si mette mano alla loro riga. Una voce lunga il triplo delle vicine dice al lettore che quella skill conta di più, e non è mai quello che vogliamo dire. Se una skill merita davvero più spazio, il posto è il testo della guida e non l'elenco.
+- **Le voci del catalogo di skill hanno tutte lo stesso peso,** cioè intorno alle 150 battute di testo visibile, URL escluso, con 240 come tetto. La mediana delle sessantaquattro già scritte è 156, e quattordici superano il tetto, fra 245 e 519 battute: sono debito, e si accorciano quando si mette mano alla loro riga. Una voce lunga il triplo delle vicine dice al lettore che quella skill conta di più, e non è mai quello che vogliamo dire. Se una skill merita davvero più spazio, il posto è il testo della guida e non l'elenco.
+- **«Stare» non dice dove si trova una cosa.** La collocazione in italiano vuole «si trova», «è», «compare» o «vive», quindi `sta in «Titolo»` diventa `si trova in «Titolo»`, e dove la frase prescrive dove mettere qualcosa si usa `va in`. Con «stare» restano soltanto gli idiomi, cioè stare in piedi, stare bene, starci dentro nel senso di entrarci, e il senso di consistere, come in «la differenza sta nella sola aggiunta».
 - **Rimandi interni per titolo** fra guillemet nel sorgente: `«Il contesto visivo»`. La build li converte in virgolette curve.
 - **Smart quotes e neutralizzazione delle tilde** sono automatiche in `scripts/build.mjs` e non si gestiscono a mano.
 

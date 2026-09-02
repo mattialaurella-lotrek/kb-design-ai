@@ -3,7 +3,7 @@
 Sintesi da incollare in una chat per allineare un assistente che non ha accesso al repo.
 Il blocco «Dove siamo» lo riscrive `npm run build`, quindi i suoi numeri sono sempre quelli dell'ultima build. Il resto si aggiorna a mano quando lo stato si sposta davvero.
 
-Le decisioni di lungo periodo stanno in `docs/MEMORY.md`, la cronologia in `docs/CHANGELOG.md`, la bibliografia in `docs/FONTI.md`, il design system in `DESIGN.md` e le regole di lavoro in `CLAUDE.md`.
+Le decisioni di lungo periodo si trovano in `docs/MEMORY.md`, la cronologia in `docs/CHANGELOG.md`, la bibliografia in `docs/FONTI.md`, il design system in `DESIGN.md` e le regole di lavoro in `CLAUDE.md`.
 
 ---
 
@@ -23,7 +23,7 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 21.920 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
+- 21.935 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
 - 58 documenti in `docs/FONTI.md`
 - `index.html` pesa 336 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
 - Ultima build: 2 settembre 2026
@@ -45,7 +45,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Ritmo verticale.** Due regole, in `rem` su multipli di 8. Lo spazio *sopra* un titolo cresce col livello: 128 capitolo, 56 sezione, 32 sotto-sezione. Lo spazio *sotto*: 32 / 16 / 12 / 8 per h1–h4. Nella colonna di lettura non ci sono filetti orizzontali, a separare è solo il vuoto: è per questo che il gap di capitolo è così ampio. **Mai margini in `em` sui titoli**: era quello a dare a un capitolo meno aria di una sezione, perché l'occhiello ha corpo 12px.
 
-**Colore.** La palette viene dal design system Lotrek, file Figma WTF `29FQjdxBn7fesbU3NJkDxM`, quattro scale nominate da 50 a 950: Electric Lime, Shark, Edward, Nebula. Ogni token deve poggiare su un gradino vero, e le uniche due eccezioni dichiarate sono `--surface` e `--surface-2` del tema scuro, perché la scala Shark si ferma a 950. Il lime significa una cosa sola, lo stato attivo: l'hover è neutro e il codice inline sta nella famiglia del fondo. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento. Topbar, spalla e colonna di lettura stanno sullo stesso fondo, a separarle è il filetto. Dal 23 agosto 2026 sono in uso anche due token semantici, `--ok` e `--ko`, presi dalle scale Success e Danger dello stesso file: cambiano gradino col tema per stare sopra il 3:1 in tutti e due.
+**Colore.** La palette viene dal design system Lotrek, file Figma WTF `29FQjdxBn7fesbU3NJkDxM`, quattro scale nominate da 50 a 950: Electric Lime, Shark, Edward, Nebula. Ogni token deve poggiare su un gradino vero, e le uniche due eccezioni dichiarate sono `--surface` e `--surface-2` del tema scuro, perché la scala Shark si ferma a 950. Il lime significa una cosa sola, lo stato attivo: l'hover è neutro e il codice inline resta nella famiglia del fondo. Sopra L\* 95 il lime perde identità e legge giallo, quindi le velature chiare non funzionano come accento. Topbar, spalla e colonna di lettura stanno sullo stesso fondo, a separarle è il filetto. Dal 23 agosto 2026 sono in uso anche due token semantici, `--ok` e `--ko`, presi dalle scale Success e Danger dello stesso file: cambiano gradino col tema per restare sopra il 3:1 in tutti e due.
 
 **Forme.** Due raggi di brand, `0` e `100px`, più 4px per voci dell'indice, chip di codice e tooltip, e i cerchi. Frame, tabelle, blocchi di codice e immagini sono a spigolo.
 
@@ -53,11 +53,11 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **PDF.** Si rigenera a ogni pubblicazione, perché `deploy.sh` chiama `scripts/make-pdf.mjs` prima di preparare i file. La resa la decide il blocco `@media print` di `src/template.html`, non lo script: se una modifica tocca colori o struttura dei titoli, va guardato anche lì.
 
-**Schemi nei blocchi di codice.** I caratteri box-drawing non stanno in IBM Plex Mono e il fallback li rende più larghi del 5% (8,70px contro 8,27px). La regola non è vietarli: è che **il numero di glifi Unicode resti quasi uguale su ogni riga del blocco**, perché lo scarto è di 0,43px a carattere. Un albero di cartelle sfasa di un carattere fra un livello e l'altro e non si vede; la riga di bordo di un riquadro ne ha decine in più della riga di contenuto e sfasa di 8px, quindi i riquadri sono da evitare. Lettere accentate, caporali e apostrofo tipografico sono a larghezza giusta. Larghezza utile fino a ~88 colonne, gli schemi in uso stanno fra 68 e 74.
+**Schemi nei blocchi di codice.** I caratteri box-drawing non fanno parte di IBM Plex Mono e il fallback li rende più larghi del 5% (8,70px contro 8,27px). La regola non è vietarli: è che **il numero di glifi Unicode resti quasi uguale su ogni riga del blocco**, perché lo scarto è di 0,43px a carattere. Un albero di cartelle sfasa di un carattere fra un livello e l'altro e non si vede; la riga di bordo di un riquadro ne ha decine in più della riga di contenuto e sfasa di 8px, quindi i riquadri sono da evitare. Lettere accentate, caporali e apostrofo tipografico sono a larghezza giusta. Larghezza utile fino a ~88 colonne, gli schemi in uso vanno da 68 a 74.
 
 **Fonti.** **Ogni articolo integrato entra nelle fonti, sempre**, sia in `docs/FONTI.md` (bibliografia completa) sia nella sezione «Fonti» di `src/content.md` (elenco compatto pubblicato). Vale anche quando il PDF non si riesce ad archiviare in `sources/`, e in quel caso il campo `File:` dichiara perché manca. Le date sono di **pubblicazione**, non di snapshot: i PDF archiviati con `archive.is` portano in testa la data di archiviazione, che sbaglia anche di tre settimane. Le voci di `docs/FONTI.md` sono numerate in sequenza continua fra le sezioni, quindi inserirne una a metà vuol dire rinumerare quelle dopo e aggiornare i conteggi in testa al file.
 
-**Materiale di riferimento.** I PDF degli articoli stanno in `sources/`, che è **gitignored**: sono contenuti di terzi, non ridistribuibili. `docs/FONTI.md` è versionato e basta a ricostruire il corpus.
+**Materiale di riferimento.** I PDF degli articoli si trovano in `sources/`, che è **gitignored**: sono contenuti di terzi, non ridistribuibili. `docs/FONTI.md` è versionato e basta a ricostruire il corpus.
 
 **Forma del testo, quattro regole.** **Mai il corsivo**, in nessun caso, nemmeno sui termini tecnici e stranieri: dove serviva si usa il tondo, o il grassetto se il segno faceva da etichetta. Un `<em>` nell'HTML generato è un errore. I titoletti in grassetto chiudono coi due punti dentro il grassetto, poi spazio e minuscola (`**Titolo:** testo`), mai col punto. Ogni file `.md` citato va in codice inline, tranne nei titoli degli articoli in Fonti. E dopo i due punti di un titoletto la frase non ne apre un secondo: si rifrasa.
 
@@ -82,7 +82,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Da provare a mano**: i pulsanti di copia non sono mai stati testati con un click vero, perché il browser headless non dà accesso agli appunti.
 
-**Nota**: questo file sta in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
+**Nota**: questo file è in un repo pubblico, quindi le valutazioni che contiene sono leggibili da chiunque.
 
 ## Come riprendere
 
