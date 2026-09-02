@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 54 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 58 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF vivono in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Cinquantatré fonti su 54 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 54, 50 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
+Cinquantasette fonti su 58 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 58, 54 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
 
 ---
 
@@ -243,6 +243,36 @@ Nota: è un deck di slide senza URL sorgente stampato. L'autore è identificabil
 
 ---
 
+## Comandi di Claude Code
+
+I quattro PDF di questa sezione sono stampe della pagina viva fatte il 2 settembre 2026. Le due pagine di documentazione cambiano a ogni versione di Claude Code, quindi la stampa vale come istantanea di quel giorno e non come riferimento stabile.
+
+**55. Commands**
+Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicazione
+https://code.claude.com/docs/en/commands
+File: `Claude Code, Commands.pdf`
+Riferimento completo dei comandi che si usano dentro la sessione: alla data di consultazione ne elenca 111, skill impacchettate comprese. La pagina è servita anche in markdown grezzo aggiungendo `.md` all'URL, che è il modo più affidabile di leggerla senza passare dal rendering JavaScript.
+
+**56. CLI reference**
+Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicazione
+https://code.claude.com/docs/en/cli-reference
+File: `Claude Code, CLI reference.pdf`
+I comandi `claude ...` da terminale e l'elenco completo dei flag. Vale la stessa avvertenza della voce 55 sulla pagina viva, e lo stesso trucco del suffisso `.md`.
+
+**57. I've organised the Claude Code commands, including some hidden ones**
+Akari Iku — DEV Community, 14 febbraio 2026, aggiornato il 6 marzo 2026
+https://dev.to/akari_iku/ive-organised-the-claude-code-commands-including-some-hidden-ones-op0
+File: `I've organised the Claude Code commands.pdf`
+Utile per le scorciatoie da tastiera e per il modo in cui raggruppa i comandi. Da verificare voce per voce prima di riportarlo, perché elenca `/pr_comments` e `/output-style`, che nella versione 2.1.258 non esistono più.
+
+**58. wshobson/commands**
+Seth Hobson — repository GitHub, licenza MIT
+https://github.com/wshobson/commands
+File: `wshobson-commands.pdf`
+Cinquantasette slash command pronti, quindici di orchestrazione e quarantadue di utilità, installabili clonando il repository in `~/.claude`. Di design ce n'è uno solo, `accessibility-audit`.
+
+---
+
 ## Skill: cosa sono e come si creano
 
 **42. A complete guide to building skills for Claude**
@@ -332,11 +362,11 @@ File: `4 Types of Loops You Can Create in Claude Code.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 22 documenti su 54**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 58**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
-Le fonti primarie sono quattro, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows e quello sul context engineering per i modelli di generazione Claude 5. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
+Le fonti primarie sono sei, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5 e le due pagine di documentazione sui comandi. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio ad agosto 2026. Trentadue documenti su cinquantaquattro escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le due pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su cinquantotto escono fra marzo e giugno 2026.
 
 ## Manutenzione
 

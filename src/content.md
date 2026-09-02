@@ -32,10 +32,11 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
   - Organizzare il progetto
 - **Collegare Claude e Figma**
   - Dividere il lavoro tra Claude Desktop e Claude Code
+  - I comandi di Claude Code
   - Tre modi di collegare Figma a confronto
   - Setup e loop con Figma MCP
   - Le skill Figma per Claude Code
-  - Comandi e subagent per il design
+  - Slash command e subagent per il design
 - **Il design system per l'AI**
   - Rendere il design system leggibile dall'AI
   - Creare una skill dal proprio design system
@@ -454,6 +455,93 @@ Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in
 
 Scrivere la soluzione è a sua volta contesto. Messo per iscritto, lo spec di un flusso diventa l'ancora da cui l'AI ricava output diversi: prototipo hi-fi, journey map, piano d'implementazione. Sui flussi complessi tiene anche a bada le allucinazioni, perché i passaggi l'agente li ha davanti invece di ricostruirseli a ogni richiesta.
 
+### I comandi di Claude Code
+
+Claude Code si guida da tre posti diversi, che non servono alle stesse cose. Dal terminale, prima che la sessione esista, decidi dove lavora l'agente e con quali impostazioni. Dentro la sessione, con i comandi che cominciano per barra, governi contesto, modello e permessi mentre il lavoro va avanti. Sulla tastiera rimangono le scorciatoie.
+
+La documentazione ufficiale elenca centoundici comandi con la barra e una sessantina di opzioni da riga di comando. Nella tabella qui sotto ce n'è circa la metà, quelli che si incontrano progettando, e restano fuori l'amministrazione dell'account, il provisioning aziendale e la diagnostica interna. Se un comando non risponde come è scritto qui, `/help` elenca quelli della versione che hai installata.
+
+**Prima di aprire la sessione:** quello che scrivi accanto a `claude` fissa le condizioni del lavoro, e dentro non le cambi più. La più utile a chi progetta è `claude --worktree`, che apre una copia isolata del repository. Lì provi una strada senza toccare il ramo buono, e alla fine la butti o la porti nel progetto. Con `claude -c` riprendi la conversazione di ieri nella stessa cartella, senza rispiegare il progetto da capo.
+
+**Dentro la sessione:** i comandi con la barra si scrivono a inizio messaggio, e quello che segue diventa argomento. Alcuni sono skill impacchettate, quindi invece di aprire un pannello passano istruzioni all'agente, che si mette a lavorare. Funzionano così `/design`, `/code-review`, `/simplify`, `/run` e `/loop`.
+
+**Senza scrivere niente:** Shift+Tab è la scorciatoia che si preme più spesso. Gira fra le modalità di permesso, e quella che interessa chi progetta è il plan mode, dove Claude legge, ragiona e propone un piano senza toccare i file finché non approvi. Conviene prima di ogni richiesta complessa. Prima di un passaggio da Figma a codice via MCP migliora il risultato anche quando al piano non cambi niente.
+
+| Comando | Dove | A cosa ti serve |
+|---|---|---|
+| `claude` | terminale | Apre una sessione nella cartella in cui sei. Il progetto è quella cartella, quindi spostati lì prima di lanciarlo. |
+| `claude -c` | terminale | Riprende l'ultima conversazione di questa cartella, con il contesto già costruito ieri. |
+| `claude -p "…"` | terminale | Esegue una richiesta e esce, senza interfaccia. Serve a mettere Claude dentro uno script. |
+| `claude --worktree` | terminale | Apre una copia isolata del repository in un worktree git, per provare una direzione senza sporcare il ramo buono. |
+| `claude --model` | terminale | Sceglie il modello della sessione con un alias, `opus`, `sonnet`, `haiku` o `fable`. |
+| `claude --effort` | terminale | Fissa quanta cura mettere, da `low` a `max`. Si alza sulle decisioni difficili e si abbassa sul lavoro meccanico. |
+| `claude --permission-mode plan` | terminale | Parte già in plan mode, senza doverci entrare a mano al primo messaggio. |
+| `claude --ide` | terminale | Si collega da solo all'editor aperto, quando ne trova uno valido. |
+| `claude --chrome` | terminale | Accende l'integrazione con Chrome, con cui l'agente guarda la pagina che ha appena costruito. |
+| `claude --bg "…"` | terminale | Lancia la sessione in background e restituisce subito il terminale. |
+| `claude agents` | terminale | La vista delle sessioni in background. Da lì `claude attach`, `claude logs` e `claude stop` entrano, leggono e fermano. |
+| `claude mcp` | terminale | Configura i server MCP, cioè il collegamento con Figma. Vedi «Setup e loop con Figma MCP». |
+| `claude plugin` | terminale | Installa e gestisce i plugin, comprese le raccolte di skill del catalogo. |
+| `claude doctor` | terminale | Diagnostica l'installazione senza aprire una sessione, quando qualcosa non parte. |
+| `claude update` | terminale | Aggiorna all'ultima versione. |
+| `/context` | sessione | Mostra quanto contesto è occupato e da cosa, con i tool che pesano di più. Il comando da usare quando le risposte peggiorano. |
+| `/compact` | sessione | Riassume la conversazione per liberare spazio, e accetta istruzioni su cosa tenere. |
+| `/clear` | sessione | Apre una conversazione nuova a contesto vuoto, senza chiudere Claude Code. |
+| `/rewind` | sessione | Torna a un punto precedente, conversazione, codice o entrambi. |
+| `/resume` | sessione | Riprende una conversazione per nome o dal selettore. |
+| `/branch` | sessione | Dirama la conversazione da qui, per provare un'altra strada senza perdere quella attuale. |
+| `/fork` | sessione | Copia la conversazione in una sessione di background che va avanti da sola mentre tu resti qui. |
+| `/memory` | sessione | Apre i file `CLAUDE.md` e le memorie automatiche. Vedi «CLAUDE.md». |
+| `/add-dir` | sessione | Dà accesso a una cartella fuori dal progetto a sessione aperta, per esempio quella degli asset. |
+| `/export` | sessione | Esporta la conversazione come testo, che è il modo di passarla a qualcuno o di conservarla. |
+| `/plan` | sessione | Entra in plan mode, con una descrizione facoltativa del compito da cui partire. |
+| `/goal` | sessione | Fissa la condizione da raggiungere e l'agente continua di turno in turno finché non ci arriva. Vedi «I quattro tipi di loop». |
+| `/effort` | sessione | Alza o abbassa la cura a sessione aperta. |
+| `/model` | sessione | Cambia modello e lo salva come predefinito per le sessioni nuove. |
+| `/permissions` | sessione | Le regole di cosa l'agente può fare senza chiedere il permesso ogni volta. |
+| `/design` | sessione | Disegna mockup, flussi di schermate, landing e poster come artboard su una tela sola, pubblicati come artifact. |
+| `/design-sync` | sessione | Converte il design system React del repository e lo carica su Claude Design, così i disegni usano i componenti veri. |
+| `/dataviz` | sessione | Guida alla forma dei grafici, sceglie il tipo adatto ai dati, assegna il colore per ruolo e verifica la palette per contrasto e daltonismo. |
+| `/artifacts` | sessione | Elenca gli artifact tuoi e quelli condivisi con te, e ne aggancia uno alla sessione. |
+| `/run` | sessione | Lancia l'applicazione del progetto e la guida, per vedere la modifica funzionare davvero e non solo passare i test. |
+| `/verify` | sessione | Costruisce, esegue e osserva il risultato invece di fidarsi dei test. Vedi «Verificare il risultato». |
+| `/code-review` | sessione | Rivede il diff, una pull request o un percorso. Con `--fix` applica quello che trova. |
+| `/simplify` | sessione | Quattro agenti in parallelo cercano riuso, semplificazioni e sprechi nel codice cambiato, poi applicano le correzioni. |
+| `/security-review` | sessione | Cerca vulnerabilità nelle modifiche del ramo, dall'iniezione di codice all'esposizione di dati. |
+| `/diff` | sessione | Visualizzatore delle modifiche non ancora committate, navigabile turno per turno. |
+| `/subtask` | sessione | Passa un compito a un subagent che eredita tutta la conversazione e riporta qui il risultato quando ha finito. |
+| `/agents` | sessione | Dalla versione 2.1.198 stampa il promemoria su dove stanno i subagent, cioè `.claude/agents/` nel progetto o nella cartella personale. |
+| `/batch` | sessione | Spezza un lavoro grosso in unità indipendenti e ne dà una a ogni subagent, ognuno nel suo worktree. |
+| `/tasks` | sessione | Il lavoro in background di questa sessione, subagent già conclusi compresi. |
+| `/background` | sessione | Stacca la sessione, che continua come agente in background, e ti restituisce il terminale. |
+| `/loop` | sessione | Ripete un prompt a intervalli, oppure lascia che sia l'agente a darsi il ritmo. Vedi «I quattro tipi di loop». |
+| `/schedule` | sessione | Routine che girano nel cloud a orario, quindi senza bisogno che il computer resti acceso. Vedi «I quattro tipi di loop». |
+| `/skills` | sessione | Elenca le skill disponibili e quanto costa in token ciascuna. Vedi «Dove vivono le skill». |
+| `/plugin` | sessione | Installa, attiva e disattiva i plugin e i loro marketplace. |
+| `/mcp` | sessione | Stato dei server MCP, riconnessione di uno caduto e autenticazione. |
+| `/hooks` | sessione | Gli hook agganciati agli eventi dei tool, con cui un controllo scatta da sé. Vedi «Verificare il risultato». |
+| `/ide` | sessione | Stato del collegamento con l'editor. |
+| `/init` | sessione | Esplora il progetto e scrive il primo `CLAUDE.md`. |
+| `/help` | sessione | L'elenco dei comandi che la tua versione ha davvero. |
+| `/keybindings` | sessione | Apre il file delle scorciatoie, per cambiarle. |
+| `/usage` | sessione | Costo della sessione e consumo del piano. |
+| `/doctor` | sessione | Controllo dell'installazione con le riparazioni proposte. |
+| `/insights` | sessione | Report HTML sulle sessioni recenti, con i punti di attrito che tornano più spesso. Vedi «CLAUDE.md». |
+| `/deep-research` | sessione | Apre più ricerche sul web in parallelo, incrocia le fonti e restituisce un rapporto con le citazioni. |
+| `/btw` | sessione | Una domanda di lato che non entra nella conversazione, quindi non ne occupa il contesto. |
+| Shift+Tab | tasti | Gira fra le modalità di permesso, plan mode compreso. |
+| Esc | tasti | Ferma la generazione in corso. |
+| Esc Esc | tasti | Apre il menu di `/rewind` per tornare a un punto precedente. |
+| Ctrl+V | tasti | Incolla uno screenshot dagli appunti. Su Mac è Ctrl+V, non Cmd+V. |
+| Ctrl+G | tasti | Apre il messaggio nell'editor esterno, per scrivere un prompt lungo con comodo. |
+| Ctrl+R | tasti | Cerca nella cronologia dei comandi. |
+| Ctrl+B | tasti | Manda in background il compito in corso. |
+| Ctrl+T | tasti | Mostra e nasconde la lista di cose da fare dell'agente. |
+
+**Dentro VS Code e Cursor:** Claude Code gira anche come estensione dell'editor, e lì cambia l'interfaccia mentre i comandi restano gli stessi. Guadagni il diff dentro l'editor invece che nel terminale, il riferimento ai file con `@` che pesca dal progetto aperto, e una finestra sola per scrivere e per guardare cosa cambia. `claude --ide` si aggancia da solo all'editor se ne trova uno valido, e `/ide` mostra lo stato del collegamento. Fra VS Code e Cursor la differenza per Claude Code è piccola, perché l'estensione è la stessa, e a cambiare è il resto dell'editor.
+
+**Il flusso che conviene nell'editor:** per il lavoro di design non chiedere di costruire subito. Entra in plan mode e vai per gradi, cioè analizza l'esperienza attuale, chiedi un piano UX, rivedi le modifiche proposte, approva, e chiudi con un controllo su design system e accessibilità. Così l'agente non si butta sul codice prima di aver capito il problema di prodotto.
+
 ### Tre modi di collegare Figma a confronto
 
 Tre modi di collegare l'AI a Figma, con obiettivi diversi.
@@ -533,24 +621,27 @@ Il catalogo pubblico ne conta una ventina contando le varianti. Figma ne documen
 
 **Remoto o desktop:** il **server remoto** è quello consigliato e con il set di funzioni più ampio (comprese scrittura sul canvas e code-to-canvas su client selezionati), ed è la scelta di default, quella a cui sono agganciate le skill. Il **server desktop** (locale, `127.0.0.1:3845`, abilitato in Dev Mode) aggiunge l'input per selezione ma è pensato per casi org/enterprise. In pratica parti dal remoto e passa al desktop solo se un caso specifico lo richiede.
 
-### Comandi e subagent per il design
+### Slash command e subagent per il design
 
-**Comandi e pratiche utili in Claude Code:**
+I comandi della sezione precedente li ha scritti Anthropic. Questi te li scrivi tu, e servono a fissare le operazioni che rifai a ogni progetto.
 
-- **Plan mode (Shift+Tab / `/plan`):** Claude legge, ragiona e propone un piano senza toccare i file finché non approvi. Particolarmente utile prima di richieste complesse e prima di un Figma→codice via MCP (spesso migliora il risultato anche senza modifiche al piano).
-- **`/init`:** esplora il codebase e scrive un `CLAUDE.md` (briefing letto a ogni sessione). Tienilo lean; aggiorna dopo molte modifiche.
-- **`/skills`:** elenca le skill disponibili sul tuo computer (utile quando diventano tante).
-- **`/help`:** cheat sheet dei comandi.
-- **`/rewind` (o doppio Esc):** torna a un checkpoint precedente (conversazione, codice o entrambi).
-- **Ctrl+V:** incolla immagini/screenshot come riferimento (su Mac è Ctrl+V, non Cmd+V).
+Ripetere a voce gli stessi prompt dà un risultato che cambia ogni volta, e impedisce alla squadra di lavorare allo stesso modo. Scritto una volta, il comando fa sempre gli stessi passaggi. Sono file markdown in `.claude/commands/`, uno per comando, e il nome del file diventa il nome del comando.
 
-**Slash command custom per workflow ripetibili:** ripetere a voce/per iscritto gli stessi prompt porta a drift di qualità e rende impossibile standardizzare le operazioni per il team. Conviene creare comandi dedicati come `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map`, `/design-system-check`, e ognuno è un file markdown in `.claude/commands/` (es. `.claude/commands/page-review.md` = "Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con focus sulle best practice UX").
+**Cinque comandi che vale la pena avere:** `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map` e `/design-system-check`. Ognuno è un file di poche righe. In `.claude/commands/page-review.md` può starci «Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con attenzione alle buone pratiche UX», e da quel momento `/page-review` fa sempre quel controllo, con le stesse parole.
 
-**Subagent specializzati per il design:** per automatizzare le richieste ricorrenti tenendo pulita la conversazione principale, si creano subagent (file markdown in `.claude/agents/`) che lavorano in autonomia, senza tempestare l'utente di domande. Fra i profili utili in product design ci sono **UX Reviewer**, **Design System Guardian**, **Frontend Implementer**, **Accessibility Reviewer**, **Interaction Designer**, **QA Tester**. Una descrizione di esempio per lo UX Reviewer suona **Role** = senior UX reviewer; **Focus** = user flow, friction point, information architecture, usabilità dei form, error prevention, empty state; **Do not** = riscrivere codice se non richiesto, suggerire decorazione senza motivazione UX. (Questo tema si espande in una futura sezione dedicata all'architettura ad agenti e sub-agenti.)
+**Dove metterli:** vale la stessa divisione delle skill, quindi `~/.claude/commands/` per i comandi tuoi, che ti seguono in ogni progetto, e `.claude/commands/` dentro il repository per quelli della squadra, che arrivano con il clone e si versionano insieme al resto. Un comando personale ha la precedenza su quello di progetto con lo stesso nome. Il criterio è quello di «Dove vivono le skill», cioè se serve solo a te sta nella cartella personale, se descrive come lavora il progetto sta nel repository.
 
-**Claude Code dentro l'IDE + Plan mode:** usare Claude Code dentro VS Code (o altro IDE) evita il continuo salto tra ambiente di codice e app, e l'integrazione offre inline diff, plan review, file mention e shortcut. Per il lavoro di design non chiedere di costruire subito. Passa in **Plan mode** e segui il flusso analizza l'esperienza attuale → chiedi un piano UX → rivedi le modifiche proposte → approva → check finale design-system + accessibilità. Così Claude non si butta sul codice prima di aver capito il problema di prodotto.
+**Comando o skill:** un comando lo lanci tu quando decidi, una skill Claude la carica da sé quando riconosce che serve. Per un giro di controllo che vuoi fare in un momento preciso, come la revisione prima di una consegna, la forma giusta è il comando. Per una regola che deve valere ogni volta che l'agente tocca un componente, è la skill.
 
-**Le lavorazioni lunghe** hanno pattern loro, che stanno in «Verificare il risultato» insieme al resto di quello che serve per lasciar lavorare l'agente senza guardarlo a ogni passaggio.
+**Le raccolte pubbliche:** [`wshobson/commands`](https://github.com/wshobson/commands) raccoglie cinquantasette comandi pronti, quindici di orchestrazione e quarantadue di utilità. Si installa clonando il repository dentro `~/.claude` e i comandi si invocano col prefisso della cartella, `/tools:nome` e `/workflows:nome`. Di design ce n'è uno solo, `accessibility-audit`, che controlla la conformità WCAG su ARIA, navigazione da tastiera e lettori di schermo. È una raccolta scritta per chi sviluppa, e conviene prenderla per quel comando e per vedere come sono scritti gli altri, non per il resto.
+
+**Subagent specializzati:** un subagent è un agente separato con le sue istruzioni, che lavora per conto suo e riporta il risultato senza riempire la conversazione principale dei passaggi intermedi. Sono file markdown in `.claude/agents/`, con lo stesso criterio di collocazione dei comandi. I profili che tornano utili nel lavoro di prodotto sono sei, cioè UX Reviewer, Design System Guardian, Frontend Implementer, Accessibility Reviewer, Interaction Designer e QA Tester.
+
+Un subagent si descrive in tre parti. Per l'UX Reviewer il ruolo è quello di un revisore UX senior; il fuoco è sui flussi, sui punti di attrito, sull'architettura dell'informazione, sull'usabilità dei form, sulla prevenzione degli errori e sugli stati vuoti; i divieti sono riscrivere codice se nessuno lo ha chiesto e proporre decorazione senza una ragione di usabilità. La terza parte è quella che si dimentica più spesso, e senza divieti un agente allarga il compito da solo.
+
+**Come li chiami:** `/subtask` passa un compito a un subagent che eredita tutta la conversazione e riporta qui quando ha finito. `/batch` lavora su scala più grande e spezza un lavoro in unità indipendenti, una per subagent, ognuno nel suo worktree. `/tasks` mostra a che punto sono.
+
+**Le lavorazioni lunghe** hanno pattern propri, che stanno in «Verificare il risultato» insieme al resto di quello che serve per lasciar lavorare l'agente senza guardarlo a ogni passaggio.
 
 ## Il design system per l'AI
 
@@ -844,7 +935,7 @@ gh repo create <nome-progetto> --private --source=. --remote=origin
 git push -u origin main
 ```
 
-**I comandi non serve impararli a memoria:** Claude Code sta già dentro la cartella, quindi "committa quello che abbiamo fatto, con un messaggio che dice cosa è cambiato" funziona come richiesta. Conviene fermarsi spesso, un commit per ogni passaggio chiuso, perché una storia fatta di commit piccoli si legge e permette di tornare indietro di un passo solo quando qualcosa si rompe (vedi i commit atomici in «Comandi e subagent per il design»).
+**I comandi non serve impararli a memoria:** Claude Code sta già dentro la cartella, quindi "committa quello che abbiamo fatto, con un messaggio che dice cosa è cambiato" funziona come richiesta. Conviene fermarsi spesso, un commit per ogni passaggio chiuso, perché una storia fatta di commit piccoli si legge e permette di tornare indietro di un passo solo quando qualcosa si rompe (vedi i commit atomici in «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
 **Il push si può automatizzare** con un hook `post-commit`, cioè un file eseguibile in `.githooks/post-commit` che lancia `git push` appena il commit è chiuso, acceso una volta sola con `git config core.hooksPath .githooks`. Due avvertenze. Git non installa da sé gli hook che arrivano con un clone, quindi su un'altra macchina il comando va rilanciato. E quando il push fallisce il commit resta in locale, quindi l'hook deve dirlo, altrimenti credi di aver pubblicato e non è vero.
 
@@ -1089,6 +1180,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 
 ### UX writing e contenuto
 - [`conorbronsdon/avoid-ai-writing`](https://github.com/conorbronsdon/avoid-ai-writing): audit e riscrittura di un testo per togliere i tell della scrittura AI; è la disciplina che vale anche per le pagine di prodotto, non solo per gli articoli
+- [`addyosmani/clarity`](https://github.com/addyosmani/clarity): intervista, riscrittura, revisione e lint di un testo. Mette la sostanza prima dello stile, e dove il dato manca chiede invece di inventarlo; lessico tarato sull'inglese. Install `npx skills add addyosmani/clarity`
 - [`content-designer/ux-writing-skill`](https://github.com/content-designer/ux-writing-skill): UX writing sistematico su quattro standard (Purposeful, Concise, Conversational, Clear), con pattern per bottoni/errori/empty state/form e checklist di scoring; per Claude, Codex e Cursor, install `npx skills add content-designer/ux-writing-skill`
 
 ### Agenti, CLI, plugin e infrastruttura
@@ -1172,10 +1264,9 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Due temi stanno dalla parte dell'attrezzatura, cioè come si configura l'ambiente in cui la guida ti chiede di lavorare. L'ultimo è di metodo e riguarda come si decide cosa costruire.
+Quello che ancora manca e su cui stiamo lavorando. Il primo tema sta dalla parte dell'attrezzatura, cioè come si configura l'ambiente in cui la guida ti chiede di lavorare. Il secondo è di metodo e riguarda come si decide cosa costruire.
 
-- **Gestire Claude Code dal terminale:** i comandi della CLI gestiscono le connessioni MCP, il livello di effort, i plugin e i marketplace, così non devi aprire i file di configurazione. È il seguito di «Setup e loop con Figma MCP», dove l'MCP si collega una volta e poi non lo si tocca più.
-- **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor, con le differenze che contano davvero e cosa conviene in quale caso.
+- **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente sta già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
 - **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code stanno in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
 
 ## Glossario
@@ -1209,7 +1300,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Handoff:** il passaggio di consegne a chi riprende il lavoro dopo di te, che può essere un collega o te stesso alla sessione successiva.
 - **Happy path:** il percorso in cui tutto va bene e nessuno sbaglia niente. È quello che gli agenti costruiscono per primo, e spesso l'unico.
 - **Hook:** comando che un programma lancia da sé in un momento fisso, per esempio dopo ogni modifica a un file o subito dopo un commit. Serve a far succedere un controllo senza doverselo ricordare. Vedi «Verificare il risultato».
-- **IDE (Integrated Development Environment):** il programma in cui si scrive il codice, che tiene nello stesso posto editor, ricerca nei file, terminale e strumenti di debug. VS Code e Cursor sono due IDE, e Claude Code ci gira dentro come estensione. Vedi «Comandi e subagent per il design».
+- **IDE (Integrated Development Environment):** il programma in cui si scrive il codice, che tiene nello stesso posto editor, ricerca nei file, terminale e strumenti di debug. VS Code e Cursor sono due IDE, e Claude Code ci gira dentro come estensione. Vedi «I comandi di Claude Code».
 - **JSON (JavaScript Object Notation):** formato per scrivere dati strutturati come coppie di nome e valore, dentro parentesi graffe. È quello dei file di configurazione come `.mcp.json` e `settings.json`, e copre le stesse funzioni di YAML con una sintassi meno tollerante.
 - **Lint:** controllo automatico che segnala errori e violazioni delle regole dentro un file, prima che diventino un problema.
 - **Loop:** un ciclo di lavoro che si ripete finché non incontra la condizione che lo ferma. Nella guida la parola ha tre usi vicini: il giro fra Figma e il codice, il ciclo che porta dalla costruzione alla pubblicazione, e il loop che l'agente ripete da solo di «Far lavorare l'agente da solo».
@@ -1217,7 +1308,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **MCP (Model Context Protocol):** standard che permette a un client AI di collegarsi a strumenti esterni (Figma, Notion, GitHub…) e leggerne o scriverne i dati tramite i tool esposti dal server.
 - **node-id:** identificatore di un nodo (frame, layer, componente) in un file Figma; serve all'MCP per sapere su quale oggetto lavorare.
 - **Personal Access Token (PAT):** chiave personale (in Figma inizia con `figd_`) che autentica un client verso un servizio; va trattata come una password e tenuta fuori dal repo.
-- **Plan mode:** modalità di Claude Code in cui legge e propone un piano senza toccare i file finché non approvi (Shift+Tab o `/plan`). Vedi «Comandi e subagent per il design».
+- **Plan mode:** modalità di Claude Code in cui legge e propone un piano senza toccare i file finché non approvi (Shift+Tab o `/plan`). Vedi «I comandi di Claude Code».
 - **Plugin:** pacchetto che aggiunge funzioni a uno strumento. In Figma estende l'editor, in Claude Code porta comandi, skill e connessioni già configurate.
 - **Progressive disclosure:** mostrare un'informazione solo quando serve, invece di darla tutta subito. Vale per le interfacce e per come l'AI carica skill e file di contesto.
 - **Prompt engineering:** curare la formulazione della singola richiesta. È il livello sotto al context engineering. Vedi «Dal comando al contesto».
@@ -1302,6 +1393,11 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Sherizan, [DesignAgent, plugin Claude Code per designer](https://designagent.dev/) e il [plugin Figma Community](https://www.figma.com/community/plugin/1604428052675393154/designagent-claude-bridge)
 - [FigSpecs, AI Design System Generator](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator), plugin Figma Community
 - @friendlyunit, Figma console MCP to Claude: Setup Guide for Designers
+
+**Comandi e configurazione di Claude Code**
+- Anthropic, [Commands](https://code.claude.com/docs/en/commands) e [CLI reference](https://code.claude.com/docs/en/cli-reference), documentazione di Claude Code
+- Akari Iku, [I've organised the Claude Code commands (including some hidden ones)](https://dev.to/akari_iku/ive-organised-the-claude-code-commands-including-some-hidden-ones-op0) (febbraio 2026)
+- Seth Hobson, [`wshobson/commands`](https://github.com/wshobson/commands), cinquantasette slash command pronti
 
 **Claude Skills**
 - Anthropic, [A complete guide to building skills for Claude](https://claude.com/blog/complete-guide-to-building-skills-for-claude) e la sua versione [PDF](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf) (gennaio 2026)

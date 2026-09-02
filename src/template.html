@@ -600,7 +600,7 @@
     .flow3 > div {
       position: relative; padding: 18px 20px;
       border: 1px solid var(--border); border-radius: var(--radius);
-      background: var(--surface-2);
+      background: var(--surface);
     }
     .flow3 > div + div::before {
       content: ""; position: absolute; left: -25px; width: 24px; height: 24px;
@@ -913,7 +913,14 @@
       /* Ogni capitolo apre una pagina nuova. L'occhiello si porta dietro il titolo. */
       .prose .chapter-kicker { break-before: page; margin-top: 0; }
       .prose pre, .prose blockquote, .prose figure,
-      .table-wrap, .prose li { break-inside: avoid; }
+      .prose li { break-inside: avoid; }
+      /* La tabella dei comandi e' piu' alta di una pagina, quindi tenerla intera
+         non e' possibile: si spezza, ma non dentro una riga, e l'intestazione si
+         ripete su ogni pagina. Sopra la sticky non serve, la stampa non scorre. */
+      .table-wrap { break-inside: auto; }
+      .prose thead { display: table-header-group; }
+      .prose thead th { position: static; }
+      .prose tr { break-inside: avoid; }
       .prose p { orphans: 3; widows: 3; }
       /* Sulla carta si stampa chiaro anche partendo dal tema scuro, quindi il
          logo torna nero: invertito resterebbe bianco su bianco. */

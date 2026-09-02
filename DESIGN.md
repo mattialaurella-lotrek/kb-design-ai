@@ -130,6 +130,14 @@ Componente nuovo del 23 agosto 2026, e usa solo materiale che c'era già.
 
 **Corpi:** 15px il campo, come il bottone di sistema; 14,5px il titolo del risultato; 13,5px lo spezzone; 12px l'etichetta del tipo. Tutti già in uso altrove, secondo la regola qui sopra.
 
+## Lo schema a tre passaggi
+
+Componente usato una volta, in «Rendere il design system leggibile dall'AI», dove porta authoring, specification e delivery. Tre riquadri in griglia con una freccia `arrow-right` fra l'uno e l'altro, che sotto i 700px si impilano e la freccia diventa verticale.
+
+**Forma:** `--surface`, filetto `--border`, raggio `--radius`, padding 18 sopra e sotto e 20 ai lati. Dal 2 settembre 2026 il fondo è **bianco** e non più `--surface-2`, su indicazione dell'utente: erano gli unici riquadri della guida su fondo grigio, mentre i riquadri affiancati stavano già su `--surface`. Sono le card che nel sistema si distinguono dalla pagina per la superficie, non per la velatura.
+
+**Corpi:** l'occhiello del passaggio a `.82rem` in peso regular, il luogo in `--w-medium` sul corpo della prosa, la nota in fondo a `.92rem` con interlinea 1,55, separata da un filetto.
+
 ## I riquadri affiancati
 
 Componente del 23 agosto 2026, usato due volte. In coda a «Checklist pre-richiesta e segnali» porta i due esiti, quello che dice che il lavoro sta funzionando e quello che dice il contrario. In coda a «Deploy del prototipo» mette a confronto GitHub Pages e Vercel.

@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 20.280 parole di prosa senza i blocchi di codice, 7 capitoli, 38 sezioni, 48 voci nell'indice laterale
-- 54 documenti in `docs/FONTI.md`
-- `index.html` pesa 318 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 28 agosto 2026
+- 21.920 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
+- 58 documenti in `docs/FONTI.md`
+- `index.html` pesa 336 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- Ultima build: 2 settembre 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro
@@ -68,11 +68,13 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
+**La tabella dei comandi invecchia da sola.** «I comandi di Claude Code» ne elenca cinquantanove su 111 documentati, e la documentazione cambia a ogni versione di Claude Code. Il testo lo dichiara e rimanda a `/help`. Rileggendola, la fonte comoda è la stessa pagina col suffisso `.md`, che dà il markdown grezzo.
+
 **Due valori interpolati nel tema scuro.** `--surface` e `--surface-2` non poggiano su un gradino, perché la scala Shark si ferma a 950 e sotto il fondo non c'è niente. Se al file Figma vengono aggiunti un 960 e un 980, si agganciano.
 
 **L'immagine di apertura è self-hostata** in `assets/`, 67 KB di materiale di Figma dentro un repo pubblico. La scelta serve a non far dipendere il PDF da un CDN esterno, visto che si genera a ogni deploy. Non ha didascalia né credito in pagina.
 
-**Il capitolo «Scrivere il contesto» è il più grosso, al 23%.** È coerente, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
+**Il capitolo «Scrivere il contesto» è il più grosso, al 22%.** È coerente, ma se un giorno servisse spezzarlo l'unica cucitura è fra l'elenco dei formati e i singoli file.
 
 **Le categorie del catalogo delle skill sono ancora H3**, quindi nella spalla pesano quanto un capitolo. Per le librerie è risolto, per le skill no.
 

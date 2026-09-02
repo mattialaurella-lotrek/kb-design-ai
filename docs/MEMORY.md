@@ -12,12 +12,12 @@ Guida HTML «Progettare con l'AI», knowledge base del team di design Lotrek: co
 Sette capitoli in sequenza, ognuno dà per acquisito il precedente. Erano sei fino al 27 agosto 2026, e prima ancora tre più due, col secondo che valeva il 58% della guida.
 
 1. **Progettare il contesto** — i concetti (8%)
-2. **Scrivere il contesto** — i file che l'agente legge: `CLAUDE.md`, `DESIGN.md`, `UX.md`, l'elenco dei formati, l'organizzazione del progetto (23%)
-3. **Collegare Claude e Figma** — i tre ponti a confronto, il setup MCP, le skill native di Figma, i comandi per il design (13%)
-4. **Il design system per l'AI** — renderlo leggibile, impacchettarlo in una skill, farne rispettare le regole (10%)
-5. **Costruire e pubblicare il prototipo** — il giro codice-canvas-codice, le librerie, il versionamento su GitHub, il deploy, l'archiviazione a progetto chiuso (14%)
+2. **Scrivere il contesto** — i file che l'agente legge: `CLAUDE.md`, `DESIGN.md`, `UX.md`, l'elenco dei formati, l'organizzazione del progetto (22%)
+3. **Collegare Claude e Figma** — i comandi di Claude Code, i tre ponti a confronto, il setup MCP, le skill native di Figma, gli slash command e i subagent che ti scrivi tu (16%)
+4. **Il design system per l'AI** — renderlo leggibile, impacchettarlo in una skill, farne rispettare le regole (9%)
+5. **Costruire e pubblicare il prototipo** — il giro codice-canvas-codice, le librerie, il versionamento su GitHub, il deploy, l'archiviazione a progetto chiuso (13%)
 6. **Progettare con le skill di Claude** — cosa sono, come si scrivono, dove vivono, il catalogo (14%)
-7. **Far lavorare l'agente da solo** — i quattro tipi di loop, le parti di un loop, la verifica (7%)
+7. **Far lavorare l'agente da solo** — i quattro tipi di loop, le parti di un loop, la verifica (6%)
 
 - **Il criterio del taglio** è che ogni capitolo risponda a una domanda sola. «Scrivere il contesto» non parla di Figma, «Collegare Claude e Figma» non parla di design system, e il deploy non sta col capitolo Figma perché GitHub e Vercel con Figma non c'entrano.
 - **Il capitolo sulle skill sta dopo tutto il resto per decisione dell'utente**, contro il mio parere: «skill» compare 45 volte prima di arrivarci. L'attenuazione è la definizione nel bullet `SKILL.md` del capitolo 2, con rimando a quel capitolo. Dal 27 agosto 2026 non è più l'ultimo, perché «Far lavorare l'agente da solo» lo segue, ma la ragione della decisione non cambia. Non riaprire la questione senza un motivo nuovo.
@@ -150,22 +150,23 @@ Sette capitoli in sequenza, ognuno dà per acquisito il precedente. Erano sei fi
 - **Il post Anthropic sui loop non si stampa in PDF al primo colpo**: il corpo si monta via JavaScript, quindi con un `--virtual-time-budget` corto Chrome headless produce un PDF di sola navigazione. Servono 25 secondi e una finestra alta.
 
 ## Prossimi argomenti, dal 25 agosto 2026
-Tre temi annunciati nella sezione «Prossimi argomenti» di `src/content.md`, che sta prima del glossario e li elenca senza svilupparli. I primi due stanno dalla parte dell'attrezzatura, cioè installazione e configurazione dell'ambiente, l'ultimo è di metodo. Il 27 agosto 2026 ne sono usciti quattro perché sono diventati testo della guida: installare le skill in locale, il versionamento, l'archiviazione e il loop engineering.
+Due temi annunciati nella sezione «Prossimi argomenti» di `src/content.md`, che sta prima del glossario e li elenca senza svilupparli. Il primo sta dalla parte dell'attrezzatura, cioè installazione e configurazione dell'ambiente, il secondo è di metodo. Il 27 agosto 2026 ne sono usciti quattro perché sono diventati testo della guida, cioè installare le skill in locale, il versionamento, l'archiviazione e il loop engineering. Il 2 settembre 2026 è uscito anche «Gestire Claude Code dal terminale», assorbito da «I comandi di Claude Code».
 
 ⚠️ **Le fonti qui sotto sono una prima selezione dell'utente e non sono ancora in `docs/FONTI.md`**, né hanno un PDF in `sources/`, perché nessun articolo è integrato nel testo. Quando un tema diventa sezione vale la regola di sempre: ogni fonte che entra nel testo va aggiunta sia alla sezione «Fonti» di `src/content.md` sia a `docs/FONTI.md`, rinumerando le voci successive e correggendo i conteggi in testa al file.
 
-- **Gestire Claude Code dal terminale.** Connessioni MCP, livello di effort, plugin e marketplace dai comandi della CLI invece che a mano nei file di configurazione. Si aggancia a «Setup e loop con Figma MCP», dove l'MCP si collega una volta sola.
-  - [Connect to MCP servers](https://code.claude.com/docs/en/mcp-quickstart), Claude Code Docs
-  - [Model configuration](https://code.claude.com/docs/en/model-config), Claude Code Docs
-  - [Model and effort in Claude Code](https://claude.com/blog/claude-model-and-effort-level-in-claude-code), Anthropic
-  - [Plugins reference](https://code.claude.com/docs/en/plugins-reference), Claude Code Docs
-  - [Claude Code Plugins Complete Guide](https://hidekazu-konishi.com/entry/claude_code_plugins_complete_guide.html), Hidekazu Konishi
-- **VS Code e Cursor a confronto.** Lo stesso progetto aperto nei due editor, differenze e vantaggi.
+- **VS Code e Cursor a confronto.** Lo stesso progetto aperto nei due editor, differenze e vantaggi. ⚠️ Il perimetro si è ristretto il 2 settembre 2026: cosa cambia per Claude Code dentro un editor sta già in «I comandi di Claude Code», dove è scritto che l'estensione è la stessa nei due e che a cambiare è il resto dell'editor. Al tema resta il confronto fra gli editor in sé, quindi va scritto solo se ha qualcosa da dire oltre a quella riga.
   - [Use Claude Code in VS Code](https://code.claude.com/docs/en/vs-code), Claude Code Docs
   - [Claude Code + Cursor 2026](https://www.futureproofing.dev/resources/ai-native-team/claude-code-cursor-integration-2026), FutureProofing
 - **La ricerca UX con l'AI** (dal 26 agosto 2026). Come si conduce uno studio con l'AI dentro, senza che l'AI si mangi il giudizio di chi lo conduce. Due tagli complementari nelle fonti. Il primo è la scala di maturità di Kate Towsey, crawl / walk / run, e la tesi che il salto vero non sia l'automazione dei singoli compiti ma il passaggio dal lavoro individuale al lavoro di sistema, con repository, panel e analisi dei vuoti che girano prima che lo stakeholder faccia la domanda. Il secondo è operativo e ci riguarda da vicino, perché mette Claude, Claude Cowork e Claude Code su tre momenti diversi della ricerca e dichiara per ognuno il regime sui dati, che è il punto delicato quando i dati sono di partecipanti reali. Il taglio da tenere per la guida è quello a monte di «UX.md»: quel file dice come le evidenze diventano contesto, questo tema direbbe come le evidenze si producono.
   - [How to AI UXR: A Map for Building AI-Augmented Research Operations](https://www.theresearchopsreview.com/p/how-to-ai-uxr-a-map), Kate Towsey, The ResearchOps Review (21 maggio 2026). La mappa vera è un PDF di cinque pagine scaricabile dall'articolo.
   - [The UX Researcher's Guide to Claude, Claude Cowork, and Claude Code](https://productimpactpod.com/news/ux-researcher-guide-claude-tools/), Brittany Hobbs, Product Impact (27 aprile 2026, aggiornato al 27 luglio 2026). Ha due seguiti citati in pagina, sul cambio di mentalità e sulla ricerca come strato di contesto, da valutare quando si scriverà la sezione.
+
+## La tabella dei comandi, dal 2 settembre 2026
+La sezione «I comandi di Claude Code» porta una tabella di cinquantanove righe, che è una scelta contro la regola di casa: le altre due tabelle della guida hanno tre e quattro righe e servono a reggere una distinzione, non a fare da elenco. La tabella dei comandi è un inventario, voluto dall'utente dopo che avevo proposto una selezione più corta.
+
+- ⚠️ **Invecchia da sola.** La documentazione ufficiale elenca 111 slash command e cambia a ogni versione di Claude Code. Il testo lo dichiara e manda il lettore a `/help` e alla documentazione, che è l'unico modo onesto di tenere una tabella così senza prometterne l'esattezza nel tempo. Quando si rimette mano, la fonte da rileggere è `https://code.claude.com/docs/en/commands.md`, cioè la stessa pagina col suffisso `.md`, che restituisce il markdown grezzo invece della pagina montata via JavaScript.
+- **Due comandi rimossi da Claude Code sono stati esclusi in fase di scrittura**, `/ultraplan` e `/vim`, che le sintesi di seconda mano continuano a elencare. Vale come promemoria: le voci di questa tabella si verificano sulla documentazione ufficiale e sull'help della versione installata, mai su un articolo.
+- **Il criterio della selezione** è che ogni riga dica qualcosa a chi progetta. Restano fuori amministrazione dell'account, provisioning aziendale, diagnostica interna e i comandi di contorno.
 
 ## Prossima sessione, deciso il 21 agosto 2026
 - **Le Figma Agent Skills**, cioè le skill dell'agente che vive **dentro Figma**, sono cosa diversa dalle skill del plugin già coperte in «Le skill Figma per Claude Code». Rinviate dall'utente il 21 agosto 2026. Due decisioni già prese e da non riaprire: restano due sezioni distinte, e ogni titolo deve dire chi esegue la skill e dove (nome proposto per la nuova, «Le skill dell'agente di Figma»). Mancano le fonti, che fornisce l'utente, e la scelta fra capitolo «Lavorare con le Claude Skills» e coda di «Collegare Claude e Figma».
@@ -173,6 +174,7 @@ Tre temi annunciati nella sezione «Prossimi argomenti» di `src/content.md`, ch
 
 ## In sospeso / da valutare
 - **Le categorie del catalogo delle skill sono H3** come le sezioni che si leggono, quindi nella spalla un contenitore di link pesa quanto un capitolo di prosa. Per le librerie il problema è risolto (le cinque sezioni sono diventate sottotitoli dentro «Librerie per asset ed effetti»); per il catalogo delle skill no.
+- **Quattordici voci del catalogo delle skill sono sopra il tetto delle 240 battute**, fra 245 e 519, contro una mediana di 156 sulle sessantaquattro voci. La regola sta in `CLAUDE.md` dal 2 settembre 2026. L'utente ha chiesto di accorciarle e ha subito ritirato la richiesta, quindi restano com'erano e si sistemano quando si mette mano alla singola riga. Le più gonfie sono `kaokaohate/design-system-extractor` (519), `VoltAgent/awesome-design-md` (481) e `Checklist-Design/skills` (470).
 - **Il debito del design system sta in `DESIGN.md`**, sezione «Debito noto»: il blocco `@media print` riscrive a mano tredici token invece di poggiare sul tema chiaro, l'interfaccia non ha token di corpo, spaziatura e raggio, e la favicon pesa 139 KB. Nessuno dei tre è stato affrontato.
 - **Due icone del sistema non sono in uso dove servirebbero**: `download` sulla CTA «Scarica la guida» e `menu` sul bottone Menu. Sono scelte di design rinviate, perché aggiungerle cambia l'ingombro delle pillole.
 - **Pallino pulsante nella spalla** (25 agosto 2026): valutato e non adottato. Costava sei righe di CSS, con `2s` già in uso nel foglio e l'animazione su `opacity`, quindi non è stato il costo a fermarlo. Sarebbe stata l'unica cosa in movimento continuo a fianco di una lettura da 17.000 parole, per ripetere quello che dicono già il pallino fermo e il badge sul titolo. Se un giorno si riprende, la versione preferibile è a battiti contati con `animation-iteration-count: 3` e non infinita.

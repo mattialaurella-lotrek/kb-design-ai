@@ -3,6 +3,29 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-09-02]
+
+### Aggiunto
+- **Sezione «I comandi di Claude Code»,** seconda del capitolo 3, subito dopo «Dividere il lavoro tra Claude Desktop e Claude Code» e prima delle sezioni su Figma. Tre piani distinti, cioè i comandi da terminale che fissano le condizioni della sessione, gli slash command che la governano mentre lavora e le scorciatoie da tastiera. In mezzo una tabella di cinquantanove righe con tre colonne, comando, dove si scrive e a cosa serve progettando. Sta prima di Figma perché il plan mode, che la sezione spiega, va usato prima di un passaggio da Figma a codice, e finora arrivava dopo il loop che avrebbe dovuto preparare.
+- **Quattro fonti, voci 55-58 di `docs/FONTI.md`,** con i PDF in `sources/` e un gruppo nuovo, «Comandi di Claude Code», anche nella sezione «Fonti» della guida. Sono le due pagine di documentazione ufficiale su comandi e CLI, l'articolo di Akari Iku su DEV Community e il repository `wshobson/commands`. Le due pagine di documentazione sono vive e senza data di pubblicazione, quindi la voce dichiara che il PDF vale come istantanea del 2 settembre 2026.
+
+### Corretto
+- **L'intestazione delle tabelle resta come è sempre stata,** `position: sticky; top: 0`. Avevo provato a spostarla a `top: 60px` perché con una tabella più alta del viewport finisce dietro la topbar, e a limitarla poi alle sole tabelle lunghe con una classe scritta dalla build. Tutte e due le versioni cambiavano l'aspetto dell'intestazione rispetto a quella pubblicata, che è quella giusta, quindi la regola è tornata identica e il conteggio delle righe è uscito da `scripts/build.mjs`. Sulla tabella lunga l'intestazione scorre via come ovunque.
+- **La stampa teneva `break-inside: avoid` sull'involucro della tabella,** cosa impossibile per una tabella più alta di una pagina. Nel blocco `@media print` la regola passa dall'involucro alle righe, l'intestazione si ripete a ogni pagina con `display: table-header-group` e la `sticky` torna `static`, che in stampa non serve. Verificato sul PDF rigenerato.
+
+- **Le card dello schema a tre passaggi passano al fondo bianco,** da `--surface-2` a `--surface`, su indicazione dell'utente. Erano gli unici riquadri della guida su fondo grigio, mentre i riquadri affiancati stavano già su `--surface`. Il componente ora ha una sua sezione in `DESIGN.md`, che prima non aveva.
+- **Nove comandi aggiunti alla tabella,** che sale a 67 righe: `/add-dir`, `/agents`, `/background`, `/btw`, `/export`, `/hooks`, `/insights`, `/schedule` e `/security-review`. Due erano già citati altrove nella guida e mancavano qui, cioè `/schedule` in «I quattro tipi di loop» e `/insights` in «CLAUDE.md».
+
+- **Le due sezioni nuove ripassate con `/clarity` e con `italiano-chiaro`.** Il primo giro con `/clarity` era stato troppo timido e non copriva la correttezza dell'italiano, che è il perimetro dell'altra skill. Il secondo giro ha trovato quattro errori veri, cioè «tre posti, e fanno cose diverse» con il soggetto che non regge, «impedisce alla squadra di lavorare tutti allo stesso modo», «il fuoco sono i flussi» con l'accordo rotto, e due costruzioni con il soggetto implicito sbagliato, fra cui «le poche cose che useresti troppo spesso per scriverle», segnalata dall'utente. Sono cadute anche «Il riferimento è la versione 2.1.258 di settembre 2026» e «È materia che cambia in fretta», che non dicevano niente. Diciannove passaggi in tutto.
+
+- **[`addyosmani/clarity`](https://github.com/addyosmani/clarity) nel catalogo,** in «UX writing e contenuto», subito dopo `avoid-ai-writing` perché fanno mestieri vicini. È la skill usata in questa stessa sessione per ripassare le due sezioni nuove.
+- **Regola nuova in `CLAUDE.md`: le voci del catalogo stanno fra le 80 e le 240 battute,** URL escluso. Sono i quartili delle sessantaquattro voci già scritte, che hanno mediana 156. La prima stesura della voce `clarity` ne aveva 765, cioè quasi cinque volte la mediana e metà più della voce più lunga del catalogo, ed è stata riportata a 236. Quattordici voci precedenti restano sopra il tetto, fra 245 e 519 battute, e la regola le dichiara debito da accorciare quando si mette mano alla loro riga. Il tetto è 240 e il bersaglio 150, non il terzo quartile, perché un tetto messo sul quartile viene sforato da un quarto delle voci per definizione.
+
+### Modificato
+- **«Comandi e subagent per il design» diventa «Slash command e subagent per il design»** e resta in coda al capitolo, riscritta da capo su quello che ti scrivi tu. Dove mettere i comandi con la precedenza del personale sul progetto, il criterio per scegliere fra un comando e una skill, la raccolta `wshobson/commands` con la nota che di cinquantasette comandi uno solo è di design, i sei profili di subagent con la parte dei divieti, e i tre comandi con cui si chiamano. Il plan mode e il blocco sull'IDE escono da qui e passano alla sezione nuova.
+- **«Prossimi argomenti» scende da tre temi a due,** perché «Gestire Claude Code dal terminale» è diventato testo. L'occhiello ora conta un tema di attrezzatura e uno di metodo. **«VS Code e Cursor a confronto» resta ma cambia perimetro:** quello che cambia per l'agente sta ora nella guida, e al tema resta il confronto fra i due editor.
+- **Tre rimandi interni al vecchio titolo di sezione,** due nel glossario alle voci «IDE» e «Plan mode» e uno in «Versionare il progetto su GitHub». I primi due puntano a «I comandi di Claude Code», il terzo ai commit atomici in «Dividere il lavoro tra Claude Desktop e Claude Code», che è dove stanno davvero. Il controllo dei rimandi della build li ha segnalati tutti e tre.
+
 ## [2026-08-28]
 
 ### Modificato
