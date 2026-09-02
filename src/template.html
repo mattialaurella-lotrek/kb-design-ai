@@ -88,7 +88,7 @@
       /* icon/arrow-right della sezione Icons, come maschera perche' un ::before
          non puo' puntare a un <symbol> dello sprite. */
       --ico-arrow-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23000' stroke-width='1.5' stroke-miterlimit='10'%3E%3Cpath d='M11.798 21.5L21.305 12L11.798 2.5'/%3E%3Cpath d='M21.305 12H2.695'/%3E%3C/svg%3E");
-      --code-tint: #dfedec;   /* Nebula/100 — il codice inline sta nella famiglia
+      --code-tint: #dfedec;   /* Nebula/100 — il codice inline resta nella famiglia
                                 del fondo, cosi' il lime resta il segno di una cosa sola */
       --code-line: #cce0df;   /* Nebula/200 */
       --accent-line: #b1e201; /* Electric Lime/500. Il 400 puro sul fondo chiaro fa
@@ -215,7 +215,7 @@
     .toplink .ico { width: 18px; height: 18px; display: block; flex: none; }
     .toplink:hover { background: var(--tint-hover); }
     .toplink:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
-    /* Nel pannello a pieno schermo il link sta sotto la CTA, non nella topbar. */
+    /* Nel pannello a pieno schermo il link va sotto la CTA, non nella topbar. */
     .toplink--panel { display: none; margin: 18px 0 0 -12px; }
     .toc-foot { display: none; }
 
@@ -321,7 +321,7 @@
     .toc-cta .btn-cta { padding-top: 8px; padding-bottom: 8px; }
 
     /* ---- Ricerca ----------------------------------------------------------
-       Il campo sta nella topbar prima di Playbook e sotto i 1024px si sposta in
+       Il campo si trova nella topbar prima di Playbook e sotto i 1024px si sposta in
        cima al pannello. Stessa pillola dei bottoni di casa (100px), fondo
        --surface perche' sul fondo unico della chrome un campo trasparente non
        si distingue da un'etichetta. */
@@ -625,7 +625,7 @@
       .flow3 > div + div::before { content: "\2193"; left: 0; right: 0; width: 100%; top: -14px; }
     }
 
-    /* Due esiti a confronto, sotto la checklist. L'icona sta in alto a destra
+    /* Due esiti a confronto, sotto la checklist. L'icona va in alto a destra
        e il testo sotto. Riquadro da 32px sul disegno da 24: il tratto 1,5 del
        sistema scala a 2px ottici, che e' lo spessore chiesto, senza ridisegnare
        niente. Il colore e' l'unica cosa che cambia fra i due, ma non e' l'unico
@@ -648,7 +648,7 @@
     /* Variante col logo al posto dell'icona. I due marchi restano del loro nero,
        che le linee guida di GitHub e di Vercel non vogliono ricolorato, e sullo
        scuro si invertono in bianco: e' l'uso monocromatico che entrambe prevedono. */
-    /* La misura sta su `.prose .verdict-logo`: `.prose img` porta height auto
+    /* La misura e' su `.prose .verdict-logo`: `.prose img` porta height auto
        ed e' piu' specifica di una classe sola. */
     .prose .verdict-logo { display: block; height: 24px; width: auto; margin: 0 0 20px; }
     :root[data-theme="dark"] .prose .verdict-logo { filter: invert(1); }
@@ -677,7 +677,7 @@
     }
     .prose a.linkcard:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
     /* L'immagine riempie la colonna in altezza e il taglio lo fa `cover`: la
-       card e' alta quanto il testo. La misura sta su `.prose .linkcard-img`,
+       card e' alta quanto il testo. La misura e' su `.prose .linkcard-img`,
        perche' `.prose img` porta height auto. */
     .prose .linkcard-img {
       display: block; width: 120px; height: 100%; align-self: stretch;
@@ -790,7 +790,7 @@
       .toplink--panel { display: inline-flex; margin: 0 -12px 0 0; }
       /* Playbook a destra, staccato dalla CTA da un filetto a tutta larghezza:
          e' un link fuori dalla guida e non un'altra azione sulla guida. */
-      /* Il filetto sta in mezzo a due vuoti che devono pesare uguale. Sopra si
+      /* Il filetto si trova in mezzo a due vuoti che devono pesare uguale. Sopra si
          misura dal bordo pieno della CTA, quindi 24 sono 24. Sotto il link e'
          alto 44 con dentro una riga da 15, cioe' 14,5px di centratura che si
          sommano al padding: 10 + 14,5 pareggiano i 24 di sopra. */
@@ -873,7 +873,7 @@
       .search-hit { padding: 12px; }
       .toc-cta .btn-cta { min-height: 48px; }
       .toplink--panel { min-height: 44px; padding: 10px 12px; }
-      /* Il tondo del tema e la pillola del menu stanno nella topbar alta 60px:
+      /* Il tondo del tema e la pillola del menu si trovano nella topbar alta 60px:
          44 e' il massimo che ci sta lasciando 8px di respiro sopra e sotto. */
       .iconbtn { width: 44px; height: 44px; }
       .btn-menu { height: 44px; }
@@ -885,7 +885,7 @@
     /* Vale sia per il Ctrl+P del lettore sia per il PDF generato in fase di
        deploy con Chrome headless, che passa di qui. */
     @media print {
-      /* Su carta si stampa chiaro comunque, anche se lo schermo sta in scuro.
+      /* Su carta si stampa chiaro comunque, anche se lo schermo e' in scuro.
          Il fondo diventa bianco pieno: la velatura verde del brand su una
          stampante a getto diventa una campitura sporca su settanta pagine. */
       :root, :root[data-theme="dark"] {
@@ -1108,7 +1108,7 @@
         toc.classList.toggle("open", open);
         document.body.classList.toggle("menu-open", open);
         // Il pannello si apre con tutti gli accordion chiusi: gli otto capitoli
-        // stanno in una schermata sola, mentre con uno aperto la lista sfora e
+        // ci stanno in una schermata sola, mentre con uno aperto la lista sfora e
         // si comincia a scorrere per vedere cosa c'e'. Il capitolo in lettura
         // resta segnato in lime anche da chiuso, quindi non si perde il segno.
         if (open) chiudiTuttiSubito();
@@ -1147,7 +1147,7 @@
       }
 
       // Su desktop il primo capitolo e' aperto di default. Nel pannello mobile no:
-      // chiusi, gli otto capitoli stanno in una schermata sola.
+      // chiusi, gli otto capitoli ci stanno in una schermata sola.
       var firstWithSubs = groups.filter(function (g) { return g.querySelector(".toc-sub"); })[0];
       if (firstWithSubs && !window.matchMedia("(max-width: 1024px)").matches) openGroup(firstWithSubs);
 
