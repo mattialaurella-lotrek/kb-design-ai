@@ -69,5 +69,6 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 - `docs/CHANGELOG.md` per cosa è cambiato, raggruppato per data.
 - `docs/MEMORY.md` per le decisioni di lungo periodo e il contesto che deve sopravvivere fra le sessioni.
+- `docs/FONTI-DA-INTEGRARE.md` per le fonti raccolte e non ancora entrate nel testo, ordinate per tema. Una fonte esce di lì quando entra nella guida, e in quel momento entra anche in `docs/FONTI.md` e nella sezione «Fonti» di `src/content.md`.
 - `docs/HANDOFF.md` per lo stato da incollare in una chat senza accesso al repo. Il blocco numerico fra i marcatori `<!-- stato:inizio -->` e `<!-- stato:fine -->` lo scrive la build, quindi lì non si mette mano.
 - `DESIGN.md` quando si tocca un valore del sistema visivo.
