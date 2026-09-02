@@ -68,6 +68,10 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
+**Otto fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema. Il gruppo più denso è sull'economia del contesto e dei token, tre fonti di cui una primaria di Anthropic. I PDF delle cinque su Medium li passa l'utente, perché Medium blocca ogni lettura automatica.
+
+**La versione a cui la tabella dei comandi è verificata non è più scritta in pagina.** È la 2.1.258 e resta nei documenti. Se al lettore serve, si rimette in tre parole.
+
 **La tabella dei comandi invecchia da sola.** «I comandi di Claude Code» ne elenca cinquantanove su 111 documentati, e la documentazione cambia a ogni versione di Claude Code. Il testo lo dichiara e rimanda a `/help`. Rileggendola, la fonte comoda è la stessa pagina col suffisso `.md`, che dà il markdown grezzo.
 
 **Due valori interpolati nel tema scuro.** `--surface` e `--surface-2` non poggiano su un gradino, perché la scala Shark si ferma a 950 e sotto il fondo non c'è niente. Se al file Figma vengono aggiunti un 960 e un 980, si agganciano.

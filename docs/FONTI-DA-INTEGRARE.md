@@ -74,4 +74,6 @@ Articoli che stanno già in `docs/FONTI.md` perché sono stati letti e valutati,
 
 ## Nota sull'archiviazione
 
-Medium risponde 403 a qualunque lettura automatica, browser headless compreso, quindi per le fonti su `medium.com`, `uxplanet.org` e `uxdesign.cc` il PDF va preso a mano o via `archive.is` al momento dell'integrazione. Vale la solita avvertenza di `docs/FONTI.md`, cioè che la data in testa a uno snapshot è quella di archiviazione e non di pubblicazione.
+Medium risponde 403 a qualunque lettura automatica, browser headless compreso, e `freedium.cfd` non risolve da questa macchina, NXDOMAIN sia sul dominio nudo sia sul `www`. L'utente ci arriva dal suo browser e passa i PDF, che vanno in `sources/` come tutti gli altri.
+
+**Cosa fare quando i PDF arrivano.** Aprire ognuno, leggere autore e data dalla prima pagina, completare la voce qui sopra e aggiungere il campo `File:`. Una sola voce ha un buco vero, l'articolo Bootcamp, di cui mancano autore e data; delle altre quattro manca il giorno esatto, perché la ricerca dà solo il mese. Attenzione alla data in testa alla stampa di un mirror, che può essere quella della pagina rigenerata e non quella di pubblicazione: vale la stessa avvertenza che `docs/FONTI.md` dà per gli snapshot di `archive.is`.

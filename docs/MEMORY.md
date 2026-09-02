@@ -168,6 +168,13 @@ La sezione «I comandi di Claude Code» porta una tabella di cinquantanove righe
 - **Due comandi rimossi da Claude Code sono stati esclusi in fase di scrittura**, `/ultraplan` e `/vim`, che le sintesi di seconda mano continuano a elencare. Vale come promemoria: le voci di questa tabella si verificano sulla documentazione ufficiale e sull'help della versione installata, mai su un articolo.
 - **Il criterio della selezione** è che ogni riga dica qualcosa a chi progetta. Restano fuori amministrazione dell'account, provisioning aziendale, diagnostica interna e i comandi di contorno.
 
+## Da riprendere, dal 2 settembre 2026
+
+- **Otto fonti nuove aspettano in `docs/FONTI-DA-INTEGRARE.md`,** smistate in quattro temi già svolti più la ricerca UX. Nessuna è ancora in `docs/FONTI.md`, perché la regola è che una fonte entra lì quando entra nel testo.
+- **I PDF delle cinque fonti Medium li passa l'utente,** che le apre da Freedium. Medium risponde 403 a ogni lettura automatica e `freedium.cfd` non risolve da questa macchina, quindi non c'è modo di prenderli da qui. Servono a completare autore e data dell'articolo Bootcamp su Figma e front-end, che è l'unica voce con un buco vero, e il giorno esatto delle altre quattro.
+- **Il gruppo più denso è quello sull'economia del contesto,** tre fonti di cui una primaria di Anthropic. Due si sovrappongono e vanno lette insieme prima di decidere se diventano una sottosezione di «Progettare il contesto» o due paragrafi dentro quelle che ci sono. Si lega al secondo giro sul context engineering, che è ancora aperto.
+- **La sezione «I comandi di Claude Code» non dichiara più la versione a cui la tabella è verificata.** Le due frasi che lo dicevano sono cadute il 2 settembre 2026 su richiesta dell'utente, perché non dicevano niente. Il numero, 2.1.258, resta in `docs/FONTI-DA-INTEGRARE.md` e in `docs/FONTI.md`. Domanda posta due volte e mai chiusa: se al lettore serve, si rimette in tre parole dentro una frase che già c'è.
+
 ## Prossima sessione, deciso il 21 agosto 2026
 - **Le Figma Agent Skills**, cioè le skill dell'agente che vive **dentro Figma**, sono cosa diversa dalle skill del plugin già coperte in «Le skill Figma per Claude Code». Rinviate dall'utente il 21 agosto 2026. Due decisioni già prese e da non riaprire: restano due sezioni distinte, e ogni titolo deve dire chi esegue la skill e dove (nome proposto per la nuova, «Le skill dell'agente di Figma»). Mancano le fonti, che fornisce l'utente, e la scelta fra capitolo «Lavorare con le Claude Skills» e coda di «Collegare Claude e Figma».
 
