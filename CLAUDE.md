@@ -54,6 +54,7 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 ## Convenzioni editoriali
 
+- **Il grassetto si usa con parsimonia,** per evidenziare concetti e parole chiave, non per dare ritmo. Un paragrafo di prosa ne regge uno, al massimo tre quando marcano una serie di nomi propri. Il grassetto a raffica smette di segnalare, perché se tutto è in rilievo niente lo è.
 - **Mai il corsivo,** in nessun caso. Dove serve un termine tecnico o straniero si lascia il tondo, dove il corsivo faceva da etichetta si usa il grassetto. Un `<em>` nell'HTML generato è un errore.
 - **I titoletti in grassetto chiudono con i due punti dentro il grassetto,** poi spazio e minuscola: `**Titolo:** testo che continua`. Mai col punto, mai coi due punti fuori. I grassetti a metà frase non sono etichette e tengono i due punti fuori.
 - **Un paio di due punti per paragrafo, non due.** Dopo i due punti del titoletto la frase non ne apre un secondo, si rifrasa.
