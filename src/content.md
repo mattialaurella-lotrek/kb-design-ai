@@ -1265,9 +1265,10 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Il primo tema sta dalla parte dell'attrezzatura, cioè come si configura l'ambiente in cui la guida ti chiede di lavorare. Il secondo è di metodo e riguarda come si decide cosa costruire.
+Quello che ancora manca e su cui stiamo lavorando. Due temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Il terzo è di metodo e riguarda come si decide cosa costruire.
 
 - **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente si trova già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
+- **Le skill dell'agente di Figma:** quelle che esegue l'agente dentro Figma, diverse da quelle di «Le skill Figma per Claude Code», dove la skill parte dal terminale e Figma riceve il risultato.
 - **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code si collocano in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
 
 ## Glossario

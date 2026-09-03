@@ -6,7 +6,11 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 ## [2026-09-03]
 
 ### Aggiunto
+- **«Le skill dell'agente di Figma» in «Prossimi argomenti»,** seconda delle tre voci, fra «VS Code e Cursor a confronto» e «La ricerca UX con l'AI». Il tema era rinviato dal 21 agosto 2026 e fino a oggi risultava solo in `docs/FONTI-DA-INTEGRARE.md`, mentre `CLAUDE.md` vuole nella sezione ogni tema che si decide di rinviare. L'occhiello passa da due temi a tre, due di attrezzatura e uno di metodo. Le fonti mancano ancora e le fornisce l'utente.
 - **[`southleft/figma-console-mcp`](https://github.com/southleft/figma-console-mcp) nel catalogo,** in «Ponte tra Claude e Figma», subito dopo `sherizan/designagent-figma` perché sono i due bridge di terze parti. Il Desktop Bridge era già descritto per esteso in «Tre modi di collegare Figma a confronto» e già presente nelle fonti, ma dei tre modi di collegare Figma era l'unico che nel catalogo non compariva. La voce ha 212 battute, URL escluso, e rimanda al confronto invece di ripetere i ~107 tool, l'export dei token e lo scan WCAG.
+
+### Corretto
+- **La fonte sulla design sandbox rimanda a due sezioni,** non più a una sola. L'indice dei componenti resta il registro di «Rendere il design system leggibile dall'AI», e le salvaguardie contro i componenti inventati vanno in «Enforcement del design system». Scartata l'ipotesi di farne un tema di «Prossimi argomenti», perché l'articolo rafforza sezioni che esistono già invece di aprirne una.
 
 ## [2026-09-02]
 

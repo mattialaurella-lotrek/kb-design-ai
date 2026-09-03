@@ -30,7 +30,7 @@ Tre fonti sull'economia del contesto e dei token, che è il tema di «Il contest
 Nessuna in attesa.
 
 ### Costruire e pubblicare il prototipo
-- [How to build a design sandbox for your team to prototype with real code](https://designwithai.substack.com/p/how-to-build-a-design-sandbox-for-your-team-to-prototype-with-real-code), Xinran Ma, Design with AI, 1 settembre 2026. Sette passaggi per montare un ambiente in cui il team prototipa con i componenti veri del design system invece che con quelli di produzione, con AWS Cloudscape come caso di studio. Dentro ci sono l'indice dei componenti, le regole per l'AI, le salvaguardie che impediscono componenti inventati e le skill che chiudono il giro. Tocca anche «Rendere il design system leggibile dall'AI», perché l'indice dei componenti è il nostro registro
+- [How to build a design sandbox for your team to prototype with real code](https://designwithai.substack.com/p/how-to-build-a-design-sandbox-for-your-team-to-prototype-with-real-code), Xinran Ma, Design with AI, 1 settembre 2026. Sette passaggi per montare un ambiente in cui il team prototipa con i componenti veri del design system invece che con quelli di produzione, con AWS Cloudscape come caso di studio. Dentro ci sono l'indice dei componenti, le regole per l'AI, le salvaguardie che impediscono componenti inventati e le skill che chiudono il giro. Tocca anche due sezioni del capitolo 4, «Rendere il design system leggibile dall'AI», perché l'indice dei componenti è il nostro registro dello strato specification, e «Enforcement del design system», dove vanno le salvaguardie
 
 ### Progettare con le skill di Claude
 Nessuna in attesa.
@@ -58,7 +58,7 @@ Voce di «Prossimi argomenti», dal 26 agosto 2026. Sta un gradino prima di «UX
 - [Researcher-in-the-loop](https://uxdesign.cc/researcher-in-the-loop-18a8ffddf48e), Jennifer L. Bowie, UX Collective, agosto 2026. Un modello di ricerca UX con l'AI dentro in cui a governare resta chi la ricerca la conduce. È il pezzo che regge la parte di metodo del tema, dove gli altri due stanno sull'attrezzatura e sull'organizzazione
 
 ### Le skill dell'agente di Figma
-Tema rinviato dall'utente il 21 agosto 2026, distinto da «Le skill Figma per Claude Code» perché lì la skill la esegue Claude Code e qui l'agente che vive dentro Figma. Manca la collocazione, fra il capitolo sulle skill e la coda di «Collegare Claude e Figma».
+Voce di «Prossimi argomenti» dal 3 settembre 2026. Tema rinviato dall'utente il 21 agosto 2026, distinto da «Le skill Figma per Claude Code» perché lì la skill la esegue Claude Code e qui l'agente che vive dentro Figma. Manca la collocazione, fra il capitolo sulle skill e la coda di «Collegare Claude e Figma».
 
 Nessuna fonte fornita.
 
