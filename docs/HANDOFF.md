@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 21.935 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
+- 21.967 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
 - 58 documenti in `docs/FONTI.md`
 - `index.html` pesa 336 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 2 settembre 2026
+- Ultima build: 3 settembre 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro

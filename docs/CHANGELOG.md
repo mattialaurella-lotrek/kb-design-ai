@@ -3,6 +3,11 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-09-03]
+
+### Aggiunto
+- **[`southleft/figma-console-mcp`](https://github.com/southleft/figma-console-mcp) nel catalogo,** in «Ponte tra Claude e Figma», subito dopo `sherizan/designagent-figma` perché sono i due bridge di terze parti. Il Desktop Bridge era già descritto per esteso in «Tre modi di collegare Figma a confronto» e già presente nelle fonti, ma dei tre modi di collegare Figma era l'unico che nel catalogo non compariva. La voce ha 212 battute, URL escluso, e rimanda al confronto invece di ripetere i ~107 tool, l'export dei token e lo scan WCAG.
+
 ## [2026-09-02]
 
 ### Aggiunto
