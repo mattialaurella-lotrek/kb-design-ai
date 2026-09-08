@@ -1,0 +1,45 @@
+# Ogni push su main pubblica la guida.
+#
+# GitHub, produzione e anteprima devono mostrare sempre la stessa cosa, e prima
+# erano tre pubblicazioni separate: il commit andava su GitHub da sé grazie
+# all'hook, mentre il sito partiva solo se qualcuno lanciava deploy.sh. Bastava
+# fermarsi in mezzo e i tre divergevano. Qui l'atto è uno solo, il push, e
+# deploy.sh riallinea anche l'alias dell'anteprima.
+#
+# Prerequisito: il secret VERCEL_TOKEN nelle impostazioni del repository.
+name: Pubblica
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# I push in sequenza si mettono in coda invece di annullarsi, perché un deploy
+# interrotto a metà lascerebbe in produzione la build precedente.
+concurrency:
+  group: pubblica
+  cancel-in-progress: false
+
+jobs:
+  pubblica:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # make-pdf.mjs stampa la guida con Chrome headless e lo cerca in PATH.
+      # Il runner di GitHub ce l'ha già: qui si fallisce subito e a voce alta
+      # il giorno in cui smettesse di averlo.
+      - name: Verifica Chrome
+        run: google-chrome-stable --version
+
+      - name: Installa la CLI di Vercel
+        run: npm install --global vercel@latest
+
+      - name: Build, PDF e deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: ./deploy.sh

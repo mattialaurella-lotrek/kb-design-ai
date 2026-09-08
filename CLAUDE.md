@@ -23,7 +23,7 @@ npm run build                          # rigenera index.html
 BUILD_DATE=2026-08-24 npm run build    # forza la data del piè di pagina
 python3 -m http.server 8899            # anteprima su http://localhost:8899
 ./deploy.sh preview                    # pubblica su kb-design-ai-preview.vercel.app
-./deploy.sh                            # build, PDF e deploy in produzione
+./deploy.sh                            # build, PDF, produzione e riallineamento dell'anteprima
 ```
 
 `deploy.sh` rilancia la build da sé, quindi `BUILD_DATE` va passata anche a lui se serve una data diversa da oggi.
@@ -41,6 +41,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 **Il design system si trova in `DESIGN.md`,** che è la fonte dei colori, dei corpi, delle spaziature e delle icone. Un valore che non compare lì dentro non si scrive nel CSS: prima si aggiunge al file, con il gradino del sistema Lotrek da cui viene.
 
 **Un'icona che manca la disegna Mattia.** L'inventario del sistema si trova in `DESIGN.md`. Se quella che serve non c'è, si chiede a lui invece di prenderla da una libreria esterna o di disegnarne una simile. I loghi di prodotti terzi sono un'altra cosa e non seguono questa regola: si usa il file ufficiale del marchio, senza ridisegnarlo e senza ricolorarlo.
+
+**Il push pubblica.** GitHub, `kb-design-ai.vercel.app` e `kb-design-ai-preview.vercel.app` devono mostrare sempre la stessa cosa, quindi ogni push su `main` fa partire `.github/workflows/deploy.yml`, che lancia `deploy.sh` e fa build, PDF, deploy in produzione e alias dell'anteprima sullo stesso deployment. Il workflow chiede il secret `VERCEL_TOKEN` nelle impostazioni del repository. `./deploy.sh preview` resta per mostrare lavoro non ancora committato, e quell'anteprima vale fino al push successivo. Lanciare `deploy.sh` a mano non è vietato ma di norma non serve, e non sostituisce il commit: una modifica pubblicata e non committata è esattamente il disallineamento che la regola vieta.
 
 **Il push lo fa un hook,** `.githooks/post-commit`, che manda su GitHub ogni commit appena chiuso. Su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, perché git non installa da sé gli hook che arrivano da un repo. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano.
 
