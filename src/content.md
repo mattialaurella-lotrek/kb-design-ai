@@ -828,6 +828,8 @@ Lo stesso strumento gioca ruoli diversi secondo il contesto: in modalità "assis
 
 **Il doppio controllo:** l'enforcement guarda in avanti, dal file verso quello che viene generato. Serve anche il controllo opposto, dal prodotto verso il file, perché il confronto periodico tra `DESIGN.md` e il sito live dice chi dei due è rimasto indietro, e il divario che emerge è il lavoro da fare (vedi la sezione «`DESIGN.md`»). Dove il formato ha un CLI, una parte si automatizza, dal lint dei riferimenti ai token ai contrasti WCAG e al diff tra versioni.
 
+**Misurare se tutto questo serve:** con `open-design-system-bench` è possibile verificare se le regole sono state applicate correttamente. Si chiede a un agente di costruire una schermata senza nominare i componenti da usare, poi si legge il codice uscito e si cercano potenziali errori, dai componenti alle proprietà hardcoded, fino a problemi di accessibilità. Si ripete la prova e si comprendono le eventuali lacune nella documentazione. Funziona solo sulle librerie React con TypeScript e va testato adeguatamente prima di integrarlo nel flusso di lavoro.
+
 ## Costruire e pubblicare il prototipo
 
 Questo capitolo sviluppa il giro completo fra Claude e Figma, cioè come si porta su canvas un'interfaccia costruita in codice e come si rimandano indietro le modifiche fatte lì; le librerie di icone, componenti, motion, effetti e suono con cui si mette insieme quello che serve; e i due modi per pubblicare il risultato, GitHub Pages e Vercel, con il criterio per scegliere fra i due. Attorno alla pubblicazione stanno i due passaggi che tengono in vita il progetto oltre la giornata di lavoro, cioè come si versiona su GitHub mentre lo costruisci e come si archivia quando è finito.
@@ -917,6 +919,10 @@ Tutorial e fork pubblicati dai singoli autori:
 
 - [`romainsimon/uisfx`](https://github.com/romainsimon/uisfx): UI SFX, sistema sonoro semantico per interfacce: 78 effetti in 12 "personalità" audio richiamati per nome (`success`, `drop`…) invece che gestendo i singoli file; TypeScript su Web Audio API, ~12KB e zero dipendenze, per web app, mobile, SaaS e giochi
 - [`rexa-developer/tiks`](https://github.com/rexa-developer/tiks): suoni di interfaccia generati per sintesi invece che caricati da file: nessun asset audio da distribuire e timbro regolabile da codice
+
+**Ispezione e revisione**
+
+- [`ibelick/mesurer`](https://github.com/ibelick/mesurer): componente React che rende visibili righelli, guide, misure e annotazioni sull'interfaccia
 
 ### Versionare il progetto su GitHub
 
