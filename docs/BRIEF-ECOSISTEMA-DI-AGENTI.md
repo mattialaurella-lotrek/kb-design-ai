@@ -1,6 +1,6 @@
 # Brief per «Un ecosistema di agenti»
 
-Materiale di partenza per la voce di «Prossimi argomenti», arrivato dall'utente l'8 settembre 2026. Non è una bozza della sezione: è una mappa del campo, scritta in inglese da un'altra istanza di Claude per essere letta da un modello, quindi tassonomica e rivolta a chi implementa. La sezione della guida parla a chi progetta, in forma impersonale, e va scritta da capo.
+Materiale di partenza per la voce di «Prossimi argomenti», arrivato dall'utente l'8 settembre 2026. Non è una bozza della sezione: è una mappa del campo, scritta in inglese da un'altra istanza di Claude per essere letta da un modello, quindi tassonomica e rivolta a chi implementa. La sezione della guida parla a chi progetta, in forma impersonale, e va scritta da capo. Il file tiene due documenti, la mappa del campo arrivata l'8 settembre e in coda la guida alla costruzione degli agenti arrivata il 12, ognuno con la sua premessa.
 
 **Cosa se ne prende.** L'impianto, cioè quando conviene un subagent e quando una squadra di agenti, con la risposta per il nostro caso già decisa: una catena da token a componenti a build a revisione vuole subagent più una sessione che orchestra, perché le fasi dipendono l'una dall'altra invece di essere esplorazioni indipendenti. La documentazione ufficiale delle agent team dice la stessa cosa dall'altro verso, sconsigliandole per il lavoro sequenziale. Della tabella finale valgono quattro righe su sei, perché quelle sull'SDK e sui Managed Agents restano fuori dal perimetro della guida.
 
@@ -98,3 +98,71 @@ Three concrete examples of this pattern applied to design workflows, in increasi
 - arxiv.org/pdf/2508.08322 (Context Engineering for Multi-Agent LLM Code Assistants)
 - arxiv.org/pdf/2512.06046 (AI4UI: Beyond Prototyping)
 - indigo.ai/en/blog/enterprise-multi-agent-ecosystem
+
+---
+
+# Secondo documento, arrivato il 12 settembre 2026
+
+Nella cartella `KB` l'utente ha passato altri due file su questo tema. Uno è una seconda edizione della mappa qui sopra, `multi-agent-orchestration-design-workflows.md`, più corta di un quarto e senza niente che qui non ci sia già: le stesse sei sezioni, le stesse fonti, la stessa tabella finale, e il repository ancora col nome vecchio. Non è stata portata nel repo. L'altro è il documento che segue, che è materiale nuovo.
+
+**Cosa aggiunge.** La mappa dice quale forma scegliere, questo dice come si costruisce: otto passaggi per mettere insieme una libreria di specialisti, ognuno un file markdown in `.claude/agents/`, più un coordinatore facoltativo che tiene scritta la logica di instradamento invece di lasciarla al giudizio di Claude ogni volta. La fonte dichiarata è una sola, la documentazione dei subagent.
+
+**I quattro punti che valgono per la guida.** Il contesto non si eredita, quindi una regola detta in chat un'ora prima per un subagent non esiste e deve stare in `CLAUDE.md`, che ogni subagent carica da sé: è il legame diretto con «I file di contesto» e con «L'impianto di istruzioni». La lista dei tool è la leva vera della specializzazione, perché un revisore che ha solo `Read`, `Grep` e `Glob` non può riscrivere quello che sta controllando. La `description` è quello su cui Claude sceglie a chi mandare il lavoro, e tutte insieme hanno un tetto di quindicimila token. Il campo `mcpServers` lega un server MCP al singolo agente, quindi i tool di Figma pesano sulla finestra dello specialista invece che su ogni turno della conversazione principale, e questo tocca «Collegare Claude e Figma».
+
+**Cosa resta da verificare prima di scrivere.** Ogni campo di frontmatter citato qui, cioè `tools`, `mcpServers`, la sintassi `Agent(worker, researcher)` e il limite dei tre livelli di annidamento, va confermato sulla pagina ufficiale dei subagent, perché il documento la riassume e non la cita. Vale anche per `claude plugin validate`, dato come controllo del frontmatter malformato.
+
+---
+
+# Building specific agents and a coordinator agent in Claude Code
+
+A guide to setting up a small library of specialist subagents, plus an optional coordinator, for design project work in Claude Code.
+
+## Starting point
+
+A Claude Code session is already an orchestrator by default. The main thread carries the Agent tool and decides which subagent to call, based on what each subagent's description says it does. Building a 'super-agent' from scratch isn't needed. What you're actually building is a small library of specialists, each a markdown file, and, optionally, a dedicated coordinator that holds the routing logic explicitly rather than leaving it to automatic delegation.
+
+## The process
+
+1. **Map tasks to agents.** List the distinct, self-contained jobs in the design process – component audit, token mapping, accessibility check, build, copy review – and give each one exactly one agent. If a task needs frequent back-and-forth with you, it belongs in the main conversation, not a subagent.
+
+2. **Write each subagent as a file.** A subagent is a markdown file with YAML frontmatter, saved in `.claude/agents/` (project-level, shared with your team) or `~/.claude/agents/` (personal, available in every project on your machine). Only `name` and `description` are required; the markdown body below the frontmatter becomes the system prompt.
+
+3. **Restrict each agent's tools.** Use the `tools` field as an allowlist. An auditor that only reads and reports needs `Read, Grep, Glob` – no `Write` or `Edit`. A build agent needs `Edit` and `Write` too. This stops an agent from drifting into work that belongs to another one, and it's the main lever for keeping a specialist genuinely specialised.
+
+4. **Write descriptions that route correctly.** Claude matches a task to a subagent using the `description` field, so it has to say clearly what the agent does and when to reach for it, distinct enough from its siblings that two agents don't both look like a fit. Keep descriptions short: combined, all your custom subagent descriptions share a 15,000-token budget.
+
+5. **Test each agent on its own.** Before wiring anything together, invoke each subagent directly – @-mention it or name it in a prompt – and check it does its one job well in isolation. This makes any later failure in the chain traceable to a single agent rather than the whole sequence.
+
+6. **Decide whether you need a coordinator.** The main session already delegates automatically. Build a separate coordinator agent (e.g. `design-lead.md`) only if you want the sequencing and gating logic written down explicitly rather than left to Claude's judgement each time.
+
+7. **Give the coordinator delegation rights and gates.** A coordinator needs `Agent` in its `tools` field to spawn other agents. Tell it, in its system prompt, which specialist runs at which stage, and where to stop and wait for your sign-off before moving to the next phase – an audit-then-build split with a manual checkpoint between them, for instance.
+
+8. **Commit `.claude/agents/` to version control.** Project-level subagents live in the repository, so your team gets the same specialists and the same coordination logic rather than everyone building their own. Run `claude plugin validate` against the directory to catch a subagent file whose frontmatter is malformed before it silently gets skipped.
+
+## Principles and nuances
+
+### Context is not shared
+
+Each subagent starts with a genuinely fresh context window. It doesn't see your conversation so far, the files Claude has already read, or any rule you mentioned earlier in the session – only its own system prompt and the task message the orchestrator writes for it when delegating. Project-wide conventions, such as token-naming rules or a note not to touch a particular folder, need to live in a `CLAUDE.md` file, which every custom subagent loads automatically. If a rule only exists in an earlier message, a subagent won't have it.
+
+### Nesting has a limit, and a narrow use case
+
+Subagents can spawn their own subagents, up to three layers below the main session by default (adjustable with an environment variable). Anthropic's own guidance is to keep this nesting rare: use it when a delegated task genuinely splits into parallel subtasks – a build agent that dispatches a separate checker per component, say – not as a general architecture. For most design work, one coordinator plus a flat set of specialists is easier to reason about than a deep tree.
+
+One caveat on control: a coordinator's spawning rights can be restricted to named subagents (`tools: Agent(worker, researcher)`), but that allowlist syntax only works when the coordinator itself is running as the main thread, via `claude --agent design-lead`. A coordinator that's itself a subagent can still spawn others if it has `Agent` in its tools, just without that fine-grained restriction.
+
+### Scope MCP servers to the agent that needs them
+
+The `mcpServers` field in a subagent's frontmatter scopes an MCP server, Figma's for instance, to that one agent rather than loading its tool descriptions into the main conversation. For design work that touches Figma MCP, this keeps Figma's tool surface confined to whichever specialist actually needs it, rather than sitting in every turn of the main thread.
+
+### One job per agent
+
+Each subagent should excel at one specific task. A narrow, well-scoped agent with a tight tool list is easier to test, easier to trust, and easier for Claude to route to correctly than a generalist with broad permissions.
+
+## Applying this to a design system workflow
+
+A two-phase structure with a hard gate between audit and build – auditing an existing component library before restructuring it, then building new components only after that review is signed off – maps closely onto this pattern already: an audit subagent, a build subagent, and a coordinator (or your own judgement in the main session) deciding when the gate opens. Formalising that as a `design-lead.md` coordinator with `Agent` access to an `auditor` and a `builder` subagent turns a manual habit into something a team can check out and reuse.
+
+## Sources
+
+- [Create custom subagents – Claude Code documentation](https://code.claude.com/docs/en/sub-agents)

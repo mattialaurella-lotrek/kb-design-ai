@@ -207,4 +207,4 @@ La sezione «I comandi di Claude Code» porta una tabella di cinquantanove righe
 
 
 ## Convenzione di manutenzione
-A ogni sessione di lavoro, aggiornare `docs/CHANGELOG.md` (cosa è cambiato) e questo `docs/MEMORY.md` (decisioni e contesto). Se cambia una regola operativa, va aggiornato anche `CLAUDE.md`; se cambia un valore del sistema visivo, `DESIGN.md`. Il blocco numerico di `docs/HANDOFF.md` lo rifà la build.
+A ogni sessione di lavoro, aggiornare `docs/CHANGELOG.md` (cosa è cambiato) e questo `docs/MEMORY.md` (decisioni e contesto). Se il giro apre o chiude un lavoro sul testo, si aggiorna anche `docs/LAVORI-APERTI.md`, che dal 12 settembre 2026 tiene la coda delle integrazioni e dei temi da scrivere. Se cambia una regola operativa, va aggiornato anche `CLAUDE.md`; se cambia un valore del sistema visivo, `DESIGN.md`. Il blocco numerico di `docs/HANDOFF.md` lo rifà la build.

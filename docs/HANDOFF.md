@@ -66,9 +66,11 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 ## Aperto
 
+**La coda del lavoro si trova in `docs/LAVORI-APERTI.md`,** dal 12 settembre 2026. Tiene in un posto solo le integrazioni nelle sezioni che esistono e i temi ancora da scrivere, ognuno con la sezione di destinazione, il materiale su cui si regge e quello che lo tiene fermo. È il file da aprire per primo quando si riprende in mano il testo.
+
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
-**Otto fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema. Il gruppo più denso è sull'economia del contesto e dei token, tre fonti di cui una primaria di Anthropic. I PDF delle cinque su Medium li passa l'utente, perché Medium blocca ogni lettura automatica.
+**Ventisette fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema, più un repository. Il gruppo più denso è «Un ecosistema di agenti», con sette fonti e quel repository. Dei sei articoli Medium quattro sono arrivati il 12 settembre 2026 e sono letti, perché le stampe vengono da `freedium-mirror.cfd`, che serve il testo fuori dal paywall dove Medium blocca ogni lettura automatica. Restano da recuperare per la stessa strada l'audit del design system e il plugin di design.
 
 **La versione a cui la tabella dei comandi è verificata non è più scritta in pagina.** È la 2.1.258 e resta nei documenti. Se al lettore serve, si rimette in tre parole.
 
