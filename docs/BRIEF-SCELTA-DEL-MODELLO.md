@@ -1,4 +1,4 @@
-# Brief per «La scelta del modello»
+# Brief per «Scegliere il modello e l'effort corretti per lo scopo in Claude»
 
 Materiale di partenza per la voce di «Prossimi argomenti», arrivato dall'utente il 12 settembre 2026 nella cartella `KB`. È scritto in inglese da un'altra istanza di Claude e non è un documento autonomo: risponde a uno schema dei modelli che l'utente aveva passato e che nel frattempo era invecchiato, quindi si apre correggendolo. La sezione della guida parla a chi progetta, in forma impersonale, e va scritta da capo.
 

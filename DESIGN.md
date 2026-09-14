@@ -65,7 +65,7 @@ Ronzino di Collletttivo, licenza SIL OFL 1.1, self-hostata in `assets/fonts/` co
 
 **La famiglia ha 400, 500 e 700, senza il 600:** si usano i token `--w-regular`, `--w-medium` e `--w-bold`. Un `font-weight: 600` scritto a mano il browser lo risolve in Bold ovunque, quindi sparisce la distinzione fra testo medio e grassetto.
 
-**La scala della prosa** vive in `rem` e ha cinque gradini: 18 corpo, 20 h4, 24 h3, 33,6 h2, 52,8 h1. H1 e h2 sono `clamp()` e scendono a 33,6 e 25,6 sui viewport stretti. La crenatura si stringe man mano che il corpo cresce, da −.005em sui micro-testi a −.025em sull'h1: Lotrek non ha maiuscoletti nel sistema e stringe sempre.
+**La scala della prosa** si misura in `rem` e ha cinque gradini: 18 corpo, 20 h4, 24 h3, 33,6 h2, 52,8 h1. H1 e h2 sono `clamp()` e scendono a 33,6 e 25,6 sui viewport stretti. La crenatura si stringe man mano che il corpo cresce, da −.005em sui micro-testi a −.025em sull'h1: Lotrek non ha maiuscoletti nel sistema e stringe sempre.
 
 **Sotto la prosa c'è un gradino solo,** `.92rem` con interlinea 1,55 invece dell'1,7, e lo usano la nota dello schema a tre passaggi e il testo dei riquadri affiancati. L'1,7 è tarato sui 18px su una colonna larga il doppio, e a corpo minore in mezza colonna apre troppo.
 

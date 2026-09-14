@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 22.645 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
+- 22.777 parole di prosa senza i blocchi di codice, 7 capitoli, 39 sezioni, 49 voci nell'indice laterale
 - 58 documenti in `docs/FONTI.md`
 - `index.html` pesa 342 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 8 settembre 2026
+- Ultima build: 14 settembre 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro
@@ -70,7 +70,7 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
-**Ventisette fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema, più un repository. Il gruppo più denso è «Un ecosistema di agenti», con sette fonti e quel repository. Dei sei articoli Medium quattro sono arrivati il 12 settembre 2026 e sono letti, perché le stampe vengono da `freedium-mirror.cfd`, che serve il testo fuori dal paywall dove Medium blocca ogni lettura automatica. Restano da recuperare per la stessa strada l'audit del design system e il plugin di design.
+**Ventisette fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema, più un repository. Il gruppo più denso è «Gestire una rete di agenti in Claude», con sette fonti e quel repository. Dei sei articoli Medium quattro sono arrivati il 12 settembre 2026 e sono letti, perché le stampe vengono da `freedium-mirror.cfd`, che serve il testo fuori dal paywall dove Medium blocca ogni lettura automatica. Restano da recuperare per la stessa strada l'audit del design system e il plugin di design.
 
 **La versione a cui la tabella dei comandi è verificata non è più scritta in pagina.** È la 2.1.258 e resta nei documenti. Se al lettore serve, si rimette in tre parole.
 

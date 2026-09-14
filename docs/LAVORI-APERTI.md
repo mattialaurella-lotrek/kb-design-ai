@@ -34,19 +34,19 @@ Stato al 12 settembre 2026: otto integrazioni in sezioni che esistono, sette tem
 
 Sono le sette voci di «Prossimi argomenti», in ordine di quanto sono pronte.
 
-**La scelta del modello:** il materiale basta, cioè le due pagine ufficiali su `model-config` e sulla scelta del modello, più la scheda in `docs/BRIEF-SCELTA-DEL-MODELLO.md`. Il lavoro è tradurre criteri scritti per chi costruisce applicazioni in criteri per chi progetta, e tenere fuori quello che alla guida non serve, a partire dal listino a prezzo per token. La sezione va datata e riletta prima di ogni pubblicazione, perché il listino cambia ogni pochi mesi. Della scheda restano da controllare i cutoff di conoscenza, la disponibilità per piano e il tetto di 64mila token in uscita di Haiku, mentre la riga su Mythos è sbagliata come è scritta.
+**Scegliere il modello e l'effort corretti per lo scopo in Claude:** il materiale basta, cioè le due pagine ufficiali su `model-config` e sulla scelta del modello, più la scheda in `docs/BRIEF-SCELTA-DEL-MODELLO.md`. Il lavoro è tradurre criteri scritti per chi costruisce applicazioni in criteri per chi progetta, e tenere fuori quello che alla guida non serve, a partire dal listino a prezzo per token. La sezione va datata e riletta prima di ogni pubblicazione, perché il listino cambia ogni pochi mesi. Della scheda restano da controllare i cutoff di conoscenza, la disponibilità per piano e il tetto di 64mila token in uscita di Haiku, mentre la riga su Mythos è sbagliata come è scritta.
 
-**Un ecosistema di agenti:** è il tema con più materiale, sette fonti più un repository e due documenti in `docs/BRIEF-ECOSISTEMA-DI-AGENTI.md`. La forma è già decisa, cioè subagent più una sessione che orchestra, perché il nostro giro da token a componenti a build a revisione è sequenziale e le squadre di agenti servono ad altro. Restano tre cose. Leggere AI4UI per intero, perché è la fonte che darebbe la parte di metodo e finora ne abbiamo solo il riassunto. Confermare sulla pagina ufficiale dei subagent i campi di frontmatter che il secondo documento cita. Aggiungere i costi in numeri e il legame con «Verificare il risultato», che è dove la guida oggi dice l'unica cosa che dice sugli agenti in parallelo.
+**Gestire una rete di agenti in Claude:** è il tema con più materiale, sette fonti più un repository e due documenti in `docs/BRIEF-ECOSISTEMA-DI-AGENTI.md`. La forma è già decisa, cioè subagent più una sessione che orchestra, perché il nostro giro da token a componenti a build a revisione è sequenziale e le squadre di agenti servono ad altro. Restano tre cose. Leggere AI4UI per intero, perché è la fonte che darebbe la parte di metodo e finora ne abbiamo solo il riassunto. Confermare sulla pagina ufficiale dei subagent i campi di frontmatter che il secondo documento cita. Aggiungere i costi in numeri e il legame con «Verificare il risultato», che è dove la guida oggi dice l'unica cosa che dice sugli agenti in parallelo.
 
-**Progettare dentro Claude Code:** tre fonti su quattro sono lette, e il perimetro va fissato prima di scrivere, perché `/design` è il nome di almeno due cose diverse. La sezione dirà quando conviene e quando no, e la distinzione da tenere ferma è fra rispettare i token, che la tela fa, e usare i componenti della libreria, che non fa. Va detto che la funzione è in prova, perché può cambiare fra una stesura e la successiva.
+**Progettare interfacce direttamente in Claude Code:** tre fonti su quattro sono lette, e il perimetro va fissato prima di scrivere, perché `/design` è il nome di almeno due cose diverse. La sezione dirà quando conviene e quando no, e la distinzione da tenere ferma è fra rispettare i token, che la tela fa, e usare i componenti della libreria, che non fa. Va detto che la funzione è in prova, perché può cambiare fra una stesura e la successiva.
 
 **La ricerca UX con l'AI:** tre fonti in attesa, nessuna ancora letta, e una delle tre porta il materiale vero in un PDF di cinque pagine scaricabile dall'articolo. Due tagli si tengono, l'attrezzatura e il metodo, e il tema si colloca un gradino prima di «UX.md», perché quella sezione dice come le evidenze diventano contesto e questa direbbe come si producono.
 
 **VS Code e Cursor a confronto:** due fonti e un perimetro già ristretto il 2 settembre 2026. Quello che cambia per Claude Code dentro un editor si trova già in «I comandi di Claude Code», quindi al tema resta il confronto fra i due editor in sé.
 
-**L'impianto di istruzioni:** nessuna fonte nuova, e il rischio di questa sezione è la ripetizione, perché i pezzi sono già scritti in quattro sezioni. La sezione esiste solo se dice due cose che oggi non ci sono, cioè il criterio con cui si sceglie il contenitore e il modo di tenere in ordine l'insieme nel tempo. Il punto di partenza del criterio è il paragrafo di `how-claude-code-works` che mette in fila skill, MCP, hook e subagent con quanto costa ognuno in contesto.
+**Regole e istruzioni tra markdown e skill:** nessuna fonte nuova, e il rischio di questa sezione è la ripetizione, perché i pezzi sono già scritti in quattro sezioni. La sezione esiste solo se dice due cose che oggi non ci sono, cioè il criterio con cui si sceglie il contenitore e il modo di tenere in ordine l'insieme nel tempo. Il punto di partenza del criterio è il paragrafo di `how-claude-code-works` che mette in fila skill, MCP, hook e subagent con quanto costa ognuno in contesto.
 
-**Le skill dell'agente di Figma:** ferma su due cose, le fonti, che fornisce l'utente, e la collocazione, fra il capitolo sulle skill e la coda di «Collegare Claude e Figma».
+**Le skill dell'agente di Figma:** ferma su due cose, le fonti, che fornisce l'utente, e la collocazione, fra il capitolo sulle skill e la coda di «Lavorare con Claude e Figma».
 
 ---
 
@@ -54,7 +54,7 @@ Sono le sette voci di «Prossimi argomenti», in ordine di quanto sono pronte.
 
 **I plugin per Claude Code:** annotata in `docs/MEMORY.md` come sezione da scrivere quando l'utente vorrà, con il materiale già in casa, `sources/Claude Code for designers.pdf`. Non è annunciata in «Prossimi argomenti», quindi aprirla vuol dire anche aggiungerla lì.
 
-**L'architettura ad agenti e sub-agenti,** annotata nello stesso posto, è coperta da «Un ecosistema di agenti», che nel frattempo è diventato un tema annunciato con le sue fonti. Le due voci non vanno scritte due volte.
+**L'architettura ad agenti e sub-agenti,** annotata nello stesso posto, è coperta da «Gestire una rete di agenti in Claude», che nel frattempo è diventato un tema annunciato con le sue fonti. Le due voci non vanno scritte due volte.
 
 ---
 
@@ -70,4 +70,4 @@ Sono le sette voci di «Prossimi argomenti», in ordine di quanto sono pronte.
 
 ## Debito che non è lavoro di testo
 
-Sta in `docs/MEMORY.md` sotto «In sospeso / da valutare» e qui vale solo il richiamo, perché tocca il testo da vicino. Quattordici voci del catalogo di skill sono sopra il tetto delle 240 battute e si accorciano quando si mette mano alla loro riga. `edoardolunardi/kugiri` aspetta una riga in «Motion, animazioni e scroll». «UX.md» porta ancora il badge «In lavorazione». Le categorie del catalogo di skill sono H3 e nella spalla pesano quanto un capitolo.
+Si trova in `docs/MEMORY.md` sotto «In sospeso / da valutare» e qui vale solo il richiamo, perché tocca il testo da vicino. Quattordici voci del catalogo di skill sono sopra il tetto delle 240 battute e si accorciano quando si mette mano alla loro riga. «UX.md» porta ancora il badge «In lavorazione». Le categorie del catalogo di skill sono H3 e nella spalla pesano quanto un capitolo.

@@ -30,7 +30,7 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
   - DESIGN.md
   - UX.md
   - Organizzare il progetto
-- **Collegare Claude e Figma**
+- **Lavorare con Claude e Figma**
   - Dividere il lavoro tra Claude Desktop e Claude Code
   - I comandi di Claude Code
   - Tre modi di collegare Figma a confronto
@@ -49,7 +49,7 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
   - Archiviare un progetto concluso
 - **Progettare con le skill di Claude**
   - Cosa sono le skill e come si creano
-  - Dove vivono le skill
+  - Dove si trovano le skill
   - Catalogo di skill di riferimento
 - **Far lavorare l'agente da solo**
   - I quattro tipi di loop
@@ -170,7 +170,7 @@ Sono formati con funzioni diverse, spesso complementari:
 
 - **`CLAUDE.md`:** memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo **snello**. Come si scrive e quali sezioni contiene si trova in «CLAUDE.md».
 - **`CLAUDE.local.md`:** le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.
-- **`AGENTS.md`:** il **livello di orchestrazione**. Non è documentazione del design system, ma dice all'agente dove guardare per ogni cosa (quale file ha i token canonici, dove vive la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno, perché costa poche ore di scrittura e viene consultato di continuo.
+- **`AGENTS.md`:** il **livello di orchestrazione**. Non è documentazione del design system, ma dice all'agente dove guardare per ogni cosa (quale file ha i token canonici, dove si trova la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno, perché costa poche ore di scrittura e viene consultato di continuo.
 - **`DESIGN.md`:** l'identità visiva condensata in un front matter YAML con i token più un corpo markdown con le regole visive. Il formato definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts). Aperta da Google Labs nell'aprile 2026, è la più matura della lista. Estrarre i token però è il passo che costa meno, perché quello che sposta l'output sono l'intento e i confini scritti attorno (vai a «DESIGN.md»).
 - **`UX.md`:** quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se `DESIGN.md` dice come deve apparire il prodotto, `UX.md` dice per chi è e come deve comportarsi, con i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista, una proposta di NN/g del luglio 2026 che nessuno strumento carica in automatico. Copre però un vuoto che gli altri file lasciano aperto (vai a «UX.md»).
 - **`MEMORY.md`:** memoria di progetto a lungo termine, con le decisioni prese e il contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
@@ -334,7 +334,7 @@ Il comando `/context` elenca i file di memoria e di istruzioni che si sono caric
 
 **Il livello che l'AI si inventa:** il caso più istruttivo è un esperimento raccontato su UX Collective. L'autrice dà a Claude i file Figma di un prodotto reale, UI e libreria di token, più una skill costruita apposta, e gli chiede di scrivere il `DESIGN.md`. Claude estrae tutto con precisione, dalla palette con hex e varianti di opacità alla scala tipografica completa coi valori di tracking, e poi spaziature, raggi, ombre, anatomia dei componenti. Poi lei gli chiede se ha usato la skill. Risponde di averla usata come guida di formattazione, saltando l'intervista iniziale, cioè quello che rende il file buono. **I token erano accurati, il livello di ragionamento era inventato**, con principi di design scritti senza che nessuno glieli avesse detti e vincoli dedotti dai pattern visivi osservati. È la stessa asimmetria di «Human-in-the-loop», dove il **cosa** l'AI lo estrae da un file Figma meglio di te e il **perché** no. E un livello lasciato vuoto non resta vuoto, si riempie di inferenza plausibile.
 
-**Come resta onesto:** il file vive alla root del repo accanto a `README.md`, così ogni modifica al design ha un autore e un diff e passa da una revisione come qualunque altro cambiamento. Poi c'è l'abitudine che non richiede tooling. Punta un assistente al `DESIGN.md` e al sito live e chiedigli dove non coincidono. A volte è sbagliato il sito, a volte il file è vecchio. Una fonte di verità che nessuno riconcilia diventa la documentazione di un prodotto che non esiste più.
+**Come resta onesto:** il file si trova alla root del repo accanto a `README.md`, così ogni modifica al design ha un autore e un diff e passa da una revisione come qualunque altro cambiamento. Poi c'è l'abitudine che non richiede tooling. Punta un assistente al `DESIGN.md` e al sito live e chiedigli dove non coincidono. A volte è sbagliato il sito, a volte il file è vecchio. Una fonte di verità che nessuno riconcilia diventa la documentazione di un prodotto che non esiste più.
 
 **Da dove partire:** non serve un repo. Si apre una chat, si passa un `DESIGN.md` di esempio e si chiede all'assistente di intervistarti sul brand (i colori centrali e cosa deve segnalare ciascuno, due o tre livelli di tipo, il raggio che ti sembra giusto), poi di scrivere il tuo nello stesso formato. Quello è già un draft. Da lì il file cresce per diagnosi, perché ogni punto in cui l'agente tira a indovinare indica il prossimo token da definire.
 
@@ -350,7 +350,7 @@ I file di contesto visti finora descrivono il prodotto: token, componenti, coman
 - **Modello dell'utente:** cosa la ricerca ha stabilito sulle persone che lo usano, dalle competenze agli obiettivi ai punti di attrito ricorrenti.
 - **Modello del mondo:** le condizioni in cui lavorano. Interruzioni continue, un turno di notte, uno schermo condiviso con un collega, un vincolo normativo che non si può aggirare.
 
-Le ultime due sono quelle che cambiano di più l'output, e anche le più difficili da recuperare a posteriori: vivono nella testa di chi ha condotto le interviste.
+Le ultime due sono quelle che cambiano di più l'output, e anche le più difficili da recuperare a posteriori: restano nella testa di chi ha condotto le interviste.
 
 **Come gestirlo:** su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «`CLAUDE.md` come indice, non contenitore», dove l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza di «Il contesto è una risorsa finita», perché un `UX.md` che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Va inclusa la sintesi, non le citazioni integrali delle interviste. E va curato di continuo, perché ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
 
@@ -432,7 +432,7 @@ Come si scrivono i file sotto `design/` perché un agente li sappia leggere è i
 
 Scorciatoia: il comando **`/init`** esplora un codebase esistente e genera una prima bozza di `CLAUDE.md`, da rifinire.
 
-## Collegare Claude e Figma
+## Lavorare con Claude e Figma
 
 Come si mettono in comunicazione i due strumenti, quale ponte scegliere fra i tre disponibili e cosa si può chiedere all'agente una volta collegato.
 
@@ -441,7 +441,7 @@ Come si mettono in comunicazione i due strumenti, quale ponte scegliere fra i tr
 Due ambienti con vincoli diversi: uno vede i tuoi file, l'altro no. È quella differenza a decidere cosa conviene fare dove.
 
 - **Claude in chat (web o app desktop):** ambiente conversazionale, con un set di skill fisso e senza accesso al filesystem locale. È il posto giusto per la parte a monte, dove stanno ricerca e sintesi delle fonti, ragionamento strategico, stesura di brief, descrizioni di flusso e documenti in markdown, esplorazione di opzioni. Ottimo per produrre l'artefatto testuale che poi guiderà la costruzione (un `DESIGN.md`, un PRD, la sintesi di una knowledge base). Non fa girare skill di coding (es. `frontend-slides`), non apre un progetto locale, non si collega agli MCP locali.
-- **Claude Code (Terminal o dentro VS Code):** vive in una **cartella di progetto locale** e ha accesso a file, git, MCP e alle skill installate sulla tua macchina. È il posto giusto per la parte a valle, dove si costruisce l'artefatto (deck HTML, prototipo, componenti), si collega Figma via MCP nativo o via bridge, si eseguono workflow e skill locali, si fa commit e deploy.
+- **Claude Code (Terminal o dentro VS Code):** lavora in una **cartella di progetto locale** e ha accesso a file, git, MCP e alle skill installate sulla tua macchina. È il posto giusto per la parte a valle, dove si costruisce l'artefatto (deck HTML, prototipo, componenti), si collega Figma via MCP nativo o via bridge, si eseguono workflow e skill locali, si fa commit e deploy.
 
 **Pattern operativo (lo schema che stiamo usando su un progetto reale):**
 
@@ -516,7 +516,7 @@ La documentazione ufficiale elenca centoundici comandi con la barra e una sessan
 | `/background` | sessione | Stacca la sessione, che continua come agente in background, e ti restituisce il terminale. |
 | `/loop` | sessione | Ripete un prompt a intervalli, oppure lascia che sia l'agente a darsi il ritmo. Vedi «I quattro tipi di loop». |
 | `/schedule` | sessione | Routine che girano nel cloud a orario, quindi senza bisogno che il computer resti acceso. Vedi «I quattro tipi di loop». |
-| `/skills` | sessione | Elenca le skill disponibili e quanto costa in token ciascuna. Vedi «Dove vivono le skill». |
+| `/skills` | sessione | Elenca le skill disponibili e quanto costa in token ciascuna. Vedi «Dove si trovano le skill». |
 | `/plugin` | sessione | Installa, attiva e disattiva i plugin e i loro marketplace. |
 | `/mcp` | sessione | Stato dei server MCP, riconnessione di uno caduto e autenticazione. |
 | `/hooks` | sessione | Gli hook agganciati agli eventi dei tool, con cui un controllo scatta da sé. Vedi «Verificare il risultato». |
@@ -629,7 +629,7 @@ Ripetere a voce gli stessi prompt dà un risultato che cambia ogni volta, e impe
 
 **Cinque comandi che vale la pena avere:** `/page-review`, `/component-review`, `/prd-to-ui`, `/flow-map` e `/design-system-check`. Ognuno è un file di poche righe. In `.claude/commands/page-review.md` può starci «Rivedi la pagina e segnala gli elementi che impattano usabilità e accessibilità, con attenzione alle buone pratiche UX», e da quel momento `/page-review` fa sempre quel controllo, con le stesse parole.
 
-**Dove metterli:** vale la stessa divisione delle skill, quindi `~/.claude/commands/` per i comandi tuoi, che ti seguono in ogni progetto, e `.claude/commands/` dentro il repository per quelli della squadra, che arrivano con il clone e si versionano insieme al resto. Un comando personale ha la precedenza su quello di progetto con lo stesso nome. Il criterio è quello di «Dove vivono le skill», cioè se serve solo a te va nella cartella personale, se descrive come lavora il progetto va nel repository.
+**Dove metterli:** vale la stessa divisione delle skill, quindi `~/.claude/commands/` per i comandi tuoi, che ti seguono in ogni progetto, e `.claude/commands/` dentro il repository per quelli della squadra, che arrivano con il clone e si versionano insieme al resto. Un comando personale ha la precedenza su quello di progetto con lo stesso nome. Il criterio è quello di «Dove si trovano le skill», cioè se serve solo a te va nella cartella personale, se descrive come lavora il progetto va nel repository.
 
 **Comando o skill:** un comando lo lanci tu quando decidi, una skill Claude la carica da sé quando riconosce che serve. Per un giro di controllo che vuoi fare in un momento preciso, come la revisione prima di una consegna, la forma giusta è il comando. Per una regola che deve valere ogni volta che l'agente tocca un componente, è la skill.
 
@@ -681,7 +681,7 @@ Per rendere un design system interpretabile anche da un agente, è necessario st
 **Specification, lo strato dei token:** i token sono il primo pezzo di sistema da mettere per iscritto, e conviene organizzarli su tre tier.
 
 - **Tier 1, primitive:** valori grezzi (colori, unità di spazio, dimensioni type). Raramente referenziati direttamente.
-- **Tier 2, semantic:** token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui vive l'intento, ed è il livello su cui l'AI ragiona.
+- **Tier 2, semantic:** token che mappano le primitive a un significato (`--color-feedback-error`, `--spacing-content-gap`, `--text-heading-large`). Qui si trova l'intento, ed è il livello su cui l'AI ragiona.
 - **Tier 3, component:** pattern pre-composti che combinano token semantici, come una card con spaziature, colori, type e ombre già corretti.
 
 **Nomina per ruolo, non per aspetto:** è la regola che rende utile il Tier 2, ed è la stessa già vista in «DESIGN.md». Vale anche per i componenti, dove conviene prendere in prestito il vocabolario che ogni strumento già conosce (button, input, card, badge, tabs) invece di inventare un dizionario privato che l'agente deve indovinare. C'è anche un effetto collaterale utile, perché costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
@@ -876,7 +876,10 @@ Servono a costruire il prototipo con elementi già impostati invece di progettar
 
 **Motion, animazioni e scroll**
 
-- Animazione/scroll: [`greensock/GSAP`](https://github.com/greensock/GSAP), [`darkroomengineering/lenis`](https://github.com/darkroomengineering/lenis), [`michalsnik/aos`](https://github.com/michalsnik/aos), [`dixonandmoe/rellax`](https://github.com/dixonandmoe/rellax)
+- [`greensock/GSAP`](https://github.com/greensock/GSAP): il motore di animazione più usato sul web, con la timeline per mettere in fila e sovrapporre i movimenti
+- [`darkroomengineering/lenis`](https://github.com/darkroomengineering/lenis): addolcisce lo scorrimento della pagina senza sostituire lo scroll nativo del browser
+- [`michalsnik/aos`](https://github.com/michalsnik/aos): fa animare gli elementi quando entrano nello schermo, con l'effetto dichiarato in un attributo
+- [`dixonandmoe/rellax`](https://github.com/dixonandmoe/rellax): parallasse in JavaScript puro, per far scorrere gli sfondi a velocità diversa dal contenuto
 - [`juliangarnier/anime`](https://github.com/juliangarnier/anime): motore di animazione JavaScript con una sola API per proprietà CSS, attributi SVG, nodi del DOM e oggetti JavaScript, con timeline, easing e stagger già dentro
 - [`motiondivision/motion`](https://github.com/motiondivision/motion): la libreria di animazione erede di Framer Motion, per React e per JavaScript puro, con gesture, layout animation e animazioni guidate dallo scroll; una parte gira sulla Web Animations API, quindi fuori dal thread principale
 - [`nolimits4web/swiper`](https://github.com/nolimits4web/swiper): slider e caroselli touch con transizioni accelerate in hardware, senza dipendenze, con i componenti per React, Vue e Web Components
@@ -885,11 +888,17 @@ Servono a costruire il prototipo con elementi già impostati invece di progettar
 - [`alvarotrigo/fullpage.js`](https://github.com/alvarotrigo/fullpage.js): siti a scorrimento full-screen, con sezioni verticali a tutta pagina e slide orizzontali; vanilla JS (jQuery opzionale) con wrapper Vue/React/Angular, per one-page, portfolio e showcase
 - [`Jakubantalik/transitions.dev`](https://github.com/Jakubantalik/transitions.dev): transizioni essenziali (con "product motion skill")
 - [`delphi-ai/animate-skill`](https://github.com/delphi-ai/animate-skill): skill animazioni Next.js/React (corso di Emil Kowalski)
-- CSS pronte: [`ibelick/animation`](https://github.com/ibelick/animation), [`tilomitra/infinite`](https://github.com/tilomitra/infinite), [`IanLunn/Hover`](https://github.com/IanLunn/Hover)
-- [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati · [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading
-- [`guillermolg00/morphicons`](https://github.com/guillermolg00/morphicons): fa passare un'icona a tratto in un'altra con un'animazione a molla, prendendo i tracciati da Lucide, Tabler, Heroicons o dai tuoi. Le rotazioni non si dichiarano a mano, escono dal calcolo che allinea le due forme, così `arrow-right` verso `arrow-down` gira di 90 gradi da sé. ESM, ~7 KB gzip e nessuna dipendenza a runtime, con i pacchetti per React, Vue, Svelte, React Native e Astro più il custom element `<morph-icon>`
-- Particelle/physics: [`VincentGarreau/particles.js`](https://github.com/VincentGarreau/particles.js), [`liabru/matter-js`](https://github.com/liabru/matter-js)
-- SVG/3D/canvas: [`renatoworks/3dsvg`](https://github.com/renatoworks/3dsvg), [`meodai/heerich`](https://github.com/meodai/heerich), [`edoardolunardi/infinite-canvas`](https://github.com/edoardolunardi/infinite-canvas)
+- [`ibelick/animation`](https://github.com/ibelick/animation): animazioni da copiare e incollare nel progetto (in Tailwind)
+- [`tilomitra/infinite`](https://github.com/tilomitra/infinite): animazioni che girano in loop, da applicare con una classe (in CSS)
+- [`IanLunn/Hover`](https://github.com/IanLunn/Hover): effetti hover per link, bottoni, loghi e immagini (in CSS)
+- [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati
+- [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading
+- [`guillermolg00/morphicons`](https://github.com/guillermolg00/morphicons): animazioni per le librerie di icone di Lucide, Tabler, Heroicons e altre
+- [`edoardolunardi/kugiri`](https://github.com/edoardolunardi/kugiri): separa il testo in righe, parole e caratteri seguendo la disposizione del browser, per animarlo pezzo per pezzo
+- [`VincentGarreau/particles.js`](https://github.com/VincentGarreau/particles.js): sfondi di particelle che si muovono e si collegano fra loro, configurati da un file JSON
+- [`liabru/matter-js`](https://github.com/liabru/matter-js): motore di fisica 2D, per far cadere, rimbalzare e scontrare gli elementi della pagina
+- [`renatoworks/3dsvg`](https://github.com/renatoworks/3dsvg): trasforma un SVG o una scritta in un oggetto 3D
+- [`edoardolunardi/infinite-canvas`](https://github.com/edoardolunardi/infinite-canvas): dispone immagini e video in una tela 3D senza confini per esplorarli con mouse, touch o tastiera
 
 **Effetti e transizioni**
 
@@ -926,7 +935,7 @@ Tutorial e fork pubblicati dai singoli autori:
 
 ### Versionare il progetto su GitHub
 
-Mentre ci lavori, il progetto vive in una cartella sul tuo disco, perché Claude Code legge e scrive file veri. GitHub non è la copia di quella cartella, è la storia del suo sorgente, e le due cose non coincidono. Sapere dove non coincidono evita la sorpresa di scoprire a lavoro finito che sul remoto manca metà del materiale.
+Mentre ci lavori, il progetto si trova in una cartella sul tuo disco, perché Claude Code legge e scrive file veri. GitHub non è la copia di quella cartella, è la storia del suo sorgente, e le due cose non coincidono. Sapere dove non coincidono evita la sorpresa di scoprire a lavoro finito che sul remoto manca metà del materiale.
 
 **Sorgente e derivato:** il sorgente è quello che avete scritto tu o l'agente, cioè il codice, i file di contesto, gli asset. Il derivato è tutto quello che una macchina ricostruisce da sé, e il caso tipico è `node_modules/`, dove finisce ogni libreria elencata in `package.json` insieme all'albero delle sue dipendenze. Bastano cinque librerie dirette per arrivare a qualche centinaio di megabyte. Tenerla fuori dal repository non fa perdere niente, perché `package.json` dichiara cosa serve e `package-lock.json` fissa le versioni esatte, quindi `npm install` la rifà identica, e i due file si conservano sempre insieme. Stesso discorso per la cartella di build `dist/` e, in un progetto Python, per l'ambiente virtuale `venv/`.
 
@@ -969,7 +978,7 @@ npm run preview    # serve la build di produzione in locale, per verificarla
 - **Dominio custom:** Settings → Domains, SSL automatico. Il piano gratuito (Hobby) basta per prototipi.
 - In alternativa, si può deployare da dentro Claude Code con il plugin `vercel/vercel-deploy-claude-code-plugin`.
 
-**3) Pubblicare su GitHub Pages** (hosting statico gratuito, ideale per la guida stessa e per prototipi senza backend). Passo obbligato: impostare il `base` in `vite.config.js`, perché le Pages di progetto vivono in un sottopercorso:
+**3) Pubblicare su GitHub Pages** (hosting statico gratuito, ideale per la guida stessa e per prototipi senza backend). Passo obbligato: impostare il `base` in `vite.config.js`, perché le Pages di progetto si trovano in un sottopercorso:
 
 ```
 // vite.config.js — project page su <utente>.github.io/<repo>/
@@ -1067,7 +1076,7 @@ Una skill è un insieme di istruzioni che dicono all'AI come svolgere un compito
 
 **Quando la skill è lo strumento sbagliato:** una skill che orchestra molti passaggi e delega ad altri agenti costa parecchio, perché a ogni giro chiede a un modello di decidere qualcosa che spesso è già deciso. Una misura pubblicata a luglio 2026 confronta una skill di revisione del codice con lo stesso lavoro riscritto come procedura deterministica: da 4,6 milioni di token a 506mila, da 23 agenti a 3, e metà del tempo. Il segnale da tenere d'occhio è la ripetitività, perché se i passaggi sono sempre gli stessi nello stesso ordine quella parte è codice travestito da prompt, e conviene scriverla come codice lasciando al modello solo i punti in cui serve un giudizio.
 
-**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può trovarsi a due livelli, sul tuo computer o dentro il progetto, e la differenza fra i due la sviluppa «Dove vivono le skill». Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
+**Com'è fatta:** una skill è un file markdown, `SKILL.md`, più eventuali file di supporto (script, template, asset, esempi) quando servono. Può trovarsi a due livelli, sul tuo computer o dentro il progetto, e la differenza fra i due la sviluppa «Dove si trovano le skill». Il file centrale è sempre `SKILL.md`, l'unico che ogni skill deve avere. Ha due parti, il front matter YAML (tra i marcatori `---`) con `name` e `description`, che dicono cosa fa la skill e quando usarla, e il corpo markdown con le istruzioni. Non è codice, è testo in linguaggio naturale. Lo scheletro minimo è questo.
 
 ```
 ---
@@ -1091,7 +1100,7 @@ Descrivi come dev'essere l'output finale.
 
 Chi vuole l'esempio operativo, dal design system alla skill, lo trova in «Creare una skill dal proprio design system». Dove va messa una volta scritta o scaricata è il tema della sezione qui sotto, e il catalogo che chiude il capitolo raccoglie skill e repository di riferimento, ordinati per area.
 
-### Dove vivono le skill
+### Dove si trovano le skill
 
 Una skill è una cartella con dentro un `SKILL.md`, e il posto in cui la metti decide chi la vede. I livelli sono due.
 
@@ -1111,13 +1120,13 @@ La destinazione cambia a seconda del livello, `~/.claude/skills/` per le tue e `
 
 **Le skill nuove si vedono subito:** non serve riavviare niente. L'unica eccezione è la cartella `.claude/skills/` creata in un progetto che non ce l'aveva, perché fino a quel momento Claude Code non la stava guardando. Il comando `/skills` elenca quelle attive dicendo da dove arriva ciascuna, e da lì si accendono e si spengono una per una.
 
-**Come si sceglie il livello:** una skill va nel progetto quando descrive quel prodotto, cioè il suo design system, le sue convenzioni, il suo giro di verifica, e va fra le tue quando descrive come lavori tu. Nel dubbio conviene il progetto, perché una skill che vive solo sul tuo computer è un pezzo di metodo che la squadra non eredita e che sparisce quando cambi macchina.
+**Come si sceglie il livello:** una skill va nel progetto quando descrive quel prodotto, cioè il suo design system, le sue convenzioni, il suo giro di verifica, e va fra le tue quando descrive come lavori tu. Nel dubbio conviene il progetto, perché una skill che resta solo sul tuo computer è un pezzo di metodo che la squadra non eredita e che sparisce quando cambi macchina.
 
 ### Catalogo di skill di riferimento
 
 Selezione di skill, classificate per area. Le prime categorie sono le più centrali per il lavoro di design (collezioni, ponte con Figma, design system, qualità dell'interfaccia); chiudono accessibilità, UX writing e i toolbox di esecuzione, da tenere come risorse. Dove la skill ha un comando d'installazione, si trova nella riga della sua voce. Le librerie che servono a costruire il prototipo (icone, componenti, motion, effetti, suono) non compaiono qui: hanno un capitolo loro, «Costruire e pubblicare il prototipo».
 
-**Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e vivono nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
+**Dove girano queste skill:** quasi tutto il catalogo è fatto di skill per **Claude Code** (e altri coding agent come Cursor), che si installano da terminale con `npx skills add …` o dal marketplace dei plugin (`/plugin marketplace add …`), e si trovano nella cartella locale `~/.claude/skills/` o dentro `.claude/` del progetto. Non girano nella chat di claude.ai, che ha un suo set fisso di skill (docx, pdf, pptx, frontend-design e le skill utente). Le skill Figma sono un caso a parte, perché arrivano col plugin Figma installato nel client MCP (vedi «Le skill Figma per Claude Code»). Come regola pratica, strategia e sintesi in chat, installazione e uso delle skill del catalogo in Claude Code (vedi «Dividere il lavoro tra Claude Desktop e Claude Code»).
 
 **Se parti da zero**, un ordine sensato per un flusso standard di design può essere questo:
 
@@ -1197,7 +1206,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`agno-agi/agno`](https://github.com/agno-agi/agno): framework per costruire e gestire piattaforme di agenti; sta un gradino sotto il lavoro di design e serve quando l'agente diventa il prodotto
 - [`google-gemini/gemini-cli`](https://github.com/google-gemini/gemini-cli): l'agente open source di Google nel terminale, l'alternativa diretta a Claude Code; le raccolte che girano su più harness, come `Owl-Listener/ai-design-skills` e `wshobson/agents`, lo supportano
 - [`jackwener/OpenCLI`](https://github.com/jackwener/OpenCLI): trasforma un sito qualsiasi in una CLI e fa usare all'agente il browser dove sei già autenticato
-- [`makenotion/claude-code-notion-plugin`](https://github.com/makenotion/claude-code-notion-plugin): collega Claude Code a Notion, utile quando la documentazione di progetto vive lì
+- [`makenotion/claude-code-notion-plugin`](https://github.com/makenotion/claude-code-notion-plugin): collega Claude Code a Notion, utile quando la documentazione di progetto si trova lì
 - [`vercel/vercel-deploy-claude-code-plugin`](https://github.com/vercel/vercel-deploy-claude-code-plugin): porta il deploy su Vercel dentro Claude Code, senza uscire dal terminale (vedi «Deploy del prototipo»)
 - [`jacob-bd/gemini-notebook-mcp-cli`](https://github.com/jacob-bd/gemini-notebook-mcp-cli): accesso programmatico a Gemini Notebook da riga di comando, da server MCP e da skill (ex `notebooklm-mcp-cli`, rinominato)
 - [`PleasePrompto/notebooklm-skill`](https://github.com/PleasePrompto/notebooklm-skill): fa parlare Claude Code con i tuoi notebook NotebookLM, per interrogare i documenti che ci hai caricato
@@ -1273,15 +1282,15 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Quattro temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Gli altri tre sono di metodo, cioè come si conduce il lavoro e come si tiene in ordine quello che l'agente legge.
+Quello che ancora manca e su cui stiamo lavorando. Quattro temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Tre sono di metodo, cioè come si conduce il lavoro e come si tiene in ordine quello che l'agente legge.
 
+- **Scegliere il modello e l'effort corretti per lo scopo in Claude:** Sonnet, Opus e Fable non fanno lo stesso lavoro, e una sessione costa in fretta se il modello è più grosso del compito. Il tema è il criterio con cui si assegnano, cioè cosa conviene a un giro di layout, a una decisione di struttura e a un lavoro lungo che l'agente porta avanti da solo, più il livello di `/effort`, che dentro lo stesso modello sposta il risultato quanto il cambio di modello. Oggi `/model` e `/effort` hanno una riga a testa nella tabella di «I comandi di Claude Code», che dice cosa fanno e non quando si usano.
+- **Regole e istruzioni tra markdown e skill:** i file markdown e le skill la guida li tratta uno per uno, e quello che manca è il piano che li tiene insieme. Quale contenitore prende quale istruzione, quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md`, cosa va in `~/.claude` e ti segue da un cliente all'altro, cosa resta nel repository e come ci si accorge che due file dicono il contrario.
+- **Gestire una rete di agenti in Claude:** più agenti che lavorano insieme sotto uno che li coordina, cioè il gradino sopra il subagent singolo di «Slash command e subagent per il design». Serve a riconoscere quando un compito vale la spesa di dividerlo, quali forme esistono fra subagent, skill, squadra di agenti e workflow scritto come script, e chi tiene il piano in ognuna. Di questo la guida dice per ora una cosa sola, in «Verificare il risultato», che gli agenti in parallelo costano.
+- **Progettare interfacce direttamente in Claude Code:** `/design` prende la descrizione a parole di una schermata e ne propone alcune versioni in una pagina del browser, dove si confrontano, si ritoccano e quella scelta passa in codice. È in prova da agosto 2026. La sezione dirà quando conviene, ad esempio per esplorare più strade senza aprire Figma, e quando no, perché quelle schermate sono disegnate da capo e non usano i componenti veri del design system.
 - **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente si trova già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
 - **Le skill dell'agente di Figma:** quelle che esegue l'agente dentro Figma, diverse da quelle di «Le skill Figma per Claude Code», dove la skill parte dal terminale e Figma riceve il risultato.
-- **Progettare dentro Claude Code:** `/design` prende la descrizione a parole di una schermata e ne propone alcune versioni in una pagina del browser, dove si confrontano, si ritoccano e quella scelta passa in codice. È in prova da agosto 2026. La sezione dirà quando conviene, ad esempio per esplorare più strade senza aprire Figma, e quando no, perché quelle schermate sono disegnate da capo e non usano i componenti veri del design system.
-- **La scelta del modello:** Sonnet, Opus e Fable non fanno lo stesso lavoro, e una sessione costa in fretta se il modello è più grosso del compito. Il tema è il criterio con cui si assegnano, cioè cosa conviene a un giro di layout, a una decisione di struttura e a un lavoro lungo che l'agente porta avanti da solo, più il livello di `/effort`, che dentro lo stesso modello sposta il risultato quanto il cambio di modello. Oggi `/model` e `/effort` hanno una riga a testa nella tabella di «I comandi di Claude Code», che dice cosa fanno e non quando si usano.
 - **La ricerca UX con l'AI:** come si conduce uno studio che includa l'AI, senza che decida lei cosa hai trovato. All'inizio serve ad automatizzare i compiti singoli, poi diventa lavoro di sistema, cioè un archivio delle ricerche e un panel che si aggiornano da soli e segnalano cosa manca prima che qualcuno lo chieda. Conta anche quale strumento usi, perché Claude, Claude Cowork e Claude Code si collocano in tre momenti diversi della ricerca e trattano in tre modi diversi i dati dei partecipanti. Sta un gradino prima di «UX.md», il file dove le evidenze diventano contesto per l'agente.
-- **Un ecosistema di agenti:** più agenti che lavorano insieme sotto uno che li coordina, cioè il gradino sopra il subagent singolo di «Slash command e subagent per il design». Serve a riconoscere quando un compito vale la spesa di dividerlo, quali forme esistono fra subagent, skill, squadra di agenti e workflow scritto come script, e chi tiene il piano in ognuna. Di questo la guida dice per ora una cosa sola, in «Verificare il risultato», che gli agenti in parallelo costano.
-- **L'impianto di istruzioni:** i file markdown e le skill la guida li tratta uno per uno, e quello che manca è il piano che li tiene insieme. Quale contenitore prende quale istruzione, quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md`, cosa vive in `~/.claude` e ti segue da un cliente all'altro, cosa resta nel repository e come ci si accorge che due file dicono il contrario.
 
 ## Glossario
 
