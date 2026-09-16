@@ -170,6 +170,23 @@ Pill lime accanto a un titolo, fondo `--accent` e testo `--accent-ink`, che segn
 
 Nell'indice laterale la stessa marcatura diventa un pallino da 6px in `--accent-line`, davanti alla voce. Sulla macro-voce di un H2, che è un flex con gap 8px, il pallino azzera il margine destro che gli serve nelle voci di terzo livello, altrimenti lo stacco si somma e diventa 16.
 
+## L'immagine di anteprima del link
+
+Scheda di Open Graph, dal 16 settembre 2026, in `assets/og-image.jpg`: 1200×630, 137 KB. La leggono Slack, WhatsApp, LinkedIn e X quando qualcuno incolla l'indirizzo della guida.
+
+**È il ritaglio dell'immagine di apertura,** così la scheda e la pagina mostrano la stessa figura e non restano due immagini da aggiornare. `assets/hero-figma-skills.webp` è 1520×855, cioè 16:9, e la scheda vuole 1200×630. Il ritaglio centrato toglie 57px di altezza, divisi fra sopra e sotto, e il terminale, che occupa la fascia fra 215 e 640, resta intero. Si rifà con quattro comandi, dove gli ultimi tre riscrivono il file temporaneo:
+
+```bash
+sips -s format png assets/hero-figma-skills.webp --out /tmp/og.png
+sips -c 798 1520 /tmp/og.png
+sips -z 630 1200 /tmp/og.png
+sips -s format jpeg -s formatOptions 88 /tmp/og.png --out assets/og-image.jpg
+```
+
+**JPEG e non il WebP dell'originale,** perché non tutti gli scraper leggono il WebP, e una scheda senza immagine costa più dei 137 KB. Lo stesso ritaglio in PNG pesa 380 KB, e a questa misura gli artefatti del JPEG all'88 non si vedono.
+
+Il testo alternativo è quello dell'immagine di apertura, che descrive anche il ritaglio. Gli indirizzi nei meta tag sono assoluti e puntano alla produzione, quindi la scheda è la stessa anche condividendo il link dell'anteprima.
+
 ## Cosa il sistema ha e noi non usiamo
 
 **Palette semantica:** dei ventisette gradini fra Success, Warning e Danger ne usiamo quattro, i due di `--ok` e i due di `--ko`. Warning resta fuori, perché la guida non ha un blocco attenzione.
