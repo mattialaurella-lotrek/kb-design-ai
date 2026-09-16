@@ -1143,7 +1143,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`Owl-Listener/ai-design-skills`](https://github.com/Owl-Listener/ai-design-skills): 42 skill e 18 comandi in 6 plugin per l'Agentic Experience Design (model interaction, alignment, system behavior, evaluation, agent orchestration, prompt architecture); per Claude Code e Gemini CLI, install da marketplace (`claude plugin marketplace add Owl-Listener/ai-design-skills`). Utile anche per la futura sezione agenti/Opus
 - [`cuellarfr/design-skills`](https://github.com/cuellarfr/design-skills): research, critique, accessibilità, journey mapping
 - [`jamiemill/layers-skills`](https://github.com/jamiemill/layers-skills): i "sette layer" del product design
-- [`designagentlab/skills`](https://github.com/designagentlab/skills): libreria open: Figma, UX research, copywriting, immagini
+- [`designagentlab/skills`](https://github.com/designagentlab/skills): libreria open source per automatizzare il flusso di design con Claude e Figma
 - [`PatternsDev/skills`](https://github.com/PatternsDev/skills): agent skill di patterns.dev
 - [`edenspiekermann/Skills`](https://github.com/edenspiekermann/Skills): raccolta skill dello studio Eden Spiekermann
 - [`phuryn/pm-skills`](https://github.com/phuryn/pm-skills): marketplace di 68 skill + 42 workflow in 9 plugin (discovery, strategy, execution, research, analytics, GTM, growth, toolkit, AI-shipping); per Claude Code e Cowork, install da marketplace; include `strategy-red-team` / `/red-team-prd` e `/ship-check` (adiacente, lato PM)

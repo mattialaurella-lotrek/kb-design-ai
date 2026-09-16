@@ -8,6 +8,9 @@ Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/);
 ### Aggiunto
 - **La scheda di anteprima del link,** chiesta dall'utente, che si è accorto che incollando l'indirizzo della guida non compare nessuna immagine. `src/template.html` aveva `og:type`, `og:title`, `og:description`, `og:locale` e `twitter:card`, cioè tutto tranne l'immagine, e senza `og:image` Slack, WhatsApp, LinkedIn e X mostrano il solo titolo. Ora ci sono `og:image` con tipo, larghezza, altezza e testo alternativo, `twitter:image`, `og:url` e `og:site_name`, più il `link rel="canonical"` che mancava. **L'immagine è il ritaglio di quella di apertura,** come ha chiesto l'utente: `assets/hero-figma-skills.webp` è 1520×855 e la scheda vuole 1200×630, quindi il ritaglio centrato toglie 57px di altezza divisi fra sopra e sotto e il terminale resta intero. Il file è `assets/og-image.jpg`, 137 KB, in JPEG perché non tutti gli scraper leggono il WebP dell'originale. Gli indirizzi dei meta tag sono assoluti e puntano alla produzione anche dal deployment di anteprima, che serve gli stessi file, così chi condivide il link dell'anteprima vede la stessa scheda e chi indicizza trova una pagina sola invece di due copie. La ricetta con i quattro comandi `sips` per rifare il ritaglio si trova in `DESIGN.md`, nella sezione nuova «L'immagine di anteprima del link».
 
+### Cambiato
+- **La voce `designagentlab/skills` del catalogo,** dettata dall'utente: «libreria open source per automatizzare il flusso di design con Claude e Figma» al posto di «libreria open: Figma, UX research, copywriting, immagini». La riga vecchia elencava quattro campi senza dire cosa la libreria facesse, e apriva un secondo paio di due punti subito dopo quello del link. Da 56 battute a 77, sotto la mediana del catalogo.
+
 ## [2026-09-14]
 
 ### Aggiunto
