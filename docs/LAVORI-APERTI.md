@@ -6,7 +6,7 @@ La coda del lavoro sul testo della guida, in un posto solo. Ogni voce dice dove 
 
 **Una voce esce di qui quando il testo è pubblicato.** Nello stesso giro la fonte entra in `docs/FONTI.md` e nella sezione «Fonti» del sorgente, e se il lavoro era un tema annunciato la voce si toglie da «Prossimi argomenti» e l'occhiello si riscrive.
 
-Stato al 12 settembre 2026: otto integrazioni in sezioni che esistono, sette temi annunciati e una sezione da aprire fuori dall'elenco.
+Stato al 18 settembre 2026: nove integrazioni in sezioni che esistono, sette temi annunciati e una sezione da aprire fuori dall'elenco.
 
 ---
 
@@ -27,6 +27,8 @@ Stato al 12 settembre 2026: otto integrazioni in sezioni che esistono, sette tem
 **L'audit del design system con Claude Code:** fermo perché non è ancora stato letto, e la collocazione dipende da cosa dice. Il titolo della pagina parla di design system in Figma e l'indirizzo solo di design system, quindi il pezzo appartiene al capitolo su Figma nel primo caso e a «Rendere il design system leggibile dall'AI» nel secondo. Si recupera da `freedium-mirror.cfd`, la strada che ha funzionato per gli altri quattro articoli Medium.
 
 **Il plugin `design` di terze parti:** fermo per lo stesso motivo, e serve a una cosa sola, sapere da quale marketplace arriva, perché nel catalogo ufficiale quel plugin non c'è. Verificato l'8 settembre 2026 che `/design` è la skill inclusa che apre la tela, quindi qui si parla di due oggetti diversi con lo stesso nome.
+
+**I controlli di pre-deploy di Higgsfield:** `higgsfield-websites/references/review-rubric.md` è una lista di undici controlli che si verificano col `grep` prima di pubblicare, e si divide fra due sezioni. In «Enforcement del design system» vanno quelli sul sistema visivo, cioè le famiglie di palette vietate, il rapporto fra occhielli e sezioni tenuto sotto `ceil(sezioni / 3)` e `h-screen` sostituito da `h-dvh`. In «Verificare il risultato» vanno quelli sulla verifica, cioè nessun elemento a `opacity: 0` in attesa di un trigger di scroll, perché uno screenshot headless a pagina intera deve mostrare tutte le sezioni, `prefers-reduced-motion` accoppiato a ogni sorgente di animazione, nessun `window` o `localStorage` al livello del modulo e la rilettura del testo contro i verbi riempitivi e i numeri finto-precisi senza fonte. Da decidere prima di scrivere se il divieto di em dash sulle stringhe visibili entra qui o resta una regola nostra di `CLAUDE.md`. Il secondo pezzo è il meccanismo delle approvazioni di `higgsfield-brandkit` e va in «Human-in-the-loop», cioè uno `state.json` con `approve_palette` e `approve_logo`, un Brand Lock che congela gli asset ufficiali del cliente come vincoli, la regola scritta di non dedurre mai l'approvazione dal silenzio o dalla generazione riuscita, e la rigenerazione che tocca solo gli output che dipendono da quello cambiato. Il rischio è dare spazio a un fornitore a pagamento per regole che la guida può dire da sé, quindi la regola si prende e la fonte si nomina una volta. I fatti e i limiti del pacchetto si trovano in `docs/FONTI-DA-INTEGRARE.md`.
 
 ---
 

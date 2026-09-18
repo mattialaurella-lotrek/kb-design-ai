@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "check-repos": "node scripts/check-repos.mjs",
     "serve": "node --watch-path=src scripts/build.mjs & npx serve ."
   },
   "dependencies": {
