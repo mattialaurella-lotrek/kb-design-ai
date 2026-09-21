@@ -314,4 +314,47 @@ if (marcatori.test(handoff)) {
   console.warn("! docs/HANDOFF.md non ha i marcatori <!-- stato:inizio --> / <!-- stato:fine -->: blocco non aggiornato");
 }
 
+// ---- Conteggi in docs/LAVORI-APERTI.md e docs/FONTI-DA-INTEGRARE.md ----
+// I due file hanno la stessa spina, cioe' le stesse chiavi I1-In e T1-Tn, e i
+// loro occhielli dichiaravano numeri scritti a mano che andavano stantii a ogni
+// giro. Qui si contano le chiavi di uno e gli stati dell'altro, e i due blocchi
+// fra i marcatori li scrive la build: dentro non si mette mano.
+const scriviBlocco = (file, testo) => {
+  const url = new URL(`../docs/${file}`, import.meta.url);
+  const src = readFileSync(url, "utf8");
+  const marcatori = /(<!-- conteggio:inizio -->)[\s\S]*?(<!-- conteggio:fine -->)/;
+  if (!marcatori.test(src)) {
+    console.warn(`! docs/${file} non ha i marcatori <!-- conteggio:inizio --> / <!-- conteggio:fine -->: blocco non aggiornato`);
+    return;
+  }
+  writeFileSync(url, src.replace(marcatori, `$1\n${testo}\n$2`), "utf8");
+};
+
+const lavoriSrc = readFileSync(new URL("../docs/LAVORI-APERTI.md", import.meta.url), "utf8");
+const integrazioni = (lavoriSrc.match(/^\*\*I\d+ · /gm) || []).length;
+const temi = (lavoriSrc.match(/^\*\*T\d+ · /gm) || []).length;
+
+const dainteg = readFileSync(new URL("../docs/FONTI-DA-INTEGRARE.md", import.meta.url), "utf8");
+const conta = (re) => (dainteg.match(re) || []).length;
+const pronte = conta(/^- \*\*Pronta\.\*\*/gm);
+const aperte = conta(/^- \*\*Aperta\.\*\*/gm);
+const daAprire = conta(/^- \*\*Da aprire\.\*\*/gm);
+const senzaFirma = conta(/\*\*Senza firma\.\*\*/g);
+const librerie = ((dainteg.split(/^## Librerie da valutare$/m)[1] || "").match(/^- \[/gm) || []).length;
+const sezioniFonti = conta(/^### [IT]\d+ · /gm);
+
+scriviBlocco("LAVORI-APERTI.md", [
+  `- ${integrazioni} integrazioni in sezioni che esistono, da \`I1\` a \`I${integrazioni}\``,
+  `- ${temi} temi annunciati, da \`T1\` a \`T${temi}\``,
+  `- Le fonti di questi lavori si trovano in \`docs/FONTI-DA-INTEGRARE.md\`, dove ${sezioniFonti} sezioni portano le stesse chiavi`,
+  `- Ultima build: ${buildDate}`,
+].join("\n"));
+
+scriviBlocco("FONTI-DA-INTEGRARE.md", [
+  `- ${pronte + aperte + daAprire} fonti in attesa: ${pronte} pronte, ${aperte} aperte, ${daAprire} da aprire${senzaFirma ? `, di cui ${senzaFirma} senza firma` : ""}`,
+  `- ${sezioniFonti} sezioni di lavoro, ${integrazioni} integrazioni e ${temi} temi, con le chiavi di \`docs/LAVORI-APERTI.md\``,
+  `- ${librerie} librerie da valutare, fuori dalla spina perché non sono legate a un lavoro`,
+  `- Ultima build: ${buildDate}`,
+].join("\n"));
+
 console.log(`✓ index.html generato — ${toc.length} voci nel TOC, aggiornato al ${buildDate}`);

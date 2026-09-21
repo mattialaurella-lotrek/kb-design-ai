@@ -78,8 +78,14 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 - `docs/CHANGELOG.md` per cosa è cambiato, raggruppato per data.
 - `docs/MEMORY.md` per le decisioni di lungo periodo e il contesto che deve sopravvivere fra le sessioni.
-- `docs/FONTI-DA-INTEGRARE.md` per le fonti raccolte e non ancora entrate nel testo, ordinate per tema. Una fonte esce di lì quando entra nella guida, e in quel momento entra anche in `docs/FONTI.md` e nella sezione «Fonti» di `src/content.md`.
+- `docs/FONTI-DA-INTEGRARE.md` per le fonti raccolte e non ancora entrate nel testo. Una fonte esce di lì quando entra nella guida, e in quel momento entra anche in `docs/FONTI.md` e nella sezione «Fonti» di `src/content.md`.
 - `docs/LAVORI-APERTI.md` per la coda del lavoro sul testo, cioè le integrazioni nelle sezioni che esistono e i temi ancora da scrivere, ognuno con la sua destinazione e quello che lo tiene fermo. Una voce esce di lì quando il testo è pubblicato. Le fonti restano in `docs/FONTI-DA-INTEGRARE.md`, che è un elenco di natura diversa, perché lì si annota una fonte e qui un lavoro.
+
+**I due file hanno la stessa spina.** Ogni lavoro ha una chiave, `I1`–`In` per le integrazioni e `T1`–`Tn` per i temi annunciati, e in `docs/FONTI-DA-INTEGRARE.md` c'è una sezione con la stessa chiave e lo stesso titolo. Aprendo un lavoro nuovo si apre la sezione anche là, e se le fonti non sono in quel file la sezione dice dove si trovano. Le chiavi si assegnano una volta e non si riusano: chiudendo `I4` le altre non scalano, perché la chiave serve a reggere un rimando e un rimando che cambia significato è peggio di un buco.
+
+**Lo stato di una fonte si scrive solo in `docs/FONTI-DA-INTEGRARE.md`,** in testa alla voce, ed è uno di tre. `Pronta` se se ne può scrivere, `aperta` se la pagina è stata letta ma il materiale che conta non è stato preso, `da aprire` se nessuno l'ha guardata. `Senza firma` si aggiunge dove mancano autore o data, e non è uno stato ma un debito.
+
+**I conteggi dei due file li scrive la build,** fra i marcatori `<!-- conteggio:inizio -->` e `<!-- conteggio:fine -->`, come già fa per `docs/HANDOFF.md`. Lì dentro non si mette mano.
 - `docs/BRIEF-<TEMA>.md` per il materiale di partenza di un tema annunciato, quando arriva già scritto da fuori. Il file si apre con una premessa che dice da dove viene, cosa se ne prende, cosa è stato verificato e cosa resta da leggere, perché un riassunto non è una fonte. Il primo è `docs/BRIEF-ECOSISTEMA-DI-AGENTI.md`.
 - `docs/HANDOFF.md` per lo stato da incollare in una chat senza accesso al repo. Il blocco numerico fra i marcatori `<!-- stato:inizio -->` e `<!-- stato:fine -->` lo scrive la build, quindi lì non si mette mano.
 - `DESIGN.md` quando si tocca un valore del sistema visivo.
