@@ -10,6 +10,26 @@ Stato al 21 settembre 2026: nove integrazioni in sezioni che esistono, sette tem
 
 ---
 
+## La corrispondenza con le fonti, al 21 settembre 2026
+
+Raffronto fra questo file e `docs/FONTI-DA-INTEGRARE.md`, fatto per decidere cosa si chiude prima. **I due elenchi corrispondono solo in parte,** e sapere dove si scollano è quello che permette di sfoltire.
+
+**I numeri.** Sedici lavori aperti qui, cioè nove integrazioni e sette temi annunciati. Trentanove fonti in attesa là, cioè nove su sezioni che esistono, ventitré sui temi annunciati e sette librerie da valutare. Tre fonti portano il segno di non ancora lette.
+
+**Sui temi annunciati la corrispondenza è pulita,** sette contro sette e con gli stessi nomi. Quello che cambia è quanto materiale hanno sotto, che va da otto fonti per «Gestire una rete di agenti in Claude» a zero per «Le skill dell'agente di Figma».
+
+**Sulle integrazioni non lo è,** e le fonti di nove lavori sono in tre posti diversi. Sette si trovano sotto «Temi già svolti nella guida». La fonte del plugin `design` si trova sotto il tema annunciato «Progettare interfacce direttamente in Claude Code», perché è lo stesso articolo. Higgsfield si trova fra le librerie da valutare. E «Il secondo giro sul context engineering» non ha nessuna fonte in attesa, perché la sua è già in `docs/FONTI.md` dal primo giro.
+
+**«Letta» vuol dire due cose diverse nei due file,** ed è la cosa che confonde di più. Là il segno ⚠️ dice che la fonte non è stata aperta. Qui si scrive «non letta» anche per una fonte la cui pagina è stata vista ma il cui materiale vero non è stato preso, come le tre della ricerca UX, dove quello che conta è un PDF di cinque pagine da scaricare. Scegliendo cosa fare, il conto che vale è il secondo.
+
+**Sei integrazioni si possono scrivere senza aspettare niente.** L'economia del contesto e dei token, che ha quattro fonti lette e aspetta solo una decisione di struttura e la verifica di due dati. Il secondo giro sul context engineering, che aspetta solo la prova di `/doctor`. I cinque modi di usare `DESIGN.md`. Il sandbox per prototipare con i componenti veri e il percorso dal mockup alla pull request, che sono della stessa autrice e vanno letti insieme. I controlli di pre-deploy di Higgsfield.
+
+**Tre sono ferme sulla stessa cosa, una lettura,** e sono il diario di cantiere di Prerender, l'audit del design system con Claude Code e il plugin `design`. Tutte e tre si recuperano da `freedium-mirror.cfd`, che è la strada che ha funzionato per gli altri quattro articoli Medium, quindi conviene prenderle in un giro solo invece che una per volta.
+
+**Fra i temi annunciati, sei hanno materiale e uno no.** Fermo è «Le skill dell'agente di Figma», che aspetta le fonti dall'utente. Degli altri il più pronto è «Scegliere il modello e l'effort corretti per lo scopo in Claude», dove il lavoro è di traduzione e non di ricerca, e il più ricco è «Gestire una rete di agenti in Claude», che però ha tre verifiche da fare prima di scrivere.
+
+---
+
 ## Integrazioni in sezioni che esistono
 
 **L'economia del contesto e dei token:** va in «Il contesto è una risorsa finita» e «Mantenere il contesto nel tempo», su quattro fonti già smistate. La decisione aperta è se le prime due diventano una sottosezione nuova o due paragrafi dentro quelle che ci sono, e si prende leggendole insieme, perché si sovrappongono. Dal 21 settembre 2026 fra le due sezioni ce n'è una terza, «I tre ruoli del contesto», quindi una sottosezione nuova spezzerebbe una sequenza che ora regge da sola. Da questo giro esce anche una riga per «I comandi di Claude Code», dove `/config` non è in tabella. Attenzione a due dati che la stampa dell'articolo su Concise non conferma, cioè il campo `outputStyle` in `settings.json` e la versione 2.1.237, che vanno ripresi dalla documentazione ufficiale o tolti.
