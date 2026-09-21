@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 58 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 60 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF si trovano in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Cinquantasette fonti su 58 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 58, 54 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
+Cinquantanove fonti su 60 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 60, 56 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
 
 ---
 
@@ -326,6 +326,18 @@ https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-genera
 File: nessuno. Come per la voce 52, il corpo dell'articolo si monta via JavaScript e la stampa headless restituisce solo l'involucro della pagina.
 Aggiunta fuori sequenza il 28 agosto 2026, dopo la chiusura del corpus: il numero segue l'ordine di ingresso, non la posizione nel file.
 
+**60. Context Architecture: Applying IA Principles to AI Systems**
+Paz Perez — Nielsen Norman Group, 12 giugno 2026
+https://www.nngroup.com/articles/context-architecture/
+File: `Context architecture, applying IA principles to AI systems.pdf`
+Aggiunta il 21 settembre 2026. La fonte era citata nella sezione «Fonti» di `src/content.md` dal 18 agosto 2026, quando il capitolo 1 è stato rifatto sulla sua progressione prompt engineering, context engineering, context architecture, ma qui non era mai entrata: è l'unico caso trovato di fonte usata e non registrata in bibliografia. Da lei viene lo schema dell'ecosistema del contesto in «Dal comando al contesto».
+
+**59. The 3 Roles of Context for AI Agents**
+Tanner Kohler — Nielsen Norman Group, 18 settembre 2026
+https://www.nngroup.com/articles/3-agent-context-roles/
+File: `The 3 Roles of Context for AI Agents.pdf`
+Aggiunta fuori sequenza il 21 settembre 2026: il numero segue l'ordine di ingresso, non la posizione nel file. Dallo studio NN/g con power user di Claude, i tre ruoli che ogni informazione gioca per un agente, globale, locale e ambient. Alla guida serve il criterio di smistamento, che nessun'altra fonte del corpus fornisce.
+
 ---
 
 ## Loop e autonomia dell'agente
@@ -362,11 +374,11 @@ File: `4 Types of Loops You Can Create in Claude Code.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 22 documenti su 58**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 60**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
 Le fonti primarie sono sei, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5 e le due pagine di documentazione sui comandi. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le due pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su cinquantotto escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le due pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su sessanta escono fra marzo e giugno 2026.
 
 ## Manutenzione
 

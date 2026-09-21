@@ -130,9 +130,15 @@ Componente nuovo del 23 agosto 2026, e usa solo materiale che c'era già.
 
 **Corpi:** 15px il campo, come il bottone di sistema; 14,5px il titolo del risultato; 13,5px lo spezzone; 12px l'etichetta del tipo. Tutti già in uso altrove, secondo la regola qui sopra.
 
-## Lo schema a tre passaggi
+## Lo schema a riquadri
 
-Componente usato una volta, in «Rendere il design system leggibile dall'AI», dove porta authoring, specification e delivery. Tre riquadri in griglia con una freccia `arrow-right` fra l'uno e l'altro, che sotto i 700px si impilano e la freccia diventa verticale.
+Componente nato il 2 settembre 2026 come schema a tre passaggi e generalizzato il 21 settembre in una famiglia, perché servivano anche due riquadri e tre riquadri senza freccia. Si compone di tre classi.
+
+- **`flow`** porta la griglia, i riquadri e i corpi. Da sola non basta.
+- **`flow-2` e `flow-3`** dicono quante colonne. Sotto i 700px tutte e due passano a una colonna sola.
+- **`flow-steps`** aggiunge la freccia `arrow-right` fra un riquadro e l'altro, e sotto i 700px la freccia diventa verticale.
+
+**Il numero di colonne e la freccia sono separati apposta,** perché non tutti gli schemi sono sequenze. Dove i riquadri sono categorie affiancate la freccia direbbe una cosa falsa, quindi `flow-steps` si mette solo dove c'è un ordine. Gli usi sono tre. In «Rendere il design system leggibile dall'AI» `flow-3 flow-steps` porta authoring, specification e delivery. In «Dividere il lavoro tra Claude Desktop e Claude Code» `flow-2 flow-steps` porta i due ambienti, e la freccia è il markdown che passa dall'uno all'altro. In «I file di contesto» `flow-3` senza freccia porta i tre regimi di caricamento, cioè caricati sempre, aperti quando servono e collegati.
 
 **Forma:** `--surface`, filetto `--border`, raggio `--radius`, padding 18 sopra e sotto e 20 ai lati. Dal 2 settembre 2026 il fondo è **bianco** e non più `--surface-2`, su indicazione dell'utente: erano gli unici riquadri della guida su fondo grigio, mentre i riquadri affiancati stavano già su `--surface`. Sono le card che nel sistema si distinguono dalla pagina per la superficie, non per la velatura.
 
@@ -163,6 +169,26 @@ Componente del 24 agosto 2026, usato una volta, in coda a «Rendere il design sy
 **La freccia è `arrow-upright`** dallo sprite, a 24px. È lo stesso segno che in topbar dice che il link esce dal sito.
 
 **L'immagine di anteprima** è quella pubblicata dall'articolo, in `assets/fantasy-caroline-hilman.webp`: 360px di larghezza per 120 a schermo, 15 KB.
+
+## La figura
+
+Componente del 21 settembre 2026, nato per spezzare i muri di testo delle sezioni che spiegano un concetto. Porta uno schema pubblicato da una fonte, non un'illustrazione decorativa, e la didascalia dichiara da dove viene. È il solo posto della guida dove autore e testata compaiono fuori dalle fonti, perché la didascalia è fuori dal filo del ragionamento e l'attribuzione è quello che rende difendibile la ripubblicazione.
+
+**Forma:** `<figure class="figure">` con l'immagine e una `<figcaption>`. Larghezza massima 560px e non i 74ch della prosa, perché uno schema quadrato a piena colonna diventa un blocco alto mezzo schermo e spezza la lettura invece di aiutarla. Centrata, con 2em sopra e sotto. Sotto i 700px la massima cade e la figura prende tutta la colonna.
+
+**Il filetto `--border` attorno all'immagine non è decorazione.** Gli schemi delle fonti portano il loro fondo, che è quasi sempre chiaro: senza filetto, in tema scuro l'immagine galleggia sulla pagina senza un bordo che la chiuda. Spigolo vivo come le tabelle e i blocchi di codice.
+
+**La didascalia** è a 0,92rem in `--muted`, con 10px di stacco dall'immagine. Regola dell'utente del 21 settembre 2026: un titolo molto stringato e il link alla fonte, separati da un punto mediano, e niente frasi. Il titolo dice cosa mostra il disegno e non ripete il titolo della sezione, quindi sotto «I tre ruoli del contesto» la didascalia è «Globale, locale e di sfondo». Il link prende il filetto lime del link di prosa, che qui va bene perché porta fuori dal sito.
+
+**Il formato è WebP,** ricavato dal PDF in `sources/` e ridimensionato al doppio della misura a schermo. La prima, `assets/nng-tre-ruoli-contesto.webp`, è 1106×1120 per 560 a schermo e pesa 29 KB. Si rifà con tre comandi:
+
+```bash
+pdfimages -png -p "sources/<articolo>.pdf" /tmp/fig
+sips -Z 1120 /tmp/fig-<pagina>-<indice>.png
+cwebp -q 82 /tmp/fig-<pagina>-<indice>.png -o assets/<nome>.webp
+```
+
+**L'immagine non si ritocca.** Niente ritagli, niente cambi di fondo per avvicinarla alla palette: una figura di altri si riproduce intera o non si riproduce. Se il fondo stona troppo, la strada è ridisegnare lo schema, non correggere il loro.
 
 ## Il badge di stato
 

@@ -6,13 +6,13 @@ La coda del lavoro sul testo della guida, in un posto solo. Ogni voce dice dove 
 
 **Una voce esce di qui quando il testo è pubblicato.** Nello stesso giro la fonte entra in `docs/FONTI.md` e nella sezione «Fonti» del sorgente, e se il lavoro era un tema annunciato la voce si toglie da «Prossimi argomenti» e l'occhiello si riscrive.
 
-Stato al 18 settembre 2026: nove integrazioni in sezioni che esistono, sette temi annunciati e una sezione da aprire fuori dall'elenco.
+Stato al 21 settembre 2026: nove integrazioni in sezioni che esistono, sette temi annunciati e una sezione da aprire fuori dall'elenco.
 
 ---
 
 ## Integrazioni in sezioni che esistono
 
-**L'economia del contesto e dei token:** va in «Il contesto è una risorsa finita» e «Mantenere il contesto nel tempo», su quattro fonti già smistate. La decisione aperta è se le prime due diventano una sottosezione nuova o due paragrafi dentro quelle che ci sono, e si prende leggendole insieme, perché si sovrappongono. Da questo giro esce anche una riga per «I comandi di Claude Code», dove `/config` non è in tabella. Attenzione a due dati che la stampa dell'articolo su Concise non conferma, cioè il campo `outputStyle` in `settings.json` e la versione 2.1.237, che vanno ripresi dalla documentazione ufficiale o tolti.
+**L'economia del contesto e dei token:** va in «Il contesto è una risorsa finita» e «Mantenere il contesto nel tempo», su quattro fonti già smistate. La decisione aperta è se le prime due diventano una sottosezione nuova o due paragrafi dentro quelle che ci sono, e si prende leggendole insieme, perché si sovrappongono. Dal 21 settembre 2026 fra le due sezioni ce n'è una terza, «I tre ruoli del contesto», quindi una sottosezione nuova spezzerebbe una sequenza che ora regge da sola. Da questo giro esce anche una riga per «I comandi di Claude Code», dove `/config` non è in tabella. Attenzione a due dati che la stampa dell'articolo su Concise non conferma, cioè il campo `outputStyle` in `settings.json` e la versione 2.1.237, che vanno ripresi dalla documentazione ufficiale o tolti.
 
 **Il secondo giro sul context engineering:** è il seguito della voce 54, il post di Anthropic sulle regole nuove, di cui il primo giro è pubblicato dal 28 agosto 2026. Restano due pezzi. La misura dell'80% di system prompt rimosso va in «Il contesto è una risorsa finita», dove oggi la guida si regge su fonti di seconda mano. Una sottosezione breve su regola e giudizio va in «Scrivere il contesto», con i rimandi al posto delle postille. Prima di scriverla va provato `/doctor`, perché l'articolo gli attribuisce il ridimensionamento di skill e `CLAUDE.md` mentre in Claude Code è storicamente il controllo di salute dell'installazione. Il terzo giro, sui riferimenti al codice al posto delle specifiche tecniche in markdown, si decide dopo il secondo.
 
@@ -46,7 +46,7 @@ Sono le sette voci di «Prossimi argomenti», in ordine di quanto sono pronte.
 
 **VS Code e Cursor a confronto:** due fonti e un perimetro già ristretto il 2 settembre 2026. Quello che cambia per Claude Code dentro un editor si trova già in «I comandi di Claude Code», quindi al tema resta il confronto fra i due editor in sé.
 
-**Regole e istruzioni tra markdown e skill:** nessuna fonte nuova, e il rischio di questa sezione è la ripetizione, perché i pezzi sono già scritti in quattro sezioni. La sezione esiste solo se dice due cose che oggi non ci sono, cioè il criterio con cui si sceglie il contenitore e il modo di tenere in ordine l'insieme nel tempo. Il punto di partenza del criterio è il paragrafo di `how-claude-code-works` che mette in fila skill, MCP, hook e subagent con quanto costa ognuno in contesto.
+**Regole e istruzioni tra markdown e skill:** nessuna fonte nuova, e il rischio di questa sezione è la ripetizione, perché i pezzi sono già scritti in quattro sezioni, e dal 21 settembre 2026 in cinque. Il criterio con cui si sceglie il contenitore lo dà «I tre ruoli del contesto», che dice dove va un'istruzione e non in che forma. Alla sezione restano due domande, quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md` e come si tiene in ordine l'insieme nel tempo. Il punto di partenza del criterio è il paragrafo di `how-claude-code-works` che mette in fila skill, MCP, hook e subagent con quanto costa ognuno in contesto.
 
 **Le skill dell'agente di Figma:** ferma su due cose, le fonti, che fornisce l'utente, e la collocazione, fra il capitolo sulle skill e la coda di «Lavorare con Claude e Figma».
 
@@ -72,4 +72,4 @@ Sono le sette voci di «Prossimi argomenti», in ordine di quanto sono pronte.
 
 ## Debito che non è lavoro di testo
 
-Si trova in `docs/MEMORY.md` sotto «In sospeso / da valutare» e qui vale solo il richiamo, perché tocca il testo da vicino. Quattordici voci del catalogo di skill sono sopra il tetto delle 240 battute e si accorciano quando si mette mano alla loro riga. «UX.md» porta ancora il badge «In lavorazione». Le categorie del catalogo di skill sono H3 e nella spalla pesano quanto un capitolo.
+Si trova in `docs/MEMORY.md` sotto «In sospeso / da valutare» e qui vale solo il richiamo, perché tocca il testo da vicino. Quattordici voci del catalogo di skill, su sessantasei, sono sopra il tetto delle 240 battute e si accorciano quando si mette mano alla loro riga. «UX.md» porta ancora il badge «In lavorazione». Le categorie del catalogo di skill sono H3 e nella spalla pesano quanto un capitolo.

@@ -611,34 +611,40 @@
     .prose p.has-step { position: relative; padding-left: 2em; }
     .prose p.has-step + pre, .prose p.has-step + .table-wrap { margin-left: 2em; }
 
-    /* Schema a tre passaggi: authoring -> specification -> delivery */
-    .flow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; margin: 1.8em 0; }
-    .flow3 > div {
+    /* Schema a riquadri. Il numero di colonne e la freccia sono due cose
+       separate, perche' non tutti gli schemi sono sequenze: `flow-steps`
+       mette la freccia fra un riquadro e l'altro e si usa dove c'e' un
+       ordine, mentre senza di lei i riquadri sono categorie affiancate e
+       una freccia direbbe una cosa falsa. */
+    .flow { display: grid; gap: 26px; margin: 1.8em 0; }
+    .flow-2 { grid-template-columns: repeat(2, 1fr); }
+    .flow-3 { grid-template-columns: repeat(3, 1fr); }
+    .flow > div {
       position: relative; padding: 18px 20px;
       border: 1px solid var(--border); border-radius: var(--radius);
       background: var(--surface);
     }
-    .flow3 > div + div::before {
+    .flow-steps > div + div::before {
       content: ""; position: absolute; left: -25px; width: 24px; height: 24px;
       top: 50%; transform: translateY(-50%);
       background: var(--muted);
       -webkit-mask: var(--ico-arrow-right) center / 24px 24px no-repeat;
               mask: var(--ico-arrow-right) center / 24px 24px no-repeat;
     }
-    .flow3 .flow3-step {
+    .flow .flow-step {
       margin: 0 0 2px; font-size: .82rem; letter-spacing: -.005em;
       color: var(--ink); font-weight: var(--w-regular);
     }
-    .flow3 .flow3-where { margin: 0 0 12px; font-weight: var(--w-medium); }
-    .flow3 ul { margin: 0 0 12px; padding-left: 18px; }
-    .flow3 li { margin: 0 0 3px; }
-    .flow3 .flow3-note {
+    .flow .flow-where { margin: 0 0 12px; font-weight: var(--w-medium); }
+    .flow ul { margin: 0 0 12px; padding-left: 18px; }
+    .flow li { margin: 0 0 3px; }
+    .flow .flow-note {
       margin: 0; padding-top: 11px; border-top: 1px solid var(--border);
       font-size: .92rem; line-height: 1.55; color: var(--muted);
     }
     @media (max-width: 700px) {
-      .flow3 { grid-template-columns: 1fr; gap: 28px; }
-      .flow3 > div + div::before { content: "\2193"; left: 0; right: 0; width: 100%; top: -14px; }
+      .flow-2, .flow-3 { grid-template-columns: 1fr; gap: 28px; }
+      .flow-steps > div + div::before { content: "\2193"; left: 0; right: 0; width: 100%; top: -14px; }
     }
 
     /* Due esiti a confronto, sotto la checklist. L'icona va in alto a destra
@@ -721,6 +727,26 @@
       .prose a.linkcard { grid-template-columns: 80px 1fr auto; gap: 16px; }
       .prose .linkcard-img { width: 80px; }
     }
+
+    /* Figura: uno schema preso da una fonte, non un'illustrazione. Sta in una
+       colonna piu' stretta della prosa, perche' a 74ch un'immagine quadrata
+       diventa un blocco alto quanto mezzo schermo e spezza la lettura invece
+       di aiutarla. Il filetto serve perche' gli schemi delle fonti portano il
+       loro fondo chiaro: senza, in tema scuro l'immagine galleggia sulla
+       pagina. La didascalia porta la fonte, perche' la figura e' di altri. */
+    .figure { margin: 2em auto; max-width: 560px; }
+    .prose .figure img {
+      display: block; width: 100%; height: auto; margin: 0;
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .figure figcaption {
+      margin-top: 10px; font-size: .92rem; line-height: 1.45; color: var(--muted);
+    }
+    /* Uno schema orizzontale a 560px avrebbe le etichette a 8px: la variante
+       larga prende tutta la colonna di prosa. Non c'e' una via d'uscita oltre
+       i 74ch, perche' nella guida nemmeno l'immagine di apertura ne esce. */
+    .figure--wide { max-width: 100%; }
+    @media (max-width: 700px) { .figure { max-width: 100%; } }
 
     /* Blockquote */
     .prose blockquote {
@@ -1632,13 +1658,13 @@
           if (card && t) return "[" + t.textContent.trim() + "](" + card.getAttribute("href") + ")" +
             (f ? ", " + f.textContent.trim() : "");
         }
-        if (el.classList && el.classList.contains("flow3")) {
+        if (el.classList && el.classList.contains("flow")) {
           return Array.prototype.map.call(el.children, function (c) {
             var q = function (sel) { var n = c.querySelector(sel); return n ? n.textContent.trim() : ""; };
             var voci = Array.prototype.map.call(c.querySelectorAll("li"), function (li) {
               return "  - " + li.textContent.trim();
             }).join("\n");
-            return "**" + q(".flow3-step") + "** (" + q(".flow3-where") + ")\n" + voci + "\n  " + q(".flow3-note");
+            return "**" + q(".flow-step") + "** (" + q(".flow-where") + ")\n" + voci + "\n  " + q(".flow-note");
           }).join("\n\n");
         }
         var table = tag === "TABLE" ? el : el.querySelector && el.querySelector("table");

@@ -19,6 +19,7 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
 - **Progettare il contesto**
   - Dal comando al contesto
   - Il contesto è una risorsa finita
+  - I tre ruoli del contesto
   - Requisiti minimi di partenza
   - Scrivere una richiesta
   - Mantenere il contesto nel tempo
@@ -69,9 +70,14 @@ Perché l'AI produce spesso qualcosa di corretto e generico, cosa le serve davve
 
 Quasi tutti i risultati deludenti con l'AI hanno la stessa causa, cioè al modello mancavano le informazioni per ragionare. Riscrivere il prompt non gliele aggiunge, e allungarlo nemmeno, perché oltre una certa soglia il dettaglio in più fa calare l'accuratezza.
 
-La pratica si è mossa in tre tempi, che NN/g distingue così. Il **prompt engineering** lavora sulla formulazione della richiesta, ed è la fase in cui i team collezionavano prompt come risorse da riusare. Il **context engineering** allarga il problema alla configurazione di tutto ciò che il modello ha davanti quando risponde, cioè istruzioni di sistema, conoscenza recuperata, strumenti collegati, memoria e stato della conversazione. La **context architecture** è il livello sopra e riguarda la struttura di quell'informazione, come è gerarchizzata, come è nominata, come si trova. È l'applicazione dei principi di information architecture ai sistemi AI, e l'analogia è quella dell'edificio, dove l'ingegnere garantisce che stia in piedi e l'architetto decide come lo si attraversa.
+La pratica si è mossa in tre tempi. Il **prompt engineering** lavora sulla formulazione della richiesta, ed è la fase in cui i team collezionavano prompt come risorse da riusare. Il **context engineering** allarga il problema alla configurazione di tutto ciò che il modello ha davanti quando risponde, cioè istruzioni di sistema, conoscenza recuperata, strumenti collegati, memoria e stato della conversazione. La **context architecture** è il livello sopra e riguarda la struttura di quell'informazione, come è gerarchizzata, come è nominata, come si trova. È l'applicazione dei principi di information architecture ai sistemi AI, e l'analogia è quella dell'edificio, dove l'ingegnere garantisce che stia in piedi e l'architetto decide come lo si attraversa.
 
-La definizione utile da tenere a mente è quella di Anthropic, cioè curare **il più piccolo insieme possibile di token ad alto segnale** che massimizza la probabilità del risultato voluto. È l'opposto dell'istinto comune ("carico tutto: brand PDF + ricerca + design system"). Caricare tutto fa peggiorare l'output, perché il modello si distrae e "dimentica" i vincoli. Vale lo stesso principio della progressive disclosure nell'interfaccia, dove si rivela l'informazione quando è rilevante.
+<figure class="figure">
+<img src="assets/nng-ecosistema-contesto.webp" width="1086" height="1120" alt="Schema dell'ecosistema del contesto. A sinistra un riquadro tratteggiato etichettato "system-internal context" contiene sei cerchi gialli sovrapposti: knowledge base con RAG, tools con MCP, skills, system prompts, guard rails e memory. A destra, fuori dal riquadro, due cerchi che si intersecano etichettati conversation e user prompt, sotto il titolo "context visible to the user"." loading="lazy">
+<figcaption>Contesto di sistema e contesto visibile · <a href="https://www.nngroup.com/articles/context-architecture/">Nielsen Norman Group</a></figcaption>
+</figure>
+
+La definizione utile da tenere a mente è curare **il più piccolo insieme possibile di token ad alto segnale** che massimizza la probabilità del risultato voluto. È l'opposto dell'istinto comune ("carico tutto: brand PDF + ricerca + design system"). Caricare tutto fa peggiorare l'output, perché il modello si distrae e "dimentica" i vincoli. Vale lo stesso principio della progressive disclosure nell'interfaccia, dove si rivela l'informazione quando è rilevante.
 
 **Comando e contesto, in pratica:**
 
@@ -91,6 +97,29 @@ Il **context rot** è la versione che si incontra lavorando. Anche partendo da u
 
 **Cosa tenere e cosa lasciare fuori:** prima di riempire il contesto, guarda quello che stai per dargli e chiediti quanto serve a questo compito. Per ridisegnare la pagina delle impostazioni all'agente servono i token pertinenti, i componenti che si usano in quell'area, due o tre vincoli di prodotto, l'implementazione attuale della pagina, i requisiti di accessibilità e un paio di esempi. Restano fuori la strategia di prodotto, l'intero catalogo dei componenti, la documentazione dell'architettura di backend, tre anni di storia del progetto e cinquanta screenshot di altre schermate. Chi prepara il contesto tende a mettere dentro tutte e due le liste, perché aggiungere sembra la mossa prudente, e l'informazione che conta finisce annegata in quella che non serve.
 
+### I tre ruoli del contesto
+
+Decidere cosa entra nella finestra è metà del lavoro. L'altra metà è decidere dove tenere ogni cosa, perché non tutto deve arrivare all'agente nello stesso modo. I ruoli sono tre.
+
+- **Contesto globale:** quello che vale per quasi tutti i compiti e cambia di rado, come le tue abitudini di lavoro, le regole di brand o cosa vuoi che l'agente ti chieda prima di procedere. L'agente lo carica a ogni sessione, quindi lo paghi ogni volta, ed è il solo che deve restare corto.
+- **Contesto locale:** quello che vale per il progetto aperto e per nient'altro, come la coda delle cose da fare, le decisioni già prese e il punto in cui eri rimasto. L'agente lo apre quando serve e lo aggiorna lui mentre lavora.
+- **Contesto di sfondo:** i flussi che nessuno ha curato, come la posta, i trascritti delle riunioni e i numeri di un pannello di analytics. Li colleghi invece di caricarli, e l'agente ci guarda dentro quando gli serve.
+
+<figure class="figure">
+<img src="assets/nng-tre-ruoli-contesto.webp" width="1106" height="1120" alt="Schema dei tre tipi di contesto. In basso una barra viola larga quanto la figura, etichettata Global Context. Sopra ci poggiano tre colonne uguali, ognuna etichettata Local Context. Sopra le colonne un blocco di fogli sovrapposti, etichettato AI Output. Tutto è dentro una nuvola gialla, etichettata Ambient Context." loading="lazy">
+<figcaption>Globale, locale e di sfondo · <a href="https://www.nngroup.com/articles/3-agent-context-roles/">Nielsen Norman Group</a></figcaption>
+</figure>
+
+Globale e locale dipendono da dove guardi. Dentro un progetto `DESIGN.md` è globale, perché serve a tutto quello che fai lì, e `SESSIONS.md` è locale, perché vale per la sessione di oggi. Se guardi a tutto il tuo lavoro, quel progetto è locale per intero e resta globale solo quello che si trova in `~/.claude`. Quindi il perimetro si fissa prima del ruolo.
+
+Un flusso collegato non occupa la finestra. Il contenuto ci entra solo quando l'agente va a prenderlo. Occupa spazio invece la descrizione degli strumenti di ogni connessione aperta, quindi conviene collegare i flussi da cui copieresti a mano più di una volta e lasciare stare gli altri. Il canale non decide il ruolo: l'MCP di Figma porta il file del progetto, che è contesto locale.
+
+**Le tre domande per smistare quello che hai:**
+
+- Serve a quasi tutti i compiti? Va nel globale, e più è corto meglio funziona.
+- Serve solo a questo progetto? Va in un file che l'agente legge e aggiorna (vedi «I file di contesto»).
+- È un flusso che non hai curato? Collegalo e lascia che ci guardi lui (vedi «Setup e loop con Figma MCP» per quanto costa una connessione).
+
 ### Requisiti minimi di partenza
 
 Nella finestra di contesto finiscono anche le istruzioni di sistema, gli strumenti collegati e la memoria della conversazione, che però non dipendono da te. Quello che dipende da te sono quattro cose, e ognuna ha più avanti il posto in cui si scrive.
@@ -99,6 +128,8 @@ Nella finestra di contesto finiscono anche le istruzioni di sistema, gli strumen
 2. **Le linee guida di brand:** da PDF aspirazionale a vincoli operativi. Blocca gli elementi critici (logo, colori primari, caratteri), dichiara dove c'è libertà e definisci confini misurabili, quindi «headline in Inter Bold, 24–48px» e non «headline moderne». Il file dove si scrivono è `BRAND.md` (vai a «I file di contesto»).
 3. **La ricerca sugli utenti:** il livello più sottovalutato. Tiene le proposte ancorate alla realtà con chi sono le persone, i requisiti di accessibilità, i comportamenti osservati, i casi limite e la lingua. Senza, l'AI progetta per l'utente medio, l'unico che conosce (vai a «UX.md»).
 4. **Il modo di chiedere:** come strutturi la richiesta (vai a «Scrivere una richiesta»).
+
+Dei quattro, i primi tre sono contesto globale del progetto, perché valgono per tutto quello che ci fai dentro. Il quarto riguarda invece come lo usi.
 
 **Provalo adesso:** prendi un compito che daresti all'AI oggi e scrivi in quattro righe cosa hai da darle su ciascuno dei quattro punti. Quello che non riesci a riempire è il motivo per cui l'output ti tornerà generico.
 
@@ -128,6 +159,8 @@ Su un lavoro lungo la finestra si sporca da sé, con falsi avvii, tentativi di d
 **Chiudere e ripartire da un riassunto:** quando la conversazione si allunga e le risposte peggiorano, chiudila, fatti scrivere un riassunto di dove sei arrivato e aprine una nuova con quello dentro. Claude Code lo fa anche da solo avvicinandosi al limite, tenendo le decisioni prese e i problemi ancora aperti, ma farlo tu prima costa meno.
 
 **Tenere gli appunti in un file, non nella chat:** quello che deve sopravvivere alla sessione va scritto in un file, così alla ripresa lo rileggi invece di ricostruirlo a memoria. È il compito di `SESSIONS.md`, descritto in «I file di contesto».
+
+**Il ruolo di una cosa può cambiare:** un messaggio che ti arriva è di sfondo finché non lo indichi all'agente, e da lì in avanti è contesto locale della sessione. Se la stessa istruzione ti tocca ripeterla anche sul progetto dopo, il suo posto è il globale, cioè `~/.claude`. Si dimentica più spesso il contrario, cioè togliere un file quando smette di valere, perché finché resta nel progetto l'agente lo legge come se valesse oggi.
 
 Il resto lo fa lo strumento. Claude Code carica i `CLAUDE.md` all'avvio e va a prendere gli altri file solo quando servono, e può affidare un'esplorazione lunga a un subagent che lavora in una finestra sua e restituisce la sola sintesi.
 
@@ -166,17 +199,17 @@ I concetti del capitolo precedente diventano file che l'agente legge. Il capitol
 
 Un agente che progetta senza contesto consegna qualcosa di corretto e generico insieme: manca lo stato vuoto, il colore da solo porta il significato, ricompare un pattern che il team aveva scartato settimane prima. Ha fatto un lavoro onesto sul brief che aveva davanti, era il brief a essere molto più sottile di quello che avevi in testa. I file di contesto servono a scrivere la parte di brief che di solito nessuno mette per iscritto.
 
-Sono formati con funzioni diverse, spesso complementari:
+Sono formati con funzioni diverse, spesso complementari. Si trovano tutti nella cartella del progetto, quindi nei tre ruoli sono contesto locale, e dentro quel perimetro si dividono ancora, perché `DESIGN.md` e `BRAND.md` servono a tutto il progetto mentre `SESSIONS.md` e `BACKLOG.md` cambiano ogni giorno:
 
 - **`CLAUDE.md`:** memoria di progetto di Claude Code, caricata a inizio sessione (è contesto, non enforcement rigido). Tienilo **snello**. Come si scrive e quali sezioni contiene si trova in «CLAUDE.md».
 - **`CLAUDE.local.md`:** le tue preferenze personali, tenute fuori dal repo (gitignored). Utile per non imporre al team le tue abitudini.
 - **`AGENTS.md`:** il **livello di orchestrazione**. Non è documentazione del design system, ma dice all'agente dove guardare per ogni cosa (quale file ha i token canonici, dove si trova la libreria componenti, quali MCP consultare, se usare utility Tailwind o token quando confliggono). Se si adotta un solo formato, questo è quello a maggior ritorno, perché costa poche ore di scrittura e viene consultato di continuo.
 - **`DESIGN.md`:** l'identità visiva condensata in un front matter YAML con i token più un corpo markdown con le regole visive. Il formato definisce otto sezioni in ordine fisso (overview, colori, tipografia, layout, elevazione/profondità, forme, componenti, do's & don'ts). Aperta da Google Labs nell'aprile 2026, è la più matura della lista. Estrarre i token però è il passo che costa meno, perché quello che sposta l'output sono l'intento e i confini scritti attorno (vai a «DESIGN.md»).
-- **`UX.md`:** quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se `DESIGN.md` dice come deve apparire il prodotto, `UX.md` dice per chi è e come deve comportarsi, con i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista, una proposta di NN/g del luglio 2026 che nessuno strumento carica in automatico. Copre però un vuoto che gli altri file lasciano aperto (vai a «UX.md»).
+- **`UX.md`:** quello che il team sa sugli utenti, scritto perché lo legga l'AI. Se `DESIGN.md` dice come deve apparire il prodotto, `UX.md` dice per chi è e come deve comportarsi, con i finding di ricerca ridotti a vincoli, gli standard di interazione, il glossario di dominio, il modello dell'utente e quello del suo contesto d'uso. È il più giovane della lista, proposto nel luglio 2026, e nessuno strumento lo carica in automatico. Copre però un vuoto che gli altri file lasciano aperto (vai a «UX.md»).
 - **`MEMORY.md`:** memoria di progetto a lungo termine, con le decisioni prese e il contesto che deve sopravvivere tra le sessioni (perché abbiamo scelto X, cosa abbiamo scartato).
 - **`SKILL.md`:** conoscenza **procedurale** per workflow specifici. Una skill è una cartella con un `SKILL.md` in cima più eventuali script/template. La struttura è a progressive disclosure. I metadati (~100 token) caricano per primi e decidono se la skill è rilevante, il corpo markdown (~500–2000 token) dà le istruzioni, i file di reference si caricano on-demand. Così non si bruciano token quando la skill non serve. Come si scrivono e quali adottare si trova in «Progettare con le skill di Claude», l'ultimo capitolo.
 
-A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored).
+A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a Figma, Notion, GitHub…) e, dentro `.claude/`, **`settings.json`** (permessi condivisi col team) e **`settings.local.json`** (permessi personali, gitignored). In `.mcp.json` si dichiara il contesto di sfondo, cioè i flussi che l'agente può andare a leggere da sé senza che tu ne copi il contenuto in un file.
 
 **Estensioni facoltative del contesto di progetto:** su progetti più strutturati può aiutare un set esteso di markdown. Sono estensioni possibili, non file obbligatori. I primi tre vanno scritti in quest'ordine, perché `BRAND.md` e `VOICE.md` si appoggiano a quello che li precede; gli altri stanno in piedi da soli.
 
@@ -200,13 +233,34 @@ A questi si aggiungono i file di configurazione: **`.mcp.json`** (connessioni a 
 
 **Dichiara quale file vince:** con più file capita che due si contraddicano, e l'agente non ha modo di sapere quale dei due vale. L'ordine di precedenza va scritto in `CLAUDE.md`, così la regola approvata sta sopra gli appunti di lavoro e la procedura corrente sopra quella dismessa.
 
-**`CLAUDE.md` come indice, non contenitore:** con molti file di contesto la tentazione è fare `@import` di tutti in `CLAUDE.md`, così l'agente ha sempre tutto. Funziona ma spreca, perché ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**, dove `CLAUDE.md` dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Conviene caricare sempre solo due file, **`SESSIONS.md`** (dove eri rimasto è sempre rilevante) e **`PLAN.md`** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (`VOICE.md` quando scrivi copy, `DESIGN.md` quando tocchi l'interfaccia, `CONTRACT.md` sul secondo repo). Come test pratico, se `CLAUDE.md` è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
+**`CLAUDE.md` come indice, non contenitore:** con molti file di contesto la tentazione è fare `@import` di tutti in `CLAUDE.md`, così l'agente ha sempre tutto. Funziona ma spreca, perché ogni sessione carica brand, contratto e backlog che non stai toccando, e il contesto utile per il lavoro vero è già consumato prima di iniziare. Meglio un **indice**, dove `CLAUDE.md` dice cosa è ogni file e quando leggerlo, e l'agente apre quello che serve (progressive disclosure, la stessa logica dei metadati delle skill). Un `@import` sposta il file nel contesto globale del progetto, dove si paga a ogni sessione, quindi lo merita solo quello che serve davvero tutte le volte. Conviene caricare sempre solo due file, **`SESSIONS.md`** (dove eri rimasto è sempre rilevante) e **`PLAN.md`** (l'obiettivo è sempre rilevante); il resto sono puntatori, che l'agente apre al momento (`VOICE.md` quando scrivi copy, `DESIGN.md` quando tocchi l'interfaccia, `CONTRACT.md` sul secondo repo). Come test pratico, se `CLAUDE.md` è così lungo che lo scorri veloce, lo scorre veloce anche l'agente.
+
+<div class="flow flow-3">
+<div>
+<p class="flow-step">Caricati sempre</p>
+<p class="flow-where">A ogni avvio</p>
+<ul><li>CLAUDE.md</li><li>PLAN.md</li><li>SESSIONS.md</li></ul>
+<p class="flow-note">Si pagano a ogni sessione, quindi restano corti</p>
+</div>
+<div>
+<p class="flow-step">Aperti quando servono</p>
+<p class="flow-where">Su indicazione di CLAUDE.md</p>
+<ul><li>DESIGN.md, BRAND.md, VOICE.md</li><li>UX.md</li><li>BACKLOG.md, FLOWS.md</li><li>MEMORY.md, DECISIONS.md</li><li>REVIEW.md, COMPONENTS.md</li></ul>
+<p class="flow-note">L'indice dice cosa sono e quando aprirli</p>
+</div>
+<div>
+<p class="flow-step">Collegati</p>
+<p class="flow-where">Dichiarati in .mcp.json</p>
+<ul><li>Figma</li><li>Notion</li><li>GitHub</li></ul>
+<p class="flow-note">Il contenuto entra solo quando l'agente va a prenderlo</p>
+</div>
+</div>
 
 ### CLAUDE.md
 
 `CLAUDE.md` è il primo file che Claude Code legge quando apri un progetto, e decide come Claude si comporterà per il resto della sessione. Nell'elenco qui sopra è una voce fra tante. Di seguito viene riportato come si scrive, perché è il file da cui si parte e quello su cui si sbaglia di più.
 
-**Due file con lo stesso nome, due compiti diversi:** quello di progetto si trova nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. Quello globale si trova in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
+**Due file con lo stesso nome, due compiti diversi:** quello di progetto si trova nella cartella del progetto e vale solo lì, con l'architettura, le regole del design system, i vincoli di prodotto e i comandi. È contesto locale. Quello globale si trova in `~/.claude/CLAUDE.md` e vale su tutto quello che apri, quindi raccoglie le tue abitudini di lavoro, il formato con cui vuoi le risposte e i passaggi che ripeti su ogni progetto. Mescolarli è l'inciampo più frequente di chi comincia. Se scrivi nel file globale come vanno commentati i componenti React, te lo ritrovi applicato a un progetto iOS in Swift, e non capisci da dove sia uscito.
 
 **Il primo file non si scrive dal foglio bianco:** il comando `/init` guarda la cartella e ne butta giù una bozza. Claude sta ricostruendo il progetto a ritroso da quello che vede, quindi quella bozza è generica e non contiene niente delle tue intenzioni: vale come punto di partenza, non come file finito. I due passaggi che la rendono utile vengono dopo. Il primo si fa lontano dal computer, su un foglio. Immagina che domani entri in squadra una persona che sa progettare e sa scrivere codice: scrivi cosa le spiegheresti del progetto, quali vincoli ha (tecnici e commerciali) e quale livello di qualità ti aspetti. Il secondo passaggio è tornare sulla bozza con quel foglio davanti, cancellare quello che non serve e aggiungere quello che sai solo tu.
 
@@ -342,7 +396,7 @@ Il comando `/context` elenca i file di memoria e di istruzioni che si sono caric
 
 I file di contesto visti finora descrivono il prodotto: token, componenti, comandi, decisioni tecniche. Nessuno dice per chi è fatto. Così l'AI progetta per un utente medio, perché è l'unico che conosce: schermate corrette e generiche, che nessuna ricerca ha mai toccato. NN/g usa l'immagine della casa progettata senza sapere chi ci abiterà.
 
-**Cosa includere all'interno:** cinque famiglie di contenuto, che NN/g raggruppa sotto il nome di lavoro `UX.md`.
+**Cosa includere all'interno:** cinque famiglie di contenuto.
 
 - **Sintesi di ricerca:** i finding principali scritti come vincoli su cui l'agente può ragionare. «Gli utenti abbandonano il setup se devono cercare dati che non hanno sottomano» è usabile; «il 62% dei partecipanti ha mostrato frustrazione nella fase 2» non lo è.
 - **Standard di interazione:** come si comporta il prodotto. Quando chiedere conferma e quando invece offrire un undo, come sono formulati gli errori, cosa è reversibile e cosa no.
@@ -354,7 +408,7 @@ Le ultime due sono quelle che cambiano di più l'output, e anche le più diffici
 
 **Come gestirlo:** su un progetto piccolo basta un file alla root. Quando cresce, `UX.md` diventa l'indice di una cartella `ux/` con un file per famiglia, e vale la stessa regola di «`CLAUDE.md` come indice, non contenitore», dove l'agente apre il glossario quando scrive copy e gli standard di interazione quando disegna un flusso, senza caricare tutto a ogni sessione. Vale anche l'avvertenza di «Il contesto è una risorsa finita», perché un `UX.md` che diventa l'archivio della ricerca peggiora le risposte invece di migliorarle. Va inclusa la sintesi, non le citazioni integrali delle interviste. E va curato di continuo, perché ogni studio nuovo lo aggiorna, e non c'è un momento in cui puoi considerarlo finito.
 
-**Da dove partire:** NN/g presenta `UX.md` come ipotesi, non come formato con una specifica pubblicata al pari di `DESIGN.md`, e lascia aperte le domande che contano, a partire da quali artefatti di ricerca spostano l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte. Prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
+**Da dove partire:** `UX.md` è un'ipotesi e non un formato con una specifica pubblicata al pari di `DESIGN.md`, e le domande che contano restano aperte, a partire da quali artefatti di ricerca spostano l'output, quando servono i dati grezzi, come si misura l'effetto, se esista una soglia oltre la quale il contesto è troppo. Il consiglio pratico è di non aspettare le risposte. Prendi tre o quattro finding che ti tocca rispiegare all'inizio di ogni progetto, scrivili in markdown, guarda come cambia quello che l'AI produce. Poi taglia quello che non ha spostato niente.
 
 ### Organizzare il progetto
 
@@ -452,6 +506,21 @@ Due ambienti con vincoli diversi: uno vede i tuoi file, l'altro no. È quella di
 5. Sempre in Claude Code: commit atomici e deploy (vedi «Deploy del prototipo»).
 
 Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in chat; la parte di costruzione (file, MCP, build, deploy) si fa in Claude Code.** Il documento scritto in chat, la descrizione del flusso o il `DESIGN.md`, è il ponte tra i due ambienti, che passi a Claude Code come fonte di verità.
+
+<div class="flow flow-2 flow-steps">
+<div>
+<p class="flow-step">A monte</p>
+<p class="flow-where">Claude in chat</p>
+<ul><li>ricerca e sintesi delle fonti</li><li>ragionamento e framing</li><li>brief e descrizioni di flusso</li><li>DESIGN.md e altri markdown</li></ul>
+<p class="flow-note">Non vede i tuoi file, e consegna un markdown</p>
+</div>
+<div>
+<p class="flow-step">A valle</p>
+<p class="flow-where">Claude Code</p>
+<ul><li>file, git e MCP</li><li>skill installate sulla macchina</li><li>build e deploy</li></ul>
+<p class="flow-note">Apre quel markdown come fonte di verità</p>
+</div>
+</div>
 
 Scrivere la soluzione è a sua volta contesto. Messa per iscritto, la descrizione di un flusso diventa l'ancora da cui l'AI ricava output diversi: prototipo hi-fi, journey map, piano d'implementazione. Sui flussi complessi tiene anche a bada le allucinazioni, perché i passaggi l'agente li ha davanti invece di ricostruirseli a ogni richiesta.
 
@@ -655,24 +724,24 @@ Un file `tokens.json` consegna all'agente colori, tipografia, spaziature e raggi
 
 Per rendere un design system interpretabile anche da un agente, è necessario strutturarlo in tre strati, **authoring**, **specification** e **delivery**. Nel primo strato viene disegnato il sistema, il secondo strato traduce quelle informazioni in una forma che un agente può leggere, il terzo include tutto ciò che finisce nel prodotto.
 
-<div class="flow3">
+<div class="flow flow-3 flow-steps">
 <div>
-<p class="flow3-step">Authoring</p>
-<p class="flow3-where">Figma</p>
+<p class="flow-step">Authoring</p>
+<p class="flow-where">Figma</p>
 <ul><li>foundations</li><li>components</li><li>patterns</li><li>templates</li></ul>
-<p class="flow3-note">Come appare e com'è composto</p>
+<p class="flow-note">Come appare e com'è composto</p>
 </div>
 <div>
-<p class="flow3-step">Specification</p>
-<p class="flow3-where">Repo di progetto</p>
+<p class="flow-step">Specification</p>
+<p class="flow-where">Repo di progetto</p>
 <ul><li>tokens.json</li><li>DESIGN.md</li><li>i tre registri</li><li>una specifica per oggetto</li></ul>
-<p class="flow3-note">Cosa fare e come si comporta</p>
+<p class="flow-note">Cosa fare e come si comporta</p>
 </div>
 <div>
-<p class="flow3-step">Delivery</p>
-<p class="flow3-where">Prodotto e codice</p>
+<p class="flow-step">Delivery</p>
+<p class="flow-where">Prodotto e codice</p>
 <ul><li>pacchetti versionati</li><li>token, icone, font</li><li>componenti e pattern</li><li>pull request</li></ul>
-<p class="flow3-note">Cosa si consegna e chi lo approva</p>
+<p class="flow-note">Cosa si consegna e chi lo approva</p>
 </div>
 </div>
 
@@ -686,7 +755,7 @@ Per rendere un design system interpretabile anche da un agente, è necessario st
 
 **Nomina per ruolo, non per aspetto:** è la regola che rende utile il Tier 2, ed è la stessa già vista in «DESIGN.md». Vale anche per i componenti, dove conviene prendere in prestito il vocabolario che ogni strumento già conosce (button, input, card, badge, tabs) invece di inventare un dizionario privato che l'agente deve indovinare. C'è anche un effetto collaterale utile, perché costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
 
-**Specification, i registri e le specifiche tecniche:** sopra i token stanno i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto nella sezione «`DESIGN.md`». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Ogni oggetto ha la sua specifica tecnica in un file markdown dedicato, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
+**Specification, i registri e le specifiche tecniche:** sopra i token si trovano i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto nella sezione «`DESIGN.md`». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Ogni oggetto ha la sua specifica tecnica in un file markdown dedicato, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
 
 ```
 design-system/
@@ -743,6 +812,11 @@ di step gestibili.
 - Gli errori di validazione sono associati al campo che li genera.
 - Tutte le azioni sono raggiungibili da tastiera.
 ```
+
+<figure class="figure figure--wide">
+<img src="assets/agent-ready-token-specifica.webp" width="1400" height="933" alt="Due riquadri affiancati. A sinistra tokens.json, con l'elenco colore, tipografia, spaziatura, raggio, elevazione e z-index, e sotto l'etichetta "how it looks". A destra wizard.template.md, con l'elenco struttura, composizione, comportamento, regole di navigazione, gerarchia delle azioni, dipendenze e regole di accessibilità, e sotto l'etichetta "how it works"." loading="lazy">
+<figcaption>Token e specifica tecnica · <a href="https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270">Eva Nudea Hörner</a></figcaption>
+</figure>
 
 Le cinque intestazioni di quel file sono un buon modello di partenza per qualunque specifica tecnica. **Purpose** dice a cosa serve l'oggetto e quando sceglierlo, **Dependencies** elenca i pezzi che usa con il link alla loro specifica, **Behaviour** descrive come si comporta nel tempo, **Actions** assegna a ogni azione il suo componente e la sua posizione, **Accessibility** fissa i requisiti che non si negoziano.
 
@@ -1184,6 +1258,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni ski
 - [`pbakaus/impeccable`](https://github.com/pbakaus/impeccable): design language per rendere l'AI più brava nel design
 - [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills): skill per rifinire le UI generate dagli agenti: `baseline-ui`, `fixing-accessibility`, `fixing-metadata`, `fixing-motion-performance`; install `npx skills add ibelick/ui-skills`, uso `/baseline-ui review src/`
 - [`jakubkrehel/make-interfaces-feel-better`](https://github.com/jakubkrehel/make-interfaces-feel-better): i dettagli che fanno "sentire" meglio un'interfaccia
+- [`gustavo-fior/craft`](https://github.com/gustavo-fior/craft): concetti di design engineering con regola, codice e demo per tipografia, colore, layout e motion
 - [`nextlevelbuilder/ui-ux-pro-max-skill`](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill): design intelligence UI/UX multi-piattaforma: analizza i requisiti e genera un design system su misura; install `npx skills add nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max`
 - [`Magdoub/claude-wireframe-skill`](https://github.com/Magdoub/claude-wireframe-skill): wireframe B&W come HTML interattivo
 - [`ceorkm/mobile-app-ui-design`](https://github.com/ceorkm/mobile-app-ui-design): pattern mobile ricavati da Airbnb, Duolingo, Spotify, Revolut e Phantom, con convenzioni per nove settori (AI, crypto, finance, health…), griglia a 8 punti, la regola 60/30/10 sul colore e i principi di emotional design. Si attiva da sé quando chiedi una schermata mobile, un onboarding o una navigazione, e arriva fino all'implementazione in React e Tailwind
@@ -1285,7 +1360,7 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 Quello che ancora manca e su cui stiamo lavorando. Quattro temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Tre sono di metodo, cioè come si conduce il lavoro e come si tiene in ordine quello che l'agente legge.
 
 - **Scegliere il modello e l'effort corretti per lo scopo in Claude:** Sonnet, Opus e Fable non fanno lo stesso lavoro, e una sessione costa in fretta se il modello è più grosso del compito. Il tema è il criterio con cui si assegnano, cioè cosa conviene a un giro di layout, a una decisione di struttura e a un lavoro lungo che l'agente porta avanti da solo, più il livello di `/effort`, che dentro lo stesso modello sposta il risultato quanto il cambio di modello. Oggi `/model` e `/effort` hanno una riga a testa nella tabella di «I comandi di Claude Code», che dice cosa fanno e non quando si usano.
-- **Regole e istruzioni tra markdown e skill:** i file markdown e le skill la guida li tratta uno per uno, e quello che manca è il piano che li tiene insieme. Quale contenitore prende quale istruzione, quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md`, cosa va in `~/.claude` e ti segue da un cliente all'altro, cosa resta nel repository e come ci si accorge che due file dicono il contrario.
+- **Regole e istruzioni tra markdown e skill:** i file markdown e le skill la guida li tratta uno per uno, e quello che manca è il piano che li tiene insieme. Dove va un'istruzione lo dice «I tre ruoli del contesto», mentre resta da dire in che forma, cioè quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md`, e come ci si accorge che due file dicono il contrario.
 - **Gestire una rete di agenti in Claude:** più agenti che lavorano insieme sotto uno che li coordina, cioè il gradino sopra il subagent singolo di «Slash command e subagent per il design». Serve a riconoscere quando un compito vale la spesa di dividerlo, quali forme esistono fra subagent, skill, squadra di agenti e workflow scritto come script, e chi tiene il piano in ognuna. Di questo la guida dice per ora una cosa sola, in «Verificare il risultato», che gli agenti in parallelo costano.
 - **Progettare interfacce direttamente in Claude Code:** `/design` prende la descrizione a parole di una schermata e ne propone alcune versioni in una pagina del browser, dove si confrontano, si ritoccano e quella scelta passa in codice. È in prova da agosto 2026. La sezione dirà quando conviene, ad esempio per esplorare più strade senza aprire Figma, e quando no, perché quelle schermate sono disegnate da capo e non usano i componenti veri del design system.
 - **VS Code e Cursor a confronto:** lo stesso progetto Claude Code aperto nei due editor. Cosa cambia per l'agente si trova già in «I comandi di Claude Code», e qui resta il confronto fra gli editor, cioè cosa dà l'uno che l'altro non ha e in quale caso conviene quale.
@@ -1305,6 +1380,9 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Code Connect:** mappatura ufficiale di Figma che lega un componente Figma al componente di codice reale, così l'agente usa quello vero invece di ricostruirne uno simile. Vedi «Tre modi di collegare Figma a confronto» e «Le skill Figma per Claude Code».
 - **Compaction:** riassunto automatico della conversazione quando la finestra si avvicina al limite, per ripartire da una finestra nuova senza perdere le decisioni prese. Vedi «Mantenere il contesto nel tempo».
 - **Commit:** un salvataggio registrato nella storia del progetto, con un messaggio che dice cosa è cambiato. Permette di tornare indietro e di far capire agli altri cosa hai fatto.
+- **Contesto di sfondo:** i flussi che nessuno ha curato, come la posta, i trascritti delle riunioni e i dati di uno strumento di analytics. Non entrano nella finestra, perché l'agente li raggiunge attraverso una connessione quando gli servono. Vedi «I tre ruoli del contesto».
+- **Contesto globale:** quello che vale per quasi tutti i compiti e cambia di rado, che l'agente carica a ogni sessione. Vedi «I tre ruoli del contesto».
+- **Contesto locale:** quello che vale per il progetto aperto e per nient'altro, che l'agente apre quando serve e aggiorna mentre lavora. Vedi «I tre ruoli del contesto».
 - **Context architecture:** applicazione dei principi di information architecture all'ambiente in cui un agente lavora, cioè come l'informazione è gerarchizzata, nominata e resa trovabile. Sta un livello sopra il context engineering, che si occupa di cosa entra nella finestra. Vedi «Dal comando al contesto» e «I file di contesto».
 - **Context engineering:** la pratica di decidere cosa entra nella finestra di contesto e cosa resta fuori. Vedi «Dal comando al contesto».
 - **Context rot:** degrado della qualità delle risposte quando la finestra di contesto si riempie di materiale accessorio, come falsi avvii, tentativi di debug e divagazioni. Vedi «Il contesto è una risorsa finita».
@@ -1360,6 +1438,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Suleiman Shakir, [How I use AI to partner on design problems](https://uxdesign.cc/how-i-use-ai-to-think-through-design-problems-4a484080484b) (maggio 2026)
 - Tony Alicea, [UX-Context Design: Using UX Knowledge to Inform AI-Generated Design](https://www.nngroup.com/articles/ux-context-design/), NN/g (luglio 2026)
 - Anthropic, [The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (luglio 2026)
+- Tanner Kohler, [The 3 Roles of Context for AI Agents](https://www.nngroup.com/articles/3-agent-context-roles/), NN/g (settembre 2026)
 - [The AI Design Library](https://library.aidesign.guide/)
 - NN/g, AI prototyping; Testing AI methodology; Vague prototyping
 - Design with AI, Five insights from workflows to think, test, build, ship with AI
