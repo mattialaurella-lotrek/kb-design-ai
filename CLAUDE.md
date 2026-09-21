@@ -32,6 +32,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 ## Le regole che non si rompono
 
+**A ogni apertura di sessione si riportano i temi in sospeso,** senza che l'utente lo chieda e prima di mettersi al lavoro. Si legge `docs/LAVORI-APERTI.md` e si riporta il blocco dei conteggi più, per ogni lavoro, la chiave, il titolo e cosa lo tiene fermo. Il rapporto divide in tre: quelli che si possono scrivere subito, quelli fermi su una lettura e quelli fermi su una decisione o su materiale che deve arrivare. Lo stato di una fonte si legge in `docs/FONTI-DA-INTEGRARE.md`, alla sezione con la stessa chiave. Serve a scegliere cosa prendere senza rileggere due file, quindi sta in poche righe e non ricopia le annotazioni.
+
 **I testi passano da `/not-ai`,** sempre e senza che l'utente lo chieda. La skill si carica prima di scrivere, insieme al modulo `references/lexicon-it.md`, e la bozza si rilegge col secondo passaggio prima di finire nel sorgente. Profilo `docs`, con la doppia natura attiva: la guida è prosa vera, quindi l'audit va fatto a livello di frase e non solo sugli elenchi.
 
 **Ogni articolo integrato entra nelle fonti,** sia nella sezione «Fonti» di `src/content.md` sia in `docs/FONTI.md`. Vale anche quando il PDF non si riesce ad archiviare in `sources/`, e in quel caso il campo `File:` dichiara perché manca.
