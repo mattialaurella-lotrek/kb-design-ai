@@ -23,10 +23,10 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 23.843 parole di prosa senza i blocchi di codice, 7 capitoli, 40 sezioni, 50 voci nell'indice laterale
+- 23.860 parole di prosa senza i blocchi di codice, 7 capitoli, 40 sezioni, 50 voci nell'indice laterale
 - 60 documenti in `docs/FONTI.md`
 - `index.html` pesa 354 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
-- Ultima build: 21 settembre 2026
+- Ultima build: 22 settembre 2026
 <!-- stato:fine -->
 
 ## Le regole che vincolano il lavoro
@@ -70,7 +70,9 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
-**Ventisette fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ordinate per tema, più un repository. Il gruppo più denso è «Gestire una rete di agenti in Claude», con sette fonti e quel repository. Dei sei articoli Medium quattro sono arrivati il 12 settembre 2026 e sono letti, perché le stampe vengono da `freedium-mirror.cfd`, che serve il testo fuori dal paywall dove Medium blocca ogni lettura automatica. Restano da recuperare per la stessa strada l'audit del design system e il plugin di design.
+**Due temi nuovi dal 22 settembre 2026,** «Claude Design» e «La design critique con Claude Code», annunciati in «Prossimi argomenti» e aperti come `T9` e `T8`. Tutti e due hanno le fonti e aspettano una decisione, cioè il confine fra Claude Design e «Progettare interfacce direttamente in Claude Code», che raccontano la stessa tela vista dal sito e dal terminale, e dove va la sezione sulla critica.
+
+**Trentasei fonti aspettano in `docs/FONTI-DA-INTEGRARE.md`,** ventisette pronte, sette aperte e due da aprire, più sette librerie da valutare. Dal 21 settembre 2026 sono ordinate sulle stesse chiavi di `docs/LAVORI-APERTI.md`, quindi le fonti di un lavoro si trovano nella sezione che porta la sua chiave. Il gruppo più denso è «Gestire una rete di agenti in Claude», con sette fonti e un repository. Dei sette articoli Medium cinque sono letti, quattro arrivati come PDF il 12 settembre 2026 e la design critique letta il 22, tutti attraverso `freedium-mirror.cfd`, che serve il testo fuori dal paywall dove Medium blocca ogni lettura automatica. Restano da recuperare per la stessa strada l'audit del design system e il plugin di design.
 
 **La versione a cui la tabella dei comandi è verificata non è più scritta in pagina.** È la 2.1.258 e resta nei documenti. Se al lettore serve, si rimette in tre parole.
 
