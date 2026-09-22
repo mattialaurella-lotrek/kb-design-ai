@@ -109,6 +109,8 @@ La seconda è il confronto fra `tokens.json` e `wizard.template.md` in «Rendere
 
 Il 21 settembre 2026 sono entrate le altre tre e il giro si è chiuso a cinque. «Dal comando al contesto» ha lo schema NN/g dell'ecosistema, che è un originale trovato archiviando la voce 60. «I file di contesto» e «Dividere il lavoro tra Claude Desktop e Claude Code» sono schemi a riquadri fatti con la famiglia `flow`, perché per tutti e due nelle fonti c'erano solo screenshot di prodotto.
 
+**Una sesta figura aspetta senza sezione, dal 22 settembre 2026.** `assets/parrott-consigli-claude-design.webp` è la grafica dei cinque consigli di Nate Parrott che accompagna il suo pezzo sul blog di Claude, passata dall'utente e convertita come le altre, e si userà quando «Claude Design» diventerà testo. Si trova in `assets/` senza essere usata da nessuna pagina, quindi non è un file dimenticato ma materiale in attesa, annotato anche in `docs/LAVORI-APERTI.md` e in `docs/FONTI-DA-INTEGRARE.md` sotto `T9`.
+
 ⚠️ **«I quattro tipi di loop» è stata scartata e non va riproposta,** anche se l'immagine di Nick Babich c'è ed è buona. Quella sezione ha già una tabella con le stesse quattro righe, in italiano e più densa, quindi la figura ripeterebbe invece di aiutare. Il criterio che ne esce vale per le prossime: una figura entra se dice qualcosa che il testo lì accanto non dice già in un'altra forma. **Scartata la curva del context rot** in «Il contesto è una risorsa finita», perché non abbiamo il dataset e una curva senza numeri veri è precisione finta.
 
 ## Interfaccia
