@@ -586,6 +586,7 @@ La documentazione ufficiale elenca centoundici comandi con la barra e una sessan
 | `/loop` | sessione | Ripete un prompt a intervalli, oppure lascia che sia l'agente a darsi il ritmo. Vedi «I quattro tipi di loop». |
 | `/schedule` | sessione | Routine che girano nel cloud a orario, quindi senza bisogno che il computer resti acceso. Vedi «I quattro tipi di loop». |
 | `/skills` | sessione | Elenca le skill disponibili e quanto costa in token ciascuna. Vedi «Dove si trovano le skill». |
+| `/skill-doctor` | sessione | Per ogni skill mostra quanto costa in contesto e quante volte l'hai usata, così sai quali spegnere. Dalla versione 2.1.252. |
 | `/plugin` | sessione | Installa, attiva e disattiva i plugin e i loro marketplace. |
 | `/mcp` | sessione | Stato dei server MCP, riconnessione di uno caduto e autenticazione. |
 | `/hooks` | sessione | Gli hook agganciati agli eventi dei tool, con cui un controllo scatta da sé. Vedi «Verificare il risultato». |
@@ -594,7 +595,7 @@ La documentazione ufficiale elenca centoundici comandi con la barra e una sessan
 | `/help` | sessione | L'elenco dei comandi che la tua versione ha davvero. |
 | `/keybindings` | sessione | Apre il file delle scorciatoie, per cambiarle. |
 | `/usage` | sessione | Costo della sessione e consumo del piano. |
-| `/doctor` | sessione | Controllo dell'installazione con le riparazioni proposte. |
+| `/doctor` | sessione | Controlla l'installazione e la configurazione. Trova le skill, gli MCP e i plugin che non usi e li confronta con quanto costano in contesto, segnala gli hook lenti e propone di togliere da `CLAUDE.md` quello che Claude ricava dal codice. Da terminale, `claude doctor` guarda solo l'installazione. Vedi «CLAUDE.md». |
 | `/insights` | sessione | Report HTML sulle sessioni recenti, con i punti di attrito che tornano più spesso. Vedi «CLAUDE.md». |
 | `/deep-research` | sessione | Apre più ricerche sul web in parallelo, incrocia le fonti e restituisce un rapporto con le citazioni. |
 | `/btw` | sessione | Una domanda di lato che non entra nella conversazione, quindi non ne occupa il contesto. |
@@ -1210,7 +1211,7 @@ Selezione di skill, classificate per area. Le prime categorie sono le più centr
 4. [`airowe/claude-a11y-skill`](https://github.com/airowe/claude-a11y-skill) per l'accessibilità.
 5. [`ibelick/ui-skills`](https://github.com/ibelick/ui-skills) per rifinire le UI generate.
 
-Aggiungi il resto quando ti serve, senza installare tutto in una volta (ogni skill attiva è contesto in più).
+Aggiungi il resto quando ti serve, senza installare tutto in una volta. Di una skill installata il contesto porta solo il nome e la descrizione, e le istruzioni entrano quando la usi. L'elenco delle descrizioni ha però un tetto, l'1% della finestra di contesto. Oltre quel tetto Claude Code accorcia le descrizioni, a partire dalle skill che usi meno, e può togliere le parole da cui Claude capisce quando usarle. `/skill-doctor` dice quali non hai mai usato.
 
 ### Collezioni di skill multi-disciplina
 - [`Owl-Listener/designer-skills`](https://github.com/Owl-Listener/designer-skills): research → sistemi → UI → interazione → delivery
@@ -1501,7 +1502,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - @friendlyunit, Figma console MCP to Claude: Setup Guide for Designers
 
 **Comandi e configurazione di Claude Code**
-- Anthropic, [Commands](https://code.claude.com/docs/en/commands) e [CLI reference](https://code.claude.com/docs/en/cli-reference), documentazione di Claude Code
+- Anthropic, [Commands](https://code.claude.com/docs/en/commands), [CLI reference](https://code.claude.com/docs/en/cli-reference) e [Extend Claude with skills](https://code.claude.com/docs/en/skills), documentazione di Claude Code
 - Akari Iku, [I've organised the Claude Code commands (including some hidden ones)](https://dev.to/akari_iku/ive-organised-the-claude-code-commands-including-some-hidden-ones-op0) (febbraio 2026)
 - Seth Hobson, [`wshobson/commands`](https://github.com/wshobson/commands), cinquantasette slash command pronti
 

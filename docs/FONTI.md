@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 60 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 61 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF si trovano in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Cinquantanove fonti su 60 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 60, 56 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
+Sessanta fonti su 61 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 61, 57 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
 
 ---
 
@@ -252,6 +252,7 @@ Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicaz
 https://code.claude.com/docs/en/commands
 File: `Claude Code, Commands.pdf`
 Riferimento completo dei comandi che si usano dentro la sessione: alla data di consultazione ne elenca 111, skill impacchettate comprese. La pagina è servita anche in markdown grezzo aggiungendo `.md` all'URL, che è il modo più affidabile di leggerla senza passare dal rendering JavaScript.
+`/skill-doctor` non compare nella stampa del 2 settembre 2026, e la sua riga nella guida viene dalla pagina viva del 23 settembre 2026.
 
 **56. CLI reference**
 Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicazione
@@ -292,6 +293,12 @@ Nota: è la parte 3 di una serie in tre puntate.
 Jack Henry — Medium, 26 giugno 2026
 https://medium.com/@jackhenrys/5-new-claude-skills-for-ui-ux-designers-c23446dfb2e6
 File: `New claude skills for UI-UX designers.pdf`
+
+**61. Extend Claude with skills**
+Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicazione
+https://code.claude.com/docs/en/skills
+File: `Claude Code, Extend Claude with skills.pdf`
+Da qui vengono il tetto dell'elenco delle skill, pari all'1% della finestra di contesto, e l'ordine in cui Claude Code accorcia le descrizioni quando lo supera. Vale la stessa avvertenza della voce 55 sulla pagina viva, e lo stesso trucco del suffisso `.md`.
 
 ---
 
@@ -374,11 +381,11 @@ File: `4 Types of Loops You Can Create in Claude Code.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 22 documenti su 60**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 61**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
-Le fonti primarie sono sei, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5 e le due pagine di documentazione sui comandi. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
+Le fonti primarie sono sette, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5 e tre pagine di documentazione, due sui comandi e una sulle skill. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le due pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su sessanta escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le tre pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su sessantuno escono fra marzo e giugno 2026.
 
 ## Manutenzione
 
