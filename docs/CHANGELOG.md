@@ -3,6 +3,11 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-09-23]
+
+### Aggiunto
+- **`NandhaKishorM/laya` fra le librerie da valutare, con TypeSafe AI nella stessa voce.** L'utente li ha portati insieme, pensando che Laya fosse la versione open source di TypeSafe. Laya è invece un'alternativa aperta scritta da un altro autore, e risponde sullo stesso endpoint di Jev, il modello che TypeSafe vende via API dal 15 settembre 2026. Tutti e due non scrivono testo e rispondono a domande chiuse su un testo, con una scelta, un voto o una probabilità. **Scartati su decisione dell'utente,** perché servono a chi mette decisioni automatiche dentro un software e la guida parla a chi progetta. Le librerie da valutare passano da sette a otto.
+
 ## [2026-09-22]
 
 ### Aggiunto

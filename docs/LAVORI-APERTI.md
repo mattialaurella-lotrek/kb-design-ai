@@ -12,7 +12,7 @@ La coda del lavoro sul testo della guida, in un posto solo. Ogni voce dice dove 
 - 9 integrazioni in sezioni che esistono, da `I1` a `I9`
 - 9 temi annunciati, da `T1` a `T9`
 - Le fonti di questi lavori si trovano in `docs/FONTI-DA-INTEGRARE.md`, dove 18 sezioni portano le stesse chiavi
-- Ultima build: 22 settembre 2026
+- Ultima build: 23 settembre 2026
 <!-- conteggio:fine -->
 
 ---
