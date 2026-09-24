@@ -19,6 +19,7 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
 - **Progettare il contesto**
   - Dal comando al contesto
   - Il contesto è una risorsa finita
+  - Il RAG nei progetti di Claude
   - I tre ruoli del contesto
   - Requisiti minimi di partenza
   - Scrivere una richiesta
@@ -33,6 +34,7 @@ Sette capitoli in sequenza: il contesto e come si scrive nei file, il collegamen
   - Organizzare il progetto
 - **Lavorare con Claude e Figma**
   - Dividere il lavoro tra Claude Desktop e Claude Code
+  - Scegliere il modello e l'effort
   - I comandi di Claude Code
   - Tre modi di collegare Figma a confronto
   - Setup e loop con Figma MCP
@@ -96,6 +98,28 @@ Il **context rot** è la versione che si incontra lavorando. Anche partendo da u
 - **Non "buttare tutto dentro":** decidere cosa includere, cosa escludere e quando rinfrescare pesa quanto scrivere la richiesta. Anche gli strumenti collegati occupano spazio, perché ogni MCP attivo si mangia una fetta della finestra (vedi «Setup e loop con Figma MCP»).
 
 **Cosa tenere e cosa lasciare fuori:** prima di riempire il contesto, guarda quello che stai per dargli e chiediti quanto serve a questo compito. Per ridisegnare la pagina delle impostazioni all'agente servono i token pertinenti, i componenti che si usano in quell'area, due o tre vincoli di prodotto, l'implementazione attuale della pagina, i requisiti di accessibilità e un paio di esempi. Restano fuori la strategia di prodotto, l'intero catalogo dei componenti, la documentazione dell'architettura di backend, tre anni di storia del progetto e cinquanta screenshot di altre schermate. Chi prepara il contesto tende a mettere dentro tutte e due le liste, perché aggiungere sembra la mossa prudente, e l'informazione che conta finisce annegata in quella che non serve.
+
+### Il RAG nei progetti di Claude
+
+Quando il materiale di un progetto è troppo per la finestra di contesto, invece di sceglierne una parte a mano si può affidare la scelta a una ricerca. È il **RAG (Retrieval-Augmented Generation)**. A ogni domanda la ricerca trova nei documenti i passaggi pertinenti, e il modello li riceve insieme alla domanda e risponde a partire da quelli. Nella finestra entra solo quello che la ricerca ha trovato, mentre il resto dei documenti resta fuori. Di solito la ricerca confronta il significato della domanda con quello dei documenti, oltre alle parole, quindi trova anche un passaggio scritto con termini diversi.
+
+**Cosa ci guadagna la risposta:** il modello lavora sulle informazioni dei documenti, che possono essere più recenti della sua data di addestramento, e risponde su fatti che gli sono stati passati invece che su quello che ricorda, quindi inventa meno. Nella finestra poi entra meno testo, che per le ragioni viste in «Il contesto è una risorsa finita» vuol dire più attenzione su quello che c'è.
+
+**Il limite è la ricerca:** se trova il passaggio sbagliato, la risposta è costruita sui documenti ed è sbagliata lo stesso, anche se sembra verificata. Succede quando due file dicono cose diverse sullo stesso tema, quando una versione vecchia non è stata tolta o quando il nome di un file non dice cosa contiene. Davanti a una risposta sbagliata conviene guardare quali documenti Claude ha usato per costruirla, e di solito si trova un file vecchio, doppio o con un nome sbagliato. Correggere quel file corregge tutte le risposte che ci si appoggiano.
+
+**Nei progetti di Claude:** un progetto della chat raccoglie le conversazioni, le istruzioni e i file caricati, che Claude usa come contesto in ogni conversazione del progetto. Finché i file entrano nella finestra, Claude li legge tutti. Quando si avvicinano al limite, sui piani a pagamento il progetto passa da solo al RAG e la sua capacità sale fino a dieci volte. Lo si riconosce dall'indicatore sul progetto e dallo strumento project knowledge search, che Claude usa quando deve trovare un passaggio. Non c'è niente da attivare, e se i file tornano sotto la soglia il progetto torna a leggerli tutti.
+
+Sul piano gratuito i progetti ci sono, fino a cinque, ma il RAG no. In Claude Code è in beta una versione nuova dei progetti, per ora per una parte degli abbonati Pro e Max, che funziona in un altro modo.
+
+**L'unico caso in cui conviene caricare tutto:** di solito all'agente si dà solo quello che serve al compito, perché ogni file in più toglie attenzione agli altri. In un progetto con il RAG vale il contrario, e Anthropic consiglia di caricare fin dall'inizio tutto il materiale pertinente, perché nella finestra entra solo quello che la ricerca trova a ogni domanda e il resto del progetto resta fuori. La scelta la fa la ricerca, e a chi prepara il progetto resta il lavoro di ordinare il materiale. Finché il progetto è sotto la soglia vale invece la regola di sempre, perché ogni file caricato entra nella finestra in ogni conversazione.
+
+**Come si prepara un progetto con il RAG:**
+
+- I nomi dei file dicono cosa contengono, per esempio `interviste-onboarding-settembre-2026.md` invece di `note3.md`, perché aiutano la ricerca a trovare quello giusto.
+- I documenti legati fra loro vanno nello stesso progetto, così Claude può collegarli.
+- Nella domanda si nomina il documento a cui ci si riferisce, e la ricerca si restringe a quello.
+- Le istruzioni del progetto restano brevi, con il contesto generale, le regole principali e il ruolo di Claude.
+- Una versione superata si toglie, invece di lasciarla accanto a quella nuova.
 
 ### I tre ruoli del contesto
 
@@ -524,6 +548,31 @@ Regola pratica: **la parte di pensiero (ricerca, framing, decisioni) sta bene in
 
 Scrivere la soluzione è a sua volta contesto. Messa per iscritto, la descrizione di un flusso diventa l'ancora da cui l'AI ricava output diversi: prototipo hi-fi, journey map, piano d'implementazione. Sui flussi complessi tiene anche a bada le allucinazioni, perché i passaggi l'agente li ha davanti invece di ricostruirseli a ogni richiesta.
 
+### Scegliere il modello e l'effort
+
+Due impostazioni decidono come Claude lavora a una richiesta, anche quando restano quelle di serie. Il **modello** è la versione di Claude che risponde, e i quattro disponibili cambiano per capacità, velocità e consumo dei limiti del piano. L'**effort** è quanto il modello ragiona prima di rispondere, e si regola dentro lo stesso modello. Nella chat si cambiano tutti e due dal menu accanto al pulsante di invio, in Claude Code con `/model` e `/effort` (vedi «I comandi di Claude Code»).
+
+| Modello | A cosa serve | Esempi nel lavoro di design |
+|---|---|---|
+| Haiku 4.5 | Il lavoro breve e meccanico, dove una risposta sbagliata si riconosce subito. | Varianti di microcopy e di etichette, il tagging di risposte aperte su una tassonomia già decisa, la rinomina di file e layer. |
+| Sonnet 5 | Il lavoro di tutti i giorni. | Un brief, una revisione euristica, la documentazione di un componente, un prototipo da una descrizione chiara. |
+| Opus 5.5 | Le decisioni difficili e le modifiche che toccano molti file. | L'architettura dell'informazione, il confronto fra due direzioni di progetto, l'analisi di una ricerca densa. |
+| Fable 5.1 | I lavori lunghi che l'agente pianifica e porta avanti da solo, controllando quello che fa. | Una libreria di componenti costruita in più fasi, con una verifica fra una fase e l'altra. |
+
+Haiku ha anche una finestra di contesto più piccola, 200mila token contro il milione degli altri tre, quindi non è il modello a cui passare una ricerca intera.
+
+**Cinque livelli di effort:** per il lavoro di routine bastano `low` e `medium`, che fanno durare di più i limiti del piano. `high` è il livello di serie di quasi tutti i modelli ed è il compromesso fra qualità e velocità, mentre `xhigh` serve ai lavori lunghi di codice e agli agenti che lavorano da soli. `max` è per le decisioni più difficili e rallenta la risposta, e conviene provarlo prima di adottarlo, perché su un compito semplice il modello ragiona più del necessario. Ogni livello in più consuma più token, quindi il limite del piano arriva prima.
+
+Su Haiku l'effort non si regola. Nella chat, accanto all'effort, c'è l'interruttore Thinking, che è un'impostazione separata e su Opus 5.5 e Fable 5.1 resta sempre acceso.
+
+**Prima l'effort, poi il modello:** se la risposta salta un passaggio o dimentica un vincolo, spesso basta salire di un livello di effort, e al modello sopra si passa solo quando nemmeno `xhigh` basta. Per il lavoro meccanico si fa il contrario, cioè si scende di modello o di effort e si controlla che il risultato regga. In Claude Code il punto di partenza di serie, sulla maggior parte dei piani, è Opus 5.5 con effort `medium`, e per la routine conviene passare a Sonnet.
+
+**Un modello per il piano e uno per il codice:** l'alias `opusplan` di Claude Code usa Opus in plan mode e passa a Sonnet quando si esegue, così il ragionamento più costoso va sul piano e il codice lo scrive il modello che consuma meno.
+
+**Il consumo cambia con il modello:** un turno di Opus costa diverse volte uno di Sonnet, e Sonnet più di Haiku, quindi Opus usato per la routine è il modo più rapido di finire il limite del piano. Fable ha regole sue. Sul piano Max e sui posti premium di Team è compreso fino a metà del limite settimanale, mentre su Pro e sui posti standard di Team non rientra nel piano e si paga a consumo con i crediti d'uso. In Claude Code, quando servono i crediti, il selettore di `/model` lo scrive accanto al modello e chiede conferma prima dell'addebito.
+
+I nomi dei modelli e le regole dei piani sono quelli del 24 settembre 2026, e cambiano ogni pochi mesi. I modelli disponibili per il proprio account li elenca `/model`.
+
 ### I comandi di Claude Code
 
 Claude Code si guida da tre posti diversi, che non servono alle stesse cose. Dal terminale, prima che la sessione esista, decidi dove lavora l'agente e con quali impostazioni. Dentro la sessione, con i comandi che cominciano per barra, governi contesto, modello e permessi mentre il lavoro va avanti. Sulla tastiera rimangono le scorciatoie.
@@ -543,7 +592,7 @@ La documentazione ufficiale elenca centoundici comandi con la barra e una sessan
 | `claude -p "…"` | terminale | Esegue una richiesta e esce, senza interfaccia. Serve a mettere Claude dentro uno script. |
 | `claude --worktree` | terminale | Apre una copia isolata del repository in un worktree git, per provare una direzione senza sporcare il ramo buono. |
 | `claude --model` | terminale | Sceglie il modello della sessione con un alias, `opus`, `sonnet`, `haiku` o `fable`. |
-| `claude --effort` | terminale | Fissa quanta cura mettere, da `low` a `max`. Si alza sulle decisioni difficili e si abbassa sul lavoro meccanico. |
+| `claude --effort` | terminale | Fissa l'effort della sessione, da `low` a `max`. Si alza sulle decisioni difficili e si abbassa sul lavoro meccanico. |
 | `claude --permission-mode plan` | terminale | Parte già in plan mode, senza doverci entrare a mano al primo messaggio. |
 | `claude --ide` | terminale | Si collega da solo all'editor aperto, quando ne trova uno valido. |
 | `claude --chrome` | terminale | Accende l'integrazione con Chrome, con cui l'agente guarda la pagina che ha appena costruito. |
@@ -565,8 +614,8 @@ La documentazione ufficiale elenca centoundici comandi con la barra e una sessan
 | `/export` | sessione | Esporta la conversazione come testo, che è il modo di passarla a qualcuno o di conservarla. |
 | `/plan` | sessione | Entra in plan mode, con una descrizione facoltativa del compito da cui partire. |
 | `/goal` | sessione | Fissa la condizione da raggiungere e l'agente continua di turno in turno finché non ci arriva. Vedi «I quattro tipi di loop». |
-| `/effort` | sessione | Alza o abbassa la cura a sessione aperta. |
-| `/model` | sessione | Cambia modello e lo salva come predefinito per le sessioni nuove. |
+| `/effort` | sessione | Alza o abbassa l'effort a sessione aperta. Vedi «Scegliere il modello e l'effort». |
+| `/model` | sessione | Cambia modello. Con Invio la scelta vale anche per le sessioni nuove, con `s` solo per quella aperta. Vedi «Scegliere il modello e l'effort». |
 | `/permissions` | sessione | Le regole di cosa l'agente può fare senza chiedere il permesso ogni volta. |
 | `/design` | sessione | Disegna mockup, flussi di schermate, landing e poster come artboard su una tela sola, pubblicati come artifact. |
 | `/design-sync` | sessione | Converte il design system React del repository e lo carica su Claude Design, così i disegni usano i componenti veri. |
@@ -756,6 +805,8 @@ Per rendere un design system interpretabile anche da un agente, è necessario st
 
 **Nomina per ruolo, non per aspetto:** è la regola che rende utile il Tier 2, ed è la stessa già vista in «DESIGN.md». Vale anche per i componenti, dove conviene prendere in prestito il vocabolario che ogni strumento già conosce (button, input, card, badge, tabs) invece di inventare un dizionario privato che l'agente deve indovinare. C'è anche un effetto collaterale utile, perché costringersi a dare un ruolo a ogni token vale come audit della palette, e fa emergere i colori che non usa nessuno, i doppioni che servono allo stesso scopo e quelli usati a sproposito.
 
+**Ogni token semantico ha il suo ambito:** in Figma l'ambito di una variabile è l'elenco delle proprietà su cui si può applicare, per esempio solo i bordi e non gli sfondi o il testo. Un token come `color.action.primary`, usato per tutte le azioni primarie, dice all'agente a cosa serve in ogni tema. Con l'ambito giusto, nel selettore di Figma non compare sulle proprietà che non sono sue. Senza ambiti si trovano token dei bordi usati come sfondo e colori del testo applicati alle icone.
+
 **Specification, i registri e le specifiche tecniche:** sopra i token si trovano i file che dicono cosa costruire. Il `DESIGN.md` porta le regole globali e le convenzioni, come già visto nella sezione «`DESIGN.md`». Sotto di lui tre registri, `components.md`, `patterns.md` e `templates.md`, danno all'agente la mappa di cosa esiste e dove trovarne la specifica. Ogni oggetto ha la sua specifica tecnica in un file markdown dedicato, e l'estensione ne dichiara la famiglia, da `button.component.md` a `dialog.pattern.md` fino a `wizard.template.md`. Un file di template non ridefinisce il Button o lo Stepper, li referenzia e descrive come si combinano per fare quell'esperienza.
 
 ```
@@ -825,15 +876,19 @@ Le cinque intestazioni di quel file sono un buon modello di partenza per qualunq
 
 **Perché tanti file invece di uno solo:** la tentazione è mettere tutto dentro un `DESIGN.md` enorme, e sarebbe la scelta sbagliata per due motivi. Il primo riguarda la manutenzione, perché un file per oggetto si aggiorna da sé e si assegna a chi possiede quell'oggetto. Il secondo è il costo in contesto. Con i registri l'agente recupera solo il ramo che gli serve invece di caricare l'intero design system a ogni richiesta, ed è la stessa economia descritta in «Il contesto è una risorsa finita». Il risultato è un grafo di regole con un punto d'ingresso e rimandi espliciti da seguire quando servono, al posto di un manuale da leggere in blocco.
 
-**Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Quel lavoro deve però arrivare sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del doppio controllo descritto in «Enforcement del design system».
+**Delivery, dove il sistema tocca il prodotto:** oggi la strada normale sono i pacchetti versionati che gli sviluppatori installano, con token, icone, font, componenti e pattern. I token arrivano nel codice con una pipeline che trasforma le variabili di Figma in variabili CSS, costruita con uno strumento come Style Dictionary o con uno script scritto apposta. Un agente che ha davanti sia le specifiche sia il codice del prodotto può fare un passo in più. Trova i punti in cui l'applicazione si discosta dal sistema, propone la sostituzione con i componenti che esistono già, aiuta a migrare un prodotto vecchio verso lo standard corrente. Quel lavoro deve però arrivare sotto forma di pull request, con revisione, test e approvazione in mano a una persona. È lo stesso movimento dal prodotto verso il file del doppio controllo descritto in «Enforcement del design system».
 
-**Da dove partire:** si comincia da 3–5 componenti. Per ognuno si genera una specifica leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come [FigSpecs](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator); la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
+**Da dove partire:** dall'inventario di quello che nel sistema non va, perché l'agente ricopia quello che trova. Nel file Figma si cercano i colori scritti in esadecimale invece che come variabili, gli ambiti sbagliati, le istanze staccate dal componente e le varianti che non servono, e nel codice un linter trova i valori scritti a mano. Il confronto fra file, documentazione e codice si può affidare anche a un agente, che conta gli scostamenti e ne fa un rapporto. Il rapporto non supera una pagina, perché uno più lungo non lo legge nessuno, e diventa l'elenco delle cose da sistemare.
+
+Poi si comincia da 3–5 componenti. Per ognuno si genera una specifica leggibile dall'agente, cioè markdown strutturato con la gerarchia dei componenti e i riferimenti ai token, anche con strumenti come [FigSpecs](https://www.figma.com/community/plugin/1612756059828219731/figspecs-ai-design-system-generator); la si porta nel flusso di lavoro reale, per esempio allegandola ai ticket; poi si misura quanti token l'agente azzecca prima e dopo. Da lì si allarga un gruppo di componenti alla volta.
 
 Resta aperta la domanda su chi tiene aggiornate le specifiche. La risposta non può essere un designer che riscrive markdown a mano ogni volta che qualcosa cambia in Figma, perché è proprio il lavoro che il sistema doveva togliere di mezzo. Al momento il problema non ha una risposta, quindi va messo in conto e le specifiche vanno trattate come codice, versionate, revisionate e sincronizzate con una routine che qualcuno deve governare.
 
 **Una risposta possibile** dà il compito a chi mantiene il design system, cioè a una figura che il team ha già. Il suo mestiere cambia. Dal ricostruire soluzioni che il sistema conosce già passa al tenere aggiornate le regole che gli agenti seguono, e a decidere quando la soluzione nota non basta. È un'ipotesi sul compito più che un metodo, e va presa per quella. Indica però dove sta il materiale, perché ogni organizzazione ha migliaia di decisioni di design che nessuno ha mai messo per iscritto, visto che c'era da costruire, e sono quelle che rendono un agente capace di progettare come progetta l'azienda.
 
-Fantasy ha provato a portare l'idea fino in fondo. Caroline Hilman ha preso il design system di un progetto già consegnato, l'ha fatto estrarre in un file `.md` da un plugin Figma e l'ha passato a Claude Code senza aggiungere altro contesto. Due cose che ne ha ricavato servono anche a chi parte da qui. I nomi dei token non si ripensano per il modello, perché quelli chiari e coerenti che servono già a uno sviluppatore vanno bene così come sono. E il codice che ne esce lei lo chiama vibe-coded design, buono per esplorare e prototipare, corto sugli allineamenti e sulle spaziature, cioè proprio i dettagli che un designer non sbaglia.
+Un modo per cominciare a scriverle è un registro delle decisioni, cioè un file markdown in una cartella che l'agente legge, dove ogni voce porta la data, cosa si è scelto e al posto di cosa, il motivo e chi c'era. Quando si vorrà cambiare un dialog, la voce spiegherà a chi lo propone, e all'agente, perché è fatto così.
+
+Fantasy ha provato a portare fino in fondo l'idea di un design system scritto per l'agente. Caroline Hilman ha preso il design system di un progetto già consegnato, l'ha fatto estrarre in un file `.md` da un plugin Figma e l'ha passato a Claude Code senza aggiungere altro contesto. Due cose che ne ha ricavato servono anche a chi parte da qui. I nomi dei token non si ripensano per il modello, perché quelli chiari e coerenti che servono già a uno sviluppatore vanno bene così come sono. E il codice che ne esce lei lo chiama vibe-coded design, buono per esplorare e prototipare, corto sugli allineamenti e sulle spaziature, cioè proprio i dettagli che un designer non sbaglia.
 
 L'estrazione le consegna però un file solo, che è la scelta opposta ai registri e alle specifiche separate di qui sopra. Il resto del racconto sta nell'articolo, dalla domanda su Slack che ha fatto partire tutto a dove passa oggi il confine fra l'agente e il designer.
 
@@ -1246,6 +1301,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta. Di una s
 - [`dylantarre/design-system-skills`](https://github.com/dylantarre/design-system-skills): skill DS per agentic coding
 - [`somerandomdude/design-system-documentation-schema`](https://github.com/somerandomdude/design-system-documentation-schema): DSDS: formato JSON machine-readable per documentare un DS (8 entità: componenti, token, temi, foundation, pattern, guide, chunk); complementare al W3C Design Tokens (che tiene i valori), pensato esplicitamente anche per gli agenti AI
 - [`NateBaldwinDesign/proportio`](https://github.com/NateBaldwinDesign/proportio): scale proporzionali (tipografia, icone, spaziature)
+- [`style-dictionary/style-dictionary`](https://github.com/style-dictionary/style-dictionary): trasforma i token scritti una volta in JSON in variabili CSS e nei formati di iOS e Android; serve a portarli nel codice senza ricopiarli a mano
 - [`southleft/ds-contracts-poc`](https://github.com/southleft/ds-contracts-poc): contratti di componente: un'unica fonte macchina-leggibile da cui si generano sia la libreria React sia quella Figma, con un differ a tre vie che dimostra se combaciano davvero (vedi «Enforcement del design system»)
 - [`DirectedEdges/specs`](https://github.com/DirectedEdges/specs): schema, tipi e CLI per registrare e mantenere le specifiche dei componenti UI in un formato che l'agente può leggere
 - [`marvkr/better-design`](https://github.com/marvkr/better-design): MCP server open source più un registry shadcn/ui con 31 temi ricavati da prodotti reali (Linear, Stripe, Vercel…), per dare all'agente un sistema di partenza invece di un foglio bianco
@@ -1288,6 +1344,7 @@ Aggiungi il resto quando ti serve, senza installare tutto in una volta. Di una s
 - [`jacob-bd/gemini-notebook-mcp-cli`](https://github.com/jacob-bd/gemini-notebook-mcp-cli): accesso programmatico a Gemini Notebook da riga di comando, da server MCP e da skill (ex `notebooklm-mcp-cli`, rinominato)
 - [`Suleiman19/ai-design-buddy`](https://github.com/Suleiman19/ai-design-buddy): una struttura di cartelle che dà a Claude contesto persistente lungo un progetto di design (vai a «Organizzare il progetto»)
 - [`LewisLiu007/full-page-screenshot`](https://github.com/LewisLiu007/full-page-screenshot): skill che cattura lo screenshot di una pagina intera via Chrome DevTools Protocol, senza dipendenze; serve per l'auto-verifica del prototipo
+- [`microsoft/playwright`](https://github.com/microsoft/playwright): apre il prototipo nel browser, clicca e compila i campi come una persona e fa lo screenshot di ogni stato; con la CLI o il server MCP l'agente controlla da sé quello che ha costruito
 - [`vercel/vercel`](https://github.com/vercel/vercel): il repository della piattaforma e della CLI con cui si pubblica il prototipo, quella dei comandi `vercel` e `vercel deploy` descritti in «Deploy del prototipo»
 - [`ibelick/zola`](https://github.com/ibelick/zola): interfaccia di chat aperta che parla con tutti i modelli, dallo stesso autore di `ui-skills` e `prompt-kit`
 - [`withastro/astro`](https://github.com/withastro/astro): framework web per siti fatti di contenuto, l'alternativa a Next.js quando il prototipo è una pagina da leggere più che un'applicazione
@@ -1358,9 +1415,8 @@ Più la verifica è misurabile, meno l'agente deve indovinare cosa vuol dire fin
 
 ## Prossimi argomenti {badge:In lavorazione}
 
-Quello che ancora manca e su cui stiamo lavorando. Cinque temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Quattro sono di metodo, cioè come si conduce il lavoro e come si tiene in ordine quello che l'agente legge.
+Quello che ancora manca e su cui stiamo lavorando. Quattro temi riguardano l'attrezzatura, cioè l'ambiente in cui la guida ti chiede di lavorare e gli strumenti che ci girano dentro. Altri quattro sono di metodo, cioè come si conduce il lavoro e come si tiene in ordine quello che l'agente legge.
 
-- **Scegliere il modello e l'effort corretti per lo scopo in Claude:** Sonnet, Opus e Fable costano e rendono in modo diverso, e `/effort` cambia il risultato anche dentro lo stesso modello. La sezione dirà quale accoppiata conviene a un layout, a una decisione di struttura e a un lavoro lungo che l'agente porta avanti da solo. Oggi in «I comandi di Claude Code» hanno una riga a testa, che dice cosa fanno e non quando si usano.
 - **Regole e istruzioni tra markdown e skill:** la guida spiega i file markdown e le skill uno per uno, e manca il criterio per scegliere fra le due forme. La sezione dirà quando una regola ripetuta diventa una skill invece di una riga in `CLAUDE.md`, e come si scopre che due file si contraddicono.
 - **Gestire una rete di agenti in Claude:** più agenti che lavorano insieme sotto uno che li coordina, sopra il subagent singolo di «Slash command e subagent per il design». La sezione dirà quando dividere un compito conviene, che differenza c'è fra subagent, skill, squadre di agenti e workflow, e quanto costa ognuno.
 - **Progettare interfacce direttamente in Claude Code:** `/design` prende la descrizione a parole di una schermata e ne propone più versioni in una pagina del browser, dove si confrontano, si ritoccano e quella scelta passa in codice. È in prova da agosto 2026. La sezione dirà quando conviene e perché quelle schermate non usano i componenti veri del design system.
@@ -1395,6 +1451,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Dev Mode:** la modalità di Figma pensata per chi implementa, da cui si leggono misure, token e codice di un elemento e si abilita il server MCP locale.
 - **DTCG (Design Tokens Community Group):** formato standard e aperto per i design token, usato per esportarli e scambiarli fra strumenti diversi.
 - **Edge case:** un caso limite, raro ma possibile, che l'interfaccia deve comunque gestire: testo lunghissimo, lista vuota, connessione assente.
+- **Effort:** quanto il modello ragiona prima di rispondere, su cinque livelli da `low` a `max`. Un livello più alto dà risposte più approfondite, più lente e più costose in token. Vedi «Scegliere il modello e l'effort».
 - **Enforcement:** far rispettare una regola in modo automatico, invece di sperare che qualcuno se la ricordi. Vedi «Enforcement del design system».
 - **Finestra di contesto:** lo spazio in cui l'AI tiene insieme istruzioni, file e conversazione mentre lavora. Vedi «Il contesto è una risorsa finita».
 - **Frame:** in Figma, il contenitore che tiene dentro altri elementi. È l'unità con cui si costruisce una schermata.
@@ -1416,6 +1473,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - **Plugin:** pacchetto che aggiunge funzioni a uno strumento. In Figma estende l'editor, in Claude Code porta comandi, skill e connessioni già configurate.
 - **Progressive disclosure:** mostrare un'informazione solo quando serve, invece di darla tutta subito. Vale per le interfacce e per come l'AI carica skill e file di contesto.
 - **Prompt engineering:** curare la formulazione della singola richiesta. È il livello sotto al context engineering. Vedi «Dal comando al contesto».
+- **RAG (Retrieval-Augmented Generation):** il modello cerca nei documenti i passaggi che servono alla domanda e risponde a partire da quelli, invece di tenerli tutti nella finestra di contesto. Nei progetti di Claude si attiva da solo quando i file superano la finestra. Vedi «Il RAG nei progetti di Claude».
 - **Repo (repository):** la cartella di un progetto tenuta sotto controllo di versione con git, con tutta la storia delle modifiche.
 - **Scope:** quello che un lavoro comprende e, per differenza, quello che lascia fuori.
 - **Skill:** un insieme di istruzioni scritte una volta, che l'AI carica quando il compito corrisponde, per svolgere sempre allo stesso modo un'attività ricorrente. Vedi «Cosa sono le skill e come si creano».
@@ -1442,6 +1500,9 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Tony Alicea, [UX-Context Design: Using UX Knowledge to Inform AI-Generated Design](https://www.nngroup.com/articles/ux-context-design/), NN/g (luglio 2026)
 - Anthropic, [The new rules of context engineering for Claude 5 generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models) (luglio 2026)
 - Tanner Kohler, [The 3 Roles of Context for AI Agents](https://www.nngroup.com/articles/3-agent-context-roles/), NN/g (settembre 2026)
+- Patrick Neeman, [Information Architecture Is the Foundation Artificial Intelligence Is Starving For](https://medium.com/user-experience-design-1/information-architecture-is-the-foundation-artificial-intelligence-is-starving-for-1d91fb5bf59f), UX Collective (luglio 2026)
+- Google Cloud, [What is Retrieval-Augmented Generation (RAG)?](https://cloud.google.com/use-cases/retrieval-augmented-generation)
+- Anthropic, [What are projects?](https://support.claude.com/en/articles/9517075-what-are-projects) e [Retrieval augmented generation (RAG) for projects](https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects), assistenza di Claude (settembre 2026)
 - [The AI Design Library](https://library.aidesign.guide/)
 - NN/g, AI prototyping; Testing AI methodology; Vague prototyping
 - Design with AI, Five insights from workflows to think, test, build, ship with AI
@@ -1477,6 +1538,7 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 - Nick Babich, [Design Systems Are About to Become Executable](https://uxplanet.org/design-systems-are-about-to-become-executable-f125a94fe4ad) (agosto 2026)
 - Eva Nudea Hörner, [How to Make Your Design System Agent-Ready](https://medium.com/design-bootcamp/how-to-make-your-design-system-agent-ready-ea4cfc062270) (agosto 2026)
 - Fantasy, [Can AI Generate UI Components from a Figma Design System?](https://fantasy.co/latest/figma-design-system-ai-components) (agosto 2026)
+- Romina Kavcic, [Foundations maxxing: Why your design system is not ready for AI](https://learn.thedesignsystem.guide/p/foundations-maxxing-why-your-design), The Design System Guide (settembre 2026)
 
 **Flusso tra Claude Code e Figma**
 - Tommaso Nervegna, [Claude Code for Designers: A Practical Guide](https://nervegna.substack.com/p/claude-code-for-designers-a-practical) (gennaio 2026)
@@ -1503,6 +1565,8 @@ In ordine alfabetico. Se una parola della guida non è qui e non si capisce dal 
 
 **Comandi e configurazione di Claude Code**
 - Anthropic, [Commands](https://code.claude.com/docs/en/commands), [CLI reference](https://code.claude.com/docs/en/cli-reference) e [Extend Claude with skills](https://code.claude.com/docs/en/skills), documentazione di Claude Code
+- Anthropic, [Model configuration](https://code.claude.com/docs/en/model-config), documentazione di Claude Code, e [Choosing the right model](https://platform.claude.com/docs/en/about-claude/models/choosing-a-model), documentazione della piattaforma Claude
+- Anthropic, [Change the model, effort, and thinking settings](https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings), [Claude Fable models on your plan](https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan), [Models, usage, and limits in Claude Code](https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code) e [How large is the context window on paid Claude plans?](https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans), assistenza di Claude (settembre 2026)
 - Akari Iku, [I've organised the Claude Code commands (including some hidden ones)](https://dev.to/akari_iku/ive-organised-the-claude-code-commands-including-some-hidden-ones-op0) (febbraio 2026)
 - Seth Hobson, [`wshobson/commands`](https://github.com/wshobson/commands), cinquantasette slash command pronti
 

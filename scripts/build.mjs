@@ -331,8 +331,22 @@ const scriviBlocco = (file, testo) => {
 };
 
 const lavoriSrc = readFileSync(new URL("../docs/LAVORI-APERTI.md", import.meta.url), "utf8");
-const integrazioni = (lavoriSrc.match(/^\*\*I\d+ · /gm) || []).length;
-const temi = (lavoriSrc.match(/^\*\*T\d+ · /gm) || []).length;
+// Le chiavi chiuse non si riusano, quindi l'intervallo non parte per forza da 1
+// e puo' avere dei buchi: si legge dalle chiavi vere, e i buchi si dichiarano.
+const chiavi = (lettera) =>
+  [...lavoriSrc.matchAll(new RegExp(`^\\*\\*${lettera}(\\d+) · `, "gm"))].map((m) => Number(m[1])).sort((a, b) => a - b);
+const intervallo = (lettera, numeri) => {
+  if (!numeri.length) return "nessuna chiave aperta";
+  const [min, max] = [numeri[0], numeri[numeri.length - 1]];
+  const buchi = [];
+  for (let n = min; n <= max; n++) if (!numeri.includes(n)) buchi.push(`\`${lettera}${n}\``);
+  const base = min === max ? `\`${lettera}${min}\`` : `da \`${lettera}${min}\` a \`${lettera}${max}\``;
+  return buchi.length ? `${base}, senza ${buchi.join(", ")} che ${buchi.length > 1 ? "sono chiuse" : "è chiusa"}` : base;
+};
+const chiaviI = chiavi("I");
+const chiaviT = chiavi("T");
+const integrazioni = chiaviI.length;
+const temi = chiaviT.length;
 
 const dainteg = readFileSync(new URL("../docs/FONTI-DA-INTEGRARE.md", import.meta.url), "utf8");
 const conta = (re) => (dainteg.match(re) || []).length;
@@ -344,8 +358,8 @@ const librerie = ((dainteg.split(/^## Librerie da valutare$/m)[1] || "").match(/
 const sezioniFonti = conta(/^### [IT]\d+ · /gm);
 
 scriviBlocco("LAVORI-APERTI.md", [
-  `- ${integrazioni} integrazioni in sezioni che esistono, da \`I1\` a \`I${integrazioni}\``,
-  `- ${temi} temi annunciati, da \`T1\` a \`T${temi}\``,
+  `- ${integrazioni} integrazioni in sezioni che esistono, ${intervallo("I", chiaviI)}`,
+  `- ${temi} temi annunciati, ${intervallo("T", chiaviT)}`,
   `- Le fonti di questi lavori si trovano in \`docs/FONTI-DA-INTEGRARE.md\`, dove ${sezioniFonti} sezioni portano le stesse chiavi`,
   `- Ultima build: ${buildDate}`,
 ].join("\n"));

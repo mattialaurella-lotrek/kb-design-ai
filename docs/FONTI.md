@@ -1,12 +1,12 @@
 # Fonti — Progettare con l'AI
 
-Bibliografia dei 61 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
+Bibliografia dei 72 documenti che compongono il corpus di riferimento della guida. Per ogni voce: titolo come pubblicato, autore, testata, data di pubblicazione, link per esteso e nome del PDF.
 
 I PDF si trovano in `sources/`, che è **gitignored**: sono articoli di terzi, non nostri e non ridistribuibili, quindi restano in locale. Questo file è versionato e basta a ricostruire il corpus da zero.
 
 Due avvertenze sulle date. Molti PDF sono stampe di snapshot `archive.is`, e la data in testa alla stampa è quella di archiviazione, non di pubblicazione: qui è sempre sostituita con la data reale della pagina originale, che in alcuni casi la precede di settimane. Diversi articoli Medium hanno slug URL diversi dal titolo attuale perché sono stati rititolati dopo l'uscita: il link resta valido.
 
-Sessanta fonti su 61 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 61, 57 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
+Settantuno fonti su 72 hanno l'originale online verificato. L'unica senza pagina sorgente rintracciabile è il deck `Design with AI IAAD.pdf` (voce 48). Delle 72, 68 hanno il PDF in `sources/`: fanno eccezione le voci 30, 31 e 45, due pagine pubbliche e stabili che non serve archiviare, e la voce 54, che il browser monta via JavaScript e in stampa headless esce vuota.
 
 ---
 
@@ -165,6 +165,12 @@ https://fantasy.co/latest/figma-design-system-ai-components
 File: `Can AI generate UI components from a Figma design system.pdf`
 Nota: firmato dallo studio, ma è un'intervista a Caroline Hilman, Design Director di Fantasy, sul suo esperimento. Unica fonte del corpus che non sia un articolo di metodo: è un caso di studio con un verdetto («vibe-coded design», buono per esplorazione e prototipo). Il plugin che cita, DesignBridge, estrae il design system in un file `.md` unico, cioè la scelta opposta ai registri e alle spec separate raccontati nella guida.
 
+**68. Foundations maxxing: Why your design system is not ready for AI** — sottotitolo *How and why?!*
+Romina Kavcic — The Design System Guide (Substack), 18 settembre 2026
+https://learn.thedesignsystem.guide/p/foundations-maxxing-why-your-design
+File: `Foundations maxxing.pdf`
+Aggiunta il 24 settembre 2026. La tesi è che prima di rendere un design system leggibile da una macchina vanno sistemate le fondamenta, con un inventario prima e sette interventi dopo. In «Rendere il design system leggibile dall'AI» sono entrati quattro pezzi, cioè l'inventario in un rapporto di una pagina, l'ambito delle variabili Figma sui token semantici, il registro delle decisioni e la pipeline che porta le variabili nel codice con Style Dictionary. Dall'elenco degli strumenti dell'autrice vengono anche le due voci di catalogo di Playwright e di Style Dictionary. È rimasto fuori un dato che serve a «Costruire e pubblicare il prototipo», il product manager che in un mese ha aperto 114 pull request, con il team di sviluppo arrivato al 60% in più del suo mese record, annotato sotto `I6` in `docs/FONTI-DA-INTEGRARE.md`. L'autrice vende Tidy Core, uno dei plugin che consiglia, quindi il plugin non è entrato nella guida.
+
 ---
 
 ## Flusso tra Claude Code e Figma
@@ -260,6 +266,48 @@ https://code.claude.com/docs/en/cli-reference
 File: `Claude Code, CLI reference.pdf`
 I comandi `claude ...` da terminale e l'elenco completo dei flag. Vale la stessa avvertenza della voce 55 sulla pagina viva, e lo stesso trucco del suffisso `.md`.
 
+---
+
+## Modello ed effort
+
+Le sei voci di questa sezione sono entrate il 24 settembre 2026 con «Scegliere il modello e l'effort», e i PDF sono stampe della pagina viva fatte quel giorno. Due sono documentazione senza data, quattro sono pagine dell'assistenza di Claude, che non portano una data di pubblicazione ma quella dell'ultimo aggiornamento, letta dai metadati della pagina. Il listino dei modelli cambia ogni pochi mesi, quindi la sezione della guida va riletta su queste pagine prima di ogni pubblicazione.
+
+**62. Model configuration**
+Anthropic — documentazione di Claude Code, pagina viva senza data di pubblicazione
+https://code.claude.com/docs/en/model-config
+File: `Claude Code, Model configuration.pdf`
+Gli alias dei modelli, fra cui `opusplan`, che usa Opus in plan mode e Sonnet quando si esegue, i livelli di effort con quello di serie per ogni modello e l'uso consigliato di ognuno, e il modello di serie di Claude Code, che al 24 settembre 2026 è Opus 5.5 con effort `medium` sulla maggior parte dei piani. Da qui viene anche il tasto `s` del selettore di `/model`, che dalla versione 2.1.257 cambia modello per la sola sessione. Vale la stessa avvertenza della voce 55 sulla pagina viva.
+
+**63. Choosing the right model**
+Anthropic — documentazione della piattaforma Claude, pagina viva senza data di pubblicazione
+https://platform.claude.com/docs/en/about-claude/models/choosing-a-model
+File: `Choosing the right model.pdf`
+Scritta per chi costruisce applicazioni con l'API. Alla guida servono la frase per cui regolare l'effort è spesso una leva migliore del cambio di modello e le due strade per partire, dal modello più economico salendo solo se serve oppure dal più capace scendendo dopo. La matrice dei casi d'uso è pensata per l'API e nella sezione è stata tradotta in compiti di design.
+
+**64. Change the model, effort, and thinking settings**
+Anthropic — assistenza di Claude, aggiornata il 22 settembre 2026
+https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings
+File: `Change the model, effort, and thinking settings.pdf`
+Il menu del modello nella chat, i livelli di effort con l'uso consigliato di ognuno e l'interruttore Thinking, che è un'impostazione separata dall'effort e su Opus 5.5 e Fable 5.1 non si spegne. Dall'elenco dei modelli con il selettore dell'effort si ricava che su Haiku l'effort non si regola.
+
+**65. Claude Fable models on your plan**
+Anthropic — assistenza di Claude, aggiornata il 2 settembre 2026
+https://support.claude.com/en/articles/15424964-claude-fable-models-on-your-plan
+File: `Claude Fable models on your plan.pdf`
+Fable c'è su tutti i piani a pagamento, ma con due regole diverse. Su Max e sui posti premium di Team ed Enterprise è compreso fino al 50% del limite settimanale, su Pro e sui posti standard si paga a consumo con i crediti d'uso fin dal primo messaggio. È la pagina che chiude uno dei punti lasciati aperti da `docs/BRIEF-SCELTA-DEL-MODELLO.md`, la disponibilità per piano.
+
+**66. Models, usage, and limits in Claude Code**
+Anthropic — assistenza di Claude, aggiornata il 22 settembre 2026
+https://support.claude.com/en/articles/14552983-models-usage-and-limits-in-claude-code
+File: `Models, usage, and limits in Claude Code.pdf`
+Da qui viene il rapporto di consumo fra i modelli, cioè che un turno di Opus costa diverse volte uno di Sonnet e Sonnet più di Haiku, e il consiglio di passare a Sonnet per il lavoro di routine. Dice anche che `/model` è l'unica fonte certa sui modelli disponibili per il proprio account.
+
+**67. How large is the context window on paid Claude plans?**
+Anthropic — assistenza di Claude, aggiornata il 22 settembre 2026
+https://support.claude.com/en/articles/8606394-how-large-is-the-context-window-on-paid-claude-plans
+File: `How large is the context window on paid Claude plans.pdf`
+Le finestre di contesto per modello nella chat, in Claude Code e in Cowork. Alla sezione serve una riga, cioè che Sonnet 5, Opus 5.5 e Fable 5.1 hanno un milione di token e Haiku 200mila. La stessa pagina dice che i progetti usano il RAG per caricare nella finestra solo il contenuto pertinente e che le istruzioni del progetto vanno tenute brevi, e da qui viene il quarto consiglio di «Il RAG nei progetti di Claude».
+
 **57. I've organised the Claude Code commands, including some hidden ones**
 Akari Iku — DEV Community, 14 febbraio 2026, aggiornato il 6 marzo 2026
 https://dev.to/akari_iku/ive-organised-the-claude-code-commands-including-some-hidden-ones-op0
@@ -345,6 +393,30 @@ https://www.nngroup.com/articles/3-agent-context-roles/
 File: `The 3 Roles of Context for AI Agents.pdf`
 Aggiunta fuori sequenza il 21 settembre 2026: il numero segue l'ordine di ingresso, non la posizione nel file. Dallo studio NN/g con power user di Claude, i tre ruoli che ogni informazione gioca per un agente, globale, locale e ambient. Alla guida serve il criterio di smistamento, che nessun'altra fonte del corpus fornisce.
 
+**69. What is Retrieval-Augmented Generation (RAG)?**
+Google Cloud — pagina viva senza autore né data di pubblicazione
+https://cloud.google.com/use-cases/retrieval-augmented-generation
+File: `What is Retrieval-Augmented Generation.pdf`
+Aggiunta il 24 settembre 2026 con «Il RAG nei progetti di Claude», insieme alle tre voci che seguono. È la documentazione di un fornitore e non un articolo, quindi autore e data mancano come nelle pagine di documentazione di Anthropic, e la firma è quella di Google Cloud. Da qui vengono la definizione, i due vantaggi, cioè l'informazione più recente della data di addestramento e la risposta ancorata ai fatti passati, e il limite, cioè che se la ricerca trova il passaggio sbagliato la risposta resta ancorata ed è sbagliata lo stesso. La metà della pagina che presenta i prodotti Google Cloud non è entrata.
+
+**70. Retrieval augmented generation (RAG) for projects**
+Anthropic — assistenza di Claude, aggiornata il 10 settembre 2026
+https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects
+File: `Retrieval augmented generation for projects.pdf`
+Quando il RAG dei progetti si attiva, fino a quanto sale la capacità, come lo si riconosce e cosa succede quando i file tornano sotto la soglia. Da qui vengono anche il consiglio di caricare fin dall'inizio tutto il materiale pertinente, che la guida presenta come l'unica eccezione alla regola di caricare poco, e tre dei cinque consigli su come si prepara un progetto. La pagina dichiara che la qualità delle risposte resta la stessa del caricamento intero, e la guida non lo riporta perché non ha modo di verificarlo.
+
+**71. What are projects?**
+Anthropic — assistenza di Claude, aggiornata il 22 settembre 2026
+https://support.claude.com/en/articles/9517075-what-are-projects
+File: `What are projects.pdf`
+Cos'è un progetto della chat, cioè conversazioni, istruzioni e file caricati, e le due regole sul piano gratuito, che ha i progetti fino a cinque ma non il RAG. Dice anche che una versione nuova dei progetti è in beta in Claude Code per una parte degli abbonati Pro e Max e arriverà dopo in chat, quindi la sezione della guida va riletta quando la versione nuova raggiunge la chat.
+
+**72. Information Architecture Is the Foundation Artificial Intelligence Is Starving For**
+Patrick Neeman — UX Collective (Medium), 26 luglio 2026, uscito anche sul suo Substack AI for UX
+https://medium.com/user-experience-design-1/information-architecture-is-the-foundation-artificial-intelligence-is-starving-for-1d91fb5bf59f
+File: `Information architecture is the foundation artificial intelligence is starving for.pdf`
+Letto il 23 settembre 2026 da `freedium-mirror.cfd` e rimasto fra le fonti da valutare fino al giorno dopo, quando ha trovato posto nella sezione sul RAG. Da qui vengono i casi in cui la ricerca trova il passaggio sbagliato, cioè il documento vecchio o contraddetto da un altro, il metodo per indagare una risposta sbagliata partendo dai file che l'agente ha usato e l'ultimo dei cinque consigli, togliere la versione superata di un documento. La stampa del mirror non porta la data, che viene dalla pagina originale.
+
 ---
 
 ## Loop e autonomia dell'agente
@@ -381,11 +453,11 @@ File: `4 Types of Loops You Can Create in Claude Code.pdf`
 
 ## Come è distribuito il corpus
 
-**Nick Babich firma 22 documenti su 61**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
+**Nick Babich firma 22 documenti su 72**, tutti su UX Planet: è il nucleo del materiale su Claude Code, Figma, design system e formati `.md`. Seguono Lisa Demchenko, Garima Agarwal, Christine Vallaure e Nurkhon (@nurxmedov) con 2 ciascuno.
 
-Le fonti primarie sono sette, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5 e tre pagine di documentazione, due sui comandi e una sulle skill. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
+Le fonti primarie sono quindici, tutte di Anthropic: la guida sulle skill, i due post sui loop e sui dynamic workflows, quello sul context engineering per i modelli di generazione Claude 5, cinque pagine di documentazione, due sui comandi, una sulle skill e due sulla scelta del modello, e sei pagine dell'assistenza di Claude su modelli, effort, finestre di contesto e progetti. A parte si trova la pagina di Google Cloud sul RAG, che è documentazione di un fornitore e serve alla definizione. Tutto il resto è pubblicistica di seconda mano, per lo più su Medium: utile per i pattern e i workflow, da verificare quando riporta specifiche o date.
 
-Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le tre pagine di documentazione di Claude Code, che sono vive e non portano una data di pubblicazione. Trentadue documenti su sessantuno escono fra marzo e giugno 2026.
+Il corpus è concentrato nel 2026: due articoli sono del 2024 (voci 17 e 18, entrambi sul design system in sé, prima dell'AI), tutti gli altri vanno da gennaio a settembre 2026, tranne le sei pagine di documentazione, cinque di Anthropic e una di Google Cloud, che sono vive e non portano una data di pubblicazione. Trentadue documenti su settantadue escono fra marzo e giugno 2026.
 
 ## Manutenzione
 
