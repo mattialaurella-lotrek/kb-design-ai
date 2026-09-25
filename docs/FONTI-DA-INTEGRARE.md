@@ -26,7 +26,7 @@ Allo stato si aggiunge **Senza firma** dove mancano autore o data. Non è uno st
 - 36 fonti in attesa: 27 pronte, 7 aperte, 2 da aprire, di cui 1 senza firma
 - 17 sezioni di lavoro, 9 integrazioni e 8 temi, con le chiavi di `docs/LAVORI-APERTI.md`
 - 8 librerie da valutare, fuori dalla spina perché non sono legate a un lavoro
-- Ultima build: 24 settembre 2026
+- Ultima build: 25 settembre 2026
 <!-- conteggio:fine -->
 
 ---

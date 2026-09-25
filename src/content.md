@@ -1023,6 +1023,7 @@ Servono a costruire il prototipo con elementi già impostati invece di progettar
 - [`IanLunn/Hover`](https://github.com/IanLunn/Hover): effetti hover per link, bottoni, loghi e immagini (in CSS)
 - [`barvian/number-flow`](https://github.com/barvian/number-flow): numeri animati
 - [`0xGF/boneyard`](https://github.com/0xGF/boneyard): skeleton loading
+- [`jakubkrehel/loading`](https://github.com/jakubkrehel/loading): una raccolta di indicatori di caricamento animati per React, già impostati per `prefers-reduced-motion`
 - [`guillermolg00/morphicons`](https://github.com/guillermolg00/morphicons): animazioni per le librerie di icone di Lucide, Tabler, Heroicons e altre
 - [`edoardolunardi/kugiri`](https://github.com/edoardolunardi/kugiri): separa il testo in righe, parole e caratteri seguendo la disposizione del browser, per animarlo pezzo per pezzo
 - [`VincentGarreau/particles.js`](https://github.com/VincentGarreau/particles.js): sfondi di particelle che si muovono e si collegano fra loro, configurati da un file JSON

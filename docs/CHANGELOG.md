@@ -3,6 +3,11 @@
 Tutte le modifiche degne di nota a questa guida.
 Il formato si ispira a [Keep a Changelog](https://keepachangelog.com/it/1.1.0/); essendo un sito/guida senza versioni, le voci sono raggruppate per data (più recente in cima).
 
+## [2026-09-25]
+
+### Aggiunto
+- **[`jakubkrehel/loading`](https://github.com/jakubkrehel/loading) nel catalogo,** in «Motion, animazioni e scroll» subito dopo `0xGF/boneyard`, perché le due librerie servono alla stessa attesa, una con lo skeleton e l'altra con l'indicatore animato. Sono ventinove indicatori per React 19, con licenza MIT, e il README dichiara che rispettano la riduzione del movimento senza configurazione.
+
 ## [2026-09-24]
 
 ### Aggiunto
