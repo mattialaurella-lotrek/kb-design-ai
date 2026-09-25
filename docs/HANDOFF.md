@@ -12,6 +12,7 @@ Le decisioni di lungo periodo si trovano in `docs/MEMORY.md`, la cronologia in `
 Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il senno)»**, knowledge base del team di design Lotrek. Sette capitoli in sequenza, ognuno dà per acquisito il precedente: progettare il contesto, scriverlo nei file, collegare Claude e Figma, il design system per l'AI, costruire e pubblicare il prototipo (versionamento e archiviazione compresi), progettare con le skill di Claude, far lavorare l'agente da solo. Più i prossimi argomenti, il glossario e le fonti.
 
 - Repo pubblico: `mattialaurella-lotrek/kb-design-ai`
+- Copia privata nell'org di agenzia: `lotrekagency-design-space/kb-design-ai`, aggiornata da `.github/workflows/mirror.yml` a ogni push su `main`
 - Online su [kb-design-ai.vercel.app](https://kb-design-ai.vercel.app), anteprime su [kb-design-ai-preview.vercel.app](https://kb-design-ai-preview.vercel.app)
 
 ## Come è fatta
@@ -69,6 +70,8 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 ## Aperto
 
 **La coda del lavoro si trova in `docs/LAVORI-APERTI.md`,** dal 12 settembre 2026. Tiene in un posto solo le integrazioni nelle sezioni che esistono e i temi ancora da scrivere, ognuno con la sezione di destinazione, il materiale su cui si regge e quello che lo tiene fermo. È il file da aprire per primo quando si riprende in mano il testo.
+
+**La copia di agenzia è ferma dal 25 settembre 2026.** Il push verso `lotrekagency-design-space/kb-design-ai` risponde `403`, e la causa più probabile è il token in attesa dell'approvazione di un owner dell'org. Finché resta così, ogni push fa fallire il workflow «Copia nel repo di agenzia», e la pubblicazione della guida non ne risente. Cosa controllare e come chiudere si trova in `docs/MEMORY.md`, sotto «In sospeso / da valutare».
 
 **Le Figma Agent Skills**, rinviate dall'utente. Servono le fonti e la scelta della collocazione. Il dettaglio è in `docs/MEMORY.md`.
 
