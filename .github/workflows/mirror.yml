@@ -1,0 +1,48 @@
+# Ogni push su main arriva anche nel repo di agenzia.
+#
+# lotrekagency-design-space/kb-design-ai è una copia privata di questo repo e
+# si aggiorna solo da qui. Il push è senza --force, quindi un commit fatto
+# direttamente nella copia resta lì e fa fallire il giro successivo, e le due
+# storie vanno riallineate a mano.
+#
+# Prerequisito: il secret AGENZIA_TOKEN nelle impostazioni del repository. È un
+# token fine-grained con accesso al solo repo di agenzia e due permessi in
+# scrittura, Contents e Workflows. Il secondo serve perché la copia riceve anche
+# i file di questa cartella, e GitHub rifiuta il push che modifica un workflow
+# se il token non ha quel permesso.
+name: Copia nel repo di agenzia
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: copia-agenzia
+  cancel-in-progress: false
+
+jobs:
+  copia:
+    # Il file arriva anche nella copia, dove il job farebbe il push su se stesso.
+    if: github.repository != 'lotrekagency-design-space/kb-design-ai'
+    runs-on: ubuntu-latest
+    steps:
+      # Il checkout prende la punta di main e non il commit del push, così un
+      # giro rilanciato giorni dopo non prova a riportare indietro la copia.
+      # Le credenziali del checkout non restano nella configurazione di git,
+      # perché valgono per tutto github.com e git le userebbe al posto del token.
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Push su lotrekagency-design-space
+        env:
+          AGENZIA_TOKEN: ${{ secrets.AGENZIA_TOKEN }}
+        run: |
+          if [ -z "$AGENZIA_TOKEN" ]; then
+            echo "::error::Manca il secret AGENZIA_TOKEN, la copia di agenzia non si aggiorna"
+            exit 1
+          fi
+          git push "https://x-access-token:${AGENZIA_TOKEN}@github.com/lotrekagency-design-space/kb-design-ai.git" HEAD:refs/heads/main

@@ -22,6 +22,9 @@ concurrency:
 
 jobs:
   pubblica:
+    # Questo file arriva anche nella copia di agenzia, dove il job si salta:
+    # lì manca VERCEL_TOKEN, e ogni push fallirebbe o pubblicherebbe due volte.
+    if: github.repository != 'lotrekagency-design-space/kb-design-ai'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5

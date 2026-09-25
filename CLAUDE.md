@@ -52,6 +52,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **Il push lo fa un hook,** `.githooks/post-commit`, che manda su GitHub ogni commit appena chiuso. Su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, perché git non installa da sé gli hook che arrivano da un repo. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano.
 
+**Il repo di agenzia è una copia.** `lotrekagency-design-space/kb-design-ai` è privato e riceve `main` a ogni push da `.github/workflows/mirror.yml`, che chiede il secret `AGENZIA_TOKEN`. Nella copia non si committa, perché il push è senza `--force` e un commit fatto là blocca gli aggiornamenti finché non si riallinea a mano. I workflow arrivano anche nella copia e lì non partono, per la condizione `if: github.repository != 'lotrekagency-design-space/kb-design-ai'` scritta su ogni job, che un workflow nuovo deve ripetere.
+
 **Ronzino ha 400, 500 e 700 e non ha il 600.** Si usano i token `--w-regular`, `--w-medium` e `--w-bold`.
 
 **`index.html` e `progettare-con-lai.pdf` sono artefatti,** gitignored, rigenerati a ogni build. Una modifica scritta lì dentro sparisce al giro dopo.
