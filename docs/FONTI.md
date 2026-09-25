@@ -409,7 +409,7 @@ Quando il RAG dei progetti si attiva, fino a quanto sale la capacità, come lo s
 Anthropic — assistenza di Claude, aggiornata il 22 settembre 2026
 https://support.claude.com/en/articles/9517075-what-are-projects
 File: `What are projects.pdf`
-Cos'è un progetto della chat, cioè conversazioni, istruzioni e file caricati, e le due regole sul piano gratuito, che ha i progetti fino a cinque ma non il RAG. Dice anche che una versione nuova dei progetti è in beta in Claude Code per una parte degli abbonati Pro e Max e arriverà dopo in chat, quindi la sezione della guida va riletta quando la versione nuova raggiunge la chat.
+Cos'è un progetto della chat, cioè conversazioni, istruzioni e file caricati, e le due regole sul piano gratuito, che ha i progetti fino a cinque ma non il RAG. Dice anche che una versione nuova dei progetti è in beta in Claude Code per una parte degli abbonati Pro e Max e arriverà dopo in chat, quindi la sezione della guida va riletta quando la versione nuova raggiunge la chat. La frase che riportava le regole del piano gratuito e la beta in Claude Code è uscita dal testo il 25 settembre 2026, su richiesta dell'utente.
 
 **72. Information Architecture Is the Foundation Artificial Intelligence Is Starving For**
 Patrick Neeman — UX Collective (Medium), 26 luglio 2026, uscito anche sul suo Substack AI for UX

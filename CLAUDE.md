@@ -48,6 +48,8 @@ Per gli screenshot in locale serve Chrome Beta, che è l'unico installato su que
 
 **L'anteprima si pubblica da sé.** Ogni giro di lavoro che cambia la pagina si chiude con `./deploy.sh preview` e con il link a `kb-design-ai-preview.vercel.app` scritto nella risposta, senza che l'utente lo chieda. Vale per il lavoro non ancora committato, perché dopo il push la pubblicazione la fa il workflow. Un giro che tocca solo i file di `docs/` non cambia la pagina e salta il passaggio.
 
+**La nota delle novità si aggiorna da sé.** Ogni giro che porta contenuto nuovo nella guida, cioè una sezione, un paragrafo, una voce di catalogo o di glossario, riscrive la riga `{novita:…}` sotto il titolo di `src/content.md`, senza che l'utente lo chieda. Il testo è una frase semplice che dice cosa è stato aggiunto e dove, con il titolo della sezione fra guillemet, mentre il titolo «Aggiornamento del» lo scrive la build. La data, con ora e fuso, è quella del commit che porta la nota in produzione, e da lì la nota resta sette giorni. Una nota nuova sostituisce quella in corso, e se la precedente è dello stesso giorno le due aggiunte vanno nella stessa frase. Correzioni, tagli e ritocchi di forma non la toccano. La forma si trova in `DESIGN.md`, «La nota delle novità».
+
 **Il push lo fa un hook,** `.githooks/post-commit`, che manda su GitHub ogni commit appena chiuso. Su un clone nuovo va acceso una volta con `git config core.hooksPath .githooks`, perché git non installa da sé gli hook che arrivano da un repo. Quando il push non riesce, l'hook lo dice e il commit resta in locale, da recuperare a mano.
 
 **Ronzino ha 400, 500 e 700 e non ha il 600.** Si usano i token `--w-regular`, `--w-medium` e `--w-bold`.

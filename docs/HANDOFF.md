@@ -23,9 +23,9 @@ Guida HTML **«Progettare con l'AI, una guida per non perdere la rotta (e il sen
 ## Dove siamo
 
 <!-- stato:inizio -->
-- 25.693 parole di prosa senza i blocchi di codice, 7 capitoli, 42 sezioni, 52 voci nell'indice laterale
+- 25.652 parole di prosa senza i blocchi di codice, 7 capitoli, 42 sezioni, 52 voci nell'indice laterale
 - 72 documenti in `docs/FONTI.md`
-- `index.html` pesa 370 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
+- `index.html` pesa 373 KB, senza dipendenze esterne a runtime tranne IBM Plex Mono da Google Fonts
 - Ultima build: 25 settembre 2026
 <!-- stato:fine -->
 
@@ -60,6 +60,8 @@ Scala: 18 corpo · 20 h4 · 24 h3 · 33,6 h2 · 52,8 h1 px, a rapporti crescenti
 **Materiale di riferimento.** I PDF degli articoli si trovano in `sources/`, che è **gitignored**: sono contenuti di terzi, non ridistribuibili. `docs/FONTI.md` è versionato e basta a ricostruire il corpus.
 
 **Forma del testo, quattro regole.** **Mai il corsivo**, in nessun caso, nemmeno sui termini tecnici e stranieri: dove serviva si usa il tondo, o il grassetto se il segno faceva da etichetta. Un `<em>` nell'HTML generato è un errore. I titoletti in grassetto chiudono coi due punti dentro il grassetto, poi spazio e minuscola (`**Titolo:** testo`), mai col punto. Ogni file `.md` citato va in codice inline, tranne nei titoli degli articoli in Fonti. E dopo i due punti di un titoletto la frase non ne apre un secondo: si rifrasa.
+
+**Nota delle novità.** Ogni giro che porta contenuto nuovo nella guida riscrive la riga `{novita:AAAA-MM-GGTHH:MM+02:00|testo}` sotto il titolo di `src/content.md`, con la data del commit che la pubblica e una frase semplice su cosa è stato aggiunto e dove. La build ne fa un riquadro lime in cima alla pagina, con il titolo «Aggiornamento del» e la data, che resta sette giorni e si chiude con la X. Correzioni, tagli e ritocchi di forma non la toccano.
 
 **Anteprima.** `./deploy.sh preview` pubblica su Vercel e assegna l'alias fisso [kb-design-ai-preview.vercel.app](https://kb-design-ai-preview.vercel.app), che punta sempre all'ultima. Manda quello, mai l'URL del singolo deployment: cambia a ogni giro e chi riapre il vecchio guarda una versione superata credendola aggiornata.
 

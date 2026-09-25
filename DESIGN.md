@@ -196,6 +196,22 @@ Pill lime accanto a un titolo, fondo `--accent` e testo `--accent-ink`, che segn
 
 Nell'indice laterale la stessa marcatura diventa un pallino da 6px in `--accent-line`, davanti alla voce. Sulla macro-voce di un H2, che è un flex con gap 8px, il pallino azzera il margine destro che gli serve nelle voci di terzo livello, altrimenti lo stacco si somma e diventa 16.
 
+## La nota delle novità
+
+Componente del 25 settembre 2026. Dice a chi apre la guida cosa è stato aggiunto, in una frase, e sparisce da sé. Si scrive in `src/content.md` come riga `{novita:AAAA-MM-GGTHH:MM+02:00|testo}` sotto il titolo, e la gestisce `scripts/build.mjs`, che ci mette sopra il titolo «Aggiornamento del» con giorno e mese e converte i rimandi «Titolo» in link come nel corpo.
+
+**Resta sette giorni dalla data scritta nel sorgente.** La build non la scrive più dopo la scadenza, e fino alla build successiva la nasconde il browser. Chi la chiude con la X non la rivede: il browser si ricorda la data della nota chiusa, quindi una nota nuova, con un'altra data, torna a comparire.
+
+**Forma:** il riquadro ha fondo `--accent` e testo `--accent-ink`, le stesse due tinte del badge di stato, uguali nei due temi. Spigolo vivo, perché su due o tre righe una pillola da 100px si deforma. Padding 20 sopra e sotto, 24 a sinistra e 60 a destra, dove si trova la X, con 40px di stacco dall'occhiello dell'apertura, lo stesso margine che l'apertura ha sotto. Il titolo è a 1rem in `--w-bold`, come il titolo dei riquadri affiancati, con l'interlinea 1,35 dell'h4 e 2px sotto, così titolo e testo si leggono come un blocco solo, e il testo è sul gradino `.92rem` con interlinea 1,55, quello della nota dello schema. Le regole stanno sotto `.prose .novita`, perché `.prose p` viene dopo nel CSS e rimetterebbe 20px sotto l'ultimo paragrafo.
+
+**Il link cambia colore e non gesto:** tiene il filetto animato del link di prosa, in `--accent-ink` invece che in `--accent-line`, che sul lime sparirebbe.
+
+**La X è `close` dallo sprite,** su un bottone tondo da 38px, come quello del tema, che sotto i 1024px sale a 44. Sta nell'angolo in alto a destra, a 12px dall'alto e da destra, che sotto i 1024px diventano 8: il centro cade sulla riga del titolo e il segno visibile finisce a 24px dal bordo, come il testo a sinistra. L'hover inverte le due tinte, fondo `--accent-ink` e segno `--accent`: `--tint-hover` sul lime darebbe un grigio che nel tema scuro diventa quasi nero, e la coppia invertita è la stessa nei due temi. Il fuoco prende un anello di 2px in `--accent-ink`, perché l'anello `--accent-line` degli altri comandi sul lime non si vede.
+
+**Non si stampa,** quindi non entra nel PDF, che si genera durante il deploy mentre la nota è ancora valida e resterebbe con un avviso scaduto.
+
+**Si riscrive a ogni contenuto nuovo** e non per correzioni, tagli o ritocchi di forma. È una regola dell'utente del 25 settembre 2026, scritta per intero in `CLAUDE.md`.
+
 ## L'immagine di anteprima del link
 
 Scheda di Open Graph, dal 16 settembre 2026, in `assets/og-image.jpg`: 1200×630, 137 KB. La leggono Slack, WhatsApp, LinkedIn e X quando qualcuno incolla l'indirizzo della guida.

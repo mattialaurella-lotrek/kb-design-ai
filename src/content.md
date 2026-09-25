@@ -1,5 +1,7 @@
 # Progettare con l'AI, una guida per non perdere la rotta (e il senno)
 
+{novita:2026-09-25T09:16+02:00|In «Librerie per asset ed effetti» è stata aggiunta una raccolta di indicatori di caricamento animati per React.}
+
 Questa guida raccoglie il metodo e gli strumenti per progettare con l'AI: come si prepara il contesto, come lo si mette per iscritto, come si lavora fra Claude e Figma, come si rende il design system leggibile da un agente e come si arriva a un prototipo pubblicato. Il taglio è operativo, quindi metodi, comandi e strumenti concreti.
 
 **Gli strumenti e i temi in gioco:**
@@ -108,8 +110,6 @@ Quando il materiale di un progetto è troppo per la finestra di contesto, invece
 **Il limite è la ricerca:** se trova il passaggio sbagliato, la risposta è costruita sui documenti ed è sbagliata lo stesso, anche se sembra verificata. Succede quando due file dicono cose diverse sullo stesso tema, quando una versione vecchia non è stata tolta o quando il nome di un file non dice cosa contiene. Davanti a una risposta sbagliata conviene guardare quali documenti Claude ha usato per costruirla, e di solito si trova un file vecchio, doppio o con un nome sbagliato. Correggere quel file corregge tutte le risposte che ci si appoggiano.
 
 **Nei progetti di Claude:** un progetto della chat raccoglie le conversazioni, le istruzioni e i file caricati, che Claude usa come contesto in ogni conversazione del progetto. Finché i file entrano nella finestra, Claude li legge tutti. Quando si avvicinano al limite, sui piani a pagamento il progetto passa da solo al RAG e la sua capacità sale fino a dieci volte. Lo si riconosce dall'indicatore sul progetto e dallo strumento project knowledge search, che Claude usa quando deve trovare un passaggio. Non c'è niente da attivare, e se i file tornano sotto la soglia il progetto torna a leggerli tutti.
-
-Sul piano gratuito i progetti ci sono, fino a cinque, ma il RAG no. In Claude Code è in beta una versione nuova dei progetti, per ora per una parte degli abbonati Pro e Max, che funziona in un altro modo.
 
 **L'unico caso in cui conviene caricare tutto:** di solito all'agente si dà solo quello che serve al compito, perché ogni file in più toglie attenzione agli altri. In un progetto con il RAG vale il contrario, e Anthropic consiglia di caricare fin dall'inizio tutto il materiale pertinente, perché nella finestra entra solo quello che la ricerca trova a ogni domanda e il resto del progetto resta fuori. La scelta la fa la ricerca, e a chi prepara il progetto resta il lavoro di ordinare il materiale. Finché il progetto è sotto la soglia vale invece la regola di sempre, perché ogni file caricato entra nella finestra in ogni conversazione.
 

@@ -496,6 +496,36 @@
     .hero .lede :last-child { margin-bottom: 0; }
     .hero .lede strong { color: var(--ink); }
 
+    /* Nota delle novita': lime pieno come il badge di stato, uguale nei due temi.
+       Valori e ragioni in DESIGN.md, «La nota delle novita'». */
+    .novita {
+      position: relative;
+      margin: 0 0 40px; padding: 20px 60px 20px 24px;
+      background: var(--accent); color: var(--accent-ink);
+      border-radius: var(--radius);
+      font-size: .92rem; line-height: 1.55;
+    }
+    .prose .novita p { margin: 0; text-wrap: balance; }
+    .prose .novita .novita-titolo { margin: 0 0 2px; font-size: 1rem; line-height: 1.35; font-weight: var(--w-bold); }
+    .prose .novita a[href] {
+      color: var(--accent-ink);
+      background-image: linear-gradient(var(--accent-ink), var(--accent-ink));
+    }
+    /* La X sta nell'angolo in alto a destra: il centro cade sulla riga del titolo
+       e il segno visibile finisce a 24px dal bordo destro, come il testo a sinistra. */
+    .novita-chiudi {
+      position: absolute; top: 12px; right: 12px;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%;
+      background: none; color: var(--accent-ink); cursor: pointer;
+      transition: background .2s ease, color .2s ease;
+    }
+    .novita-chiudi .ico { width: 18px; height: 18px; display: block; }
+    .novita-chiudi:hover { background: var(--accent-ink); color: var(--accent); }
+    .novita-chiudi:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 1px; }
+    @media (prefers-reduced-motion: reduce) { .novita-chiudi { transition: none; } }
+    @media (max-width: 1024px) { .novita-chiudi { top: 8px; right: 8px; width: 44px; height: 44px; } }
+
     /* Typographic rhythm */
     /* ---------- Ritmo verticale ----------
        Due regole, entrambe su multipli di 8px e in rem, così lo spazio non
@@ -945,7 +975,7 @@
       body { background: #fff; }
       /* Comandi dell'interfaccia: sulla pagina stampata non hanno senso. */
       header.topbar, aside.toc, #progress, #scrim, .head-tools, .toc-cta, .toplink,
-      .search, .search-panel { display: none !important; }
+      .search, .search-panel, .novita { display: none !important; }
       .shell { display: block; }
       main { padding: 0; }
       .prose { max-width: none; margin: 0; }
@@ -1101,6 +1131,22 @@
       <div id="scrim"></div>
       <div class="prose" id="top">
         <section class="hero">
+          {{NOVITA}}
+          <script>
+            // Subito dopo la nota e non in fondo alla pagina: mostrata dopo il primo
+            // disegno spingerebbe giu' tutta l'apertura sotto gli occhi di chi legge.
+            (function () {
+              var n = document.getElementById("novita");
+              if (!n) return;
+              var chiusa = null;
+              try { chiusa = localStorage.getItem("kb-novita-chiusa"); } catch (e) {}
+              if (Date.now() < Date.parse(n.dataset.fine) && chiusa !== n.dataset.inizio) n.hidden = false;
+              n.querySelector(".novita-chiudi").addEventListener("click", function () {
+                n.hidden = true;
+                try { localStorage.setItem("kb-novita-chiusa", n.dataset.inizio); } catch (e) {}
+              });
+            })();
+          </script>
           <span class="eyebrow">Knowledge base per il team di design</span>
           <h1>{{HERO_TITLE}}</h1>
           <img class="hero-img" src="assets/hero-figma-skills.webp" width="1520" height="855"

@@ -65,6 +65,34 @@ function smartQuotes(md) {
 let md = readFileSync(new URL("../src/content.md", import.meta.url), "utf8");
 const lines = md.split("\n");
 
+// 0) Nota delle novità: una riga "{novita:AAAA-MM-GGTHH:MM+02:00|testo}" -> riquadro
+//    in cima alla pagina, con il titolo «Aggiornamento del <giorno>» e sotto il testo.
+//    Resta a schermo sette giorni dalla data scritta: fino alla build successiva alla
+//    scadenza la nasconde il browser, dopo la build non la scrive più. La data sta nel sorgente e non la mette la build,
+//    perché il workflow rifà la build a ogni push e il conto ripartirebbe ogni volta.
+const NOVITA_GIORNI = 7;
+let novita = null;
+{
+  const ni = lines.findIndex((l) => /^\{novita:/.test(l.trim()));
+  if (ni !== -1) {
+    const m = lines[ni].trim().match(/^\{novita:\s*(\d{4}-(\d{2})-(\d{2})T[^|]+?)\s*\|\s*(.+?)\s*\}$/);
+    const inizio = m ? new Date(m[1]) : null;
+    if (!m || isNaN(inizio)) {
+      console.error("Nota delle novità illeggibile, serve {novita:AAAA-MM-GGTHH:MM+02:00|testo}:\n  " + lines[ni]);
+      process.exit(1);
+    }
+    lines.splice(ni, 1);
+    // Giorno e mese si leggono dalla stringa e non dalla Date, che sul runner del
+    // workflow, in UTC, può cadere il giorno prima.
+    novita = {
+      inizio: m[1],
+      fine: new Date(inizio.getTime() + NOVITA_GIORNI * 864e5),
+      giorno: Number(m[3]), mese: Number(m[2]) - 1,
+      md: m[4],
+    };
+  }
+}
+
 // 1) Titolo H1 (prima riga "# ...") -> rimosso dal corpo, usato nell'hero
 let pageTitle = TITLE;
 const h1i = lines.findIndex((l) => /^#\s+/.test(l));
@@ -269,6 +297,27 @@ bodyHtml = bodyHtml.replace(
     chiude
 );
 
+// ---- Nota delle novità ----
+// I rimandi «Titolo» diventano link come nel corpo. Scaduta, la nota non si scrive:
+// la data di confronto è quella vera e non BUILD_DATE, che serve solo al piè di pagina.
+let novitaHtml = "";
+if (novita && Date.now() < novita.fine.getTime()) {
+  const byTitle = new Map(toc.map((t) => [t.text, t.id]));
+  const testo = marked
+    .parseInline(smartQuotes(novita.md))
+    .replace(/&ldquo;((?:(?!&ldquo;|&rdquo;)[\s\S]){3,90})&rdquo;/g, (m, inner) => {
+      const id = byTitle.get(stripTags(inner).trim());
+      return id ? `<a class="xref" href="#${id}">${inner}</a>` : m;
+    })
+    .replace(/<a href="(https?:\/\/[^"]+)"/g, '<a href="$1" target="_blank" rel="noopener noreferrer"');
+  novitaHtml =
+    `<aside class="novita" id="novita" aria-labelledby="novita-titolo" data-inizio="${novita.inizio}" data-fine="${novita.fine.toISOString()}" hidden>` +
+    `<p class="novita-titolo" id="novita-titolo">Aggiornamento del ${novita.giorno} ${MESI[novita.mese]}</p>` +
+    `<p>${testo}</p>` +
+    `<button type="button" class="novita-chiudi" aria-label="Chiudi la nota"><svg class="ico" aria-hidden="true"><use href="#ico-close"/></svg></button>` +
+    `</aside>`;
+}
+
 // ---- Render template ----
 const heroTitle = smartQuotesText(pageTitle.split(/\s+[—–-]\s+/)[0].trim());
 const titleSmart = smartQuotesText(pageTitle);
@@ -278,6 +327,7 @@ out = out
   .replaceAll("{{TITLE}}", titleSmart)
   .replaceAll("{{HERO_TITLE}}", heroTitle)
   .replaceAll("{{DESCRIPTION}}", DESCRIPTION)
+  .replace("{{NOVITA}}", novitaHtml)
   .replace("{{INTRO}}", introHtml)
   .replace("{{TOC}}", tocHtml)
   .replace("{{CONTENT}}", bodyHtml)
